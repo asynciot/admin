@@ -3,9 +3,7 @@
 		<Layout :style="{minHeight: '100vh'}">
 			<Sider  hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" >
 				<Menu :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active">
-					<!-- <div class="layout-logo-left"> -->
-					<img src="../assets/logo-menu.png" style="padding-left: 20%;" v-on:click="goHome">
-					<!-- </div> -->
+					<img src="../assets/logo-menu.png" style="padding-left: 20%;cursor: pointer;" v-on:click="goHome">
 					<template v-for="item in menu" v-if="!item.sub" >
 						<Menu-item :key="item.name" :name="item.name" >
 							<Icon :type="item.icon" size="16" ></Icon>
@@ -143,7 +141,7 @@
 					},{
 						name: 'maintain',
 						icon: 'settings',
-						label: '维保管理',
+						label: '维修管理',
 						sub: [{
 								name: 'maintain',
 								label: '故障信息',
@@ -199,7 +197,7 @@
 					},{
 						name: 'system',
 						icon: 'ios-settings',
-						label: '系统管理',
+						label: '维保管理',
 						sub:[{
 							name:'print',
 							label:'打印二维码',
