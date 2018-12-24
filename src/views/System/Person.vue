@@ -9,18 +9,18 @@
 							Row(:gutter="5")
 								Col(span="10",offset="2")
 									Form-item(label="名称",prop="name")
-										Input(v-model="form.username",placeholder="请输入名称")
+										Input(v-model="form.nickname",placeholder="请输入名称")
 									Form-item(label="权限")|{{role}}						
-									Form-item(label="所属单位",prop="unit") 
-										Input(v-model="form.unit",placeholder="所属单位")
+									//Form-item(label="所属单位",prop="unit") 
+									//	Input(v-model="form.unit",placeholder="所属单位")
 									Form-item(label="联系电话",prop="mobile") 
 										Input(v-model="form.mobile",placeholder="手机号码")
 									Form-item(label="邮箱",prop="email") 
 										Input(v-model="form.email",placeholder="请填写邮箱地址")
 									Form-item(label="备注",prop="remark")
-										textarea(v-model="form.introduction" style="font-size:20px; width:400px;height:70px")
+										textarea(v-model="form.introduction" style=" width:400px;height:70px")
 						Button(style="margin-left:150px" type="primary" icon="",@click="getData()")|重置
-						Button(style="margin-left:30px" type="success",icon="plus",@click="create('form')",:loading="loading")|提交
+						Button(style="margin-left:30px" type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
 						Button(style="margin-left:30px" icon="close",@click="$router.back(-1)")|取消 
 </template>
 
@@ -32,7 +32,7 @@
 				id:window.localStorage.getItem('id'),
 				form:{
 					id:'',
-					nicname:'',
+					nickname:'',
 					sex:'保密',
 					profession:'',
 					authority:'',
@@ -42,7 +42,7 @@
 					introduction:'',
 				},
 				rules: {
-					name: [{
+					nickname: [{
 						required: true,
 						type: 'string',
 						message: '请填写名称',
@@ -70,9 +70,6 @@
 					}],
 				},
 				list:[],
-				userList:{
-					username:window.localStorage.getItem('username'),
-				},
 				query:{
 					id:window.localStorage.getItem('id'),
 					name:'',
@@ -88,7 +85,7 @@
 		},
 		computed: {
 			role() {
-				return this.userList.username === 'admin' ? '超级管理员' : '普通用户';
+				return this.username === 'admin' ? '超级管理员' : '普通用户';
 			}
 		},
 		created(){
@@ -103,27 +100,25 @@
 					if (this.form.sex == 'female') {this.form.sex = '女'}
 					if (this.form.sex == 'secret') {this.form.sex = '保密'}
 				}
-				let lad = await this.$api.devices(this.ladder)
-				if (0 === lad.data.code) {
-					this.ladList = lad.data.data.list
-					this.ladder.total = lad.data.data.totalNumber
-				}
-			},
-			go(name){
-				console.log(name);
-				this.$router.push({
-					name: name,
-				})
+// 				let lad = await this.$api.devices(this.ladder)
+// 				if (0 === lad.data.code) {
+// 					this.ladList = lad.data.data.list
+// 					this.ladder.total = lad.data.data.totalNumber
+// 				}
 			},
 			async create(){
-				var sex
-				if (this.form.sex == '男') {sex = 'male'}
-				if (this.form.sex == '女') {sex = 'female'}
-				if (this.form.sex == '保密') {sex = 'secret'}
-				let res = await this.$api.updatepeople({id:this.form.id,username:this.form.username,
-														profession:this.form.profession,email:this.form.email,
-														mobile:this.form.mobile,
-														introduction:this.form.introduction})
+				// this.loading = true
+// 				if (this.form.sex == '男') {sex = 'male'}
+// 				if (this.form.sex == '女') {sex = 'female'}
+// 				if (this.form.sex == '保密') {sex = 'secret'}
+				let res = await this.$api.updatepeople({
+					id:this.form.id,username:this.form.username,
+					profession:this.form.profession,
+					nickname:this.form.nickname,
+					email:this.form.email,
+					mobile:this.form.mobile,
+					introduction:this.form.introduction,
+				})
 				if (res.data.code ==0) {
 					this.$Notice.success({
 					title: '成功',
@@ -137,14 +132,6 @@
 					});
 				}
 			},
-			newpassword(){
-				this.$router.push({
-					name: 'newpassword',
-					params: {
-						// id: this.form.id									
-					},
-				})
-			}
 		}
 	}	
 </script>

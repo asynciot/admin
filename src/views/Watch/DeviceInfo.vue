@@ -56,7 +56,7 @@
 								Col(span="6" align='center' style="margin-top: 10px;margin-left: 10px")
 									Button(type="success" @click="monitor('2')" v-if="data.device_type == 240")|内存监控
 				Col(span=12)
-					card.card(align='center' style='height: 500px')
+					card.card(align='center' style='height: 500px',v-if='this.door')
 						div( style="height: 35px;font-size:20px")
 							Col(span=4)|事件记录
 							Col(span=4)
@@ -73,7 +73,7 @@
 								DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
 						div(style='font-size: large;', v-if='total==0')| 这台设备没有事件记录
 						Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="height: 360px; margin-top: 10px")
-							card(v-bind:padding='4',v-for='item in list' align='left', style='height: 80px; font-size: 16px; cursor: pointer;', @click.native='history(item.id)')
+							card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='height: 80px; font-size: 16px; cursor: pointer;', @click.native='history(item.id)')
 								Col(span=22)|  事件序号： {{item.id}}
 								Col(span=2)
 									div(style="color:red" v-if="(now-item.time)<300000")| New!
@@ -91,6 +91,7 @@
 			return {
 				keyword:'time',
 				search_info: '',
+				door:true,
 				now:[],
 				time:'',
 				data:[],
@@ -151,8 +152,11 @@
 			async getData() {
 				this.options.IMEI=this.$route.params.IMEI
 				let res = await this.$api.devices({num:1,page:1,IMEI:this.$route.params.IMEI})
-				if(!res.data.code){
+				if(!res.data.code){					
 					this.data = res.data.data.list[0]
+					if(this.data.device_type == 240){
+						this.door = false
+					}
 					this.options.device_id=this.data.id
 					if(this.data.statue == "online"){
 						this.data.statue = "在线"
