@@ -1,0 +1,24 @@
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+
+Vue.use(VueResource)
+
+// HTTP相关
+let API_ROOT = (process.env.NODE_ENV == 'production')
+// 			? 'http://ladder.asynciot.com:9010/'
+// 			: 'http://ladder.asynciot.com:9010/'
+// 			? 'http://lengxia.s1.natapp.cc/'
+// 			: 'http://lengxia.s1.natapp.cc/'
+			? 'http://server.asynciot.com/'
+			: 'http://server.asynciot.com/'
+			
+Vue.http.options.root = API_ROOT
+Vue.http.options.crossOrigin = true;
+Vue.http.options.credentials = true ;
+
+export const root = API_ROOT
+export const AccountApi = Vue.resource('account{/key1}{/key2}{/key3}')
+export const DeviceApi = Vue.resource('device{/key1}{/key2}{/key3}{/key4}')
+export const RootApi = Vue.resource('{key1}{/key2}{/key3}{/key4}')
+export const CommonApi = Vue.resource('common{/key1}{/key2}{/key3}{/key4}')
+export const OtherApi = Vue.resource('other{/key1}{/key2}{/key3}{/key4}')

@@ -1,0 +1,162 @@
+<template lang="jade">
+div.account
+	div.text(align="center")
+	Row(:gutter=50 style="padding-bottom:15%")
+		Col(span=12)
+			img.img1(src="../assets/logo-menu.png" align="center")
+			h3.account-title|宁波申菱 管理系统
+		Col(span=12 style="padding-top:5%")
+			div()
+				Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
+					Form-item(prop="username")
+						Input(type="text",v-model="form.username",placeholder="用户名")
+							Icon(type="ios-person-outline",size="20",slot="prepend")
+					Form-item(prop="password")
+						Input(type="password",v-model="form.password",placeholder="密码",@on-keyup.enter="login('form')")
+							Icon(type="ios-locked-outline",size="18",slot="prepend")
+					Form-item
+						Row(:gutter="20")
+							Col(span=12)
+								Button(type="primary",long,@click="login('form')",:loading="loading")|登录
+							Col(span=12)
+								Button(type="primary",long,@click="goRegister")|注册
+							Col(span=24)
+								Button(type="text" style="color:#00f",@click="reset")|忘记密码？
+</template>
+
+<script>
+import {
+  api,
+	ladderApi,
+	formatDate
+} from '@/utils'
+import router from '../router/index'
+export default {
+  data() {
+    return {
+			ladderApi: ladderApi,
+      loading: false,
+      form: {
+        username: '',
+        password: '',
+			},
+      rules: {
+        username: [{
+            required: true,
+            message: '请填写用户名',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            min: 5,
+            message: '用户名长度不能小于6位',
+            trigger: 'blur'
+          }
+        ],
+        password: [{
+            required: true,
+            message: '请填写密码',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            min: 3,
+            message: '密码长度不能小于6位',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  methods: {
+    async login(name) {
+      this.loading = true;
+      this.$refs[name].validate(async (valid) => {
+        if (valid) {
+					let res = await this.$api.login(this.form)
+          if (!res.data.code) {					
+            this.loading = false;
+						window.localStorage.setItem('username',res.data.account.username)
+						window.localStorage.setItem('id',res.data.account.id)
+						// console.log(res.data.account.username)
+            this.$Message.success({
+              content: '登录成功，正在跳转!',
+              duration: 0.5,
+              onClose: () => {
+				this.$router.push({
+					name: 'index',
+				})
+              }
+            })
+          } else {
+            this.loading = false;
+            this.$Message.error('登录失败!');
+          }
+        } else {
+          this.loading = false;
+          this.$Message.error('请完善登录信息!');
+        }
+      })
+    },
+		goRegister(){
+			this.$router.push({
+				name: 'register'
+			})
+		},
+		reset(){
+			this.$router.push({
+				name: 'reset'
+			})
+		},
+	}
+}
+</script>
+
+<style lang="scss" scoped>
+	.bg{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: url('../assets/page.jpg') center center no-repeat;
+		background-size: 100% auto;
+		filter: blur(5px);
+  }
+	.item{
+		padding-top: 10%;
+	}
+	.text{
+		width: 100%;
+		height: 100%;
+		padding-bottom: 10%;
+		position:relative;
+	}
+	.img1{
+		padding-left: 20%;
+	}
+	.account {
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/page.jpg') center center no-repeat;
+    background-size: 100% auto;
+	.account-title {
+		color: #606266;
+		font-size: 30px;
+		line-height: 100px;
+		height: 100px;
+	}
+	.account-form {
+		display: block;
+		width: 350px;
+		margin-left: -80px;
+	}
+	.register-form {
+		width: 270px;
+		display: block;
+	}
+	}
+</style>
