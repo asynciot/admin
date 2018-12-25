@@ -5,20 +5,27 @@
 		  <Row gutter="1">
 		  <Col span='3'>
 		  <Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
-		  <Option key="1" label="全部" value="all"></Option>
-		  <Option key="2" label="未接单" value="untreated"></Option>
-		  <Option key="3" label="已接单" value="treated"></Option>
+				<Option key="1" label="全部" value="all"></Option>
+				<Option key="2" label="未接单" value="untreated"></Option>
+				<Option key="3" label="已接单" value="treated"></Option>
 		  </Select>
 		  </Col>
+			<Col span='3'>
+			<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
+				<Option key="1" label="全部" value="all"></Option>
+				<Option key="2" label="控制柜" value="ctrl"></Option>
+				<Option key="3" label="控制器" value="door"></Option>
+			</Select>
+			</Col>
 		  <Col span='3'>
 		  <Select class="smr" v-model="show.type" style="width:100%;" placeholder="故障类型" @on-change="search()">
 		    <Option key="1" label="全部故障" value="all"></Option>
 		    <Option key="2" label="输入电压过低" value="1"></Option>
-			<Option key="3" label="输入电压过高" value="2"></Option>
-			<Option key="4" label="开关门受阻" value="16"></Option>
-			<Option key="5" label="飞车保护" value="32"></Option>
-			<Option key="6" label="电机过载" value="64"></Option>
-			<Option key="7" label="输出过流" value="128"></Option>
+				<Option key="3" label="输入电压过高" value="2"></Option>
+				<Option key="4" label="开关门受阻" value="16"></Option>
+				<Option key="5" label="飞车保护" value="32"></Option>
+				<Option key="6" label="电机过载" value="64"></Option>
+				<Option key="7" label="输出过流" value="128"></Option>
 		  </Select>
 		  </Col>
 		  <Col span=4>
@@ -51,6 +58,7 @@
 				show:{
 					state:'treated',
 					type:'all',
+					device_type:'',
 				},
 				options:{
 					search_info: '',
@@ -59,13 +67,23 @@
 					isreg: "True",
 					state:'',
 					type:'',
+					device_type:'',
 				},
 						columns: [ {
 								title: '设备名称',
 								width: 120,
 								key: 'device_name'
-							},
-							{
+							},{
+								title: '设备类型',
+								width: 100,
+								key: 'device_type',
+								render: (h, params) => {
+									var type=''
+									if (params.row.device_type=="ctrl") type="控制柜" 
+									if (params.row.device_type=="door") type="控制器" 
+									return h('div', type)
+								}
+							},{
 							title: '故障类型',
 							width: 200,
 							key: 'type',
@@ -207,6 +225,8 @@
 						else {this.options.state=this.show.state}
 						if (this.show.type=="all") {this.options.type=""}
 						else {this.options.type=this.show.type}
+						if (this.show.device_type=="all") {this.options.device_type=""}
+						else {this.options.device_type=this.show.device_type}
 						this.loading = true
 						let res = await this.$api.fault(this.options)
 						this.loading = false

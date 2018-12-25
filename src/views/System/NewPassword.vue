@@ -36,7 +36,7 @@ export default {
 		const validateOldPassCheck = (rule, value, callback) => {
 			if(this.query.confirm == '') {
 				callback(new Error('请再次输入密码'));
-			} else if(this.query.confirm !== this.form.newpassword) {
+			} else if(this.query.confirm !== this.form.password) {
 				callback(new Error('两次输入密码不一致!'));
 			} else {
 				callback();

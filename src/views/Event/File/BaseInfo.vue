@@ -7,7 +7,7 @@ div.layout-content-main
 					p(slot="title")|基本信息
 					Row(:gutter="30")
 						Col(span="12")|名称:
-							input(v-model="list.device_name" style="border: 0" @input="update()")
+							input(v-model="list.device_name" style="border: 0" @input="")
 						Col(span="12")|IMEI:
 							input(v-model="list.IMEI" style="border: 0")
 					Row(:gutter="30" style="padding-top:10px")
@@ -40,7 +40,7 @@ div.layout-content-main
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|累计运行次数:
 							input(v-model="parameter.runcount" style="border: 0" readonly)
-						Col(span="12")|累计运行时间:
+						Col(span="12")|累计运行时间(s):
 							input(v-model="parameter.uptime" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|最近故障类型:
@@ -81,7 +81,7 @@ div.layout-content-main
 							input( style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|安装地址::
-							input(v-model="list.install_addr" style="border: 0" @input="update()" )
+							input(v-model="list.install_addr" style="border: 0" @input="" )
 						Col(span="12")|安装日期::
 							input(v-model="list.install_date" style="border: 0" readonly)
 			Col(span="7" )
@@ -106,6 +106,9 @@ div.layout-content-main
 					Col(span=11)
 						Button(@click="clear()" type="warning" style="margin-top: 20px;margin-left:20%; width: 100%" v-if="list.commond !='contract'")|强制解除
 						Button(@click="clear()" type="warning" style="margin-top: 20px;margin-left:20%; width: 100%" v-if="list.commond =='contract'" disabled= true)|强制解除
+				Col(span=24)
+					Col(span=24)
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 100%" v-if="list.commond !='contract'")|提交信息
 </template>
 
 <script>
@@ -177,6 +180,18 @@ export default {
 	methods: {
 		async update(){
 			let res =await this.$api.setdevices(this.list)
+			if (res.data.code == 0){
+				this.$Notice.success({
+					title: '成功',
+					desc: '已提交信息'
+				});
+			}
+			else {
+				this.$Notice.error({
+					title: '失败',
+					desc: '更新信息失败'
+				});
+			}
 		},
 		async getData() {
 			var buffer;
