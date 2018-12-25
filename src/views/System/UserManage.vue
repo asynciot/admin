@@ -13,7 +13,7 @@ div.layout-content-main
 					Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")|搜索			
 				Col(span="6")
 					div(style="font-size:20px;color:red")|只有管理员能查看用户信息
-	div(style="min-height: 450px")				
+	div(style="min-height: 450px")
 		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")
 	Col(span=6)|&nbsp;
 	Col(span=18)

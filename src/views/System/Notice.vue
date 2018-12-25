@@ -3,7 +3,7 @@ div.layout-content-main
 	Tabs(value="name1",:animated="false",@on-click="Onchange")
 		TabPane(label="未读",name="Unit")
 		TabPane(label="已读",name="Site")
-		TabPane(label="全部",name="all")		
+		TabPane(label="全部",name="all")
 	div.form
 		Row(:gutter="30" style="padding-bottom:5%")
 			Col(span="24")

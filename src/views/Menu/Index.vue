@@ -19,24 +19,28 @@
 							div(style="display: inline-block; font-size:16px; margin-left: 10px")|台设备
 				Col(span=16)
 					Row(:gutter=20)
-						Col(span=4)
+						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-1",@click="go('alList')")
 									div(class="grid-cont-right")
-										div(class="grid-num")|{{total.ctrl}}
-										div()|控制柜
-						Col(span=4)
-							Card.click(:body-style="{padding: '0px'}")
-								div(class="grid-content grid-con-1",@click="go('alList')")
-									div(class="grid-cont-right")
-										div(class="grid-num")|{{total.door}}
-										div()|控制器
+										div()|设备数量
+										Col(span=12)
+											div(class="grid-num")|{{total.ctrl}}
+											div()|控制柜
+										Col(span=12)
+											div(class="grid-num")|{{total.door}}
+											div()|控制器
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-2",@click="go('map')")
 									div(class="grid-cont-right")
-										div(class="grid-num")|{{total.online}}
 										div()|在线设备
+										Col(span=12)
+											div(class="grid-num")|{{total.ctrlOnline}}
+											div()|控制柜
+										Col(span=12)
+											div(class="grid-num")|{{total.doorOnline}}
+											div()|控制器
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-3",@click="go('inform')")
@@ -50,6 +54,7 @@
 									div(class="grid-cont-right")
 										div(class="grid-num")|{{total.maintain}}
 										div()|维修电梯数量
+										
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-2",@click="go('userManage')",disabled="userList.username!=admin")
@@ -60,8 +65,13 @@
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-3",@click="go('maintain')")
 									div(class="grid-cont-right")
-										div(class="grid-num")|{{total.fault}}
 										div()|故障电梯数量
+										Col(span=12)
+											div(class="grid-num")|{{total.faultDoor}}
+											div()|控制柜
+										Col(span=12)
+											div(class="grid-num")|{{total.faultCtrl}}
+											div()|控制器
 			Row(:gutter=1 style="margin-top: 15px")
 				Col(span=11)
 					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#aaf")
@@ -123,10 +133,13 @@
 					door:0,
 					ctrl:0,
 					maintain:0,
-					fault:0,
+					faultDoor:0,
+					faultctrl:0,
 					message:0,
 					user:0,
 					online:0,
+					doorOnline:0,
+					ctrlOnline:0,
 				},
 				options:{
 					page: 1,
@@ -209,21 +222,26 @@
 					this.total.door=parseInt(res.data.data.doorlongoffline)
 							+parseInt(res.data.data.dooroffline)
 							+parseInt(res.data.data.dooronline)
-					this.total.online=parseInt(res.data.data.ctrlonline)+parseInt(res.data.data.dooronline)
+					this.total.ctrlOnline=parseInt(res.data.data.ctrlonline)
+					this.total.doorOnline=parseInt(res.data.data.dooronline)
 				}
 				res = await this.$api.repair({num:1,page:1})
 				if (0 === res.data.code) {
 					this.total.maintain = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1})
+				res = await this.$api.fault({num:1,page:1,device_type:'door'})
 				if (0 === res.data.code) {
-					this.total.fault = res.data.data.totalNumber
+					this.total.faultDoor = res.data.data.totalNumber
+				}
+				res = await this.$api.fault({num:1,page:1,device_type:'ctrl'})
+				if (0 === res.data.code) {
+					this.total.faultCtrl = res.data.data.totalNumber
 				}
 				res = await this.$api.people({num:1,page:1})
 				if (0 === res.data.code) {
 					this.total.user = res.data.data.totalNumber
 				}
-				res = await this.$api.message({num:1,page:1})
+				res = await this.$api.message({num:1,page:1,done:'false'})
 				if (0 === res.data.code) {
 					this.total.message = res.data.data.totalNumber
 				}
