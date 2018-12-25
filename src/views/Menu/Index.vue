@@ -77,7 +77,7 @@
 					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#aaf")
 						Col(span=6 style="")
 							div(style="font-size:16px")|关注设备
-						Col(span=4 style="")
+						Col(span=6 style="")
 							div(style="font-size:16px")|设备类型
 						Col(span=6 style="")
 							div(style="font-size:16px")|版本号
@@ -87,7 +87,7 @@
 						Card(v-bind:padding='4',v-for='item in list',:key='item.id' align='left', style='border-radius:0;height: 40px; font-size: 16px; cursor: pointer;', @click.native='deviceinfo(item.IMEI)')
 							Col(span=6 style="")
 								div|{{item.device_name}}
-							Col(span=4)
+							Col(span=6)
 								div|{{item.device_type}}
 							Col(span=6)
 								div|{{item.device_firmware.replace(/\r\n/ig,"a")}}
