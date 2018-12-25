@@ -2,6 +2,9 @@
 div.account
 	div.text(align="center")
 	Row(:gutter= 50 style="padding-bottom:15%")
+		Col(span=8)|&nbsp;
+		Col(span=15 style="font-size: 30px; margin-top: 30px")|{{username}}
+		Col(span=3)|&nbsp;
 		Col(span=12 style="padding-top:5%")
 			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 				Form-item(prop="oldPassword")
@@ -14,8 +17,11 @@ div.account
 					Input(type="password",v-model="query.confirm",placeholder="请重复新密码")
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item
-					Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|更改密码
-					Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|返回
+					Col(span=4)|&nbsp;
+					Col(span=10)
+						Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|更改密码
+					Col(span=10)
+						Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|返回
 </template>
 
 <script>
@@ -41,10 +47,10 @@ export default {
 			time: '',
 			ladderApi: ladderApi,
 			loading: false,
+			username:window.localStorage.getItem('username'),
 			form: {
-				mobile: '',
-				newpassword: '',
-				verifyCode:'',
+				password: '',
+				oldPassword: '',
 			},
 			query:{
 				confirm:'',
@@ -82,7 +88,18 @@ export default {
 					message: '验证码至少是4位',
 					trigger: 'blur'
 				}],
-				newpassword: [{
+				password: [{
+					required: true,
+					message: '请填写密码',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 6,
+					message: '密码长度不能小于6位',
+					trigger: 'blur'
+				}],
+				oldPassword: [{
 					required: true,
 					message: '请填写密码',
 					trigger: 'blur'
@@ -105,25 +122,21 @@ export default {
 		// window.localStorage.setItem('munite',0)
 	},
 	methods: {
-		async sentMessage(){
-			let res = await this.$api.sentMessage(this.form.mobile)
-		},
 		create(name) {
 			this.loading = true
 			this.$refs[name].validate(async(valid) => {
 				if(valid) {
 					let res = null
 					if(!this.$route.params.id) {
-						res = await this.$api.retrieve(this.form)
+						res = await this.$api.password(this.form)
 					}
 					this.loading = false
 					if(res.data.code == 0){
 						this.$refs[name].resetFields();
-						window.localStorage.setItem('munite',0);
 						this.$router.back();
 						this.$Notice.success({
 							title: '成功',
-							desc: '已经重置密码！',
+							desc: '已经更改密码！',
 							onClose: () => {
 							}
 						})
@@ -131,7 +144,7 @@ export default {
 						this.loading = false
 						this.$Notice.error({
 							title: '错误',
-							desc: '重置失败，请检查信息'
+							desc: '更改失败，请检查信息'
 						})
 					}
 				}else{
