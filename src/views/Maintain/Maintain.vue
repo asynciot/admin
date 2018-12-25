@@ -3,16 +3,16 @@
 		<div>
 		<Form class="imr" ref="form" label-position="left" :label-width="100">
 		  <Row gutter="1">
-		  <Col span='2'>
+		  <Col span='3'>
 		  <Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
 		  <Option key="1" label="全部" value="all"></Option>
-		  <Option key="2" label="未接单" value="treated"></Option>
-		  <Option key="3" label="已接单" value="untreated"></Option>
+		  <Option key="2" label="未接单" value="untreated"></Option>
+		  <Option key="3" label="已接单" value="treated"></Option>
 		  </Select>
 		  </Col>
-		  <Col span='2'>
+		  <Col span='3'>
 		  <Select class="smr" v-model="show.type" style="width:100%;" placeholder="故障类型" @on-change="search()">
-		    <Option key="1" label="全部" value="all"></Option>
+		    <Option key="1" label="全部故障" value="all"></Option>
 		    <Option key="2" label="输入电压过低" value="1"></Option>
 			<Option key="3" label="输入电压过高" value="2"></Option>
 			<Option key="4" label="开关门受阻" value="16"></Option>
@@ -27,15 +27,16 @@
 		  <Col span='1'>
 		  <Button class="mr-10" type="default" icon="search" @click="search()"></Button>
 		  </Col>
-		
 		  </Row>
 		</Form>
 		</div>
-		<br></br>
-		<div style="min-height: 450px;">
-			<Table border class="mb-10" :columns="columns" :data="data" ></Table>
+		<div style="min-height: 450px; margin-top: 20px;">
+			<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
-		<Page class="pagination" show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  
+		<Col span='6'>&nbsp;</Col>
+		<Col span='18'>
+		<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  
+		</Col>
 	</div>
 </template>
 
@@ -48,8 +49,8 @@
 				menu:[],
 				data:[],
 				show:{
-					state:'',
-					type:'',
+					state:'treated',
+					type:'all',
 				},
 				options:{
 					search_info: '',
@@ -209,15 +210,16 @@
 						this.loading = true
 						let res = await this.$api.fault(this.options)
 						this.loading = false
-			
 						if (res.data.code === 0) {
 							for (var i=0;i<res.data.data.list.length;i++) {
-								ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
+								ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1})
+								if (ech.data.data.list[0].device_name != null)
 								res.data.data.list[i].device_name = ech.data.data.list[0].device_name
 								res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 								res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
 							}
 							this.data = res.data.data.list
+							console.log(this.data)
 							this.options.total = res.data.data.totalNumber				 
 						} else {
 							this.$Notice.error({

@@ -74,6 +74,7 @@ const ReadInform = resolve => require(['@/views/System/ReadInform'], resolve)
 const WriteNotice = resolve => require(['@/views/System/WriteNotice'], resolve)
 const WriteInform = resolve => require(['@/views/System/WriteInform'], resolve)
 const Person = resolve => require(['@/views/System/Person'], resolve)
+const Instructions = resolve => require(['@/views/System/Instructions'], resolve)
 const NewPassword = resolve => require(['@/views/System/NewPassword'], resolve)
 
 Vue.use(Router)
@@ -392,12 +393,17 @@ export default new Router({
 			path: '/system/usermanage',
 			name: 'userManage',
 			meta:{name:'用户管理'},
-			component: UserManage
+			component: UserManage,
 		},{
 			path: '/system/usermanagedetail',
 			name: 'usermanageDetail',
 			meta:{name:'编辑用户'},
-			component: UserManageDetail
+			component: UserManageDetail			
+		},{
+			path: '/system/newpassword',
+			name: 'newpassword',
+			meta:{name:'更改密码'},
+			component: NewPassword
 		},{
 			path: '/system/inform',
 			name: 'inform',
@@ -439,10 +445,10 @@ export default new Router({
 			meta:{name:'个人信息'},
 			component: Person,
 		},{
-			path: '/system/newpassword',
-			name: 'newpassword',
-			meta:{name:'新密码'},
-			component: NewPassword,
+			path: '/system/instructions',
+			name: 'instructions',
+			meta:{name:'说明文档'},
+			component: Instructions,
 		},],
     },
 		{ path: '*', redirect: '/' }

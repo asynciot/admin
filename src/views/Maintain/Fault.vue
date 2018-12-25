@@ -14,7 +14,7 @@ div.layout-content-main
 					router-link.mr-10(:to="{ name: 'maintainContractorNew'}")
 						Button(type="success",icon="plus",)|添加工单
 	Table(:columns="column",:data="list",:stripe="true")
-	<Page style="padding-right: 38%;" class="pagination" show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
+	<Page class="pagination" show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
 </template>
 
 <script>

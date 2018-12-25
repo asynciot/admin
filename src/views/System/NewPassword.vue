@@ -1,66 +1,152 @@
-<template>
-	<div style="margin-top:50px;margin-left:50px">
-		<div style="font-size:30px;margin-left: 250px;margin-bottom: 20px"">修改密码</div>
-		<Form ref="form" :model="form" :rules="rules" :label-width="120">
-		  <Row :gutter="5">
-			<Col span="10" offset="2">
-				<Form-item label="用户名称" prop="nicname">
-					{{$route.nicname}}
-				</Form-item>
-				<Form-item label="原密码" prop="oldpassword">
-					<Input v-model="form.oldpassword" placeholder="请输入名称"></Input>
-				</Form-item>
-				<Form-item label="新密码" prop="password">
-					<Input v-model="form.password" placeholder="请输入新密码"></Input>
-				</Form-item>
-				<Form-item label="确认密码" prop="password2">
-					<Input placeholder="请再次输入新密码"></Input>
-				</Form-item>
-			</Col>
-		  </Row>
-		</Form>
-	</div>
+<template lang="jade">
+div.account
+	div.text(align="center")
+	Row(:gutter= 50 style="padding-bottom:15%")
+		Col(span=12 style="padding-top:5%")
+			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
+				Form-item(prop="oldPassword")
+					Input(type="password",v-model="form.oldPassword",placeholder="请输入新密码")
+						Icon(type="ios-locked-outline",size="18",slot="prepend")
+				Form-item(prop="password")
+					Input(type="password",v-model="form.password",placeholder="请输入新密码")
+						Icon(type="ios-locked-outline",size="18",slot="prepend")
+				Form-item(prop="confirm")
+					Input(type="password",v-model="query.confirm",placeholder="请重复新密码")
+						Icon(type="ios-locked-outline",size="18",slot="prepend")
+				Form-item
+					Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|更改密码
+					Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|返回
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				form:{
-					id:'',
-					nicname:'',
-					sex:'保密',
-					birthday:'',
-					authority:'',
-					unit:'',
-					email:'',
-					mobile:'',
+import {
+	api,
+	ladderApi,
+	formatDate
+} from '@/utils'
+import router from '../../router/index'
+export default {
+	data() {
+		const validateOldPassCheck = (rule, value, callback) => {
+			if(this.query.confirm == '') {
+				callback(new Error('请再次输入密码'));
+			} else if(this.query.confirm !== this.form.newpassword) {
+				callback(new Error('两次输入密码不一致!'));
+			} else {
+				callback();
+			}
+		};
+		return {
+			count: 0,
+			time: '',
+			ladderApi: ladderApi,
+			loading: false,
+			form: {
+				mobile: '',
+				newpassword: '',
+				verifyCode:'',
+			},
+			query:{
+				confirm:'',
+			},
+			rules: {
+				username: [{
+					required: true,
+					message: '请填写',
+					trigger: 'blur'
 				},
-				rules: {
-					oldpassword: [{
-						required: true,
-						type: 'string',
-						message: '请正确填写原密码',
-						trigger: 'blur'
-					}],
-					password: [{
-						required: true,
-						type: 'string',
-						message: '请正确填写新密码',
-						trigger: 'blur'
-					}],
-					password2: [{
-						required: true,
-						type: 'string',
-						message: '两次输入必须相同',
-						trigger: 'blur'
-					}],
+				{
+					type: 'string',
+					min: 6,
+					message: '用户名长度不能小于6位',
+					trigger: 'blur'
+				}],
+				mobile: [{
+					required: true,
+					message: '请填写手机号码',
+					trigger: 'blur'
+				},{
+					message: '请填写正确的手机号',
+					pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+					trigger: 'blur'
 				},
-			};
+				],
+				verifyCode: [{
+					required: true,
+					message: '请填写验证码',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 4,
+					message: '验证码至少是4位',
+					trigger: 'blur'
+				}],
+				newpassword: [{
+					required: true,
+					message: '请填写密码',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 6,
+					message: '密码长度不能小于6位',
+					trigger: 'blur'
+				}],
+				confirm: [{
+					validator: validateOldPassCheck,
+					required: true,
+					trigger: 'blur'
+				}],
+			},
 		}
+	},
+	created(){
+		// window.localStorage.setItem('munite',0)
+	},
+	methods: {
+		async sentMessage(){
+			let res = await this.$api.sentMessage(this.form.mobile)
+		},
+		create(name) {
+			this.loading = true
+			this.$refs[name].validate(async(valid) => {
+				if(valid) {
+					let res = null
+					if(!this.$route.params.id) {
+						res = await this.$api.retrieve(this.form)
+					}
+					this.loading = false
+					if(res.data.code == 0){
+						this.$refs[name].resetFields();
+						window.localStorage.setItem('munite',0);
+						this.$router.back();
+						this.$Notice.success({
+							title: '成功',
+							desc: '已经重置密码！',
+							onClose: () => {
+							}
+						})
+					}else {
+						this.loading = false
+						this.$Notice.error({
+							title: '错误',
+							desc: '重置失败，请检查信息'
+						})
+					}
+				}else{
+					this.loading = false
+					this.$Notice.error({
+						title: '错误',
+						desc: '请检查表单是否完整！'
+					})
+				}
+			})
+		},
 	}
+}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
 </style>
+

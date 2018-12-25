@@ -11,13 +11,13 @@ div.layout-content-main
 						Col(span="12")|IMEI:
 							input(v-model="list.IMEI" style="border: 0")
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|梯种:
-							input( style="border: 0")
+						Col(span="12" v-if="list.device_type==15")|设备类型:控制器
+						Col(span="12" v-if="list.device_type==240")|设备类型:控制柜
 						Col(span="12")|品牌:
-							input( style="border: 0")
-					Row(:gutter="30" style="padding-top:10px")
+							input( style="border: 0" readonly)
+					Row(:gutter="30" style="padding-top:10px" )
 						Col(span="12")|型号:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 				Card(v-if="list.device_type == 15")
 					p(slot="title")|参数信息
 					Row(:gutter="30")
@@ -56,32 +56,32 @@ div.layout-content-main
 						Col(span="12")
 							p()|出厂编号:
 						Col(span="12")|出厂日期:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|生产批次:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 				Card(style="margin-top:10px")
 					p(slot="title")|维保
 					Row(:gutter="30")
 						Col(span="12")|维保类型:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 						Col(span="12")|维保周期(天):
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 				Card(style="margin-top:10px")
 					p(slot="title")|系统
 					Row(:gutter="30")
 						Col(span="12")|入网状态:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 						Col(span="12")|使用单位:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|楼号:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 						Col(span="12")|梯号:
-							input( style="border: 0")
+							input( style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|安装地址::
-							input(v-model="list.install_addr" style="border: 0" @input="update()")
+							input(v-model="list.install_addr" style="border: 0" @input="update()" )
 						Col(span="12")|安装日期::
 							input(v-model="list.install_date" style="border: 0" readonly)
 			Col(span="7" )

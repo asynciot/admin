@@ -86,12 +86,12 @@
 			          key: 'device_name'
 			        },
 			        {
-			          title: 'IMEI',
-			          width:150,
+			          title: 'IMEI(设备识别码)',
+			          width:140,
 			          key: 'IMEI',
 			        },
 			        {
-					 title: 'IMSI',
+					 title: 'IMSI(用户识别码)',
 					 key: 'device_IMSI',
 					 width: 140,
 					},

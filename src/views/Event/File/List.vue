@@ -45,11 +45,14 @@
 			</Row>
 		</Form>
      	<br> </br>
-					<div style="min-height: 550px;">
-					<Table border class="mb-10" :columns="columns" :data="data" ></Table>
+					<div style="min-height: 450px;">
+					<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
 					</div>
-     	<Page style="padding-right: 38%;"  class="pagination" show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
-     </div>
+     	<Col span=6>&nbsp;</Col>
+			<Col span=18>
+			<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
+			</Col>
+		 </div>
      </template>
      
      <script>
@@ -113,26 +116,37 @@
 				}
 			 },
 			 {
-				title: 'IMEI',
+				title: 'IMEI(设备识别码)',
 				key: 'IMEI',
 				width: 140,
 			 },
 			 {
-			 title: 'IMSI',
+			 title: 'IMSI(用户识别码)',
 			 key: 'device_IMSI',
 			 width: 140,
 			 },
-             {
-               title: 'IP定位',
-               width: 120,
+			 {
+			 title: '设备类型',
+			 key: 'device_type',
+			 width: 90,
+			 render: (h, params) => {
+				 var type="-"
+				 if (params.row.device_type == '240') type='控制柜'
+				 if (params.row.device_type == '15') type='控制器'
+			 return h('div',type)
+			 }
+			 },
+			 {
+				 title: 'IP定位',
+				 width: 120,
 			   render: (h, params) => {
 			   return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
 			   }
-             },
-             {
-               title: '基站定位',
-               // width: 260,
-               key: 'cell_address',
+				 },
+				 {
+					 title: '基站定位',
+					 // width: 260,
+					 key: 'cell_address',
 			   render: (h,params) => {
 			   	var addr= params.row.cell_address
 			   	if (params.row.cell_address !=null) {
@@ -447,7 +461,7 @@
          }
      .pagination {
      	position: absolute;
-     	margin-left: 30%;
+     	margin-left: 20%;
 			margin-top: 3%;
      }
      </style>

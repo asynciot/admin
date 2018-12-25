@@ -231,7 +231,7 @@
 			async closed(){//数据发送
 				let res = await this.$api.monitor({
 					IMEI:this.query.IMEI,
-					op:'closed',
+					op:'close',
 				});
 			},
 			//电梯数据展示

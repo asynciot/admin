@@ -27,15 +27,18 @@
 								Col(span="12")
 									Form-item(label="ip定位:")
 										p()|{{data.ipaddr}}
-								Col(span="20")
+								Col(span="24")
 									Form-item(label="基站定位:")
 										p()|{{data.cell_address}}
+								Col(span="24")
+									Form-item(label="安装地址:")
+										p()|{{data.install_addr}}
 					Col(span=12)
 						card.card(style='height: 220px')
 							img(src='../../assets/wave.gif', width='100%', height='200')
 					Col(span=12)
 						card.card(style='height: 220px')
-							p.clearfix(slot='title' style="height: 20px", align='center')|实时监控
+							p.clearfix(slot='title' style="height: 20px", align='center')|状态监控
 							Form.status(label-position="left",:label-width="70")
 								Col(span="23")
 									Form-item(label="监控时长(s):")
@@ -56,7 +59,8 @@
 								Col(span="6" align='center' style="margin-top: 10px;margin-left: 10px")
 									Button(type="success" @click="monitor('2')" v-if="data.device_type == 240")|内存监控
 				Col(span=12)
-					card.card(align='center' style='height: 500px',v-if='this.door')
+					card.card(align='center' style='height: 500px',v-if='data.device_type == 240')
+					card.card(align='center' style='height: 500px',v-if='data.device_type == 15')
 						div( style="height: 35px;font-size:20px")
 							Col(span=4)|事件记录
 							Col(span=4)
@@ -154,9 +158,6 @@
 				let res = await this.$api.devices({num:1,page:1,IMEI:this.$route.params.IMEI})
 				if(!res.data.code){					
 					this.data = res.data.data.list[0]
-					if(this.data.device_type == 240){
-						this.door = false
-					}
 					this.options.device_id=this.data.id
 					if(this.data.statue == "online"){
 						this.data.statue = "在线"

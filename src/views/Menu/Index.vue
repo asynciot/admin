@@ -4,7 +4,7 @@
 			Row(:gutter=30)
 				Col(span=8)
 					Card.click( style="height:220px;")
-						div(@click="go('person')")
+						div(@click="person()")
 							div(class="user-info")
 								img(src="../../assets/admin.jpg",width="20%",style="border-radius:50%")
 								div(class="user-info-cont")
@@ -170,7 +170,7 @@
 			},
 			async messageReachBottom () {
 				if ( this.inform.length<this.total.message){
-					let eve= await this.$api.follow({num:10,page:(Math.ceil(this.inform.length/10)+1),done:true})
+					let eve= await this.$api.message({num:10,page:(Math.ceil(this.inform.length/10)+1),done:true})
 					for (var i=0;i<10;i++){
 						this.inform.push(eve.data.data.list[i])
 					}
@@ -280,6 +280,14 @@
 			},
 			formatDate(val, format) {
 				return formatDate(val, format)
+			},
+			person(){
+				if(this.username != 'admin'){
+					alert("1")
+					this.$router.push({
+						name: 'person'
+					})
+				}
 			},
 		}
 	}	

@@ -2,7 +2,7 @@
 	div.layout-content-main
 		div.form
 			Row(:gutter=30)
-				Col(span=4)| &nbsp
+				Col(span=4)| &nbsp;
 				Col(span=16)
 					Card()
 						Form(ref="form",:model="form",:rules="rules",:label-width="120")
@@ -19,7 +19,7 @@
 										Input(v-model="form.email",placeholder="请填写邮箱地址")
 									Form-item(label="备注",prop="remark")
 										textarea(v-model="form.introduction" style=" width:400px;height:70px")
-						Button(style="margin-left:150px" type="primary" icon="",@click="getData()")|重置
+						Button(style="margin-left:200px" type="primary" icon="",@click="getData()")|重置
 						Button(style="margin-left:30px" type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
 						Button(style="margin-left:30px" icon="close",@click="$router.back(-1)")|取消 
 </template>

@@ -22,11 +22,13 @@
 		  </Row>
 		</Form>
 		</div>
-		<br></br>
-		<div style="min-height: 450px;">
-			<Table border class="mb-10" :columns="columns" :data="data" ></Table>
+		<div style="min-height: 450px; margin-top: 20px;">
+			<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
-		<Page class="pagination" show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  
+		<Col span='6'>&nbsp;</Col>
+		<Col span='18'>
+		<Page  show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  
+		</Col>
 	</div>
 </template>
 

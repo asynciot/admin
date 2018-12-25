@@ -41,7 +41,9 @@ div.layout-content-main
 	div.ssa
 		Table.deviceList(border,:columns="columns",:data="list",size="small")
 	div.form
-		Page.pagination(style="padding-right: 47%;" ,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
+		Col(span='6')
+		Col(span='18')
+			Page(:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>	
@@ -96,42 +98,56 @@ div.layout-content-main
 					{
 						title: '设备名称',
 						width: 120,
-						key: 'IMEI',
+						key: 'device_name',
 						align:'left',
 						render: (h, params) =>
-							h('Button', {
-								props: {
-									type: 'text',
-									size: "small",
-								},
-								style: {
-									paddingRight: '4px',
-									paddingLeft: '4px',
-								},
-								on: {
-									click: () => {
-										this.$router.push({
-											name: 'deviceInfo',
-											params: {
-												id: params.row.id,
-												IMEI: params.row.IMEI,
-												type: params.row.device_type,
-											}
-										})
+							h('div',[
+								h('Button', {
+									props: {
+										type: 'text',
+										size: "small",
+									},
+									style: {
+										paddingRight: '4px',
+										paddingLeft: '4px',
+									},
+									on: {
+										click: () => {
+											this.$router.push({
+												name: 'deviceInfo',
+												params: {
+													id: params.row.id,
+													IMEI: params.row.IMEI,
+													type: params.row.device_type,
+												}
+											})
+										}
 									}
-								}
-							}, params.row.device_name)
+								}, params.row.device_name)],
+								[
+								h('span',{
+									props: {
+										class: 'fa fa-tag fa-2x',
+									},
+									style: {
+										color: 'red',
+									},
+								})])
 					},
 					{
-					  title: 'IMEI',
-					  key: 'IMEI',
-					  width: 150,
+					title: 'IMEI(设备识别码)',
+					key: 'IMEI',
+					width: 140,
+					},
+					{
+					title: 'IMSI(用户识别码)',
+					key: 'device_IMSI',
+					width: 140,
 					},
 					{
 						title: '设备类型',
 						width: 100,
 						key: 'device_type',
-						align:'center',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
 						}
@@ -140,7 +156,6 @@ div.layout-content-main
 					  title: '状态',
 					  key: 'state',
 						width: 100,
-					  align: 'center',
 					  render: (h, params) => {
 							return h('p',model[params.row.state]||'')
 					  }

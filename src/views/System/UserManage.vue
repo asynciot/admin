@@ -11,12 +11,13 @@ div.layout-content-main
 						Input(v-model="options.mobile",placeholder="请输入手机号码")
 				Col(span="6")
 					Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")|搜索			
-					Button(type="success",icon="plus",:loading="loading" @click='adduser')|添加用户
 				Col(span="6")
 					div(style="font-size:20px;color:red")|只有管理员能查看用户信息
 	div(style="min-height: 450px")				
-		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe)
-	Page(style="padding-right: 38%;" class="pagination" show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange()" show-total )
+		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")
+	Col(span=6)|&nbsp;
+	Col(span=18)
+		Page(show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange" show-total )
 </template>
 
 <script>
@@ -30,7 +31,7 @@ export default {
 				name:'',
 				id:'',
 				page: 1,
-				num: 15,
+				num: 10,
 				total: 0
 			},
 			column: [

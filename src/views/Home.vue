@@ -37,6 +37,7 @@
 						</Button>
 						<Dropdown-menu slot="list">
 							<Dropdown-item :name="4">个人信息</Dropdown-item>
+							<Dropdown-item :name="6">修改密码</Dropdown-item>
 							<Dropdown-item :name="5">微信关注</Dropdown-item>
 							<Dropdown-item :name="3">退出</Dropdown-item>
 						</Dropdown-menu>
@@ -207,9 +208,9 @@
 						},{
 							name: 'inform',
 							label: '通知记录',
-// 						},{
-// 							name: 'notice',
-// 							label: '短信记录',
+						},{
+							name: 'instructions',
+							label: '说明文档',
 						}]
 					},
 				]
@@ -258,6 +259,11 @@
 						let resp = await this.$api.user({})
 						this.$router.push({
 							name: 'person'
+						})
+						break;
+					case 6:
+						this.$router.push({
+							name: 'newpassword'
 						})
 						break;
 					case 5:					

@@ -7,11 +7,13 @@ div.layout-content-main
 				Option(key="2" label="已读" value="true")
 				Option(key="3" label="未读" value="false")
 	div.form(style="margin-top:20px")
-		Row(:gutter="30" style="padding-bottom:5%")
+		Row(:gutter="30")
 			Col(span="24")
 				div(style="min-height: 450px;")
-					Table(:stripe="true",:columns="column",:data="list",stripe)
-				Page(style="padding-right: 38%;" class="pagination" show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange()" show-total )
+					Table(:stripe="true",:columns="column",:data="list",stripe size="small")
+				Col(span=6)|&nbsp;
+				Col(span=18)
+				Page(show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange" show-total )
 </template>
 
 <script>

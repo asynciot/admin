@@ -21,7 +21,9 @@ div.layout-content-main
 	div(style="min-height: 450px;")
 		Table(@on-selection-change="selection",border,:columns="columns",:data="data",size="small")
 	div
-	Page.pagination(style="padding-right: 47%;",:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
+	Col(span='6')|&nbsp;
+	Col(span='18')
+		Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>
@@ -63,7 +65,7 @@ export default {
           key: 'device_name',
 					width: 110,
         },{
-          title: 'IMEI',
+          title: 'IMEI(设备识别码)',
           key: 'IMEI',
 					width: 140,
 					minWidth:140,
@@ -175,10 +177,19 @@ export default {
 					}
 			},
 		handleUpload (file) {
+			var type = file.name.split('.')
+			if (type[1] == 'bin'){
 			this.file = file;
 			this.filename = this.file.name;
 			this.upsuccess = false;
 			return false;
+			}
+			else{
+				this.$Notice.warning({
+					title: '警告',
+					desc: '只能上传bin类型的文件'
+				})
+			}
 		},
 		async confirm(){
 			var flag=0;
