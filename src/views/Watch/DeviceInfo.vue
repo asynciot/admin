@@ -42,12 +42,10 @@
 							Form.status(label-position="left",:label-width="70")
 								Col(span="23")
 									Form-item(label="监控时长(s):")
-										Input(v-model='realtime.duration')
-								Col(span="16" style="")
+										Input(v-model='realtime.duration' maxlength="4")
+								Col(span="23" style="")
 									Form-item(label="采样周期(ms):")
-										Input(v-model='realtime.interval')
-								Col(span="6" align='center' style="margin-top: 10px;margin-left: 10px")
-									Button(type="success" @click="monitor('1')")|状态监控
+										Input(v-model='realtime.interval' maxlength="6")
 								Col(span="16" style="margin-top: 10px")
 									Form-item(label="周期数:")
 										Select(v-model='realtime.threshold')
@@ -57,9 +55,56 @@
 											Option(key="4" label="50" value='50')
 											Option(key="5" label="1000" value='1000')
 								Col(span="6" align='center' style="margin-top: 10px;margin-left: 10px")
-									Button(type="success" @click="monitor('2')" v-if="data.device_type == 240")|内存监控
+									Button(type="success" @click="monitor('1')" style="width:100%")|状态监控
 				Col(span=12)
-					card.card(align='center' style='height: 500px',v-if='data.device_type == 240')
+					card.card(align='left' style='height: 500px',v-if='data.device_type == 240')
+						Col(span="24" style="height: 35px;font-size:20px")|内存调试
+						Row(style="margin-top:75px")
+							Col(span=5 style="height: 30px;font-size:16px")|段地址:
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[0]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[1]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[2]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[3]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[4]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[5]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[6]')
+							Col(span=2)
+								Input(style="width:70%" maxlength="1" v-model='address[7]')
+						Row(style="margin-top:75px")
+							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
+							Col(span=6)
+								Input(style="width:80%" maxlength="8" v-model='segment')
+							Col(span=5 style="height: 30px;font-size:16px")|监控时长(s):
+							Col(span=6)
+								Input(style="width:75%" maxlength="4" v-model='threshold')
+						Row(style="margin-top:75px")
+							Col(span=5 style="height: 30px;font-size:16px")|结果:
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[0]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[1]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[2]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[3]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[4]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[5]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[6]' readonly)
+							Col(span=2)
+								Input(style="width:70%" maxlength="2" v-model='res[7]' readonly)
+						Row(style="margin-top:75px")		
+							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
+								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
 					card.card(align='center' style='height: 500px',v-if='data.device_type == 15')
 						div( style="height: 35px;font-size:20px")
 							Col(span=4)|事件记录
@@ -93,6 +138,13 @@
 	export default {
 		data() {
 			return {
+				loading:'',
+				websock:'',
+				address:['0','0','0','0','0','0','0','0'],
+				res:['00','00','00','00','00','00','00','00'],
+				segment:'',
+				ctn:false,
+				threshold:30,
 				keyword:'time',
 				search_info: '',
 				door:true,
@@ -273,16 +325,7 @@
 						})
 					}
 					if ((this.data.device_type=='240')&&(val=='2')){
-						this.$router.push({
-							name: 'memory',
-							params: {
-								duration: this.realtime.duration,
-								interval: this.realtime.interval,
-								threshold: this.realtime.threshold,
-								IMEI: this.data.IMEI,
-								id: this.data.device_id,
-							}
-						})
+						this.initWebsocket()
 					}
 				}	
 				}
@@ -308,6 +351,54 @@
 			},
 			formatDate(val, format) {
 				return formatDate(val, format)
+			},
+			async initWebsocket(){ //初始化weosocket			
+				let res = await this.$api.monitor({
+					device_type: 240,
+					type: 1,
+					address: (this.address[0]+','+this.address[1]+','+this.address[2]+','+this.address[3]+
+						  ','+this.address[4]+','+this.address[5]+','+this.address[6]+','+this.address[7]),
+					segment: this.segment,
+					IMEI: this.data.IMEI,
+					duration: this.threshold,
+					threshold: this.threshold,
+					interval: 1000,
+					op:'open',
+				});
+				if(res.data.code != 0){
+					alert("该电梯已被其他人启动实时监控")
+				}
+				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.data.id
+				this.websock = new WebSocket(wsurl);
+				this.websock.onopen = this.websocketonopen;
+				this.websock.onerror = this.websocketonerror;
+				this.websock.onmessage = this.websocketonmessage;
+			}, 
+			websocketonopen() {
+				console.log("WebSocket连接成功");
+				this.loading='WebSocket连接成功'
+			},
+			websocketonerror(e) {//错误
+				console.log("WebSocket连接发生错误");
+				this.loading='WebSocket连接失败'
+			},
+			websocketonmessage(e){//数据接收
+			this.loading='开始获取数据'
+				if(e.data=="closed"){
+					this.loading="此次实时数据已结束"
+				}else{
+					var redata = JSON.parse(e.data)
+					buffer = base64url.toBuffer(redata.data);
+					console.log(buffer)
+					for (var i=0;i<8;i++) {this.res[i]=buffer[i].toString(16)}
+					
+				}
+			},
+			async closed(){//数据发送
+				let res = await this.$api.monitor({
+					IMEI:this.query.IMEI,
+					op:'close',
+				});
 			},
 	 	}
 	}

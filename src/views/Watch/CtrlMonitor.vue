@@ -114,7 +114,7 @@
 					device_type: 240,
 					type: 0,
 					address: '1,1,1,1,1,1,1,1',
-					segment: 0,
+					segment: '1687464564',
 					IMEI: this.$route.params.IMEI,
 					duration: this.$route.params.duration,
 					threshold: this.$route.params.threshold,
@@ -188,11 +188,9 @@
 					for (var i=0;(i*3+3)<=buffer.length;i++){
 						this.floors.push(String.fromCharCode(buffer[i*3])+String.fromCharCode(buffer[i*3+1])+String.fromCharCode(buffer[i*3+2]))
 					}
-					console.log(buffer)
 				}
 			},
-			async initWebsocket(){ //初始化weosocket
-			
+			async initWebsocket(){ //初始化weosocket			
 				let res = await this.$api.monitor(this.query);
 				if(res.data.code != 0){
 					alert("该电梯已被其他人启动实时监控")
@@ -215,7 +213,7 @@
 			websocketonmessage(e){//数据接收
 			this.loading='开始获取数据'
 				if(e.data=="closed"){
-					clearInterval(inte)
+					// clearInterval(inte)
 					this.loading="此次实时数据已结束"
 				}else{
 					var redata = JSON.parse(e.data)

@@ -301,7 +301,6 @@
 			},
 			person(){
 				if(this.username != 'admin'){
-					alert("1")
 					this.$router.push({
 						name: 'person'
 					})

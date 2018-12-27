@@ -49,9 +49,9 @@ div.layout-content-main()
 							div(style="margin-top:-20px")
 								div.ss()
 									i.pd(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(device.tagcolor)")
-							Col(span="20")
+							Col(span="24" style="margin-top:5px")
 								p.tt()|{{device.device_name}}
-								Row(:gutter="10")
+								Row(:gutter="10" style="margin-top:5px")
 									Col(span="12")
 										p.tt1()|{{device.device_type}}
 									Col(span="12")

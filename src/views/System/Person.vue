@@ -4,24 +4,29 @@
 			Row(:gutter=30)
 				Col(span=4)| &nbsp;
 				Col(span=16)
-					Card()
-						Form(ref="form",:model="form",:rules="rules",:label-width="120")
-							Row(:gutter="5")
-								Col(span="10",offset="2")
-									Form-item(label="名称",prop="name")
-										Input(v-model="form.nickname",placeholder="请输入名称")
-									Form-item(label="权限")|{{role}}						
-									//Form-item(label="所属单位",prop="unit") 
-									//	Input(v-model="form.unit",placeholder="所属单位")
-									Form-item(label="联系电话",prop="mobile") 
-										Input(v-model="form.mobile",placeholder="手机号码")
-									Form-item(label="邮箱",prop="email") 
-										Input(v-model="form.email",placeholder="请填写邮箱地址")
-									Form-item(label="备注",prop="remark")
-										textarea(v-model="form.introduction" style=" width:400px;height:70px")
-						Button(style="margin-left:200px" type="primary" icon="",@click="getData()")|重置
-						Button(style="margin-left:30px" type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
-						Button(style="margin-left:30px" icon="close",@click="$router.back(-1)")|取消 
+					Card(style="height:500px")
+						Col(span=15)
+							Form(ref="form",:model="form",:rules="rules",:label-width="120")
+								Row(:gutter="5")
+									Col(span="20",offset="2")
+										Form-item(label="名称",prop="name")
+											Input(v-model="form.nickname",placeholder="请输入名称")
+										Form-item(label="权限")|{{role}}						
+										//Form-item(label="所属单位",prop="unit") 
+										//	Input(v-model="form.unit",placeholder="所属单位")
+										Form-item(label="联系电话",prop="mobile") 
+											Input(v-model="form.mobile",placeholder="手机号码")
+										Form-item(label="邮箱",prop="email") 
+											Input(v-model="form.email",placeholder="请填写邮箱地址")
+										Form-item(label="备注",prop="remark")
+											textarea(v-model="form.introduction" style=" width:100%;height:70px")
+						Col(span=9)
+							div(style="height:250px; width:250px")
+								img(src='../../assets/admin.jpg' width='100%', height='100%')
+						Col(span=24)
+							Button(style="margin-left:200px" type="primary" icon="",@click="getData()")|重置
+							Button(style="margin-left:30px" type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
+							Button(style="margin-left:30px" icon="close",@click="$router.back(-1)")|取消 
 </template>
 
 <script>

@@ -9,7 +9,7 @@ div.account
 			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 				Form-item(prop="mobile")
 					Input(type="text",v-model="form.mobile",placeholder="您注册用的手机")
-						icon(name="ios-call-outline",width="14",slot="prepend")
+						icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="verifyCode")
 					Row(:gutter=30)
 						Col(span=12)
