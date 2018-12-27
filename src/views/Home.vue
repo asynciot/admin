@@ -19,7 +19,7 @@
 								</Badge>
 								<i v-else>{{isCollapsed?'':item.label}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :name="sub.name">
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :name="sub.name" v-if="(sub.label!='用户管理')||(username=='admin')">
 								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{sub.label}}</Badge>
 							</Menu-item>
 						</Submenu>
@@ -85,6 +85,7 @@
 				isCollapsed: false,
 				modal: false,
 				modalType: 0,
+				username:window.localStorage.getItem('username'),
 				info: {
 					nicname: '',
 					phone: ''
