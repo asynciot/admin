@@ -114,7 +114,7 @@
 					device_type: 240,
 					type: 0,
 					address: '1,1,1,1,1,1,1,1',
-					segment: '1687464564',
+					segment: '0',
 					IMEI: this.$route.params.IMEI,
 					duration: this.$route.params.duration,
 					threshold: this.$route.params.threshold,
@@ -220,9 +220,9 @@
 					this.interval = redata.interval
 					this.end = this.query.duration/this.query.interval
 					this.getData(redata)
-					setTimeout(() => {
+					// setTimeout(() => {
 						this.drawLine();
-					},1000)
+					// },1000)
 					console.log(redata)
 				}
 			},
@@ -238,32 +238,32 @@
 				buffer = base64url.toBuffer(val.data);	//8位转流
 				console.log(buffer)
 				var _this = this
-				this.count= 33 
+				// this.count= 33 
 				if (_this.t_start == '') _this.t_start = val.time
 				_this.t_end = _this.t_start+this.$route.params.duration*1000
-				var inte = setInterval(function () {
-					if((_this.count+33) <= buffer.length){
-						_this.show.upCall   = buffer[_this.count+0]&0x01
-						_this.show.downCall = (buffer[_this.count+0]&0x02)>>1
-						_this.show.run      = (buffer[_this.count+0]&0x04)>>2					//获取运行信号
-						_this.show.lock     = (buffer[_this.count+0]&0x08)>>3					//获取门锁信号
-						_this.show.openBtn  = (buffer[_this.count+0]&0x40)>>6					//获取开门按钮信号
-						_this.show.closeBtn = (buffer[_this.count+0]&0x80)>>7					//获取关门按钮信号
-						_this.show.close    = (buffer[_this.count+0]&0x10)>>5					//获取关门信号
-						_this.show.model    = buffer[_this.count+1]&0xff						//获取电梯模式
-						_this.show.status   = buffer[_this.count+2]&0xff						//获取电梯状态				
-						_this.show.floor    = buffer[_this.count+27]&0xff
+// 				var inte = setInterval(function () {
+// 					if((_this.count+33) <= buffer.length){
+						_this.show.upCall   = buffer[0]&0x01
+						_this.show.downCall = (buffer[0]&0x02)>>1
+						_this.show.run      = (buffer[0]&0x04)>>2					//获取运行信号
+						_this.show.lock     = (buffer[0]&0x08)>>3					//获取门锁信号
+						_this.show.openBtn  = (buffer[0]&0x40)>>6					//获取开门按钮信号
+						_this.show.closeBtn = (buffer[0]&0x80)>>7					//获取关门按钮信号
+						_this.show.close    = (buffer[0]&0x10)>>5					//获取关门信号
+						_this.show.model    = buffer[1]&0xff						//获取电梯模式
+						_this.show.status   = buffer[2]&0xff						//获取电梯状态				
+						_this.show.floor    = buffer[27]&0xff
 						
 // 						if(_this.show.floor>=_this.floors.length){
 // 							_this.show.floor = _this.floors.length-1
 // 						}
 						_this.getX()
-						_this.count+=33
-					}
-				}, _this.query.interval);
-				if((_this.count+33) > buffer.length){
-					clearInterval(inte)
-				}
+						// _this.count+=33
+// 					}
+// 				}, _this.query.interval);
+// 				if((_this.count+33) > buffer.length){
+// 					clearInterval(inte)
+// 				}
 			},
 			drawLine(){
 				let run = this.$echarts.init(document.getElementById('run'))

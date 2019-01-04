@@ -133,6 +133,7 @@ export default {
 				this.$emit('on-custom-comp');
 				if (0 === res.data.code) {
 					this.$Message.info('操作成功');
+					this.getList()
 				}else {
 					this.$Message.info('操作失败');
 				}

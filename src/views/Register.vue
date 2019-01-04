@@ -8,7 +8,7 @@ div.account
 		Col(span=12 style="padding-top:5%")
 			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 				Form-item(prop="mobile")
-					Input(type="text",v-model="form.mobile",placeholder="手机号码")
+					Input(type="text",v-model="form.mobile",placeholder="手机号码" maxlength=11)
 						icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="username")
 					Input(type="text",v-model="form.username",placeholder="用户名称")

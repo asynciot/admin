@@ -128,7 +128,7 @@ div.layout-content-main()
 					tagcolor: '',
 				},
 				show:{
-					device_type: '',
+					device_type: 'all',
 					state:'online',
 				},
 				option: {
@@ -302,6 +302,7 @@ div.layout-content-main()
 				}
 			},
 			async addMark() {
+				console.log(this.map)
 				this.map.clearOverlays();
 				this.markerClusterer.removeMarkers(this.markers)
 				this.markers = []

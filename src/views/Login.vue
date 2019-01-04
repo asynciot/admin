@@ -21,7 +21,7 @@ div.account
 							Col(span=12)
 								Button(type="primary",long,@click="goRegister")|注册
 							Col(span=24)
-								Button(type="text" style="color:#00f",@click="reset")|忘记密码？
+								Button(type="text" style="",@click="reset")|忘记密码？
 </template>
 
 <script>

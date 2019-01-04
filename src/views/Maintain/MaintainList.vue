@@ -41,14 +41,14 @@
 				menu:[],
 				data:[],
 				show:{
-					state:'',
+					state:'untreated',
 				},
 				options:{
 					search_info: '',
 					page: 1,
 					num: 10,
 					isreg: "True",
-					state:'',
+					state:'untreated',
 					type:'',
 				},
 				columns: [ {
@@ -78,31 +78,36 @@
 					width: 140,
 				},
 				{
-				title: '基站定位',
-				// width: 260,
-				key: 'cell_address',
-				render: (h,params) => {
-				var addr= params.row.cell_address
-				if (params.row.cell_address !=null) {
-				if(params.row.cell_address.length>=38){
-					addr=item.cell_address.substring(0,38)+"…"
-				}
-				}
-				return  h('Poptip',{
-						props: {
-							trigger:"hover",										
-							placement:"top-start",
-							content:params.row.cell_address
-						},
-					},addr)
-				}
+					title: '安装地址',
+					key: 'install_addr',
+
 				},
+// 				{
+// 				title: '基站定位',
+// 				// width: 260,
+// 				key: 'cell_address',
+// 				render: (h,params) => {
+// 				var addr= params.row.cell_address
+// 				if (params.row.cell_address !=null) {
+// 				if(params.row.cell_address.length>=38){
+// 					addr=item.cell_address.substring(0,38)+"…"
+// 				}
+// 				}
+// 				return  h('Poptip',{
+// 						props: {
+// 							trigger:"hover",										
+// 							placement:"top-start",
+// 							content:params.row.cell_address
+// 						},
+// 					},addr)
+// 				}
+// 				},
 				{
 					title: '接单时间',
 					key: 'create_time',
 					width:150,
 					render: (h, params) => {
-						return h('p',this.$format(params.row.create_time, 'YYYY-MM-DD HH:mm:ss'))
+						return h('p',this.$format(parseInt(params.row.create_time), 'YYYY-MM-DD HH:mm:ss'))
 					}
 				},
 				{
@@ -110,60 +115,47 @@
 					key: 'finish_time',
 					width:150,
 					render: (h, params) => {
-						return h('p',this.$format(params.row.finish_time, 'YYYY-MM-DD HH:mm:ss'))
+						return h('p',this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss'))
 					}
 				},
 				{
 					title: '操作',
 					key: 'companyName',
-					width: 80,
+					width: 100,
 					align: 'center',
 					render: (h, params) => {
 						var state
 						if (params.row.state == "treated") {state = '已修复'}
 						if (params.row.state == "untreated") {state = '完成'}
 						return h('div', [
-// 							h('Button', {
-// 								props: {
-// 									type: 'primary',
-// 									size: 'small'
-// 								},
-// 								style: {
-// 									marginRight: '5px'
-// 								},
-// 								on: {
-// 									click: () => {
-// 										this.$router.push({
-// 											name: 'upkeepInfo',
-// 											params: {
-// 												id: params.row.id
-// 											}
-// 										})
-// 									}
-// 								}
-// 							}, '查看'),
 							h('Button', {
 								props: {
 									type: 'success',
 									size: 'small',
-									disabled: (params.row.state == "treated"),
+									// disabled: (params.row.state == "treated"),
 								},			
 								on: {
 									click: () => {
-										this.$Modal.confirm({
-											title: '是否完成？',
-											content: '<p>请确保设备功能恢复正常</p>',
-											onOk: () => {
-												params.row.state="treated"
-												state='已修复'
-												this.finish(params.row)											
-											},
-											onCancel: () => {
-											}
-										})	
+											this.$router.push({
+												name: 'finish',
+												params: {
+													id: params.row.id										
+												}
+											})
+// 										this.$Modal.confirm({
+// 											title: '是否完成？',
+// 											content: '<p>请确保设备功能恢复正常</p>',
+// 											onOk: () => {
+// 												params.row.state="treated"
+// 												state='已修复'
+// 												this.finish(params.row)											
+// 											},
+// 											onCancel: () => {
+// 											}
+// 										})
 									}
 								}
-							}, state)
+							}, '查看/确认')
 						]);
 					}
 				}
@@ -201,7 +193,7 @@
 						}
 				},
 				async finish(val) {
-					let res = await this.$api.finish({id:val.fault_id})
+					let res = await this.$api.finish({id:val.id,result:'finish'})
 					if (res.data.code == 0){
 						this.$Notice.success({
 							title: '成功',
@@ -221,17 +213,18 @@
 					this.loading = true
 					if (this.show.state=="all") {this.options.state=""}
 					else {this.options.state=this.show.state}
-					let res = await this.$api.repair(this.options)
+					let res = await this.$api.getRepair(this.options)
 					var ech
 						this.loading = false
 						if (res.data.code === 0) {
 							for (var i=0;i<res.data.data.list.length;i++) {
 								ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
 								res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+								res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
 								res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 								res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
 							}
-							this.data = res.data.data.list	
+							this.data = res.data.data.list
 							this.options.total = res.data.data.totalNumber
 						} else {
 							this.$Notice.error({
@@ -266,6 +259,43 @@
 						}
 						}
 						this.search()
+					},
+					handleUpload (file) {
+						var type = file.name.split('.')
+						if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+						this.file = file;
+						this.filename = this.file.name;
+						this.upsuccess = true;
+						// document.getElementById('image').src=this.file;
+						this.confirm()
+						return false;
+						}
+						else{
+							this.$Notice.warning({
+								title: '警告',
+								desc: '只能上传图片类型的文件'
+							})
+						}
+					},
+					async confirm(){
+						var formData = new FormData()
+						var formData = new window.FormData()
+						formData.append('file',this.file)
+						let res = await this.$api.portrait(formData)
+						if (res.data.code == 0){
+						this.upsuccess=false
+						this.$Notice.success({
+							title: '成功',
+							desc: ('成功上传'+this.filename)
+						})
+						this.filename='已上传'+this.filename
+						}
+						else{
+							this.$Notice.error({
+								title: '错误',
+								desc: '上传失败'
+							})
+						}
 					},
 		}
 		

@@ -18,14 +18,11 @@
 			</Select>
 			</Col>
 		  <Col span='3'>
-		  <Select class="smr" v-model="show.type" style="width:100%;" placeholder="故障类型" @on-change="search()">
-		    <Option key="1" label="全部故障" value="all"></Option>
-		    <Option key="2" label="输入电压过低" value="1"></Option>
-				<Option key="3" label="输入电压过高" value="2"></Option>
-				<Option key="4" label="开关门受阻" value="16"></Option>
-				<Option key="5" label="飞车保护" value="32"></Option>
-				<Option key="6" label="电机过载" value="64"></Option>
-				<Option key="7" label="输出过流" value="128"></Option>
+		  <Select class="smr" v-model="show.type" style="width:100%;" placeholder="事件类型" @on-change="search()">
+		    <Option key="1" label="全部" value="all"></Option>
+		    <Option key="2" label="故障" value="1"></Option>
+			<Option key="3" label="保养" value="2"></Option>
+			<Option key="4" label="校检" value="3"></Option>
 		  </Select>
 		  </Col>
 		  <Col span=4>
@@ -56,9 +53,9 @@
 				menu:[],
 				data:[],
 				show:{
-					state:'treated',
+					state:'untreated',
 					type:'all',
-					device_type:'',
+					device_type:'all',
 				},
 				options:{
 					search_info: '',
@@ -71,25 +68,41 @@
 				},
 						columns: [ {
 								title: '设备名称',
-								width: 120,
+								width: 100,
 								key: 'device_name'
 							},{
 								title: '设备类型',
-								width: 100,
+								width: 90,
 								key: 'device_type',
 								render: (h, params) => {
 									var type=''
 									if (params.row.device_type=="ctrl") type="控制柜" 
 									if (params.row.device_type=="door") type="控制器" 
 									return h('div', type)
+								},
+							},{
+								title: '事件类型',
+								width: 90,
+								key: 'device_type',
+								render: (h, params) => {
+									var type=''
+									if (params.row.type=="1") type="故障" 
+									if (params.row.type=="2") type="保养"
+									if (params.row.type=="3") type="校检"
+									return h('div', type)
 								}
 							},{
+								title: '发起人',
+								width: 90,
+								key: 'producer'
+							},{
 							title: '故障类型',
-							width: 200,
+							width: 180,
 							key: 'type',
 							render: (h, params) => {
 								var type=''
-								var num = params.row.type
+								var num = params.row.code
+								if ((params.row.type == '1')&&(params.row.code != null))
 								for (var i=7;i>=0;i--){
 									if (num>=Math.pow(2,i)) {
 										num=num-Math.pow(2,i)
@@ -101,6 +114,7 @@
 										if (i==0) {type=type+"输入电压过低;"}
 									}
 								}
+								if (type.length > 24) {type=type.substring(0,23)+"…"}
 								return h('div', type)
 							}
 							},{
@@ -109,50 +123,50 @@
 							key: 'state',	
 							render: (h, params) => {
 								var state
-								if (params.row.state == "treated") {state = '已接单'}
+								if (params.row.state == "treating") {state = '已接单'}
 								if (params.row.state == "untreated") {state = '未接单'}
+								if (params.row.state == "treated") {order = '已完成'}
 								return h('div', state)
 							}
 							},
 							{
+								title: '安装地址',
+								key:'install_addr'
+							},
+							{
 								title: '报错时间',
-								width: 160,
 								key: 'createTime',
 								render: (h, params) => {
-									return h('p',this.$format(params.row.createTime, 'YYYY-MM-DD HH:mm:ss'))
+									return h('p',this.$format(parseInt(params.row.createTime), 'YYYY-MM-DD HH:mm:ss'))
 								}
 							},
-							{
-								title: 'IP定位',
-								width: 120,
-								key:'ipaddr'
-							},
-							{
-								title: '基站定位',
-								key: 'cell_address',
-								render: (h,params) => {
-									var addr= params.row.cell_address
-									if (params.row.cell_address !=null) {
-									if(params.row.cell_address.length>=38){
-										addr=item.cell_address.substring(0,38)+"…"
-									}
-									}
-								return  h('Poptip',{
-											props: {
-												trigger:"hover",										
-												placement:"top-start",
-												content:params.row.cell_address
-											},
-										},addr)
-								}
-							},							
+// 							{
+// 								title: '基站定位',
+// 								key: 'cell_address',
+// 								render: (h,params) => {
+// 									var addr= params.row.cell_address
+// 									if (params.row.cell_address !=null) {
+// 									if(params.row.cell_address.length>=38){
+// 										addr=item.cell_address.substring(0,38)+"…"
+// 									}
+// 									}
+// 								return  h('Poptip',{
+// 											props: {
+// 												trigger:"hover",
+// 												placement:"top-start",
+// 												content:params.row.cell_address
+// 											},
+// 										},addr)
+// 								}
+// 							},
 							{
 								title: '操作',
 								width: 100,
 								render: (h, params) => {
 									var order
 									if (params.row.state == "untreated") {order = '接单'}
-									if (params.row.state == "treated") {order = '已接单'}
+									if (params.row.state == "treating") {order = '已接单'}
+									if (params.row.state == "treated") {order = '已完成'}
 									return h('div', [
 									h('Button', {
 										props: {
@@ -165,7 +179,13 @@
 										},
 										on: {
 											click: () => {
-												this.order(params.row)
+												// this.order(params.row)
+													this.$router.push({
+														name: 'order',
+														params: {
+															id: params.row.id
+														}
+													})
 											},
 										}
 									}, order),
@@ -233,10 +253,12 @@
 						if (res.data.code === 0) {
 							for (var i=0;i<res.data.data.list.length;i++) {
 								ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1})
-								if (ech.data.data.list[0].device_name != null)
+								if (ech.data.data.list.length == 1){
 								res.data.data.list[i].device_name = ech.data.data.list[0].device_name
 								res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 								res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
+								res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+								}
 							}
 							this.data = res.data.data.list
 							console.log(this.data)
@@ -275,19 +297,19 @@
 						}
 						this.search()
 					},
-					order(val){
-						this.$Modal.confirm({
-							title: '确定要接单吗',
-							content:val.device_name,
-							onOk: () => {
-								this.toorder(val)
-							},
-							onCancel: () => {
-							}
-						})	
-					},
+// 					order(val){
+// 						this.$Modal.confirm({
+// 							title: '确定要接单吗',
+// 							content:val.device_name,
+// 							onOk: () => {
+// 								this.toorder(val)
+// 							},
+// 							onCancel: () => {
+// 							}
+// 						})	
+// 					},
 					async toorder(val){
-						let res = await this.$api.order({fault_id:val.id})
+						let res = await this.$api.order({order_id:val.id})
 						if (res.data.code == 0) {
 							this.$Notice.success({
 							title: '成功',

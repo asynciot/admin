@@ -15,7 +15,7 @@
 					Row(:gutter=20)
 						Col(span=24 style="margin-top: 15px")
 							div(style="display: inline-block; font-size:16px; margin-left: 5px")|您关注了
-							div(style="display: inline-block; font-size:20px; margin-left: 10px; color: rgb(45, 140, 240);")|{{followlist.length}}
+							div(style="display: inline-block; font-size:20px; margin-left: 10px; color: rgb(45, 140, 240);")|{{followtotal}}
 							div(style="display: inline-block; font-size:16px; margin-left: 10px")|台设备
 				Col(span=16)
 					Row(:gutter=20)
@@ -23,7 +23,7 @@
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-1",@click="go('alList')")
 									div(class="grid-cont-right")
-										div()|设备数量
+										div()|设备总数
 										Col(span=12)
 											div(class="grid-num")|{{total.ctrl}}
 											div()|控制柜
@@ -43,17 +43,22 @@
 											div()|控制器
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
-								div(class="grid-content grid-con-3",@click="go('inform')")
+								div(class="grid-content grid-con-3",@click="go('maintain')")
 									div(class="grid-cont-right")
-										div(class="grid-num")|{{total.message}}
-										div()|通知信息
+										div()|故障设备数量
+										Col(span=12)
+											div(class="grid-num")|{{total.faultDoor}}
+											div()|控制柜
+										Col(span=12)
+											div(class="grid-num")|{{total.faultCtrl}}
+											div()|控制器
 					Row(:gutter=20)
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-1",@click="go('maintainList')")
 									div(class="grid-cont-right")
 										div(class="grid-num")|{{total.maintain}}
-										div()|维修电梯数量
+										div()|维修设备数量
 										
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
@@ -63,26 +68,21 @@
 										div()|用户数量
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
-								div(class="grid-content grid-con-3",@click="go('maintain')")
+								div(class="grid-content grid-con-3",@click="go('inform')")
 									div(class="grid-cont-right")
-										div()|故障电梯数量
-										Col(span=12)
-											div(class="grid-num")|{{total.faultDoor}}
-											div()|控制柜
-										Col(span=12)
-											div(class="grid-num")|{{total.faultCtrl}}
-											div()|控制器
+										div(class="grid-num")|{{total.message}}
+										div()|未读通知
 			Row(:gutter=1 style="margin-top: 15px")
 				Col(span=11)
 					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#aaf")
 						Col(span=6 style="")
-							div(style="font-size:16px")|关注设备
+							div(style="font-size:20px")|关注设备
 						Col(span=6 style="")
-							div(style="font-size:16px")|设备类型
+							div(style="font-size:20px")|设备类型
 						Col(span=6 style="")
-							div(style="font-size:16px")|版本号
+							div(style="font-size:20px")|版本号
 						Col(span=6 style="")
-							div(style="font-size:16px")|运行状态
+							div(style="font-size:20px")|运行状态
 					Scroll(:on-reach-bottom='followReachBottom', :distance-to-edge="0" , style="height: 360px; margin-top: 10px")
 						Card(v-bind:padding='4',v-for='item in list',:key='item.id' align='left', style='border-radius:0;height: 40px; font-size: 16px; cursor: pointer;', @click.native='deviceinfo(item.IMEI)')
 							Col(span=6 style="")
@@ -93,14 +93,14 @@
 								div|{{item.device_firmware.replace(/\r\n/ig,"a")}}
 							Col(span=6)
 								div|{{item.state}}
-				Col(span=12 style="margin-left:10px")
+				Col(span=12 style="margin-left:30px")
 					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#aaf")
 						Col(span=8 style="")
-							div(style="font-size:16px")|标题
+							div(style="font-size:20px")|标题
 						Col(span=6 style="")
-							div(style="font-size:16px")|发件人
+							div(style="font-size:20px")|发件人
 						Col(span=7 style="")
-							div(style="font-size:16px")|时间
+							div(style="font-size:20px")|时间
 					Scroll(:on-reach-bottom='messageReachBottom', :distance-to-edge="0" , style="height: 360px; margin-top: 10px")
 						Card(v-bind:padding='4',v-for='item in inform',:key='item.id' align='left', style='border-radius:0;height: 40px; font-size: 16px; cursor: pointer;', @click.native='read(item.id)')
 							Col(span=8 style="")
@@ -118,7 +118,7 @@
 	export default{	
 		data(){
 			return{
-				followlist:[],
+				followtotal:'',
 				table:'all',
 				userList:[],
 				username:window.localStorage.getItem('username'),
@@ -134,7 +134,7 @@
 					ctrl:0,
 					maintain:0,
 					faultDoor:0,
-					faultctrl:0,
+					faultCtrl:0,
 					message:0,
 					user:0,
 					online:0,
@@ -160,16 +160,31 @@
 		},
 		methods:{
 			async followReachBottom () {
-				if ( this.list.length<this.followlist.length){
+				if ( this.list.length<this.followtotal){
 					let eve= await this.$api.devices({num:10,page:(Math.ceil(this.list.length/10)+1),follow:'yes'})
-					for (var i=0;i<eve.data.data.list.length;i++){
-						if (eve.data.data.list[i].device_firmware !=null) {
-							if(eve.data.data.list[i].device_firmware.length>=6){
-								eve.data.data.list[i].device_firmware=eve.data.data.list[i].device_firmware.substring(0,6)
+						if (eve.data.code == 0) {
+							for (var i=0;i<eve.data.data.list.length;i++){
+								if(eve.data.data.list[i].state == "online"){
+									eve.data.data.list[i].state = "在线"
+								}else if(eve.data.data.list[i].state == "offline"){
+									eve.data.data.list[i].state = "离线"
+								}else if(eve.data.data.list[i].state == "longoffline"){
+									eve.data.data.list[i].state = "长期离线"
+								}
+								if(eve.data.data.list[i].device_type == "240"){
+									eve.data.data.list[i].device_type = "控制柜"
+								}else if(eve.data.data.list[i].device_type == "15"){
+									eve.data.data.list[i].device_type = "控制器"
+								}
+								if (eve.data.data.list[i].device_firmware !=null) {
+									if(eve.data.data.list[i].device_firmware.length>=6){
+										eve.data.data.list[i].device_firmware=eve.data.data.list[i].device_firmware.substring(0,6)
+									}
+								}
+								eve.data.data.list[i].deleteid=eve.data.data.list[i].id
+								this.list.push(eve.data.data.list[i])
 							}
 						}
-						this.list.push(eve.data.data.list[i])
-					}
 				}
 				else {
 					this.$Notice.warning({
@@ -209,6 +224,7 @@
 			async getmessage(){
 			// if (this.table=="message"){
 				let mes = await this.$api.message({num:10,page:1,done:false})
+				this.total.message = mes.data.data.totalNumber
 				this.inform=mes.data.data.list
 			// }
 			},
@@ -225,15 +241,15 @@
 					this.total.ctrlOnline=parseInt(res.data.data.ctrlonline)
 					this.total.doorOnline=parseInt(res.data.data.dooronline)
 				}
-				res = await this.$api.repair({num:1,page:1})
+				res = await this.$api.getRepair({num:1,page:1,isreg: "True",state:'untreated',type:''})
 				if (0 === res.data.code) {
 					this.total.maintain = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'door'})
+				res = await this.$api.fault({num:1,page:1,device_type:'door',type:'1'})
 				if (0 === res.data.code) {
 					this.total.faultDoor = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'ctrl'})
+				res = await this.$api.fault({num:1,page:1,device_type:'ctrl',type:'1'})
 				if (0 === res.data.code) {
 					this.total.faultCtrl = res.data.data.totalNumber
 				}
@@ -256,11 +272,11 @@
 			},
 			async getData(){
 				this.list=[]
-				var fol
+				let fol = await this.$api.follow({num:1,page:1})
+				if (fol.data.code == 0) {this.followtotal=fol.data.data.totalNumber}
 				let lis = await this.$api.devices({num:10,page:1,follow:'yes'})
 				if (0 === lis.data.code){
-					this.followlist=lis.data.data.list
-					for (var i=0;i<this.followlist.length;i++){
+					for (var i=0;i<lis.data.data.list.length;i++){
 						if(lis.data.data.list[i].state == "online"){
 							lis.data.data.list[i].state = "在线"
 						}else if(lis.data.data.list[i].state == "offline"){

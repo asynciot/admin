@@ -46,14 +46,12 @@ const Fault = resolve => require(['@/views/Maintain/Fault'], resolve)
 const MaintainList = resolve => require(['@/views/Maintain/MaintainList'], resolve)
 const FaultRank = resolve => require(['@/views/Maintain/FaultRank'], resolve)
 const Maintain = resolve => require(['@/views/Maintain/Maintain'], resolve)
+const Finish = resolve => require(['@/views/Maintain/Finish'], resolve)
+const Order = resolve => require(['@/views/Maintain/Order'], resolve)
 //Setting
 const FileIndex = resolve => require(['@/views/Event/File/BaseInfo'], resolve)
 const AlList = resolve => require(['@/views/Event/File/List'], resolve)
-const CtrList = resolve => require(['@/views/Event/File/CtrList'], resolve)
-const CbtList = resolve => require(['@/views/Event/File/CbtList'], resolve)
-const Unregistered = resolve => require(['@/views/Event/File/Unregistered'], resolve)
-const Registered = resolve => require(['@/views/Event/File/Registered'], resolve)
-const Registing = resolve => require(['@/views/Event/File/Registing'], resolve)
+const Alert = resolve => require(['@/views/Event/File/Alert'], resolve)
 const AssessHistory = resolve => require(['@/views/Event/Assess/History'], resolve)
 const AssessPrint = resolve => require(['@/views/Event/Assess/Print'], resolve)
 const AssessReport = resolve => require(['@/views/Event/Assess/Report'], resolve)
@@ -143,17 +141,17 @@ export default new Router({
 				},
 				//设备管理
         {
-          path: '/Watch/evolution',
+          path: '/watch/evolution',
           name: 'evolution',
 					meta:{name:'版本更新'},
           component: Evolution
         },{
-          path: '/Watch/map',
+          path: '/watch/map',
           name: 'map',
 					meta:{name:'地图'},
           component: Map
         },{
-          path: '/Watch/list',
+          path: '/watch/list',
           name: 'list',
 					meta:{name:'列表'},
           component: List
@@ -192,14 +190,23 @@ export default new Router({
 		{
 			path: '/maintain/maintainlist',
 			name: 'maintainList',
-			meta:{name:'维修列表'},
+			meta:{name:'维保信息'},
 			component: MaintainList
-
 		},{
 			path: '/maintain/maintain',
 			name: 'maintain',
-			meta:{name:'故障电梯'},
-			component: Maintain
+			meta:{name:'事件列表'},
+			component: Maintain,
+		},{
+			path: '/maintain/order/:id',
+			name: 'order',
+			meta:{name:'接单'},
+			component: Order
+		},{
+			path: '/maintain/finish/:id',
+			name: 'finish',
+			meta:{name:'完成工单'},
+			component: Finish
 		},
 		//单位管理
 			//维保单位
@@ -318,35 +325,11 @@ export default new Router({
 			component: AlList
 		},
 		{
-			path: '/evnet/ctrlist',
-			name: 'ctrList',
-			meta:{name:'电梯列表/控制器'},
-			component: CtrList
+			path: '/evnet/alert/:IMEI',
+			name: 'alert',
+			meta:{name:'确认事件'},
+			component: Alert
 		},
-		{
-			path: '/evnet/cbtlist',
-			name: 'cbtList',
-			meta:{name:'电梯列表/控制柜'},
-			component: CbtList
-		},
-		{
-			path: '/evnet/unregistered',
-			name: 'unregistered',
-			meta:{name:'电梯列表/未注册'},
-			component: Unregistered
-		},
-		{
-			path: '/evnet/registered',
-			name: 'registered',
-			meta:{name:'电梯列表/已注册'},
-			component: Registered
-		},
-		{
-			path: '/evnet/registing',
-			name: 'registing',
-			meta:{name:'电梯列表/注册中'},
-			component: Registing
-		},				
 		{
 			path: '/evnet/file/:IMEI',
 			name: 'elevatorFiles',

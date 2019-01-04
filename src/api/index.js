@@ -67,10 +67,15 @@ export default {
 		return AccountApi.update({}, data)
 	},
 	removePeople:(data) => {
-		return AccountApi.remove(Object.assign({key1:'delete'}, data))
+		return AccountApi.remove(Object.assign({}, data))
 	},
-	
-	//machine
+	portrait:(data)=>{
+		return AccountApi.save({key1:'portrait'},data)
+	},
+	//Device
+	alert: (data) => {
+		return DeviceApi.save({key1:'alert'}, data)
+	},
 	devices: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Device',key2:'ReadMore'}, data))
 	},
@@ -114,16 +119,16 @@ export default {
 		return DeviceApi.remove(Object.assign({key1:'follow'}, data))
 	},
 	fault:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Fault'}, data))
+		return DeviceApi.query(Object.assign({key1:'Order'}, data))
 	},
 	order:(data)=> {
-		return DeviceApi.save({key1:'Fault',key2:'order'}, data)
+		return DeviceApi.save({key1:'Order',key2:'receipt'}, data)
 	},
-	repair:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Repair'}, data))
+	getRepair:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Dispatch'}, data))
 	},
 	finish:(data)=> {
-		return DeviceApi.save({key1:'Repair',key2:'finish'}, data)
+		return DeviceApi.save({key1:'Dispatch',key2:'finish'}, data)
 	},
 	runtime:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Runtime'}, data))

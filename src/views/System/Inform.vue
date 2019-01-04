@@ -2,8 +2,8 @@
 div.layout-content-main
 	Row(:gutter=1)
 		Col(span=2)
-			Select.smr(v-model="options.done" style="width:100%;" placeholder="消息类型" @on-change="getList()")
-				Option(key="1" label="全部" value='')
+			Select.smr(v-model="done" style="width:100%;" placeholder="消息类型" @on-change="getList()")
+				Option(key="1" label="全部" value='all')
 				Option(key="2" label="已读" value="true")
 				Option(key="3" label="未读" value="false")
 	div.form(style="margin-top:20px")
@@ -20,6 +20,7 @@ div.layout-content-main
 export default{	
 	data(){
 		return{
+			done:'false',
 			informtype:'all',
 			haveread:'yes',
 			info:{
@@ -109,7 +110,7 @@ export default{
 			list: [],
 			options: {
 				name:'',
-				done:'',
+				done:'false',
 				type: 1,
 				page: 1,
 				num: 10,
@@ -132,6 +133,8 @@ export default{
 			this.getList()
 		},
 		async getList(){
+			if (this.done == 'all') {this.options.done = ''}
+			else {this.options.done = this.done}
 			let mes = await this.$api.message({num:10,page:1,done:this.options.done})
 			if (mes.data.code == 0){
 			this.list = mes.data.data.list

@@ -55,7 +55,7 @@
 						</div>
 					</Row>
 				</Header>
-				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '95vh'}" >				
+				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh'}" >				
 					<div class="layout-content">
 						<transition name="fade">
 							<router-view></router-view>
@@ -146,11 +146,11 @@
 						label: '维修管理',
 						sub: [{
 								name: 'maintain',
-								label: '故障信息',
+								label: '事件列表',
 							},
 							{
 								name: 'maintainList',
-								label: '维修信息',
+								label: '维保信息',
 							},
 // 							{
 // 								name: 'upList',
@@ -199,7 +199,7 @@
 					},{
 						name: 'system',
 						icon: 'ios-settings',
-						label: '维保管理',
+						label: '系统管理',
 						sub:[{
 							name:'print',
 							label:'打印二维码',
@@ -225,7 +225,8 @@
 				]
 			},
 			showTags() {
-                return this.tagsList.length > 0;
+                // return this.tagsList.length > 0;
+				return false;
             }
 		},
 		

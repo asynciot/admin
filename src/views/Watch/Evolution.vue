@@ -12,7 +12,7 @@ div.layout-content-main
 				Col(span="1")
 					Button(icon='search' @click='getList()')
 				Col(span="3")
-					Button(style="width:90%" type="primary",:disabled="(select.length == 0) || !version",@click="update(select)")|升级选中设备			
+					Button(style="width:90%" type="primary",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备			
 				Col(span="3")
 					upload(:before-upload='handleUpload')
 						Button(icon='ios-cloud-upload-outline' style="width: 130px") {{filename}}
@@ -91,7 +91,7 @@ export default {
         {
           title: '版本',
           key: 'device_firmware',
-					width:150,
+					width:90,
         },
 				{
           title: '状态',
@@ -141,7 +141,7 @@ export default {
                   this.update([params.row])
                 }
               }
-            }, '升级')
+            }, '更新')
           }
         }
       ],
@@ -231,10 +231,10 @@ export default {
 				}
 		},
 		pageChange(val) {
-      this.options.page = val
-      this.getList()
-    },
-    async getList() {
+		  this.options.page = val
+		  this.getList()
+		},
+		async getList() {
 			this.versions=[]
 			let typ= await this.$api.gettype({type:'firmware',num:100,page:1})
 			typ.data.data.list.forEach(item=>{

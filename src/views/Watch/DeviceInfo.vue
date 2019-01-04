@@ -45,21 +45,19 @@
 										Input(v-model='realtime.duration' maxlength="4")
 								Col(span="23" style="")
 									Form-item(label="采样周期(ms):")
-										Input(v-model='realtime.interval' maxlength="6")
-								Col(span="16" style="margin-top: 10px")
-									Form-item(label="周期数:")
-										Select(v-model='realtime.threshold')
-											Option(key="1" label="1" value='1')
-											Option(key="2" label="5" value='5')
-											Option(key="3" label="10" value='10')
-											Option(key="4" label="50" value='50')
-											Option(key="5" label="1000" value='1000')
-								Col(span="6" align='center' style="margin-top: 10px;margin-left: 10px")
+										Select(v-model='realtime.interval')
+											Option(key="1" label="100" value='100')
+											Option(key="2" label="200" value='200')
+											Option(key="3" label="500" value='500')
+											Option(key="4" label="1000" value='1000')
+											Option(key="5" label="2000" value='2000')
+								Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
 									Button(type="success" @click="monitor('1')" style="width:100%")|状态监控
 				Col(span=12)
 					card.card(align='left' style='height: 500px',v-if='data.device_type == 240')
 						Col(span="24" style="height: 35px;font-size:20px")|内存调试
-						Row(style="margin-top:75px")
+						Row(style="margin-top:20px")|{{this.loading}}
+						Row(style="margin-top:20px")
 							Col(span=5 style="height: 30px;font-size:16px")|段地址:
 							Col(span=2)
 								Input(style="width:70%" maxlength="1" v-model='address[0]')
@@ -83,7 +81,7 @@
 								Input(style="width:80%" maxlength="8" v-model='segment')
 							Col(span=5 style="height: 30px;font-size:16px")|监控时长(s):
 							Col(span=6)
-								Input(style="width:75%" maxlength="4" v-model='threshold')
+								Input(style="width:75%" maxlength="4" v-model='duration')
 						Row(style="margin-top:75px")
 							Col(span=5 style="height: 30px;font-size:16px")|结果:
 							Col(span=2)
@@ -141,10 +139,10 @@
 				loading:'',
 				websock:'',
 				address:['0','0','0','0','0','0','0','0'],
-				res:['00','00','00','00','00','00','00','00'],
-				segment:'',
+				res:['0','0','0','0','0','0','0','0'],
+				segment:0,
 				ctn:false,
-				threshold:30,
+				duration:30,
 				keyword:'time',
 				search_info: '',
 				door:true,
@@ -156,9 +154,9 @@
 				list2:[],
 				total:'',
 				realtime: {
-					threshold:'10',
+					threshold:'1',
 					duration:20,
-					interval:1000,
+					interval:'1000',
 				},
 				options: {
 					id:'',
@@ -296,7 +294,7 @@
 				if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
 					this.$Notice.error({
 						title: '错误',
-						desc: '监控时长必须大于采样周期*周期数'
+						desc: '监控时长必须大于采样周期'
 					})
 				}
 				else {
@@ -360,8 +358,8 @@
 						  ','+this.address[4]+','+this.address[5]+','+this.address[6]+','+this.address[7]),
 					segment: this.segment,
 					IMEI: this.data.IMEI,
-					duration: this.threshold,
-					threshold: this.threshold,
+					duration: this.duration,
+					threshold: 1,
 					interval: 1000,
 					op:'open',
 				});
@@ -388,7 +386,7 @@
 					this.loading="此次实时数据已结束"
 				}else{
 					var redata = JSON.parse(e.data)
-					buffer = base64url.toBuffer(redata.data);
+					var buffer = base64url.toBuffer(redata.data);
 					console.log(buffer)
 					for (var i=0;i<8;i++) {this.res[i]=buffer[i].toString(16)}
 					

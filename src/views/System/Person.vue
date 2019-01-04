@@ -21,12 +21,17 @@
 										Form-item(label="备注",prop="remark")
 											textarea(v-model="form.introduction" style=" width:100%;height:70px")
 						Col(span=9)
-							div(style="height:250px; width:250px")
-								img(src='../../assets/admin.jpg' width='100%', height='100%')
+							div(style="height:300px; width:250px")
+								upload(:before-upload='handleUpload')
+									img(id="image" src="../../assets/admin.jpg" style="height:250px; width:250px; cursor: pointer;")
+								Button(style="margin-left:30px" icon="ios-cloud-upload-outline",@click="confirm" v-if="upsuccess")|上传头像
 						Col(span=24)
-							Button(style="margin-left:200px" type="primary" icon="",@click="getData()")|重置
-							Button(style="margin-left:30px" type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
-							Button(style="margin-left:30px" icon="close",@click="$router.back(-1)")|取消 
+							Col(span=8 align="center")
+								Button(type="primary" icon="ios-call-outline",@click="getData()")|重置
+							Col(span=8 align="center")
+								Button(type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
+							Col(span=8 align="center")
+								Button(icon="close",@click="$router.back(-1)")|取消 
 </template>
 
 <script>
@@ -85,7 +90,10 @@
 					page: 1,
 					num: 300,
 					total: 0,
-				}
+				},
+				file:'',
+				filename:'',
+				upsuccess:false,
 			}
 		},
 		computed: {
@@ -96,20 +104,19 @@
 		created(){
 			this.getData();
 		},
+		mounted(){
+			//document.getElementById('image').src=this.file
+		},
 		methods:{
 			async getData(){
 				let res = await this.$api.people({id:this.id,num:1,page:1})
 				if (0 === res.data.code) {
 					this.form = res.data.data.list[0]
+					if (this.form.portrait != null) {document.getElementById('image').src='http://server.asynciot.com/getfile?filePath='+this.form.portrait}
 					if (this.form.sex == 'male') {this.form.sex = '男'}
 					if (this.form.sex == 'female') {this.form.sex = '女'}
 					if (this.form.sex == 'secret') {this.form.sex = '保密'}
 				}
-// 				let lad = await this.$api.devices(this.ladder)
-// 				if (0 === lad.data.code) {
-// 					this.ladList = lad.data.data.list
-// 					this.ladder.total = lad.data.data.totalNumber
-// 				}
 			},
 			async create(){
 				// this.loading = true
@@ -135,6 +142,54 @@
 					title: '失败',
 					desc: '提交错误'
 					});
+				}
+			},
+			handleUpload (file) {
+				console.log(file)
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.file = new File([file], new Date().getTime()+".jpg",{type:"image/jpeg"});
+				this.filename = this.file.name;
+				this.upsuccess = true;
+				
+				  let url = null ;
+				  if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.file) ;
+				  }else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.file) ;
+				  }else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.file) ;
+				  }
+				document.getElementById('image').src=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+			},
+			async confirm(){
+				var formData = new FormData()
+				var formData = new window.FormData()
+				formData.append('file',this.file)
+				console.log(formData)
+				let res = await this.$api.portrait(formData)
+				if (res.data.code == 0){
+				this.upsuccess=false
+				this.$Notice.success({
+					title: '成功',
+					desc: ('成功上传'+this.filename)
+				})
+				this.getData()
+				this.filename='已上传'+this.filename
+				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '上传失败'
+					})
 				}
 			},
 		}

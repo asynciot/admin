@@ -110,7 +110,7 @@
 								props: {
 									type: type,
 								},															
-							}),									
+							}),
 						]),params.row.device_name
 					])
 				}
@@ -179,17 +179,17 @@
 //              },
              {
                title: '操作',
-               width: 240,
+               width: 330,
                render: (h, params) => {
 					var f
-					 var follow="关注"
-					 this.follow.forEach(item=>{
-						 if (params.row.IMEI==item.imei) {follow='取关'}
-					 })
-                		 return h('div', [
+					var follow="关注设备"
+					this.follow.forEach(item=>{
+						if (params.row.IMEI==item.imei) {follow='取消关注'}
+					})
+               return h('div', [
 							 h('Button', {
 							 	props: {
-							 		type: 'primary',
+							 		type: 'success',
 							 		size: "small",
 							 	},
 							 	style: {
@@ -197,9 +197,9 @@
 							 	},
 							 	on: {
 							 		click: () => {
-										if (follow=="关注")
+										if (follow=="关注设备")
 							 			this.addfl(params.row.IMEI)
-										if (follow=="取关")
+										if (follow=="取消关注")
 										this.delfl(params.row.id)
 							 		},
 							 	}
@@ -224,6 +224,25 @@
 										},
 									}
 								}, '查看/编辑'),
+								h('Button', {
+									props: {
+										type: 'error',
+										size: "small",
+									},
+									style: {
+										marginRight: '10px',
+									},
+									on: {
+										click: () => {
+											this.$router.push({						
+												name: 'alert',
+												params: {
+													IMEI: params.row.IMEI										
+												}
+											})
+										},
+									}
+								}, '添加工单'),
                    h('Button', {
                      props: {
                        type: 'primary',
@@ -255,20 +274,20 @@
        	handleSearch1 (selectword) {
        		this.menu=[];
        		var str;
-            for (var i=0;i<this.data.length;i++){
-             	str=this.data[i].IMEI;
-					if ((str != null)&&(selectword!= null)){
-						if (str.indexOf(selectword)>=0)
-						this.menu.push(str)
-             	}
-             	str=this.data[i].device_name;		  	    	
-					if ((str != null)&&(selectword!= null)){
-						if (str.indexOf(selectword)>=0){
-						this.menu.push(str)
-						}
-					} 
-				}
-            },
+          for (var i=0;i<this.data.length;i++){
+						str=this.data[i].IMEI;
+						// if ((str != null)&&(selectword!= null)){
+							if (str.indexOf(selectword)>=0)
+							this.menu.push(str)
+								// }
+								str=this.data[i].device_name;		  	    	
+						// if ((str != null)&&(selectword!= null)){
+							if (str.indexOf(selectword)>=0){
+							this.menu.push(str)
+							}
+						// } 
+					}
+				},
          pageChange(val) {
            this.options.page = val
            this.getList()

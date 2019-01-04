@@ -1,0 +1,356 @@
+<template lang="jade">
+	div.layout-content-main
+		div.form
+			Row(:gutter=30)
+				Col(span=7)| &nbsp;
+				Col(span=10)
+					Card(style="height:650px")
+						Col(span=24)
+							Form(ref="form",:model="form",:label-width="120")
+								Row(:gutter="0")
+									Col(span="24",offset="0")
+										div(style="margin-top:10px")|工单号名称:{{list.order_id}}
+										div(style="margin-top:10px")|设备名称:{{list.device_name}}
+										div(style="margin-top:10px")|IMEI号:{{list.IMEI}}
+										div(style="margin-top:10px")|确认时间:{{list.confirm_time}}
+										div(style="margin-top:10px" v-if="list.state == 'treated'")|状态:已处理:{{list.result}}
+										div(style="margin-top:10px" v-if="list.state == 'untreated'")|状态:处理中
+									Col(span=24 style="margin-top:10px")|处理前的照片:
+									Col(span='8' style='height: 160px')
+										upload(:before-upload='before1')
+											img(id="before1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+									Col(span='8' style='height: 160px')
+										upload(:before-upload='before2')
+											img(id="before2" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+									Col(span='8' style='height: 160px')
+										upload(:before-upload='before3')
+											img(id="before3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+									Col(span=24 style="margin-top:10px")|处理后的照片:	
+									Col(span='8' style='height: 160px')
+										upload(:before-upload='after1')
+											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+									Col(span='8' style='height: 160px')
+										upload(:before-upload='after2')
+											img(id="after2" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+									Col(span='8' style='height: 160px')
+										upload(:before-upload='after3')
+											img(id="after3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+						Col(span=24 style="margin-top: 10px")
+							Col(span=8 align="center")
+								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
+								Button(type="success",@click="finish('finish')" v-if="list.state != 'treated'")|完成工单
+							Col(span=8 align="center")
+								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
+								Button(type="warning",@click="finish('transfer')" v-if="list.state != 'treated'")|转办
+							Col(span=8 align='center')
+								Button(@click="$router.back(-1)")|取消
+</template>
+
+<script>
+	export default{	
+		data(){
+			return{
+				username:window.localStorage.getItem('username'),
+				id:window.localStorage.getItem('id'),
+				fault:[0,0,0,0,0,0,0,0],
+				form:{
+					type:'1',
+				},
+				beforefile1:'',
+				beforefile2:'',
+				beforefile3:'',
+				afterfile1:'',
+				afterfile2:'',
+				afterfile3:'',
+				faultcode:false,
+				list:[],
+				query:{
+					username:window.localStorage.getItem('username'),
+					name:'',
+				},
+				ladList:[],
+				ladder:{
+					name:'',
+					page: 1,
+					num: 300,
+					total: 0,
+				},
+				file:'',
+				filename:'',
+				upsuccess:false,
+			}
+		},
+		computed: {
+			role() {
+				return this.username === 'admin' ? '超级管理员' : '普通用户';
+			},
+		},
+		created(){
+			this.getData();
+		},
+		mounted(){
+			//document.getElementById('image').src=this.file
+		},
+		methods:{
+			code(){
+				if (this.form.type == '1'){
+					this.faultcode=false;
+				}
+				else {
+					this.faultcode=true;
+				}
+			},
+			async getData(){
+				let res =await this.$api.getRepair({id:this.$route.params.id,page:1,num:1})
+				if (res.data.code === 0) {
+					let ech = await this.$api.devices({device_id:res.data.data.list[0].device_id,num:10,page:1})
+					res.data.data.list[0].device_name = ech.data.data.list[0].device_name
+					res.data.data.list[0].IMEI = ech.data.data.list[0].IMEI
+					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
+					res.data.data.list[0].cell_address = ech.data.data.list[0].cell_address
+					if (res.data.data.list[0].result == 'transfer') {res.data.data.list[0].result='转办'}
+					if (res.data.data.list[0].result == 'finish') {res.data.data.list[0].result='完成'}
+					this.list = res.data.data.list[0]
+					
+					var before=this.list.before_pic.split(';')
+					var after=this.list.after_pic.split(';')
+					if (before.length > 1) {document.getElementById('before1').src='http://server.asynciot.com/getfile?filePath='+before[0];}
+					if (before.length > 2) {document.getElementById('before2').src='http://server.asynciot.com/getfile?filePath='+before[1];}
+					if (before.length > 3) {document.getElementById('before3').src='http://server.asynciot.com/getfile?filePath='+before[2];}
+					if (after.length > 1) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[0];}
+					if (after.length > 2) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[1];}
+					if (after.length > 3) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[2];}
+				} else {
+					this.$Notice.error({
+						title: '错误',
+						desc: '获取列表失败'
+					});
+				}
+			},
+			before1 (file) {
+				if (this.list.state != "treated"){
+					var type = file.name.split('.')
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+					this.beforefile1 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+					let url = null;
+					if (window.createObjectURL!=undefined) { // basic
+						url = window.createObjectURL(this.beforefile1) ;
+					}else if (window.webkitURL!=undefined) { // webkit or chrome
+						url = window.webkitURL.createObjectURL(this.beforefile1) ;
+					}else if (window.URL!=undefined) { // mozilla(firefox)
+						url = window.URL.createObjectURL(this.beforefile1) ;
+					}
+					document.getElementById('before1').src=url;
+					return false;
+					}
+					else{
+						this.$Notice.warning({
+							title: '警告',
+							desc: '只能上传图片类型的文件'
+						})
+					}
+				}
+				else{
+					this.$Notice.warning({
+						title: '抱歉',
+						desc: '暂不支持补传图片'
+					})
+				}
+			},
+			before2 (file) {
+				if (this.list.state != "treated"){
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.beforefile2 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+				let url = null;
+				if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.beforefile2) ;
+				}else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.beforefile2) ;
+				}else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.beforefile2) ;
+				}
+				document.getElementById('before2').src=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: '抱歉',
+						desc: '暂不支持补传图片'
+					})
+				}
+			},
+			before3 (file) {
+				if (this.list.state != "treated"){
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.beforefile3 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+				let url = null;
+				if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.beforefile3) ;
+				}else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.beforefile3) ;
+				}else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.beforefile3) ;
+				}
+				document.getElementById('before3').src=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: '抱歉',
+						desc: '暂不支持补传图片'
+					})
+				}
+			},
+			after1 (file) {
+				if (this.list.state != "treated"){
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.afterfile1 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+				let url = null;
+				if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.afterfile1) ;
+				}else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.afterfile1) ;
+				}else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.afterfile1) ;
+				}
+				document.getElementById('after1').src=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: '抱歉',
+						desc: '暂不支持补传图片'
+					})
+				}
+			},
+			after2 (file) {
+				if (this.list.state != "treated"){
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.afterfile2 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+				let url = null;
+				if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.afterfile2) ;
+				}else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.afterfile2) ;
+				}else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.afterfile2) ;
+				}
+				document.getElementById('after2').src=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: '抱歉',
+						desc: '暂不支持补传图片'
+					})
+				}
+			},
+			after3 (file) {
+				if (this.list.state != "treated"){
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+				let url = null;
+				if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.afterfile3) ;
+				}else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.afterfile3) ;
+				}else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.afterfile3) ;
+				}
+				document.getElementById('after3').src=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: '抱歉',
+						desc: '暂不支持补传图片'
+					})
+				}
+			},
+			async finish(val){
+				var formData = new FormData()
+				var formData = new window.FormData()
+				formData.append('file1',this.beforefile1)
+				formData.append('file2',this.beforefile2)
+				formData.append('file3',this.beforefile3)
+				formData.append('file4',this.afterfile1)
+				formData.append('file5',this.afterfile2)
+				formData.append('file6',this.afterfile3)
+				formData.append('id',this.$route.params.id)
+				formData.append('result',val)
+				let res = await this.$api.finish(formData)
+				if (res.data.code == 0){
+					this.$Notice.success({
+						title: '成功',
+						desc: '完成工单'
+					});
+					this.getList()
+				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '发生错误'
+					});
+					this.getList()
+				}
+			}
+		}
+	}	
+</script>
+
+<style lang="scss" scoped>
+	.inline{
+		display: inline-block;
+	}
+	.username{
+		font-size: 30px;
+		color: #222;
+		display: inline-block;
+	}
+	.role{
+		font-size: 14px;
+		color: #999;
+		display: inline-block;
+	}
+	
+</style>

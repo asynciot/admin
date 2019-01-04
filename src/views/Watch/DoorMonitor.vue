@@ -201,14 +201,17 @@
 				}else{
 					var redata = JSON.parse(e.data)	
 					this.getData(redata)
-					setTimeout(() => {
-						this.drawLine();
-					},500)
+					this.drawLine();
 				}
 			},
 			async closed(){//数据发送
 				let res = await this.$api.monitor({
-					IMEI:this.query.IMEI,
+					device_type: 15,
+					type: 0,
+					IMEI: this.$route.params.IMEI,
+					duration: this.$route.params.duration,
+					threshold: this.$route.params.threshold,
+					interval: this.$route.params.interval,
 					op:'close',
 				});
 			},
@@ -219,12 +222,13 @@
 			getData(val) {
 				let buffer = []
 				buffer = base64url.toBuffer(val.data);	//8位转流
+				console.log(buffer)
 				var _this = this
 				this.count= 0
 				if (_this.t_start == '') _this.t_start = val.time
 				_this.t_end = _this.t_start+this.$route.params.duration*1000
-				var inte = setInterval(function () {
-					if((_this.count+8) <= buffer.length){
+// 				var inte = setInterval(function () {
+// 					if((_this.count+8) <= buffer.length){
 						_this.show.openIn = buffer[_this.count+0]&0x01
 						_this.show.closeIn = (buffer[_this.count+0]&0x02)>>1						//获取关门信号
 						_this.show.openToOut = (buffer[_this.count+0]&0x40)>>6					//获取开到位输出信号
@@ -250,12 +254,12 @@
 							_this.show.speed = _this.show.speed-65.535
 						}					
 						_this.getX()
-						_this.count+=8
-					}
-				}, _this.query.interval);
-				if((_this.count+8) > buffer.length){
-					clearInterval(inte)
-				}
+// 						_this.count+=8
+// 					}
+// 				}, _this.query.interval);
+// 				if((_this.count+8) > buffer.length){
+// 					clearInterval(inte)
+// 				}
 			},
 			drawLine(){
 				let openIn = this.$echarts.init(document.getElementById('openIn'))

@@ -41,9 +41,9 @@ div.layout-content-main
 	div.ssa
 		Table.deviceList(border,:columns="columns",:data="list",size="small")
 	div.form
-		Col(span='6')
+		Col(span='6')|&nbsp;
 		Col(span='18')
-			Page(:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
+			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>	
@@ -88,7 +88,7 @@ div.layout-content-main
 				},
 				show:{
 					state: 'online',
-					device_type:"",
+					device_type:"all",
 				},
 				map: null,
 				list: [],
@@ -124,15 +124,16 @@ div.layout-content-main
 										}
 									}
 								}, params.row.device_name)],
-								[
-								h('span',{
-									props: {
-										class: 'fa fa-tag fa-2x',
-									},
-									style: {
-										color: 'red',
-									},
-								})])
+// 								[
+// 								h('span',{
+// 									props: {
+// 										class: 'fa fa-tag fa-2x',
+// 									},
+// 									style: {
+// 										color: 'red',
+// 									},
+// 								})]
+								)
 					},
 					{
 					title: 'IMEI(设备识别码)',
@@ -172,7 +173,7 @@ div.layout-content-main
 						key: 'cell_address',
 						render: (h,params) => {
 							var addr= params.row.cell_address
-			  		 		 if (params.row.cell_address !=null) {
+			  		 		if (params.row.cell_address !=null) {
 							if(params.row.cell_address.length>=50){
 						 		addr=item.cell_address.substring(0,50)+"…"
 						 	}

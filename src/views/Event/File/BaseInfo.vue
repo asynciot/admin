@@ -32,24 +32,16 @@ div.layout-content-main
 							input(v-model="parameter.wavenumber" style="border: 0" readonly)
 				Card(v-if="list.device_type == 240")
 					p(slot="title")|参数信息
-					Row(:gutter="30")
-						Col(span="12")|报告时间:
-							input(v-model="parameter.reporttime" style="border: 0" readonly)
-						Col(span="12")|信号强度:
-							input(v-model="parameter.rssi" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|累计运行次数:
 							input(v-model="parameter.runcount" style="border: 0" readonly)
 						Col(span="12")|累计运行时间(s):
 							input(v-model="parameter.uptime" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|最近故障类型:
-							input(v-model="parameter.faultcode" style="border: 0" readonly)
+						Col(span="12")|信号强度:
+							input(v-model="parameter.rssi" style="border: 0" readonly)
 						Col(span="12")|最近故障楼层:
 							input(v-model="parameter.faultfloor" style="border: 0" readonly)
-					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|最近故障时间:
-							input(v-model="parameter.faulttime" style="border: 0" readonly)
 				Card(style="margin-top:10px")
 					p(slot="title")|生产
 					Row(:gutter="30")
@@ -63,10 +55,17 @@ div.layout-content-main
 				Card(style="margin-top:10px")
 					p(slot="title")|维保
 					Row(:gutter="30")
+						Col(span="12")|下次维保:
+							DatePicker(type="date" placeholder="下次维保日期" format="yyyy-MM-dd" v-model="options.maintenance_nexttime" style='width: 50%; margin-left:20px')
+						Col(span="12")|早几日提醒:
+							input( style="border: 0" v-model="options.maintenance_remind")
+					Row(:gutter="30")
 						Col(span="12")|维保类型:
-							input( style="border: 0" readonly)
-						Col(span="12")|维保周期(天):
-							input( style="border: 0" readonly)
+							Select(v-model="list.maintenance_type" style="width:50%; margin-left:20px" placeholder="类型" @on-change="search()")
+								Option(key="1" label="故障" value='1')
+								Option(key="2" label="保养" value="2")
+								Option(key="3" label="校检" value="3")
+						Col(span="12")|上次维保:{{options.maintenance_lasttime}}
 				Card(style="margin-top:10px")
 					p(slot="title")|系统
 					Row(:gutter="30")
@@ -83,7 +82,7 @@ div.layout-content-main
 						Col(span="12")|安装地址::
 							input(v-model="list.install_addr" style="border: 0" @input="" )
 						Col(span="12")|安装日期::
-							input(v-model="list.install_date" style="border: 0" readonly)
+							input(v-model="options.install_date" style="border: 0" readonly)
 			Col(span="7" )
 				Card()
 					img(src="../../../assets/ladder.jpg" width="100%")
@@ -139,6 +138,10 @@ export default {
 				id:'',
 				deviceName:'',
 				typeId:'',
+				maintenance_lasttime:'',
+				maintenance_nexttime:'',
+				maintenance_remind:'',
+				install_date:'',
 			},
 			parameter:{
 				reporttime: '',
@@ -179,6 +182,10 @@ export default {
 	},
 	methods: {
 		async update(){
+			
+			this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)
+			this.list.maintenance_remind=this.options.maintenance_remind*86400000
+			
 			let res =await this.$api.setdevices(this.list)
 			if (res.data.code == 0){
 				this.$Notice.success({
@@ -198,6 +205,10 @@ export default {
 			var time;
 			let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
 			this.list = res.data.data.list[0]
+			
+			setTimeout(()=>{
+				this.showcolor()
+			}, 300)
 			let run =await this.$api.runtime({page:1,num:20,device_id:this.list.id})
 			if (this.list.device_type == 15) {
 				run.data.data.list.forEach(item=>{
@@ -230,7 +241,23 @@ export default {
 					}
 				})
 			}
-			console.log(buffer)	
+			console.log(buffer)
+			this.options.install_date=this.$format(this.list.install_date, 'YYYY-MM-DD')
+			this.list.maintenance_nexttime=parseInt(this.list.maintenance_nexttime)
+			this.options.maintenance_nexttime=this.$format(this.list.maintenance_nexttime, 'YYYY-MM-DD')
+			this.options.maintenance_lasttime=this.$format(this.list.maintenance_lasttime, 'YYYY-MM-DD')
+			this.options.maintenance_remind=this.list.maintenance_remind/86400000
+		},
+		showcolor(){
+			var getcolor=this.list.tagcolor.split(';')
+			for (var i=0;i<getcolor.length;i++){
+				for (var j=0;j<6;j++){
+					if (getcolor[i]==this.col[j]) {
+						this.color[j]=true
+						document.getElementById(this.col[j]).className="fa fa-bookmark fa-2x"
+						}
+				}
+			}
 		},
 		async checkcolor(c) {
 			this.color[c]=!this.color[c]
@@ -249,7 +276,7 @@ export default {
 					this.list.tagcolor=this.list.tagcolor+this.col[i]
 				}
 			}
-			let res = await this.$api.setdevices(this.list)
+			// let res = await this.$api.setdevices(this.list)
 		},
 		getlist(val){
 			return val.split(';')
@@ -327,6 +354,9 @@ export default {
 						});
 				}
 			}
+		},
+		formatDate(val, format) {
+			return formatDate(val, format)
 		},
 		refresh() {
 			setTimeout(()=>{
