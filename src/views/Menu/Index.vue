@@ -74,7 +74,7 @@
 										div()|未读通知
 			Row(:gutter=1 style="margin-top: 15px")
 				Col(span=11)
-					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#aaf")
+					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#f22;color:#fff;")
 						Col(span=6 style="")
 							div(style="font-size:20px")|关注设备
 						Col(span=6 style="")
@@ -94,7 +94,7 @@
 							Col(span=6)
 								div|{{item.state}}
 				Col(span=12 style="margin-left:30px")
-					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#aaf")
+					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#f22;color:#fff")
 						Col(span=8 style="")
 							div(style="font-size:20px")|标题
 						Col(span=6 style="")

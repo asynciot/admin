@@ -19,7 +19,6 @@
 							Button.mr-10(type="default" @click="modal1 = true")|终止当前数据
 							Modal(v-model="modal1" title="警告"  @on-ok="closed")
 								p()|你确定要终止此次实时数据么？
-
 			Row.mb-10(:gutter="8")
 				Col.padding(span="8")
 					Card.card
@@ -75,10 +74,11 @@
 									section
 							div.info
 								p
-									span.pr(id="1" class="fa fa-sort" )
-									i(v-text="show.floor")
-								ul
-									li(v-for="(item, index) in floors",v-text="item",:key="index",:style="{width:floorWidth(floors.length)}")
+									i(v-text="show.floor" style="margin-left: 10px;width:30px")
+									span.pr(id="1" class="fa fa-sort-asc" v-if='show.upCall')
+									span.pr(id="2" class="fa fa-sort-desc" v-if='show.downCall')
+								Col(style="margin-left:10px")
+									Col(span='4' v-for="(item, index) in floors")|{{item}}
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
 						Card(style="margin-bottom:10px")
@@ -354,41 +354,41 @@
 			},			
 			parseStatus(event) {//状态
 				let statusName = '无';
-				if (event.status == 128) {
+				if (event.status == 1) {
 					statusName = '自动';
 				}
-				if (event.status ==64) {
+				if (event.status ==2) {
 					statusName = '检修';
 				}
-				if (event.status ==32) {
+				if (event.status ==4) {
 					statusName = '司机';
 				}
-				if (event.status ==16) {
+				if (event.status ==8) {
 					statusName = '消防';
 				}
-				if (event.status ==8) {
+				if (event.status ==16) {
 					statusName = '锁体';
 				}
-				if (event.status ==4) {
+				if (event.status ==32) {
 					statusName = '故障';
 				}
-				if (event.status ==2) {
+				if (event.status ==64) {
 					statusName = '超载';
 				}
-				if (event.status ==1) {
+				if (event.status ==128) {
 					statusName = '满载';
 				}
 				return statusName
 			},
 			parseModel(event) {
 				let statusName = '无';
-				if (event.model == 128) {
+				if (event.model == 1) {
 					statusName = '单体';
 				}
-				if (event.model ==64) {
+				if (event.model ==2) {
 					statusName = '并联';
 				}
-				if (event.model ==32) {
+				if (event.model ==4) {
 					statusName = '群控';
 				}
 				return statusName
@@ -466,7 +466,7 @@
 	}
 	.doors {
 		width: 100%;
-		height: 260px;
+		height: 280px;
 		display: flex;
 		flex-flow: row;
 		background-color: #EEEEEE;
@@ -480,7 +480,7 @@
 	}
 	.inner {
 		position: relative;
-		height: 230px;
+		height: 250px;
 		border: 1px solid #333;
 		section {
 			position: absolute;
@@ -496,7 +496,7 @@
 		}
 	}
 	.info {
-		width: 32%;
+		width: 50%;
 		display: flex;
 		flex-flow: column;
 		padding-bottom: 2px;

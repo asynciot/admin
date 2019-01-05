@@ -204,7 +204,25 @@
 							 		},
 							 	}
 							 }, follow),
-							 
+							 h('Button', {
+							 	props: {
+							 		type: 'error',
+							 		size: "small",
+							 	},
+							 	style: {
+							 		marginRight: '10px',
+							 	},
+							 	on: {
+							 		click: () => {
+							 			this.$router.push({						
+							 				name: 'alert',
+							 				params: {
+							 					IMEI: params.row.IMEI										
+							 				}
+							 			})
+							 		},
+							 	}
+							 }, '添加工单'),
 							 h('Button', {
 									props: {
 										type: 'primary',
@@ -224,25 +242,6 @@
 										},
 									}
 								}, '查看/编辑'),
-								h('Button', {
-									props: {
-										type: 'error',
-										size: "small",
-									},
-									style: {
-										marginRight: '10px',
-									},
-									on: {
-										click: () => {
-											this.$router.push({						
-												name: 'alert',
-												params: {
-													IMEI: params.row.IMEI										
-												}
-											})
-										},
-									}
-								}, '添加工单'),
                    h('Button', {
                      props: {
                        type: 'primary',

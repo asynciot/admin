@@ -13,7 +13,7 @@
 										Form-item(label="设备类型" v-if="list.device_type==240")|控制柜
 										Form-item(label="设备类型" v-if="list.device_type==15")|控制器
 										Form-item(label="IMEI号")|{{list.IMEI}}
-										Form-item(label="事件类型")
+										Form-item(label="工单类型")
 											RadioGroup(v-model="form.type")
 												Radio(key="1" label="故障" value='1')
 												Radio(key="2" label="保养" value='2')
@@ -116,7 +116,6 @@
 				if (this.form.type=='保养') {type=2}
 				if (this.form.type=='校检') {type=3}
 				let res = await this.$api.alert({code:fault,type:type,device_type:device_type,producer:this.username,device_id:this.list.device_id})
-				console.log(res)
 				if(res.data.code == 0){
 					this.$Notice.success({
 						title: '成功',
@@ -125,10 +124,18 @@
 					this.$router.back(-1)
 				}
 				else{
-					this.$Notice.error({
-						title: '失败',
-						desc: '发送失败'
-					});
+					if (res.data == 'already in db') {
+						this.$Notice.error({
+							title: '失败',
+							desc: '该设备已经告警'
+						});
+					}
+					else{
+						this.$Notice.error({
+							title: '失败',
+							desc: '发送失败'
+						});
+					}
 				}
 			}
 		}

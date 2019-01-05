@@ -29,7 +29,7 @@
 			<Layout>
 				<Header  class="clearfix" :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)',height:'80px'}">
 					<Row>
-					<h2 class="header-title fl" >宁波申菱 管理系统</h2>
+					<h1 class="header-title fl" style="margin-top:10px">宁波申菱 管理系统</h1>
 					<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px">
 						<Button type="ghost" long style="margin-bottom: 5px;">
 							{{role[$cookie.get('role')]}}
@@ -146,7 +146,7 @@
 						label: '维修管理',
 						sub: [{
 								name: 'maintain',
-								label: '事件列表',
+								label: '工单列表',
 							},
 							{
 								name: 'maintainList',
