@@ -26,15 +26,23 @@
 						Form.status(:model="show",label-position="left",:label-width="75")
 							Row(:gutter="16")
 								Col(span="12")
-									Form-item(label="运行信号：")
+									Form-item(label="运行信号：",:label-width="90")
 										p(v-text="show.run ? '运行':'停车'")
 								Col(span="10")
 									Form-item(label="门锁信号：",:label-width="100")
 										p(v-text="show.lock ? '通':'断'")
-							Row(:gutter="16")
+							Row(:gutter="16")		
+								Col(span="12")
+									Form-item(label="开门信号：")
+										p(v-text="show.open ? '动作':'不动作'")
 								Col(span="12")
 									Form-item(label="关门信号：")
 										p(v-text="show.close ? '动作':'不动作'")
+								
+							Row(:gutter="16")
+								Col(span="12")
+									Form-item(label="开门按钮信号：",:label-width="100")
+										p(v-text="show.openBtn ? '有':'无'")
 								Col(span="12")
 									Form-item(label="关门按钮信号：",:label-width="100")
 										p(v-text="show.closeBtn ? '有':'无'")
@@ -42,9 +50,6 @@
 								Col(span="12")
 									Form-item(label="电梯模式：")
 										p(v-text="parseModel(show)")
-								Col(span="10")
-									Form-item(label="开门按钮信号：",:label-width="100")
-										p(v-text="show.openBtn ? '有':'无'")
 							Row(:gutter="16")
 								Col(span="24")
 									Form-item(label="状态：")
@@ -247,6 +252,8 @@
 						_this.show.downCall = (buffer[0]&0x02)>>1
 						_this.show.run      = (buffer[0]&0x04)>>2					//获取运行信号
 						_this.show.lock     = (buffer[0]&0x08)>>3					//获取门锁信号
+						_this.show.open    = (buffer[0]&0x10)>>5					//获取开门信号
+						_this.show.close    = (buffer[0]&0x20)>>5					//获取关门信号
 						_this.show.openBtn  = (buffer[0]&0x40)>>6					//获取开门按钮信号
 						_this.show.closeBtn = (buffer[0]&0x80)>>7					//获取关门按钮信号
 						_this.show.close    = (buffer[0]&0x10)>>5					//获取关门信号
@@ -353,42 +360,42 @@
 				}
 			},			
 			parseStatus(event) {//状态
-				let statusName = '无';
-				if (event.status == 1) {
-					statusName = '自动';
+				let statusName = '';
+				if ((event.status&(0x01)) == 1) {
+					statusName+= '自动,';
 				}
-				if (event.status ==2) {
-					statusName = '检修';
+				if ((event.status&(0x02))>>1 == 1) {
+					statusName+= '检修,';
 				}
-				if (event.status ==4) {
-					statusName = '司机';
+				if ((event.status&(0x04))>>2 == 1) {
+					statusName+= '司机,';
 				}
-				if (event.status ==8) {
-					statusName = '消防';
+				if ((event.status.status&(0x08))>>3 == 1) {
+					statusName+= '消防,';
 				}
-				if (event.status ==16) {
-					statusName = '锁体';
+				if ((event.status&(0x10))>>4 == 1) {
+					statusName+= '锁体,';
 				}
-				if (event.status ==32) {
-					statusName = '故障';
+				if ((event.status&(0x20))>>5 == 1) {
+					statusName+= '故障,';
 				}
-				if (event.status ==64) {
-					statusName = '超载';
+				if ((event.status&(0x40))>>6 == 1) {
+					statusName+= '超载,';
 				}
-				if (event.status ==128) {
-					statusName = '满载';
+				if ((event.status&(0x80))>>7 == 1) {
+					statusName+= '满载,';
 				}
 				return statusName
 			},
 			parseModel(event) {
 				let statusName = '无';
-				if (event.model == 1) {
+				if ((event.model&(0x01)) == 1) {
 					statusName = '单体';
 				}
-				if (event.model ==2) {
+				if ((event.model&(0x02))>>1 == 1) {
 					statusName = '并联';
 				}
-				if (event.model ==4) {
+				if ((event.model&(0x04))>>2 == 1) {
 					statusName = '群控';
 				}
 				return statusName
