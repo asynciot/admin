@@ -78,7 +78,7 @@
 									span.pr(id="1" class="fa fa-sort-asc" v-if='show.upCall')
 									span.pr(id="2" class="fa fa-sort-desc" v-if='show.downCall')
 								Col(style="margin-left:10px")
-									Col(span='4' v-for="(item, index) in floors")|{{item}}
+									Col(span='4' v-for="(item, index) in floors" key='item')|{{item}}
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
 						Card(style="margin-bottom:10px")
