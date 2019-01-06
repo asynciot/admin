@@ -370,7 +370,7 @@
 				if ((event.status&(0x04))>>2 == 1) {
 					statusName+= '司机,';
 				}
-				if ((event.status.status&(0x08))>>3 == 1) {
+				if ((event.status&(0x08))>>3 == 1) {
 					statusName+= '消防,';
 				}
 				if ((event.status&(0x10))>>4 == 1) {
