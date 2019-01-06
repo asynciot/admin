@@ -189,7 +189,20 @@
 		},
 
 		methods:{
-
+			async getData(){
+				var buffer
+				let res =await this.$api.runtime({page:1,num:20,device_id:this.$route.params.id})
+				if (res.data.code == 0){
+					res.data.data.lis.forEach(item=>{
+						if (item.data != null) {buffer = base64url.toBuffer(item.data)}
+						if (item.type == 8196){
+							console.log(buffer)
+							this.all[0].list[0].value=256*buffer[0]&0xff+buffer[0]&0xff
+							console.log(buffer[0]&0xff)
+						}
+					})
+				}
+			},
 		}
 	}	
 </script>
