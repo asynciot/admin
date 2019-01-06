@@ -324,7 +324,7 @@
 						title: '成功',
 						desc: '完成工单'
 					});
-					this.getList()
+					this.$router.back(-1)
 				}
 				else{
 					this.$Notice.error({

@@ -50,26 +50,21 @@
 								Col(span="12")
 									Form-item(label="电梯模式：")
 										p(v-text="parseModel(show)")
-							Row(:gutter="16")
-								Col(span="24")
+								Col(span="12")
 									Form-item(label="状态：")
 										p(v-text="parseStatus(show)")
-							Row(:gutter="16")
-								Col(span="22")
+								Col(span="12")
 									Form-item(label="上运方向行信号：",:label-width="120")
 										p(v-text="show.upCall ? '有':'无'")
-							Row(:gutter="16")
-								Col(span="22")
+								Col(span="12")
 									Form-item(label="下运方向行信号：",:label-width="120")
 										p(v-text="show.downCall ? '有':'无'")
-							Row(:gutter="16")
-								Col(span="22")
+								Col(span="12")
 									Form-item(label="开始时间：")
-										p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
-							Row(:gutter="16")
-								Col(span="22")
+										p(v-text="formatDate(this.t_start, 'HH:mm:ss')")
+								Col(span="12")
 									Form-item(label="结束时间：")
-										p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
+										p(v-text="formatDate(this.t_end, 'HH:mm:ss')")
 					Card.card.animate
 						p(slot="title")|控制柜
 						div.doors
@@ -79,11 +74,11 @@
 									section
 							div.info
 								p
-									i(v-text="show.floor" style="margin-left: 10px;width:30px")
+									i(v-text="floors[show.floor-1]" style="margin-left: 10px;width:45px")
 									span.pr(id="1" class="fa fa-sort-asc" v-if='show.upCall')
 									span.pr(id="2" class="fa fa-sort-desc" v-if='show.downCall')
 								Col(style="margin-left:10px")
-									Col(span='4' v-for="(item, index) in floors")|{{item}}
+									Col(span='6' v-for="(item, index) in floors" key='item')|{{item}}
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
 						Card(style="margin-bottom:10px")
@@ -95,6 +90,7 @@
 						Card(style="margin-bottom:10px")
 							p.drag(slot="title")|关门信号
 							div.ss(id="close" draggable=false)
+						div(style="color:#f00")|注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.
 </template>
 <script>
 	import echarts from 'echarts'
@@ -208,7 +204,7 @@
 			}, 
 			websocketonopen() {
 				console.log("WebSocket连接成功");
-				this.loading='WebSocket连接成功'
+				this.loading='WebSocket连接成功,请等待数据'
 			},
 			websocketonerror(e) {//错误
 				console.log(this.id)
@@ -216,7 +212,7 @@
 				this.loading='WebSocket连接失败'
 			},
 			websocketonmessage(e){//数据接收
-			this.loading='开始获取数据'
+			this.loading='获取数据中'
 				if(e.data=="closed"){
 					// clearInterval(inte)
 					this.loading="此次实时数据已结束"
@@ -235,7 +231,15 @@
 				let res = await this.$api.monitor({
 					IMEI:this.query.IMEI,
 					op:'close',
+					device_type: 240,
+					type: 0,
+					address: '1,1,1,1,1,1,1,1',
+					segment: '0',
+					duration: this.$route.params.duration,
+					threshold: this.$route.params.threshold,
+					interval: this.$route.params.interval,
 				});
+				this.loading="此次实时数据已结束"
 			},
 			//电梯数据展示
 			getData(val) {
@@ -243,7 +247,7 @@
 				buffer = base64url.toBuffer(val.data);	//8位转流
 				console.log(buffer)
 				var _this = this
-				// this.count= 33 
+				// this.count= 33
 				if (_this.t_start == '') _this.t_start = val.time
 				_this.t_end = _this.t_start+this.$route.params.duration*1000
 // 				var inte = setInterval(function () {
@@ -390,7 +394,7 @@
 			parseModel(event) {
 				let statusName = '无';
 				if ((event.model&(0x01)) == 1) {
-					statusName = '单体';
+					statusName = '单梯';
 				}
 				if ((event.model&(0x02))>>1 == 1) {
 					statusName = '并联';
@@ -450,7 +454,7 @@
 		height: 150px;
 	}
 	.card {
-		min-height: 340px;
+		min-height: 250px;
 		.fr {
 			font-style: normal;
 			color: #289efc;
@@ -473,7 +477,7 @@
 	}
 	.doors {
 		width: 100%;
-		height: 280px;
+		height: 340px;
 		display: flex;
 		flex-flow: row;
 		background-color: #EEEEEE;
@@ -487,7 +491,7 @@
 	}
 	.inner {
 		position: relative;
-		height: 250px;
+		height: 310px;
 		border: 1px solid #333;
 		section {
 			position: absolute;
