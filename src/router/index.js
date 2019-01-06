@@ -17,6 +17,8 @@ const CtrlHistory = resolve => require(['@/views/Watch/CtrlHistory'], resolve)
 const DoorHistory = resolve => require(['@/views/Watch/DoorHistory'], resolve)
 const CtrlMonitor = resolve => require(['@/views/Watch/CtrlMonitor'], resolve)
 const DoorMonitor = resolve => require(['@/views/Watch/DoorMonitor'], resolve)
+const CtrlParameter = resolve => require(['@/views/Watch/CtrlParameter'], resolve)
+const DoorParameter = resolve => require(['@/views/Watch/DoorParameter'], resolve)
 const Memory = resolve => require(['@/views/Watch/Memory'], resolve)
 const Evolution = resolve => require(['@/views/Watch/Evolution'], resolve)
 const Map = resolve => require(['@/views/Watch/Map'], resolve)
@@ -181,10 +183,15 @@ export default new Router({
 			meta:{name:'状态监控'},
 			component: CtrlMonitor
 		},{
-			path: '/watch/device/memory/:IMEI/:duration/:threshold/:interval/:id',
-			name: 'memory',
-			meta:{name:'内存监控'},
-			component: Memory
+			path: '/watch/device/ctrlparameter/:IMEI/:id/:device_name',
+			name: 'ctrlparameter',
+			meta:{name:'参数信息'},
+			component: CtrlParameter,
+		},{
+			path: '/watch/device/doorparameter/:IMEI/:id/:device_name',
+			name: 'doorparameter',
+			meta:{name:'参数信息'},
+			component: DoorParameter
 		},
 		//维保管理
 		{
@@ -215,7 +222,7 @@ export default new Router({
 			name: 'maintainMember',
 			meta:{name:'维保人员'},
 			component: Member
-				},{
+		},{
 			path: '/doc/maintain/member/new',
 			name: 'maintainMemberNew',
 			meta:{name:'添加维保人员'},

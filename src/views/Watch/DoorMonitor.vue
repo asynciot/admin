@@ -95,6 +95,7 @@
 						Card(style="margin-bottom:10px")
 							p.drag(slot="title")|门速度 m/s
 							div.ss1(id="speed" draggable=false)
+						div(style="color:#f00")|注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.
 </template>
 <script>
 	import echarts from 'echarts'
@@ -187,14 +188,14 @@
 			}, 
 			websocketonopen() {
 				console.log("WebSocket连接成功");
-				this.loading='WebSocket连接成功'
+				this.loading='WebSocket连接成功，请等待数据'
 			},
 			websocketonerror(e) { //错误
 				console.log("WebSocket连接发生错误");
 				this.loading='WebSocket连接发生错误'
 			},
 			websocketonmessage(e){ //数据接收
-			this.loading='开始获取数据'
+			this.loading='获取数据中'
 				if(e.data=="closed"){
 					if(this.openIn<=15)
 						this.loading="此次实时数据已结束"

@@ -23,16 +23,21 @@
 										p(v-if="data.device_type=='240'")|控制柜
 								Col(span="12")
 									Form-item(label="状态:")
-										p()|{{data.statue}}
+										p()|{{data.state}}
 								Col(span="12")
 									Form-item(label="ip定位:")
 										p()|{{data.ipaddr}}
+								Col(span="12" v-if="data.device_type=='15'")
+									Form-item(label="型号:")
+										p()|{{data.device_model}}
 								Col(span="24")
 									Form-item(label="基站定位:")
 										p()|{{data.cell_address}}
-								Col(span="24")
+								Col(span="20")
 									Form-item(label="安装地址:")
 										p()|{{data.install_addr}}
+								Col(span="4")
+									Button(type="primary" @click="parameter()")|查看参数
 					Col(span=12)
 						card.card(style='height: 220px')
 							img(src='../../assets/wave.gif', width='100%', height='200')
@@ -209,12 +214,12 @@
 				if(!res.data.code){					
 					this.data = res.data.data.list[0]
 					this.options.device_id=this.data.id
-					if(this.data.statue == "online"){
-						this.data.statue = "在线"
-					}else if(this.data.statue == "offline"){
-						this.data.statue = "离线"
-					}else if(this.data.statue == "dead"){
-						this.data.statue = "长期离线"
+					if(this.data.state == "online"){
+						this.data.state = "在线"
+					}else if(this.data.state == "offline"){
+						this.data.state = "离线"
+					}else if(this.data.state == "dead"){
+						this.data.state = "长期离线"
 					}
 					let eve = await this.$api.event(this.options)
 					if(!eve.data.code){
@@ -255,6 +260,27 @@
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
 				}
+			},
+			parameter(){
+				if (this.data.device_type == '15') {
+					this.$router.push({
+						name: 'doorparameter',
+						params: {
+							IMEI: this.data.IMEI,
+							id: this.data.device_id,
+							device_name:this.data.device_name,
+						}
+				})}
+				
+				if (this.data.device_type == '240') {
+					this.$router.push({
+						name: 'ctrlparameter',
+						params: {
+							IMEI: this.data.IMEI,
+							id: this.data.device_id,
+							device_name:this.data.device_name,
+						}
+				})}
 			},
 			getlist(val){
 				if (val==null) {return null}
