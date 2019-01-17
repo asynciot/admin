@@ -25,7 +25,10 @@ div.layout-content-main
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=1)
 					Button.mr-10(type="default",icon="search",@click="search()" style="margin-left:1px")
-				Col(span=4)
+				Col(span=1)
+					Button(type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag')
+					Button(type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag')
+				Col(span=4 v-if='showtag')
 					Col(span=4)
 						span.mt(id="green" style="color:green" class="fa fa-tag fa-2x",@click="checkcolor(0)" )
 					Col(span=4)
@@ -68,6 +71,7 @@ div.layout-content-main
 				41: '联通4G',
 			};
 			return {
+				showtag:false,
 				color:[false,false,false,false,false,false],
 				col:['green','red','yellow','blue','gray','black'],
 				menu: [],
@@ -95,6 +99,11 @@ div.layout-content-main
 				div_show: true,
 				openAnimateList: [],
 				columns: [
+					{
+					title: '编号',
+					key: 'device_id',
+					width: 40,
+					},
 					{
 						title: '设备名称',
 						width: 120,
@@ -175,7 +184,7 @@ div.layout-content-main
 							var addr= params.row.cell_address
 			  		 		if (params.row.cell_address !=null) {
 							if(params.row.cell_address.length>=50){
-						 		addr=item.cell_address.substring(0,50)+"…"
+						 		addr=params.row.cell_address.substring(0,50)+"…"
 						 	}
 							}
 						return  h('Poptip',{

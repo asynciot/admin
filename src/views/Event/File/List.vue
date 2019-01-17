@@ -16,31 +16,43 @@
 			<Option key="3" label="已注册" value="registered"></Option>
 		  </Select>
 			</Col>
+			<Col span='2'>
+			<Select class="smr" v-model="show.state" style="width:100%;" placeholder="在线状态" @on-change="search()">
+			<Option key="1" label="全部" value="all"></Option>
+			<Option key="2" label="在线" value="online"></Option>
+			<Option key="3" label="离线" value="offline"></Option>
+			<Option key="4" label="长期离线" value="longoffline"></Option>
+			</Select>
+			</Col>
 			<Col span=4>
 		  <AutoComplete class="handle-input mr10" v-model="options.search_info" :data="menu" @on-search="handleSearch1" placeholder="关键词" style="width:100%;" id="serch1"></AutoComplete>
 		  </Col>
 			<Col span='1'>
 			<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
-		  </Col>
-			<Col span='3'>
-			<Col span='4'>
-		  <span class="pd fa fa-tag fa-2x" id="green" style="color:green;" @click="checkcolor(0)"></span>
-		  </Col>
-		  <Col span='4'>
-		  <span class="pd fa fa-tag fa-2x" id="red" style="color:red;" @click="checkcolor(1)"></span>
-		  </Col>
-		  <Col span='4'>
-		  <span class="pd fa fa-tag fa-2x" id="yellow" style="color:yellow;" @click="checkcolor(2)"></span>
-		  </Col>
-		  <Col span='4'>
-		  <span class="pd fa fa-tag fa-2x" id="blue" style="color:blue;" @click="checkcolor(3)"></span>
-		  </Col>
-		  <Col span='4'>
-		  <span class="pd fa fa-tag fa-2x" id="gray" style="color:gray;" @click="checkcolor(4)"></span>
-		  </Col>
-		  <Col span='4'>
-		  <span class="pd fa fa-tag fa-2x" id="black" style="color:black;" @click="checkcolor(5)"></span>
-		  </Col>
+		    </Col>
+			<Col span='1'>
+				<Button class="mr-10" type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
+				<Button class="mr-10" type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag'></Button>
+			</Col>
+			<Col span='3' v-if='showtag'>
+			  <Col span='4'>
+			  <span class="pd fa fa-tag fa-2x" id="green" style="color:green;" @click="checkcolor(0)"></span>
+			  </Col>
+			  <Col span='4'>
+			  <span class="pd fa fa-tag fa-2x" id="red" style="color:red;" @click="checkcolor(1)"></span>
+			  </Col>
+			  <Col span='4'>
+			  <span class="pd fa fa-tag fa-2x" id="yellow" style="color:yellow;" @click="checkcolor(2)"></span>
+			  </Col>
+			  <Col span='4'>
+			  <span class="pd fa fa-tag fa-2x" id="blue" style="color:blue;" @click="checkcolor(3)"></span>
+			  </Col>
+			  <Col span='4'>
+			  <span class="pd fa fa-tag fa-2x" id="gray" style="color:gray;" @click="checkcolor(4)"></span>
+			  </Col>
+			  <Col span='4'>
+			  <span class="pd fa fa-tag fa-2x" id="black" style="color:black;" @click="checkcolor(5)"></span>
+			  </Col>
 			</Col>
 			</Row>
 		</Form>
@@ -64,9 +76,11 @@
            2: '清除',
          };
          return {
+			 showtag:false,
 			 show:{
-				 device_type: '',
-				 register:'',
+				 device_type: 'all',
+				 register:'all',
+				 state:'all',
 			 },
 			color:[false,false,false,false,false,false],
 			col:['green','red','yellow','blue','gray','black'],
@@ -84,27 +98,46 @@
            },
            searchkey:'搜索类型',
            loading: false,
-           columns: [ {
+           columns: [ 
 // 				type: 'selection',
 // 				align: 'left',
 // 				width: 35,
 // 				},{
+				{
+				title: ' ',
+				key: 'device_id',
+				width: 50,
+				},{
 				title: '设备名称',
 				align: 'left',
-				width: 130,
+				width: 110,
 				render: (h, params) => {
 					var type='';
 					var reg='';
-					if (params.row.cell_address==null) {type='ios-close';reg='设备没有地址;';}
-					if (params.row.device_name==null) {type='ios-close';reg=reg+'设备未命名;';}
-					if (params.row.IMEI==null) {type='ios-close';reg=reg+'设备缺失IMEI;';}
-					return h('div', [
+// 					var namecolor=params.row.tagcolor.split(';')
+// 					var color=''
+// 					if (namecolor[0] != null){
+// 						if (namecolor[0] == 'green') color='#008B00'
+// 						if (namecolor[0] == 'red') color='#EE0000'
+// 						if (namecolor[0] == 'yellow') color='#FFFF00'
+// 						if (namecolor[0] == 'blue') color='#0000EE'
+// 						if (namecolor[0] == 'gray') color='#FF8C00'
+// 						if (namecolor[0] == 'perple') color='#7D26CD'
+// 					}
+					if (params.row.cell_address==null) {type='ios-help';reg='设备没有地址;';}
+					if (params.row.device_name==null) {type='ios-help';reg=reg+'设备未命名;';}
+					if (params.row.IMEI==null) {type='ios-help';reg=reg+'设备缺失IMEI;';}
+					if (params.row.rssi<=1) {type='ios-help';reg=reg+'信号太弱';}
+					return h('div',[
 						h('Poptip',{
 							props: {
 								trigger:"hover",										
 								placement:"right-start",
 								content:reg
 							},
+							'style':{
+								color:'#FF7F24'
+							}
 						},[
 							h('Icon', {
 								props: {
@@ -118,17 +151,27 @@
 			 {
 				title: 'IMEI(设备识别码)',
 				key: 'IMEI',
-				width: 140,
+				width: 138,
+// 				render: (h, params) => {
+// 					return h('div',[
+// 						h('icon', {
+// 							name:'ios-call-outline',
+// 							props: {
+// 								name: 'ios-call-outline',
+// 							},															
+// 						}),
+// 					])
+// 				}
 			 },
 			 {
 			 title: 'IMSI(用户识别码)',
 			 key: 'device_IMSI',
-			 width: 140,
+			 width: 138,
 			 },
 			 {
 			 title: '设备类型',
 			 key: 'device_type',
-			 width: 90,
+			 width: 85,
 			 render: (h, params) => {
 				 var type="-"
 				 if (params.row.device_type == '240') type='控制柜'
@@ -138,27 +181,27 @@
 			 },
 			 {
 				 title: 'IP定位',
-				 width: 120,
+				 width: 110,
 			   render: (h, params) => {
 			   return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
 			   }
 				 },
 				 {
-					 title: '基站定位',
-					 // width: 260,
-					 key: 'cell_address',
+					 title: '安装地址',
+					 // width: 250,
+					 key: 'install_addr',
 			   render: (h,params) => {
-			   	var addr= params.row.cell_address
-			   	if (params.row.cell_address !=null) {
-			   	if(params.row.cell_address.length>=38){
-			   		addr=item.cell_address.substring(0,38)+"…"
+			   	var addr= params.row.install_addr
+			   	if (params.row.install_addr !=null) {
+			   	if(params.row.install_addr.length>=30){
+			   		addr=params.row.install_addr.substring(0,28)+"…"
 			   	}
 			   	}
 			   return  h('Poptip',{
 			   			props: {
 			   				trigger:"hover",										
 			   				placement:"top-start",
-			   				content:params.row.cell_address
+			   				content:params.row.install_addr
 			   			},
 			   		},addr)
 			   }
@@ -179,7 +222,7 @@
 //              },
              {
                title: '操作',
-               width: 330,
+               width: 265,
                render: (h, params) => {
 					var f
 					var follow="关注设备"
@@ -242,21 +285,21 @@
 										},
 									}
 								}, '查看/编辑'),
-                   h('Button', {
-                     props: {
-                       type: 'primary',
-                       size: "small",
-                       disabled: ((params.row.register != '注册')||(params.row.commond != 'ok')),
-                     },
-                     style: {
-                       marginRight: '10px',
-                     },
-                     on: {
-                       click: () => {  
-							this.burn(params.row)
-                       }
-                     }
-                   }, params.row.register),
+//                    h('Button', {
+//                      props: {
+//                        type: 'primary',
+//                        size: "small",
+//                        disabled: ((params.row.register != '注册')||(params.row.commond != 'ok')),
+//                      },
+//                      style: {
+//                        marginRight: '10px',
+//                      },
+//                      on: {
+//                        click: () => {  
+// 							this.burn(params.row)
+//                        }
+//                      }
+//                    }, params.row.register),
                  ])
                }
              }
@@ -297,6 +340,9 @@
 					 else {this.options.register=this.show.register}
 					 if (this.show.device_type=="all") {this.options.device_type=""}
 					 else {this.options.device_type=this.show.device_type}
+					 if (this.show.state=="all") {this.options.state=""}
+					 else {this.options.state=this.show.state}
+					 
 		    let res = await this.$api.devices(this.options)
 			let fol = await this.$api.follow({num:100,page:1})
            this.loading = false
@@ -323,11 +369,6 @@
 							if (item.device_name !=null) {
 						 	if(item.device_name.length>=10){
 						 		item.device_name=item.device_name.substring(0,9)+"…"
-						 	}
-							}
-							if (item.cell_address !=null) {
-							if(item.cell_address.length>=60){
-						 		item.cell_address=item.cell_address.substring(0,60)+"…"
 						 	}
 							}
 						 	})						 

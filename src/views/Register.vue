@@ -11,7 +11,7 @@ div.account
 					Input(type="text",v-model="form.mobile",placeholder="手机号码" maxlength=11)
 						icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="username")
-					Input(type="text",v-model="form.username",placeholder="用户名称")
+					Input(type="text",v-model="form.username",placeholder="登录用户名")
 						Icon(type="ios-person-outline",size="20",slot="prepend")
 				Form-item(prop="verifyCode")
 					Row(:gutter=30)
@@ -69,8 +69,9 @@ export default {
 			rules: {
 				username: [{
 					required: true,
-					message: '请填写',
-					trigger: 'blur'
+					message: '用户名由字母和数字组成',
+					trigger: 'blur',
+					pattern:/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
 				},
 				{
 					type: 'string',

@@ -198,12 +198,9 @@
 						}],
 					},{
 						name: 'system',
-						icon: 'ios-settings',
+						icon: 'ios-person-outline',
 						label: '系统管理',
 						sub:[{
-							name:'print',
-							label:'打印二维码',
-						},{
 							name: 'userManage',
 							label: '用户管理',
 						},{
@@ -212,6 +209,14 @@
 						},{
 							name: 'instructions',
 							label: '说明文档',
+						}]
+					},{
+						name: 'setting',
+						icon: 'ios-settings',
+						label: '出厂设置',
+						sub:[{
+							name:'print',
+							label:'打印二维码'
 						}]
 					},
 				]

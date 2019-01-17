@@ -160,6 +160,7 @@ div.layout-content-main
 			}
 		},
 		created(){
+			this.getData();
 			if(this.$route.params.id){
 				this.getData();
 				setTimeout(() => {
@@ -174,6 +175,23 @@ div.layout-content-main
 			draggable,
 		},
 		methods: {
+			async getData(){
+				var buffer
+				if (this.$route.params.device_model == '1') {
+					let dor = await this.$api.runtime({page:1,num:20,type: 4101,device_id:this.id})
+					if (dor.data.code == 0) {
+						buffer = base64url.toBuffer(dor.data.data.list[0].data)
+						this.doorWidth=buffer[14]*256+buffer[15]
+					}
+				}
+				if (this.$route.params.device_model == '2') {
+					let dor = await this.$api.runtime({page:1,num:20,type: 4100,device_id:this.id})
+					if (dor.data.code == 0) {
+						buffer = base64url.toBuffer(dor.data.data.list[0].data)
+						this.doorWidth=buffer[26]*256+buffer[27]
+					}
+				}
+			},
 			drawLine(){
 				let openIn = this.$echarts.init(document.getElementById('openIn'))
 				let closeIn = this.$echarts.init(document.getElementById('closeIn'))
@@ -376,7 +394,7 @@ div.layout-content-main
 						this.show.stop	= this.event.stop[i] = (buffer[i*8+1]&0x04)>>2					//停止输出信号
 						this.show.inHigh = this.event.inHigh[i] = (buffer[i*8+1]&0x02)>>1							//输入电压过高
 						this.show.inLow = this.event.inLow[i] = buffer[i*8+1]&0x01							//输入电压过低
-						this.show.outHigh = this.event.outHigh[i] = buffer[i*8+2]&0x80)>>7						//输出过流
+						this.show.outHigh = this.event.outHigh[i] = (buffer[i*8+2]&0x80)>>7						//输出过流
 						this.show.motorHigh = this.event.motorHigh[i] = (buffer[i*8+2]&0x40)>>6					//电机过载
 						this.show.flySafe = this.event.flySafe[i] = (buffer[i*8+2]&0x20)>>5						//飞车保护
 						this.show.closeStop = this.event.closeStop[i] = (buffer[i*8+2]&0x10)>>4					//开关门受阻

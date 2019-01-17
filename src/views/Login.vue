@@ -17,11 +17,13 @@ div.account
 					Form-item
 						Row(:gutter="20")
 							Col(span=12)
-								Button(type="primary",long,@click="login('form')",:loading="loading")|登录
-							Col(span=12)
 								Button(type="primary",long,@click="goRegister")|注册
-							Col(span=24)
+							Col(span=12)
+								Button(type="primary",long,@click="login('form')",:loading="loading")|登录
+							Col(span=16)
 								Button(type="text" style="",@click="reset")|忘记密码？
+							Col(span=8)
+								checkbox(v-model="rem" @click="rem=!rem")|记住密码
 </template>
 
 <script>
@@ -36,6 +38,7 @@ export default {
     return {
 			ladderApi: ladderApi,
       loading: false,
+	  rem: false,
       form: {
         username: '',
         password: '',
@@ -68,6 +71,18 @@ export default {
       }
     }
   },
+  created(){
+	  var rem=window.localStorage.getItem('rem')
+	  var u=window.localStorage.getItem('u')
+	  if (u != null) {this.form.username=u}
+	  if (rem == 'true') {
+		  this.rem=true
+		  var u=window.localStorage.getItem('u')
+		  if (u != null) {this.form.username=u}
+		  var p=window.localStorage.getItem('p')
+		  if (p != null) {this.form.password=p}
+		  }
+  },
   methods: {
     async login(name) {
       this.loading = true;
@@ -76,9 +91,14 @@ export default {
 					let res = await this.$api.login(this.form)
           if (!res.data.code) {					
             this.loading = false;
-						window.localStorage.setItem('username',res.data.account.username)
-						window.localStorage.setItem('id',res.data.account.id)
-						// console.log(res.data.account.username)
+				window.localStorage.setItem('username',res.data.account.username)
+				window.localStorage.setItem('id',res.data.account.id)
+				// console.log(res.data.account.username)
+				window.localStorage.setItem('rem',this.rem)
+				window.localStorage.setItem('u',this.form.username)
+				if (this.rem) {
+					window.localStorage.setItem('p',this.form.password)
+				}
             this.$Message.success({
               content: '登录成功，正在跳转!',
               duration: 0.5,

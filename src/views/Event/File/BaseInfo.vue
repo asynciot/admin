@@ -7,17 +7,22 @@ div.layout-content-main
 					p(slot="title")|基本信息
 					Row(:gutter="30")
 						Col(span="12")|名称:
-							input(v-model="list.device_name" style="border: 0" @input="")
-						Col(span="12")|IMEI:
-							input(v-model="list.IMEI" style="border: 0")
+							input(v-model="list.device_name" style="border: 0" @input="" maxlength='10')
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+						Col(span="12")|设备ID:
+							input(v-model="list.device_id" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
+						Col(span="12")|IMEI:
+							input(v-model="list.IMEI" style="border: 0" maxlength='15')
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+						Col(span="12")|IMSI:
+							input(v-model="list.IMSI" style="border: 0" maxlength='15')
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+					Row(:gutter="30" style="padding-top:10px" )
 						Col(span="12" v-if="list.device_type==15")|设备类型:控制器
 						Col(span="12" v-if="list.device_type==240")|设备类型:控制柜
-						Col(span="12")|品牌:
-							input( style="border: 0" readonly)
-					Row(:gutter="30" style="padding-top:10px" )
-						Col(span="12")|型号:
-							input( style="border: 0" readonly)
+						Col(span="12" v-if="list.device_model==1")|型号:NSFC01-01B
+						Col(span="12" v-if="list.device_model==2")|型号:NSFC01-02T
 				Card(v-if="list.device_type == 15")
 					p(slot="title")|参数信息
 					Row(:gutter="30")
@@ -57,14 +62,17 @@ div.layout-content-main
 					Row(:gutter="30")
 						Col(span="12")|下次维保:
 							DatePicker(type="date" placeholder="下次维保日期" format="yyyy-MM-dd" v-model="options.maintenance_nexttime" style='width: 50%; margin-left:20px')
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|早几日提醒:
 							input( style="border: 0" v-model="options.maintenance_remind")
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 					Row(:gutter="30")
 						Col(span="12")|维保类型:
 							Select(v-model="list.maintenance_type" style="width:50%; margin-left:20px" placeholder="类型" @on-change="search()")
 								Option(key="1" label="故障" value='1')
 								Option(key="2" label="保养" value="2")
 								Option(key="3" label="校检" value="3")
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|上次维保:{{options.maintenance_lasttime}}
 				Card(style="margin-top:10px")
 					p(slot="title")|系统
@@ -80,34 +88,41 @@ div.layout-content-main
 							input( style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|安装地址::
-							input(v-model="list.install_addr" style="border: 0" @input="" )
+							input(v-model="list.install_addr" style="border: 0" @input="" maxlength='18')
+							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|安装日期::
 							input(v-model="options.install_date" style="border: 0" readonly)
 			Col(span="7" )
 				Card()
 					img(src="../../../assets/ladder.jpg" width="100%")
-				Col(span=2)
-					span.pd(id="green" style="color:green;" class="fa fa-tag fa-2x",@click="checkcolor(0)")
-				Col(span=2)
-					span.pd(id="red" style="color:red;" class="fa fa-tag fa-2x",@click="checkcolor(1)")
-				Col(span=2)
-					span.pd(id="yellow" style="color:yellow;" class="fa fa-tag fa-2x",@click="checkcolor(2)")
-				Col(span=2)
-					span.pd(id="blue" style="color:blue;" class="fa fa-tag fa-2x",@click="checkcolor(3)")
-				Col(span=2)
-					span.pd(id="gray" style="color:gray;" class="fa fa-tag fa-2x",@click="checkcolor(4)")
-				Col(span=2)
-					span.pd(id="black" style="color:black;" class="fa fa-tag fa-2x",@click="checkcolor(5)")
+				Col(span = 12)
+					Col(span=4)
+						span.pd(id="green" style="color:green;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(0)")
+					Col(span=4)
+						span.pd(id="red" style="color:red;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(1)")
+					Col(span=4)
+						span.pd(id="yellow" style="color:yellow;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(2)")
+					Col(span=4)
+						span.pd(id="blue" style="color:blue;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(3)")
+					Col(span=4)
+						span.pd(id="gray" style="color:gray;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(4)")
+					Col(span=4)
+						span.pd(id="black" style="color:black;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 				Col(span=24)
+					Col(span=12)
+						Button(@click="burnn()" type="primary" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%")|注册设备
+						Button(@click="clearr()" type="primary" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%")|解除注册
+						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 92%")|注册中
 					Col(span=11)
-						Button(@click="burn()" type="primary" v-if="list.commond !='contract'" style="margin-top: 20px; width: 100%")|强制注册
+						Button(@click="burn()" type="warning" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 100%")|强制注册
+						Button(@click="clear()" type="warning" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px;width: 100%")|强制解除
 						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 100%")|注册中
-					Col(span=11)
-						Button(@click="clear()" type="warning" style="margin-top: 20px;margin-left:20%; width: 100%" v-if="list.commond !='contract'")|强制解除
-						Button(@click="clear()" type="warning" style="margin-top: 20px;margin-left:20%; width: 100%" v-if="list.commond =='contract'" disabled= true)|强制解除
 				Col(span=24)
-					Col(span=24)
-						Button(@click="update()" type="success" style="margin-top: 20px; width: 100%" v-if="list.commond !='contract'")|提交信息
+					Col(span=12)
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent')|提交信息
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
+					Col(span=11)
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%")|删除设备
 </template>
 
 <script>
@@ -128,7 +143,8 @@ export default {
 		15: '控制器',
 		240: '控制柜',
 		};
-		return {	
+		return {
+			sent:false,
 			color:[false,false,false,false,false,false],
 			col:['green','red','yellow','blue','gray','black'],
 			options: {
@@ -182,11 +198,12 @@ export default {
 	},
 	methods: {
 		async update(){
-			
+			this.sent=true
 			this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)
 			this.list.maintenance_remind=this.options.maintenance_remind*86400000
 			
 			let res =await this.$api.setdevices(this.list)
+			this.sent=false
 			if (res.data.code == 0){
 				this.$Notice.success({
 					title: '成功',
@@ -244,6 +261,7 @@ export default {
 			console.log(buffer)
 			this.options.install_date=this.$format(this.list.install_date, 'YYYY-MM-DD')
 			this.list.maintenance_nexttime=parseInt(this.list.maintenance_nexttime)
+			this.list.maintenance_lasttime=parseInt(this.list.maintenance_lasttime)
 			this.options.maintenance_nexttime=this.$format(this.list.maintenance_nexttime, 'YYYY-MM-DD')
 			this.options.maintenance_lasttime=this.$format(this.list.maintenance_lasttime, 'YYYY-MM-DD')
 			this.options.maintenance_remind=this.list.maintenance_remind/86400000
@@ -281,12 +299,34 @@ export default {
 		getlist(val){
 			return val.split(';')
 		},
+		async burnn() {
+			this.$Modal.confirm({
+				title: '确定要注册这台设备吗',
+				content:'',
+				onOk: () => {
+					this.toburnn()
+				},
+				onCancel: () => {
+				}
+			})	
+		},
 		async burn() {
 			this.$Modal.confirm({
 				title: '确定要强制注册吗',
 				content:'可能会生成错误信息！',
 				onOk: () => {
 					this.toburn()
+				},
+				onCancel: () => {
+				}
+			})	
+		},
+		async clearr() {
+			this.$Modal.confirm({
+				title: '确定要解除注册吗',
+				content:'',
+				onOk: () => {
+					this.toclearr()
 				},
 				onCancel: () => {
 				}
@@ -302,6 +342,24 @@ export default {
 				onCancel: () => {
 				}
 			})	
+		},
+		async toburnn() {
+			this.list.commond = "contract"
+			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"register"})
+			if (res.data.code === 0) {
+				this.refreshNum = 2
+				this.refresh()
+				this.$Notice.success({
+					title: '成功',
+					desc: '开始注册！稍后在运维界面显示该设备'
+				});
+			} else {
+				this.list.commond = "ok"
+				this.$Notice.error({
+					title: '错误',
+					desc: '注册失败'
+				});
+			}
 		},
 		async toburn() {
 			this.list.commond = "contract"
@@ -330,6 +388,22 @@ export default {
 				}
 			}
 		},
+		async toclearr() {
+			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
+			if (res.data.code === 0) {
+				this.$Notice.success({
+					title: '成功',
+					desc: '开始清除'
+				});
+				this.list.commond = "contract"
+			}  else {
+				this.list.commond = "ok"
+				this.$Notice.error({
+					title: '错误',
+					desc: '清除失败'
+				});
+			}
+		},
 		async toclear() {
 			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
 			if (res.data.code === 0) {
@@ -339,9 +413,9 @@ export default {
 				});
 				this.list.commond = "contract"
 			}  else {
-				let ress=await this.$api.setdevices
-				({id: this.list.id,IMEI: this.list.IMEI,IMSI: this.list.IMSI,isreg: False})
+				let ress=await this.$api.setdevices({id: this.list.id,IMEI: this.list.IMEI,IMSI: this.list.IMSI,isreg: False})
 				if (ress.data.code === 0){
+					this.list.commond = "contract"
 					this.$Notice.success({
 						title: '成功',
 						desc: '清除异常，但已将该设备标为未注册'
@@ -351,8 +425,34 @@ export default {
 						this.$Notice.error({
 							title: '错误',
 							desc: '清除失败'
-						});
+					});
 				}
+			}
+		},
+		async del() {
+			this.$Modal.confirm({
+				title: '确定要删除这台设备吗',
+				content:'',
+				onOk: () => {
+					this.todel()
+				},
+				onCancel: () => {
+				}
+			})	
+		},
+		async todel(){
+			let res =await this.$api.deldevices({id: this.list.id,IMEI: this.list.IMEI})
+			if (res.data.code === 0){
+				this.$Notice.success({
+					title: '成功',
+					desc: '已经删除此设备'
+				});
+				this.$router.back(-1)
+			} else {
+					this.$Notice.error({
+						title: '错误',
+						desc: '删除失败'
+					});
 			}
 		},
 		formatDate(val, format) {

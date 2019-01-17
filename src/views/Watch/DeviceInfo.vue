@@ -8,9 +8,18 @@
 							i(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(data.tagcolor)" style="margin-left: 10px")
 						Form.status(label-position="left",:label-width="70")
 							Row
-								Col(span="20")
+								Col(span="12")
 									Form-item.fontsize(label="设备名称:")
 										p()|{{data.device_name}}
+								Col(span="12")
+									Form-item(label="信号强度:")
+										div()
+											icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign[0]")
+											icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign[1]")
+											icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign[2]")
+											icon(name="sign3",width="24",height="24",slot="prepend" v-if="sign[3]")
+											icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign[4]")
+											icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign[5]")
 								Col(span="12")
 									Form-item(label="id:")
 										p()|{{data.id}}
@@ -28,8 +37,10 @@
 									Form-item(label="ip定位:")
 										p()|{{data.ipaddr}}
 								Col(span="12" v-if="data.device_type=='15'")
-									Form-item(label="型号:")
-										p()|{{data.device_model}}
+									Form-item(label="型号:" v-if="data.device_model == '1' ")
+										p()|NSFC01-01B
+									Form-item(label="型号:" v-if="data.device_model == '2' ")
+										p()|NSFC01-02T
 								Col(span="24")
 									Form-item(label="基站定位:")
 										p()|{{data.cell_address}}
@@ -37,7 +48,7 @@
 									Form-item(label="安装地址:")
 										p()|{{data.install_addr}}
 								Col(span="4")
-									Button(type="primary" @click="parameter()")|查看参数
+									Button(type="primary" @click="parameter()")|菜单
 					Col(span=12)
 						card.card(style='height: 220px')
 							img(src='../../assets/wave.gif', width='100%', height='200')
@@ -63,49 +74,74 @@
 						Col(span="24" style="height: 35px;font-size:20px")|内存调试
 						Row(style="margin-top:20px")|{{this.loading}}
 						Row(style="margin-top:20px")
-							Col(span=5 style="height: 30px;font-size:16px")|段地址:
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[0]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[1]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[2]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[3]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[4]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[5]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[6]')
-							Col(span=2)
-								Input(style="width:70%" maxlength="1" v-model='address[7]')
-						Row(style="margin-top:75px")
 							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
-							Col(span=6)
-								Input(style="width:80%" maxlength="8" v-model='segment')
-							Col(span=5 style="height: 30px;font-size:16px")|监控时长(s):
-							Col(span=6)
-								Input(style="width:75%" maxlength="4" v-model='duration')
-						Row(style="margin-top:75px")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[1]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[5]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[7]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+						Row(style="margin-top:20px")
+							Col(span=5 style="height: 30px;font-size:16px")
+								checkbox(v-model="ctn" @on-change="contn()")|连续
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[9]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[10]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[11]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[12]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[13]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='address[14]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='address[15]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+						Row(style="margin-top:35px")
+							Col(span=5 style="height: 30px;font-size:16px")|段地址:
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='segment[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='segment[1]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='segment[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='segment[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4 style="height: 30px;font-size:16px")|时长(s):
+							Col(span=2)
+								input(style="width:100%" maxlength="4" v-model='duration' onkeyup="value=value.replace(/([^0-9])+/g, '')")
+						Row(style="margin-top:35px")
 							Col(span=5 style="height: 30px;font-size:16px")|结果:
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[0]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[1]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[2]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[3]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[4]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[5]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[6]' readonly)
-							Col(span=2)
-								Input(style="width:70%" maxlength="2" v-model='res[7]' readonly)
-						Row(style="margin-top:75px")		
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='res[0]' readonly)
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='res[1]' readonly)
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='res[2]' readonly)
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='res[3]' readonly)
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='res[4]' readonly)
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='res[5]' readonly)
+							Col(span=1)
+								input(style="width:100%" maxlength="2" v-model='res[6]' readonly)
+							Col(span=3)|:
+								input(style="width:33%" maxlength="2" v-model='res[7]' readonly)
+						Row(style="margin-top:35px")		
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
 								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
 					card.card(align='center' style='height: 500px',v-if='data.device_type == 15')
@@ -141,11 +177,14 @@
 	export default {
 		data() {
 			return {
+				sign:[false,false,false,false,false,false],
+				ctn: false,
 				loading:'',
 				websock:'',
-				address:['0','0','0','0','0','0','0','0'],
-				res:['0','0','0','0','0','0','0','0'],
-				segment:0,
+				test:'',
+				address:['00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00'],
+				res:['00','00','00','00','00','00','00','00'],
+				segment:['00','00','00','00'],
 				ctn:false,
 				duration:30,
 				keyword:'time',
@@ -191,6 +230,31 @@
 				this.getData()
 		},
 		methods: {
+			contn(){
+				if (this.ctn){
+					if (this.address[0] == '') this.address[0]='00'
+					if (this.address[1] == '') this.address[1]='00'
+					for (var i=1;i<8;i++){
+						if (this.address[2*i-1] == 'ff') {
+							this.address[2*i+1] ='00'
+							this.address[2*i] = (parseInt('0x'+this.address[2*i-2])+1).toString(16)
+							if (this.address[2*i] == '100') this.address[2*i]='00'
+						}
+						else{
+							this.address[2*i] = this.address[2*i-2]
+							this.address[2*i+1] = (parseInt('0x'+this.address[2*i-1])+1).toString(16)
+						}
+					}
+					for (var i=0;i<16;i++){
+						if (this.address[i].length == 1) this.address[i]='0'+this.address[i]
+					}
+				}
+				else {
+					for (var i=0;i<16;i++){
+						this.address[i]='00'
+					}
+				}
+			},
 			handleSearch1 (selectword) {
 				this.menu=[];
 				var str;
@@ -211,16 +275,35 @@
 			async getData() {
 				this.options.IMEI=this.$route.params.IMEI
 				let res = await this.$api.devices({num:1,page:1,IMEI:this.$route.params.IMEI})
-				if(!res.data.code){					
+				if(!res.data.code){
 					this.data = res.data.data.list[0]
 					this.options.device_id=this.data.id
 					if(this.data.state == "online"){
 						this.data.state = "在线"
 					}else if(this.data.state == "offline"){
 						this.data.state = "离线"
-					}else if(this.data.state == "dead"){
+					}else if(this.data.state == "longoffline"){
 						this.data.state = "长期离线"
 					}
+						if (this.data.rssi != ''){
+							if (this.data.rssi==0) {this.sign[0]=true}
+							else{
+								if (this.data.rssi<=2) {this.sign[1]=true}
+								else{
+									if (this.data.rssi<=4) {this.sign[2]=true}
+									else {
+										if (this.data.rssi<=8) {this.sign[3]=true}
+										else{
+											if (this.data.rssi<=16) {this.sign[4]=true}
+											else{
+												if (this.data.rssi<=32) {this.sign[5]=true}
+											}
+										}
+									}
+								}
+							}
+
+						}
 					let eve = await this.$api.event(this.options)
 					if(!eve.data.code){
 						this.list = eve.data.data.list
@@ -269,6 +352,7 @@
 							IMEI: this.data.IMEI,
 							id: this.data.device_id,
 							device_name:this.data.device_name,
+							device_model:this.data.device_model,
 						}
 				})}
 				
@@ -310,21 +394,19 @@
 					});
 				},
 			monitor(val) {
-				if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
-					this.$Notice.error({
-						title: '错误',
-						desc: '所有参数都必须是数字！'
-					})
-				}
-				else {			
-				if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
-					this.$Notice.error({
-						title: '错误',
-						desc: '监控时长必须大于采样周期'
-					})
-				}
-				else {
 					if (this.data.device_type=='15'){
+						if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
+							this.$Notice.error({
+								title: '错误',
+								desc: '所有参数都必须是数字！'
+							})
+						}else{
+						if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
+							this.$Notice.error({
+								title: '错误',
+								desc: '监控时长必须大于采样周期'
+							})
+						}else{
 						this.$router.push({
 							name: 'doormonitor',
 							params: {			
@@ -333,10 +415,25 @@
 								threshold: this.realtime.threshold,
 								IMEI: this.data.IMEI,
 								id: this.data.device_id,
+								device_model: this.data.device_model,
 							}
 						})
+						}
+						}
 					}
 					if ((this.data.device_type=='240')&&(val=='1')){
+						if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
+							this.$Notice.error({
+								title: '错误',
+								desc: '所有参数都必须是数字！'
+							})
+						}else{
+						if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
+							this.$Notice.error({
+								title: '错误',
+								desc: '监控时长必须大于采样周期'
+							})
+						}else{
 						this.$router.push({
 							name: 'ctrlmonitor',
 							params: {
@@ -347,12 +444,16 @@
 								id: this.data.device_id,
 							}
 						})
+						}
+						}
 					}
 					if ((this.data.device_type=='240')&&(val=='2')){
+						var f=true;
+						for (var i=0;i<16;i++){
+							if(/^\d+$/.test(this.address[i])) f=false
+						}
 						this.initWebsocket()
 					}
-				}	
-				}
 			},
 			history(val) {
 				if (this.data.device_type=='15'){
@@ -381,8 +482,10 @@
 					device_type: 240,
 					type: 1,
 					address: (this.address[0]+','+this.address[1]+','+this.address[2]+','+this.address[3]+
-						  ','+this.address[4]+','+this.address[5]+','+this.address[6]+','+this.address[7]),
-					segment: this.segment,
+						  ','+this.address[4]+','+this.address[5]+','+this.address[6]+','+this.address[7]+
+						  ','+this.address[8]+','+this.address[9]+','+this.address[10]+','+this.address[11]+
+						  ','+this.address[12]+','+this.address[13]+','+this.address[14]+','+this.address[15]),
+					segment: (this.segment[0]+','+this.segment[1]+','+this.segment[2]+','+this.segment[3]),
 					IMEI: this.data.IMEI,
 					duration: this.duration,
 					threshold: 1,
@@ -392,7 +495,7 @@
 				if(res.data.code != 0){
 					alert("该电梯已被其他人启动实时监控")
 				}
-				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.data.id
+				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.data.id+'&userId='+window.localStorage.getItem('id')
 				this.websock = new WebSocket(wsurl);
 				this.websock.onopen = this.websocketonopen;
 				this.websock.onerror = this.websocketonerror;
@@ -407,7 +510,7 @@
 				this.loading='WebSocket连接失败'
 			},
 			websocketonmessage(e){//数据接收
-			this.loading='开始获取数据'
+			this.loading='正在获取数据'
 				if(e.data=="closed"){
 					this.loading="此次实时数据已结束"
 				}else{

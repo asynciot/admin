@@ -38,10 +38,12 @@
 						Col(span=24 style="margin-top: 10px")
 							Col(span=8 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="success",@click="finish('finish')" v-if="list.state != 'treated'")|完成工单
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))")|完成工单
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(sent))" disabled)|完成工单
 							Col(span=8 align="center")
 								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="warning",@click="finish('transfer')" v-if="list.state != 'treated'")|转办
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))")|转办
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(sent))" disabled)|转办
 							Col(span=8 align='center')
 								Button(@click="$router.back(-1)")|取消
 </template>
@@ -50,6 +52,7 @@
 	export default{	
 		data(){
 			return{
+				sent:false,
 				username:window.localStorage.getItem('username'),
 				id:window.localStorage.getItem('id'),
 				fault:[0,0,0,0,0,0,0,0],
@@ -109,7 +112,7 @@
 					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
 					res.data.data.list[0].cell_address = ech.data.data.list[0].cell_address
 					if (res.data.data.list[0].result == 'transfer') {res.data.data.list[0].result='转办'}
-					if (res.data.data.list[0].result == 'finish') {res.data.data.list[0].result='完成'}
+					else {res.data.data.list[0].result='完成'}
 					this.list = res.data.data.list[0]
 					
 					var before=this.list.before_pic.split(';')
@@ -130,8 +133,23 @@
 			before1 (file) {
 				if (this.list.state != "treated"){
 					var type = file.name.split('.')
-					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+					if (file.size>2097000) {
+						this.$Notice.warning({
+							title: '警告',
+							desc: '不能上传2M以上的图片'
+						})
+					}
+					else {
+						this.$Notice.warning({
+							title: '警告',
+							desc: '1'
+						})
 					this.beforefile1 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+// 					this.$Notice.warning({
+// 						title: '警告',
+// 						desc: '2'
+// 					})
 					let url = null;
 					if (window.createObjectURL!=undefined) { // basic
 						url = window.createObjectURL(this.beforefile1) ;
@@ -140,8 +158,13 @@
 					}else if (window.URL!=undefined) { // mozilla(firefox)
 						url = window.URL.createObjectURL(this.beforefile1) ;
 					}
+// 					this.$Notice.warning({
+// 						title: '警告',
+// 						desc: '3'
+// 					})
 					document.getElementById('before1').src=url;
 					return false;
+					}
 					}
 					else{
 						this.$Notice.warning({
@@ -160,8 +183,15 @@
 			before2 (file) {
 				if (this.list.state != "treated"){
 				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 				this.beforefile2 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+				if (file.size>2097000) {
+					this.$Notice.warning({
+						title: '警告',
+						desc: '不能上传2M以上的图片'
+					})
+				}
+				else {
 				let url = null;
 				if (window.createObjectURL!=undefined) { // basic
 					url = window.createObjectURL(this.beforefile2) ;
@@ -172,6 +202,7 @@
 				}
 				document.getElementById('before2').src=url;
 				return false;
+				}
 				}
 				else{
 					this.$Notice.warning({
@@ -190,7 +221,14 @@
 			before3 (file) {
 				if (this.list.state != "treated"){
 				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+				if (file.size>2097000) {
+					this.$Notice.warning({
+						title: '警告',
+						desc: '不能上传2M以上的图片'
+					})
+				}
+				else {
 				this.beforefile3 = new File([file], 'before'+file.name,{type:"image/jpeg"});
 				let url = null;
 				if (window.createObjectURL!=undefined) { // basic
@@ -202,6 +240,7 @@
 				}
 				document.getElementById('before3').src=url;
 				return false;
+				}
 				}
 				else{
 					this.$Notice.warning({
@@ -220,7 +259,14 @@
 			after1 (file) {
 				if (this.list.state != "treated"){
 				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+				if (file.size>2097000) {
+					this.$Notice.warning({
+						title: '警告',
+						desc: '不能上传2M以上的图片'
+					})
+				}
+				else {
 				this.afterfile1 = new File([file], 'after'+file.name,{type:"image/jpeg"});
 				let url = null;
 				if (window.createObjectURL!=undefined) { // basic
@@ -232,6 +278,7 @@
 				}
 				document.getElementById('after1').src=url;
 				return false;
+				}
 				}
 				else{
 					this.$Notice.warning({
@@ -250,7 +297,14 @@
 			after2 (file) {
 				if (this.list.state != "treated"){
 				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+				if (file.size>2097000) {
+					this.$Notice.warning({
+						title: '警告',
+						desc: '不能上传2M以上的图片'
+					})
+				}
+				else {
 				this.afterfile2 = new File([file], 'after'+file.name,{type:"image/jpeg"});
 				let url = null;
 				if (window.createObjectURL!=undefined) { // basic
@@ -262,6 +316,7 @@
 				}
 				document.getElementById('after2').src=url;
 				return false;
+				}
 				}
 				else{
 					this.$Notice.warning({
@@ -280,18 +335,26 @@
 			after3 (file) {
 				if (this.list.state != "treated"){
 				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
-				this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
-				let url = null;
-				if (window.createObjectURL!=undefined) { // basic
-					url = window.createObjectURL(this.afterfile3) ;
-				}else if (window.webkitURL!=undefined) { // webkit or chrome
-					url = window.webkitURL.createObjectURL(this.afterfile3) ;
-				}else if (window.URL!=undefined) { // mozilla(firefox)
-					url = window.URL.createObjectURL(this.afterfile3) ;
-				}
-				document.getElementById('after3').src=url;
-				return false;
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+					if (file.size>2097000) {
+						this.$Notice.warning({
+							title: '警告',
+							desc: '不能上传2M以上的图片'
+						})
+					}
+					else {
+						this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+						let url = null;
+						if (window.createObjectURL!=undefined) { // basic
+							url = window.createObjectURL(this.afterfile3) ;
+						}else if (window.webkitURL!=undefined) { // webkit or chrome
+							url = window.webkitURL.createObjectURL(this.afterfile3) ;
+						}else if (window.URL!=undefined) { // mozilla(firefox)
+							url = window.URL.createObjectURL(this.afterfile3) ;
+						}
+						document.getElementById('after3').src=url;
+						return false;
+					}
 				}
 				else{
 					this.$Notice.warning({
@@ -308,6 +371,7 @@
 				}
 			},
 			async finish(val){
+				this.sent=true
 				var formData = new FormData()
 				var formData = new window.FormData()
 				formData.append('file1',this.beforefile1)
@@ -319,6 +383,7 @@
 				formData.append('id',this.$route.params.id)
 				formData.append('result',val)
 				let res = await this.$api.finish(formData)
+				this.sent=false
 				if (res.data.code == 0){
 					this.$Notice.success({
 						title: '成功',

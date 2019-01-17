@@ -7,18 +7,18 @@
 		  <Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
 		  <Option key="1" label="全部" value="all"></Option>
 		  <Option key="2" label="维修中" value="untreated"></Option>
-		  <Option key="3" label="已修复" value="treated"></Option>
+		  <Option key="3" label="已转办" value="transfer"></Option>
+		  <Option key="4" label="已完成" value="untransfer"></Option>
 		  </Select>
 		  </Col>
 		  <Col span='2'>
 		  </Col>
 		  <Col span='4'>
-		  <AutoComplete class="handle-input mr10" v-model="options.search_info" :data="menu" @on-search="handleSearch1" placeholder="关键词" style="width:100%;" id="serch1"></AutoComplete>
+		  <AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
 		  </Col>
 		  <Col span='1'>
 		  <Button class="mr-10" type="default" icon="search" @click="search()"></Button>
 		  </Col>
-		  
 		  </Row>
 		</Form>
 		</div>
@@ -50,16 +50,24 @@
 					isreg: "True",
 					state:'untreated',
 					type:'',
+					result:'',
+					device_id:'',
 				},
 				columns: [ {
 					title: '工单编号',
-					key: 'id',
+					key: 'order_id',
 					width:90,
 				},
 				{
 					title: '设备名称',
 					key: 'device_name',
 					width:120,
+				},
+				{
+					title: 'IMEI(设备识别码)',
+					key: 'IMEI',
+					width:150,
+					sortable: true
 				},
 				{
 					title: '状态',
@@ -111,7 +119,7 @@
 					}
 				},
 				{
-					title: '验收时间',
+					title: '完成时间',
 					key: 'finish_time',
 					width:150,
 					render: (h, params) => {
@@ -171,25 +179,11 @@
 					this.menu=[];
 					var str;
 						for (var i=0;i<this.list.length;i++){
-							str=this.list[i].IMEI;
+							str=this.list[i].device_id;
 							if (str != null){
 								if (str.indexOf(selectword)>=0)
 								this.menu.push(str)
 							}
-						}
-						for (var i=0;i<this.list.length;i++){
-						str=this.list[i].IMSI;
-						if (str != null){
-							if (str.indexOf(selectword)>=0)
-							this.menu.push(str)
-							}	        	
-						}
-						for (var i=0;i<this.list.length;i++){
-						str=this.list[i].device_name;
-						if (str != null){
-							if (str.indexOf(selectword)>=0)
-							this.menu.push(str)
-							}	        	
 						}
 				},
 				async finish(val) {
@@ -211,8 +205,11 @@
 				},
 				async getList() {
 					this.loading = true
-					if (this.show.state=="all") {this.options.state=""}
-					else {this.options.state=this.show.state}
+					if (this.show.state=="all") {this.options.state=""; this.options.result=''}
+					else {
+						if (this.show.state =='untreated') {this.options.state=this.show.state; this.options.result='' }
+						else {this.options.state='treated';this.options.result=this.show.state}
+						}
 					let res = await this.$api.getRepair(this.options)
 					var ech
 						this.loading = false
@@ -220,6 +217,7 @@
 							for (var i=0;i<res.data.data.list.length;i++) {
 								ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
 								res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+								res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
 								res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
 								res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 								res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city

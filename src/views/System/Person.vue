@@ -26,6 +26,7 @@
 									img(id="image" src="../../assets/admin.jpg" style="height:250px; width:250px; cursor: pointer;")
 								Button(style="margin-left:0px" icon="ios-cloud-upload-outline",@click="confirm" v-if="upsuccess")|上传头像
 								Button(style="margin-left:0px" icon="ios-cloud-upload-outline",@click="confirm" v-if="!upsuccess" disabled)|上传头像
+								Col(span=24 style="margin-left:10px;color:#f11")|图片不要大于2M,否则可能显示不出来
 						Col(span=24)
 							Col(span=8 align="center")
 								Button(type="primary" icon="ios-call-outline",@click="getData()")|重置

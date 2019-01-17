@@ -75,6 +75,7 @@ const WriteNotice = resolve => require(['@/views/System/WriteNotice'], resolve)
 const WriteInform = resolve => require(['@/views/System/WriteInform'], resolve)
 const Person = resolve => require(['@/views/System/Person'], resolve)
 const Instructions = resolve => require(['@/views/System/Instructions'], resolve)
+const CtrlCode = resolve => require(['@/views/System/CtrlCode'], resolve)
 const NewPassword = resolve => require(['@/views/System/NewPassword'], resolve)
 
 Vue.use(Router)
@@ -173,14 +174,14 @@ export default new Router({
 			meta:{name:'控制柜事件'},
 			component: CtrlHistory
 		},{
-			path: '/watch/device/doormonitor/:IMEI/:duration/:threshold/:interval',
+			path: '/watch/device/doormonitor/:IMEI/:id/:duration/:threshold/:interval/:device_model',
 			name: 'doormonitor',
 			meta:{name:'控制器监控'},
 			component: DoorMonitor,
 		},{
 			path: '/watch/device/ctrlmonitor/:IMEI/:duration/:threshold/:interval/:id',
 			name: 'ctrlmonitor',
-			meta:{name:'状态监控'},
+			meta:{name:'控制柜监控'},
 			component: CtrlMonitor
 		},{
 			path: '/watch/device/ctrlparameter/:IMEI/:id/:device_name',
@@ -188,7 +189,7 @@ export default new Router({
 			meta:{name:'参数信息'},
 			component: CtrlParameter,
 		},{
-			path: '/watch/device/doorparameter/:IMEI/:id/:device_name',
+			path: '/watch/device/doorparameter/:IMEI/:id/:device_name/:device_model',
 			name: 'doorparameter',
 			meta:{name:'参数信息'},
 			component: DoorParameter
@@ -439,6 +440,11 @@ export default new Router({
 			name: 'instructions',
 			meta:{name:'说明文档'},
 			component: Instructions,
+		},{
+			path: '/system/ctrlcode',
+			name: 'ctrlcode',
+			meta:{name:'故障代码'},
+			component: CtrlCode,
 		},],
     },
 		{ path: '*', redirect: '/' }

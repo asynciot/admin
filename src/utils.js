@@ -1,5 +1,11 @@
-export const ladderApi = (process.env.NODE_ENV === 'production') ? 'http://ladder.asynciot.com:9010/' : 'http://ladder.asynciot.com:9010/'
-export const api = (process.env.NODE_ENV === 'production') ? 'http://ladder.asynciot.com:9000' : 'http://ladder.asynciot.com:9000'
+export const ladderApi = (process.env.NODE_ENV === 'production') 
+? 'http://ladder.asynciot.com:9010/' : 'http://ladder.asynciot.com:9010/'
+// 			? 'http://lengxia.natapp1.cc/'
+// 			: 'http://lengxia.natapp1.cc/'
+export const api = (process.env.NODE_ENV === 'production') 
+? 'http://ladder.asynciot.com:9000' : 'http://ladder.asynciot.com:9000'
+// 			? 'http://lengxia.natapp1.cc/'
+// 			: 'http://lengxia.natapp1.cc/'
 export const formatDate=(time, format)=> {
 	if (!time) {
 		return ''

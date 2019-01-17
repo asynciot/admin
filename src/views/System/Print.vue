@@ -6,27 +6,7 @@
 				<AutoComplete v-model="query.search_info" :data="menu" @on-search="handleSearch1" placeholder="请输入关键词" style="width:100%"></AutoComplete>
 			</Col>
 			<Col span='1'>
-				<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
-			</Col>
-			<Col span='3'>
-			  <Col span='4'>
-			  <span class="pd fa fa-tag fa-2x" id="green" style="color:green;" @click="checkcolor(0)"></span>
-			  </Col>
-			  <Col span='4'>
-			  <span class="pd fa fa-tag fa-2x" id="red" style="color:red;" @click="checkcolor(1)"></span>
-			  </Col>
-			  <Col span='4'>
-			  <span class="pd fa fa-tag fa-2x" id="yellow" style="color:yellow;" @click="checkcolor(2)"></span>
-			  </Col>
-			  <Col span='4'>
-			  <span class="pd fa fa-tag fa-2x" id="blue" style="color:blue;" @click="checkcolor(3)"></span>
-			  </Col>
-			  <Col span='4'>
-			  <span class="pd fa fa-tag fa-2x" id="gray" style="color:gray;" @click="checkcolor(4)"></span>
-			  </Col>
-			  <Col span='4'>
-			  <span class="pd fa fa-tag fa-2x" id="black" style="color:black;" @click="checkcolor(5)"></span>
-			  </Col>
+				<Button class="mr-10" type="default" icon="search" @click="search()" style="margin-left:10px"></Button>
 			</Col>
 		</Row>
 	<div style="min-height:450px; margin-top: 10px;">
@@ -112,7 +92,7 @@
 					  	var addr= params.row.cell_address
 					  	if (params.row.cell_address !=null) {
 					  	if(params.row.cell_address.length>=38){
-					  		addr=item.cell_address.substring(0,38)+"…"
+					  		addr=params.row.cell_address.substring(0,38)+"…"
 					  	}
 					  	}
 					  return  h('Poptip',{

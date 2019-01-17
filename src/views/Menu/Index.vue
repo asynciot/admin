@@ -45,27 +45,22 @@
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-3",@click="go('maintain')")
 									div(class="grid-cont-right")
-										div()|故障设备数量
-										Col(span=12)
+										div()|待处理设备
 											div(class="grid-num")|{{total.faultDoor}}
-											div()|控制柜
-										Col(span=12)
-											div(class="grid-num")|{{total.faultCtrl}}
-											div()|控制器
 					Row(:gutter=20)
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-1",@click="go('maintainList')")
 									div(class="grid-cont-right")
 										div(class="grid-num")|{{total.maintain}}
-										div()|维修设备数量
+										div()|正在维修的设备
 										
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-2",@click="go('userManage')",disabled="userList.username!=admin")
 									div(class="grid-cont-right")
-										div(class="grid-num")|{{total.user}}
-										div()|用户数量
+										div(class="grid-num")|{{total.finish}}
+										div()|完成工单
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
 								div(class="grid-content grid-con-3",@click="go('inform')")
@@ -93,7 +88,7 @@
 								div|{{item.device_firmware.replace(/\r\n/ig,"a")}}
 							Col(span=6)
 								div|{{item.state}}
-				Col(span=12 style="margin-left:30px")
+				Col(span=12 style="margin-left:40px")
 					Card(v-bind:padding='4',style="font-size:16px; border-radius:0; height:40px;background-color:#f22;color:#fff")
 						Col(span=8 style="")
 							div(style="font-size:20px")|标题
@@ -136,7 +131,7 @@
 					faultDoor:0,
 					faultCtrl:0,
 					message:0,
-					user:0,
+					finish:0,
 					online:0,
 					doorOnline:0,
 					ctrlOnline:0,
@@ -245,7 +240,7 @@
 				if (0 === res.data.code) {
 					this.total.maintain = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'door',type:'1'})
+				res = await this.$api.fault({num:1,page:1,device_type:'door',type:'1',state:'untreated'})
 				if (0 === res.data.code) {
 					this.total.faultDoor = res.data.data.totalNumber
 				}
@@ -253,9 +248,9 @@
 				if (0 === res.data.code) {
 					this.total.faultCtrl = res.data.data.totalNumber
 				}
-				res = await this.$api.people({num:1,page:1})
+				res = await this.$api.getRepair({num:1,page:1,isreg: "True",state:'treated',type:''})
 				if (0 === res.data.code) {
-					this.total.user = res.data.data.totalNumber
+					this.total.finish = res.data.data.totalNumber
 				}
 				res = await this.$api.message({num:1,page:1,done:'false'})
 				if (0 === res.data.code) {

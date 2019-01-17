@@ -11,8 +11,7 @@
 							Form-item(label="创建时间：")
 								p()
 						Col(span="5")
-							Form-item(label="在线人数：")
-								p()
+							Form-item(label="在线人数：")|{{pernum}}
 						Col(span="5")
 							div()|{{loading}}
 						Col(span="4")
@@ -116,6 +115,8 @@
 			return {
 				loading:"连接设备中,请耐心等待",
 				count: 0,
+				pernum: 0,
+				doorWidth:4096,
 				query:{
 					device_type: 15,
 					type: 0,
@@ -133,7 +134,6 @@
 				modal1:false,
 				websock:null,
 				buffer:[],
-				doorWidth: 4096,
 				interval:'',
 				point:'',
 				show:{
@@ -175,16 +175,35 @@
 		},
 		methods: {
 			async initWebsocket(){ //初始化weosocket
-				let res = await this.$api.monitor(this.query);
-				if(res.data.code != 0){
-					alert("该电梯已被其他人启动实时监控")
+				var buffer
+				if (this.$route.params.device_model == '1') {
+					let dor = await this.$api.runtime({page:1,num:20,type: 4101,device_id:this.id})
+					if (dor.data.code == 0) {
+						buffer = base64url.toBuffer(dor.data.data.list[0].data)
+						this.doorWidth=buffer[14]*256+buffer[15]
+					}
 				}
-				this.end = this.query.duration/this.query.interval
-				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.id
-				this.websock = new WebSocket(wsurl);
-				this.websock.onopen = this.websocketonopen;
-				this.websock.onerror = this.websocketonerror;
-				this.websock.onmessage = this.websocketonmessage;
+				if (this.$route.params.device_model == '2') {
+					let dor = await this.$api.runtime({page:1,num:20,type: 4100,device_id:this.id})
+					if (dor.data.code == 0) {
+						buffer = base64url.toBuffer(dor.data.data.list[0].data)
+						this.doorWidth=buffer[26]*256+buffer[27]
+					}
+				}
+				let res = await this.$api.monitor(this.query);
+				if (res.data.code == 670) {alert("该电梯已被其他人启动实时监控")}
+				this.person();
+				if((res.data.code == 0)||(res.data.code == 670)){
+					let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.id+'&userId='+window.localStorage.getItem('id')
+					// let wsurl ='ws://lengxia.natapp1.cc/device/Monitor/socket?deviceId='+this.id+'&userId='+window.localStorage.getItem('id')
+					this.websock = new WebSocket(wsurl);
+					this.websock.onopen = this.websocketonopen;
+					this.websock.onerror = this.websocketonerror;
+					this.websock.onmessage = this.websocketonmessage;
+				}
+				else {
+					this.loading="连接失败"
+				}
 			}, 
 			websocketonopen() {
 				console.log("WebSocket连接成功");
@@ -220,6 +239,13 @@
 				console.log("1")
 			},
 			//电梯数据展示
+			async person(){
+				let per = await this.$api.pernum({deviceId:this.id})
+				if (per.data.code == 0) {this.pernum=per.data.nums}
+				setTimeout(() => {
+					this.person();
+				},5000)
+			},
 			getData(val) {
 				let buffer = []
 				buffer = base64url.toBuffer(val.data);	//8位转流

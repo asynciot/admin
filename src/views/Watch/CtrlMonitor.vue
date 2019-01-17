@@ -11,8 +11,7 @@
 							Form-item(label="创建时间：")
 								p()
 						Col(span="5")
-							Form-item(label="在线人数：")
-								p()
+							Form-item(label="在线人数：")|{{pernum}}
 						Col(span="5")
 							div()|{{loading}}
 						Col(span="4")
@@ -26,7 +25,7 @@
 						Form.status(:model="show",label-position="left",:label-width="75")
 							Row(:gutter="16")
 								Col(span="12")
-									Form-item(label="运行信号：",:label-width="90")
+									Form-item(label="运行状态：",:label-width="90")
 										p(v-text="show.run ? '运行':'停车'")
 								Col(span="10")
 									Form-item(label="门锁信号：",:label-width="100")
@@ -74,11 +73,13 @@
 									section
 							div.info
 								p
-									i(v-text="floors[show.floor-1]" style="margin-left: 10px;width:45px")
+									i(v-text="floors[show.floor-1].name" style="margin-left: 10px;width:45px")
 									span.pr(id="1" class="fa fa-sort-asc" v-if='show.upCall')
 									span.pr(id="2" class="fa fa-sort-desc" v-if='show.downCall')
 								Col(style="margin-left:10px")
-									Col(span='6' v-for="(item, index) in floors" key='item')|{{item}}
+									Col(span='6' v-for="(item, index) in floors" key='item')
+										div(style="color:red" v-if="item.call == 1")|{{item.name}}
+										div(v-if="item.call != 1")|{{item.name}}
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
 						Card(style="margin-bottom:10px")
@@ -111,17 +112,19 @@
 			return {
 				loading:"连接设备中,请耐心等待",
 				count: 0,
+				pernum: 0,
 				query:{
 					device_type: 240,
 					type: 0,
-					address: '1,1,1,1,1,1,1,1',
-					segment: '0',
+					address: '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1',
+					segment: '0,0,0,0',
 					IMEI: this.$route.params.IMEI,
 					duration: this.$route.params.duration,
 					threshold: this.$route.params.threshold,
 					interval: this.$route.params.interval,
 					op:'open',
 				},
+				callfloor:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 				id:this.$route.params.id,
 				t_start:'',
 				t_end:'',
@@ -187,21 +190,36 @@
 				if (num.data.code == 0) {
 					buffer = base64url.toBuffer(num.data.data.list[0].data)
 					for (var i=0;(i*3+3)<=buffer.length;i++){
-						this.floors.push(String.fromCharCode(buffer[i*3])+String.fromCharCode(buffer[i*3+1])+String.fromCharCode(buffer[i*3+2]))
+						this.floors.push({
+							name:String.fromCharCode(buffer[i*3])+String.fromCharCode(buffer[i*3+1])+String.fromCharCode(buffer[i*3+2]),
+							call:0,
+						})
 					}
 				}
 			},
-			async initWebsocket(){ //初始化weosocket			
+			async initWebsocket(){ //初始化weosocket	
 				let res = await this.$api.monitor(this.query);
-				if(res.data.code != 0){
-					alert("该电梯已被其他人启动实时监控")
+				if (res.data.code == 670) {alert("该电梯已被其他人启动实时监控")}
+				this.person()
+				if((res.data.code == 0)||(res.data.code == 670)){
+					let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.id+'&userId='+window.localStorage.getItem('id')
+					// let wsurl ='ws://lengxia.natapp1.cc/device/Monitor/socket?deviceId='+this.id+'&userId='+window.localStorage.getItem('id')
+					this.websock = new WebSocket(wsurl);
+					this.websock.onopen = this.websocketonopen;
+					this.websock.onerror = this.websocketonerror;
+					this.websock.onmessage = this.websocketonmessage;
 				}
-				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.id
-				this.websock = new WebSocket(wsurl);
-				this.websock.onopen = this.websocketonopen;
-				this.websock.onerror = this.websocketonerror;
-				this.websock.onmessage = this.websocketonmessage;
-			}, 
+				else {
+					this.loading="连接失败"
+				}
+			},
+			async person(){
+				let per = await this.$api.pernum({deviceId:this.id})
+				if (per.data.code == 0) {this.pernum=per.data.nums}
+				setTimeout(() => {
+					this.person();
+				},5000)
+			},
 			websocketonopen() {
 				console.log("WebSocket连接成功");
 				this.loading='WebSocket连接成功,请等待数据'
@@ -256,15 +274,24 @@
 						_this.show.downCall = (buffer[0]&0x02)>>1
 						_this.show.run      = (buffer[0]&0x04)>>2					//获取运行信号
 						_this.show.lock     = (buffer[0]&0x08)>>3					//获取门锁信号
-						_this.show.open    = (buffer[0]&0x10)>>5					//获取开门信号
+						_this.show.open     = (buffer[0]&0x10)>>4					//获取开门信号
 						_this.show.close    = (buffer[0]&0x20)>>5					//获取关门信号
 						_this.show.openBtn  = (buffer[0]&0x40)>>6					//获取开门按钮信号
 						_this.show.closeBtn = (buffer[0]&0x80)>>7					//获取关门按钮信号
-						_this.show.close    = (buffer[0]&0x10)>>5					//获取关门信号
+						_this.show.close    = (buffer[0]&0x10)>>4					//获取关门信号
 						_this.show.model    = buffer[1]&0xff						//获取电梯模式
 						_this.show.status   = buffer[2]&0xff						//获取电梯状态				
 						_this.show.floor    = buffer[27]&0xff
-						
+						for (var i=0;i<8;i++) {
+							_this.floors[i*8+0].call = buffer[29-i]&0x01
+							_this.floors[i*8+1].call = (buffer[29-i]&0x02)>>1
+							_this.floors[i*8+2].call = (buffer[29-i]&0x04)>>2
+							_this.floors[i*8+3].call = (buffer[29-i]&0x08)>>3
+							_this.floors[i*8+4].call = (buffer[29-i]&0x10)>>4
+							_this.floors[i*8+5].call = (buffer[29-i]&0x20)>>5
+							_this.floors[i*8+6].call = (buffer[29-i]&0x40)>>6
+							_this.floors[i*8+7].call = (buffer[29-i]&0x80)>>7
+						}
 // 						if(_this.show.floor>=_this.floors.length){
 // 							_this.show.floor = _this.floors.length-1
 // 						}

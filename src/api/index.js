@@ -106,6 +106,9 @@ export default {
 	monitor: (data) => {
 		return DeviceApi.save({key1:'Monitor'}, data)
 	},
+	pernum: (data) => {
+		return DeviceApi.query(Object.assign({key1:'Monitor',key2:'pernums'}, data))
+	},
 	gettype:(data) => {
 		return DeviceApi.query(Object.assign({key1:'Binary'}, data))
 	},
