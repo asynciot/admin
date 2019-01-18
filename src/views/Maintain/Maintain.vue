@@ -63,8 +63,6 @@
 			return{
 				ctrl:false,
 				door:false,
-				ctrlcode:[
-				{title:'E01过流',content:'<div style="width:150px">故障可能原因</div><div style="width:150px>处理方法</div>'}],
 				last:true,
 				color:[false,false,false,false,false,false],
 				col:['green','red','yellow','blue','gray','black'],
@@ -86,76 +84,75 @@
 					device_id:'',
 					islast:1,
 				},
-						columns: [ {
-								title: '设备名称',
-								width: 100,
-								key: 'device_name'
-							},{
-								title: 'IMEI(设备识别码)',
-								width: 150,
-								key: 'IMEI',
-								sortable: true
-							},{
-								title: '设备类型',
-								width: 90,
-								key: 'device_type',
-								render: (h, params) => {
-									var type=''
-									if (params.row.device_type=="ctrl") type="控制柜" 
-									if (params.row.device_type=="door") type="控制器" 
-									return h('div', type)
-								},
-							},{
-								title: '事件类型',
-								width: 90,
-								key: 'device_type',
-								render: (h, params) => {
-									var type=''
-									if (params.row.type=="1") type="故障" 
-									if (params.row.type=="2") type="保养"
-									if (params.row.type=="3") type="校检"
-									return h('div', type)
-								}
-							},{
-								title: '发起人',
-								width: 90,
-								key: 'producer',
-								sortable: true
-							},{
-							title: '故障类型',
+					columns: [{
+							title: '设备名称',
 							width: 100,
-							key: 'type',
+							key: 'device_name'
+						},{
+							title: 'IMEI(设备识别码)',
+							width: 150,
+							key: 'IMEI',
+							sortable: true
+						},{
+							title: '设备类型',
+							width: 90,
+							key: 'device_type',
 							render: (h, params) => {
 								var type=''
-								var num = params.row.code
-									if ((params.row.type == '1')&&(params.row.code != null)){
-										type=params.row.code.toString(16)
-										if (type.length == 1) {type='0'+type}
-									}
-									return h('div',[
-										h('Button', {
-											props: {
-												type: 'text',
-												size: "small",
-											},
-											style: {
-												paddingRight: '4px',
-												paddingLeft: '4px',
-											},
-											on: {
-												click: () => {
-													if (params.row.device_type=="ctrl"){
-													setTimeout(() => {document.getElementById('c').src='../../../static/c'+type+'.png'},200)
-													this.ctrl = true
-													}
-													if (params.row.device_type=="door"){
-													setTimeout(() => {document.getElementById('d').src='../../../static/d'+type+'.png'},200)
-													this.door = true
-													}
+								if (params.row.device_type=="ctrl") type="控制柜" 
+								if (params.row.device_type=="door") type="控制器" 
+								return h('div', type)
+							},
+						},{
+							title: '事件类型',
+							width: 90,
+							key: 'device_type',
+							render: (h, params) => {
+								var type=''
+								if (params.row.type=="1") type="故障" 
+								if (params.row.type=="2") type="保养"
+								if (params.row.type=="3") type="校检"
+								return h('div', type)
+							}
+						},{
+							title: '发起人',
+							width: 90,
+							key: 'producer',
+							sortable: true
+						},{
+						title: '故障类型',
+						width: 100,
+						key: 'type',
+						render: (h, params) => {
+							var type=''
+								if ((params.row.type == '1')&&(params.row.code != null)){
+									type=params.row.code.toString(16)
+									if (type.length == 1) {type='0'+type}
+								}
+								return h('div',[
+									h('Button', {
+										props: {
+											type: 'text',
+											size: "small",
+										},
+										style: {
+											paddingRight: '4px',
+											paddingLeft: '4px',
+										},
+										on: {
+											click: () => {
+												if (params.row.device_type=="ctrl"){
+												setTimeout(() => {document.getElementById('c').src='../../../static/c'+type+'.png'},200)
+												this.ctrl = true
+												}
+												if (params.row.device_type=="door"){
+												setTimeout(() => {document.getElementById('d').src='../../../static/d'+type+'.png'},200)
+												this.door = true
 												}
 											}
-										}, 'E'+type)],
-										)
+										}
+									}, 'E'+type)],
+									)
 							}
 							},{
 							title: '状态',

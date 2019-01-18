@@ -2,19 +2,21 @@
 	div.layout-content-main
 		div.form
 			Row(:gutter=30)
-				Col(span=7)| &nbsp;
-				Col(span=10)
-					Card(style="height:650px")
+				Col(span=5)| &nbsp;
+				Col(span=14)
+					Card(style="height:600px")
 						Col(span=24)
 							Form(ref="form",:model="form",:label-width="120")
 								Row(:gutter="0")
 									Col(span="24",offset="0")
-										div(style="margin-top:10px")|工单号名称:{{list.order_id}}
-										div(style="margin-top:10px")|设备名称:{{list.device_name}}
-										div(style="margin-top:10px")|IMEI号:{{list.IMEI}}
-										div(style="margin-top:10px")|确认时间:{{list.confirm_time}}
-										div(style="margin-top:10px" v-if="list.state == 'treated'")|状态:已处理:{{list.result}}
-										div(style="margin-top:10px" v-if="list.state == 'untreated'")|状态:处理中
+										Col(span="8" style="margin-top:10px")|工单号名称:{{list.order_id}}
+										Col(span="8" style="margin-top:10px")|设备名称:{{list.device_name}}
+										Col(span="8" style="margin-top:10px")|IMEI号:{{list.IMEI}}
+										Col(span="8" style="margin-top:10px" v-if="list.state == 'treated'")|状态:已处理:{{list.result}}
+										Col(span="8" style="margin-top:10px" v-if="list.state == 'untreated'")|状态:处理中
+										Col(span="8" style="margin-top:10px")|确认时间:{{list.confirm_time}}
+										Col(span='24' style="margin-top:10px")
+											textarea(style="width:100%;height:60px" placeholder="本次维保说明")
 									Col(span=24 style="margin-top:10px")|处理前的照片:
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='before1')
@@ -25,7 +27,7 @@
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='before3')
 											img(id="before3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span=24 style="margin-top:10px")|处理后的照片:	
+									Col(span=24 style="margin-top:0px")|处理后的照片:	
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='after1')
 											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")

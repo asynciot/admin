@@ -18,35 +18,10 @@
 												Radio(key="1" label="故障" value='1')
 												Radio(key="2" label="保养" value='2')
 												Radio(key="3" label="校检" value='3')
-										Form-item(label="故障原因" v-if="((form.type != '故障')&&(list.device_type==15))")
-											Col(span=12)
-												checkbox(disabled)|输入电压过低
-											Col(span=12)
-												checkbox(disabled)|输入电压过高
-											Col(span=12)
-												checkbox(disabled)|开关门受阻
-											Col(span=12)
-												checkbox(disabled)|飞车保护
-											Col(span=12)
-												checkbox(disabled)|电机过载
-											Col(span=12)
-												checkbox(disabled)|输出过流
-										Form-item(label="故障原因" v-if="((form.type == '故障')&&(list.device_type==15))")
-											Col(span=12)
-												checkbox(v-model='fault[0]')|输入电压过低
-											Col(span=12)
-												checkbox(v-model='fault[1]')|输入电压过高
-											Col(span=12)
-												checkbox(v-model='fault[4]')|开关门受阻
-											Col(span=12)
-												checkbox(v-model='fault[5]')|飞车保护
-											Col(span=12)
-												checkbox(v-model='fault[6]')|电机过载
-											Col(span=12)
-												checkbox(v-model='fault[7]')|输出过流
-										Form-item(label="故障代码" v-if="((form.type == '故障')&&(list.device_type==240))")
+
+										Form-item(label="故障代码" v-if="(form.type == '故障')")
 											input(style="width:50px" maxlength="2" v-model='ctrlfault' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-										Form-item(label="故障代码" v-if="((form.type != '故障')&&(list.device_type==240))")
+										Form-item(label="故障代码" v-if="(form.type != '故障')")
 											input(style="width:50px" maxlength="2" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')" readonly)
 						Col(span=24)
 							Col(span=12 align="center")
@@ -115,12 +90,9 @@
 				var type=''
 				var device_type=''
 				var fault
-				if (this.list.device_type == '15'){
-					fault=this.fault[7]*128+this.fault[6]*64+this.fault[5]*32+this.fault[4]*16+this.fault[1]*2+this.fault[0]
-				}
-				if (this.list.device_type == '240'){
+
 					fault=parseInt('0x'+this.ctrlfault)
-				}
+
 				if (this.list.device_type == '240') {device_type ='ctrl'}
 				if (this.list.device_type == '15') {device_type ='door'}
 				if (this.form.type=='故障') {type=1}

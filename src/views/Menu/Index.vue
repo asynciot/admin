@@ -46,7 +46,12 @@
 								div(class="grid-content grid-con-3",@click="go('maintain')")
 									div(class="grid-cont-right")
 										div()|待处理设备
+										Col(span=12)
+											div(class="grid-num")|{{total.faultCtrl}}
+											div()|控制柜
+										Col(span=12)
 											div(class="grid-num")|{{total.faultDoor}}
+											div()|控制器
 					Row(:gutter=20)
 						Col(span=8)
 							Card.click(:body-style="{padding: '0px'}")
@@ -222,6 +227,9 @@
 				this.total.message = mes.data.data.totalNumber
 				this.inform=mes.data.data.list
 			// }
+				setTimeout(()=>{
+					if (this.$route.meta.name == '主页'){this.getmessage()}
+				}, 60000)
 			},
 			async gettotal(){
 				var res
@@ -240,11 +248,11 @@
 				if (0 === res.data.code) {
 					this.total.maintain = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'door',type:'1',state:'untreated'})
+				res = await this.$api.fault({num:1,page:1,device_type:'door',type:'1',state:'untreated',islast:1})
 				if (0 === res.data.code) {
 					this.total.faultDoor = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'ctrl',type:'1'})
+				res = await this.$api.fault({num:1,page:1,device_type:'ctrl',type:'1',state:'untreated',islast:1})
 				if (0 === res.data.code) {
 					this.total.faultCtrl = res.data.data.totalNumber
 				}
@@ -256,6 +264,9 @@
 				if (0 === res.data.code) {
 					this.total.message = res.data.data.totalNumber
 				}
+				setTimeout(()=>{
+					if (this.$route.meta.name == '主页'){this.gettotal()}
+				}, 60000)
 			},
 			deviceinfo(val){
 				this.$router.push({						
@@ -293,6 +304,9 @@
 						this.list.push(lis.data.data.list[i])																
 					}	
 				}
+				setTimeout(()=>{
+					if (this.$route.meta.name == '主页'){this.getData()}
+				}, 60000)
 			},
 			go(name){
 				console.log(name);

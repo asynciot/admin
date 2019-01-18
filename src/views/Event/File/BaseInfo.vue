@@ -33,8 +33,10 @@ div.layout-content-main
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|最新事件ID:
 							input(v-model="parameter.waveid" style="border: 0" readonly)
-						Col(span="12")|缓存中的事件数:
-							input(v-model="parameter.wavenumber" style="border: 0" readonly)
+						Col(span="8")|缓存中的事件数:
+							input(v-model="parameter.wavenumber" style="border: 0;;width:50%" readonly)
+						Col(span="4")
+							Button(style="border: 0;width:90%" @click="getList();history=true")|查看历史故障
 				Card(v-if="list.device_type == 240")
 					p(slot="title")|参数信息
 					Row(:gutter="30" style="padding-top:10px")
@@ -45,8 +47,10 @@ div.layout-content-main
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|信号强度:
 							input(v-model="parameter.rssi" style="border: 0" readonly)
-						Col(span="12")|最近故障楼层:
-							input(v-model="parameter.faultfloor" style="border: 0" readonly)
+						Col(span="8")|最近故障楼层:
+							input(v-model="parameter.faultfloor" style="border: 0;width:50%" readonly)
+						Col(span="4")
+							Button(style="border: 0;width:90%" @click="getList();history=true")|查看历史故障
 				Card(style="margin-top:10px")
 					p(slot="title")|生产
 					Row(:gutter="30")
@@ -123,6 +127,12 @@ div.layout-content-main
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
 					Col(span=11)
 						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%")|删除设备
+	el-dialog(title="历史故障", :visible.sync="history" width="50%")
+		Table(:columns="column",:data="data",:stripe="true")
+		div(style="margin: 0 auto")
+			Page(show-elevator :total="total", :page-size="fault.num",:current="fault.page" @on-change="pageChange" show-total style="margin-left:60px;margin-top:10px" simple)
+		span(slot="footer" class="dialog-footer")
+			el-button(type="primary" @click="history = false")|确 定
 </template>
 
 <script>
@@ -144,6 +154,56 @@ export default {
 		240: '控制柜',
 		};
 		return {
+			column: [
+				{
+					title: '工单编号',
+					key: 'order_id',
+					width:90,
+					render: (h, params) =>
+						h('div',[
+							h('Button', {
+								props: {
+									type: 'text',
+									size: "small",
+								},
+								style: {
+									paddingRight: '4px',
+									paddingLeft: '4px',
+								},
+								on: {
+									click: () => {
+										this.$router.push({
+											name: 'finish',
+											params: {
+												id: params.row.id										
+											}
+										})
+									}
+								}
+							}, params.row.order_id)],
+							)
+				},{
+					title: '维保人员电话',
+					key: 'phone',
+					width: 140,
+				},{
+					title: '接单时间',
+					key: 'create_time',
+					// width:150,
+					render: (h, params) => {
+						return h('p',this.$format(parseInt(params.row.create_time), 'YYYY-MM-DD HH:mm:ss'))
+					}
+				},{
+					title: '完成时间',
+					key: 'finish_time',
+					// width:150,
+					render: (h, params) => {
+						return h('p',this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss'))
+					}
+				},
+				],
+				
+			history:false,
 			sent:false,
 			color:[false,false,false,false,false,false],
 			col:['green','red','yellow','blue','gray','black'],
@@ -159,6 +219,13 @@ export default {
 				maintenance_remind:'',
 				install_date:'',
 			},
+			total:'',
+			fault:{
+				page: 1,
+				num: 10,
+				state:'',
+				device_id:'',
+			},
 			parameter:{
 				reporttime: '',
 				rssi: '',
@@ -173,6 +240,7 @@ export default {
 			},
 			refreshNum: 0,
 			list: '',
+			data: '',
 			maintain:[],
 			loading: false,
 			columns: [
@@ -186,17 +254,39 @@ export default {
 		}
 	},
 	created(){
-		this.getData()		
+		this.getData()
+		this.getList()
 	},
-	mounted() {
-		for (var i=0;i<6;i++){
-			if(this.list.tagcolor.indexOf(this.col[i])>=0){
-				document.getElementById(this.col[i]).className="fa fa-bookmark fa-2x"
-				this.color[i]=true
-			}	
-		}
-	},
+
 	methods: {
+		pageChange(val) {
+			this.fault.page = val
+			this.getList()
+		},
+		async getList() {
+			this.fault.device_id=this.list.device_id
+			let res = await this.$api.getRepair(this.fault)
+			var length=res.data.data.list.length
+			var ech
+				if (res.data.code === 0) {
+					for (var i=0;i<length;i++) {
+						ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
+						res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+						res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
+						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
+					}
+					console.log(res.data.data.list)
+					this.data = res.data.data.list
+					this.total = res.data.data.totalNumber
+				} else {
+					this.$Notice.error({
+						title: '错误',
+						desc: '获取列表失败'
+					});
+				}
+			},
 		async update(){
 			this.sent=true
 			this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)

@@ -1,6 +1,6 @@
 <template lang="jade">
 	div.layout-content-main
-		div(style="text-align:center;font-weight:'';font-size:25px" )|{{$route.params.device_name}}的参数
+		div(style="text-align:center;font-weight:'';font-size:25px" )|{{$route.params.device_name}}的菜单
 		div(style="margin: 0 auto;width: 800px" v-for="showlist in menuB" v-if="$route.params.device_model == '1' ")
 			Card(style="margin-top:10px; width:100%; font-size:20px; color:#878787;height:40px;cursor: pointer;border-radius:0;" v-bind:padding='5' @click.native="showlist.show=!showlist.show")
 				Col(span='23')|{{showlist.title}}

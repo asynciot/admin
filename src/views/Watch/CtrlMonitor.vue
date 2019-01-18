@@ -154,7 +154,7 @@
 					downCall:'',
 					openBtn:'',
 					closeBtn:'',
-					floor:'',
+					floor:1,
 				},
 				doorWidth: 4096,
 				direction: {
@@ -164,7 +164,7 @@
 					'11': '',
 				},
 				nowFloor:'fa fa-sort',
-				floors: [],
+				floors: [{name:1,call:0}],
 				picture:{
 					run:'',
 					lock:'',
@@ -189,6 +189,7 @@
 				let num =await this.$api.runtime({page:1,num:20,type: 8211,device_id:this.id})
 				if (num.data.code == 0) {
 					buffer = base64url.toBuffer(num.data.data.list[0].data)
+					this.floors=[]
 					for (var i=0;(i*3+3)<=buffer.length;i++){
 						this.floors.push({
 							name:String.fromCharCode(buffer[i*3])+String.fromCharCode(buffer[i*3+1])+String.fromCharCode(buffer[i*3+2]),
@@ -216,13 +217,14 @@
 			async person(){
 				let per = await this.$api.pernum({deviceId:this.id})
 				if (per.data.code == 0) {this.pernum=per.data.nums}
-				setTimeout(() => {
-					this.person();
-				},5000)
+				setTimeout(()=>{
+					if (this.$route.meta.name == '控制柜监控'){this.person()}
+				}, 5000)
 			},
 			websocketonopen() {
 				console.log("WebSocket连接成功");
 				this.loading='WebSocket连接成功,请等待数据'
+				this.drawLine();
 			},
 			websocketonerror(e) {//错误
 				console.log(this.id)
@@ -232,15 +234,16 @@
 			websocketonmessage(e){//数据接收
 			this.loading='获取数据中'
 				if(e.data=="closed"){
+					
 					// clearInterval(inte)
 					this.loading="此次实时数据已结束"
 				}else{
 					var redata = JSON.parse(e.data)
 					this.interval = redata.interval
 					this.end = this.query.duration/this.query.interval
+					alert(2)
 					this.getData(redata)
 					// setTimeout(() => {
-						this.drawLine();
 					// },1000)
 					console.log(redata)
 				}
@@ -304,6 +307,7 @@
 // 				}
 			},
 			drawLine(){
+				alert(1)
 				let run = this.$echarts.init(document.getElementById('run'))
 				let lock = this.$echarts.init(document.getElementById('lock'))
 				let close = this.$echarts.init(document.getElementById('close'))

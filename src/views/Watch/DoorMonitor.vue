@@ -242,9 +242,9 @@
 			async person(){
 				let per = await this.$api.pernum({deviceId:this.id})
 				if (per.data.code == 0) {this.pernum=per.data.nums}
-				setTimeout(() => {
-					this.person();
-				},5000)
+				setTimeout(()=>{
+					if (this.$route.meta.name == '控制器监控'){this.person()}
+				}, 5000)
 			},
 			getData(val) {
 				let buffer = []
