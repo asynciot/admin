@@ -18,13 +18,20 @@
 			<Option key="4" label="校检" value="3"></Option>
 		  </Select>
 		  </Col>
+		  <Col span='3'>
+		  <Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
+		  <Option key="1" label="全部" value="all"></Option>
+		  <Option key="2" label="控制器" value="door"></Option>
+		  <Option key="3" label="控制柜" value="ctrl"></Option>
+		  </Select>
+		  </Col>
 		  <Col span='4'>
 		  <AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
 		  </Col>
 		  <Col span='1'>
 		  <Button class="mr-10" type="default" icon="search" @click="search()"></Button>
 		  </Col>
-		  <Col span='9'>
+		  <Col span='6'>
 		  <checkbox style="margin-top:10px" v-model="last" @on-change="search()">只显示每个设备最后一个工单</checkbox>
 		  </Col>
 		  <Col span='4'>
@@ -125,9 +132,11 @@
 						key: 'type',
 						render: (h, params) => {
 							var type=''
+							var e=''
 								if ((params.row.type == '1')&&(params.row.code != null)){
 									type=params.row.code.toString(16)
 									if (type.length == 1) {type='0'+type}
+									e='E'+type
 								}
 								return h('div',[
 									h('Button', {
@@ -151,7 +160,7 @@
 												}
 											}
 										}
-									}, 'E'+type)],
+									}, e)],
 									)
 							}
 							},{
@@ -162,7 +171,7 @@
 								var state
 								if (params.row.state == "treating") {state = '已接单'}
 								if (params.row.state == "untreated") {state = '未接单'}
-								if (params.row.state == "treated") {order = '已完成'}
+								if (params.row.state == "treated") {state = '已完成'}
 								return h('div', state)
 							}
 							},

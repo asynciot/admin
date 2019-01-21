@@ -225,15 +225,22 @@
 				}
 			},
 			async closed(){//数据发送
+				var duration=this.$route.params.duration
+				var threshold=this.$route.params.threshold
+				var	interval=this.$route.params.interval
+				if (duration == null) duration=20
+				if (threshold == null) threshold=1
+				if (interval == null) interval=1000
 				let res = await this.$api.monitor({
+					IMEI:this.query.IMEI,
+					op:'close',
 					device_type: 15,
 					type: 0,
-					IMEI: this.$route.params.IMEI,
-					duration: this.$route.params.duration,
-					threshold: this.$route.params.threshold,
-					interval: this.$route.params.interval,
-					op:'close',
+					duration: duration,
+					threshold: threshold,
+					interval: interval,
 				});
+				this.loading="此次实时数据已结束"
 			},
 			websocketclosed(){
 				console.log("1")
@@ -244,7 +251,8 @@
 				if (per.data.code == 0) {this.pernum=per.data.nums}
 				setTimeout(()=>{
 					if (this.$route.meta.name == '控制器监控'){this.person()}
-				}, 5000)
+					else {this.closed()}
+				}, 4000)
 			},
 			getData(val) {
 				let buffer = []

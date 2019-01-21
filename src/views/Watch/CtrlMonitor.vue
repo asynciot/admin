@@ -219,12 +219,12 @@
 				if (per.data.code == 0) {this.pernum=per.data.nums}
 				setTimeout(()=>{
 					if (this.$route.meta.name == '控制柜监控'){this.person()}
-				}, 5000)
+					else {this.closed()}
+				}, 4000)
 			},
 			websocketonopen() {
 				console.log("WebSocket连接成功");
 				this.loading='WebSocket连接成功,请等待数据'
-				this.drawLine();
 			},
 			websocketonerror(e) {//错误
 				console.log(this.id)
@@ -241,14 +241,20 @@
 					var redata = JSON.parse(e.data)
 					this.interval = redata.interval
 					this.end = this.query.duration/this.query.interval
-					alert(2)
 					this.getData(redata)
 					// setTimeout(() => {
+						this.drawLine();
 					// },1000)
 					console.log(redata)
 				}
 			},
 			async closed(){//数据发送
+				var duration=this.$route.params.duration
+				var threshold=this.$route.params.threshold
+				var	interval=this.$route.params.interval
+				if (duration == null) duration=20
+				if (threshold == null) threshold=1
+				if (interval == null) interval=1000
 				let res = await this.$api.monitor({
 					IMEI:this.query.IMEI,
 					op:'close',
@@ -256,9 +262,9 @@
 					type: 0,
 					address: '1,1,1,1,1,1,1,1',
 					segment: '0',
-					duration: this.$route.params.duration,
-					threshold: this.$route.params.threshold,
-					interval: this.$route.params.interval,
+					duration: duration,
+					threshold: threshold,
+					interval: interval,
 				});
 				this.loading="此次实时数据已结束"
 			},
@@ -286,13 +292,21 @@
 						_this.show.status   = buffer[2]&0xff						//获取电梯状态				
 						_this.show.floor    = buffer[27]&0xff
 						for (var i=0;i<8;i++) {
+							if (_this.floors.length>(i*8+0))
 							_this.floors[i*8+0].call = buffer[29-i]&0x01
+							if (_this.floors.length>(i*8+1))
 							_this.floors[i*8+1].call = (buffer[29-i]&0x02)>>1
+							if (_this.floors.length>(i*8+2))
 							_this.floors[i*8+2].call = (buffer[29-i]&0x04)>>2
+							if (_this.floors.length>(i*8+3))
 							_this.floors[i*8+3].call = (buffer[29-i]&0x08)>>3
+							if (_this.floors.length>(i*8+4))
 							_this.floors[i*8+4].call = (buffer[29-i]&0x10)>>4
+							if (_this.floors.length>(i*8+5))
 							_this.floors[i*8+5].call = (buffer[29-i]&0x20)>>5
+							if (_this.floors.length>(i*8+6))
 							_this.floors[i*8+6].call = (buffer[29-i]&0x40)>>6
+							if (_this.floors.length>(i*8+7))
 							_this.floors[i*8+7].call = (buffer[29-i]&0x80)>>7
 						}
 // 						if(_this.show.floor>=_this.floors.length){
@@ -307,7 +321,6 @@
 // 				}
 			},
 			drawLine(){
-				alert(1)
 				let run = this.$echarts.init(document.getElementById('run'))
 				let lock = this.$echarts.init(document.getElementById('lock'))
 				let close = this.$echarts.init(document.getElementById('close'))

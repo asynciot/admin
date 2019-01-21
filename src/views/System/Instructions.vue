@@ -20,8 +20,8 @@
 				const iframebox = document.getElementById('iframebox')
 				const deviceWidth = document.documentElement.clientWidth
 				const deviceHeight = document.documentElement.clientHeight
-				iframebox.style.width = (Number(deviceWidth)) + 'px'
-				iframebox.style.height = (Number(deviceHeight)) + 'px'
+				iframebox.style.width = '100%'
+				iframebox.style.height = (Number(deviceHeight)/1.13) + 'px'
 			},
 			getPdfInfo () {
 				// let name = this.pdf

@@ -3,12 +3,19 @@
 		<div>
 		<Form class="imr" ref="form" label-position="left" :label-width="100">
 		  <Row gutter="1">
-		  <Col span='2'>
+		  <Col span='3'>
 		  <Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
 		  <Option key="1" label="全部" value="all"></Option>
-		  <Option key="2" label="维修中" value="untreated"></Option>
-		  <Option key="3" label="已转办" value="transfer"></Option>
-		  <Option key="4" label="已完成" value="untransfer"></Option>
+		  <Option key="2" label="处理中" value="untreated"></Option>
+		  <Option key="3" label="已结束" value="treated"></Option>
+		  </Select>
+		  </Col>
+		  <Col span='3'>
+		  <Select class="smr" v-model="show.order_type" style="width:100%;" placeholder="事件类型" @on-change="search()">
+		  <Option key="1" label="全部" value="all"></Option>
+		  <Option key="2" label="故障" value="1"></Option>
+		  <Option key="3" label="保养" value="2"></Option>
+		  <Option key="4" label="校检" value="3"></Option>
 		  </Select>
 		  </Col>
 		  <Col span='2'>
@@ -42,6 +49,7 @@
 				data:[],
 				show:{
 					state:'untreated',
+					order_type:'all',
 				},
 				options:{
 					search_info: '',
@@ -49,7 +57,7 @@
 					num: 10,
 					isreg: "True",
 					state:'untreated',
-					type:'',
+					order_type:'',
 					result:'',
 					device_id:'',
 				},
@@ -75,8 +83,8 @@
 					width:80,
 					render: (h, params) => {
 						var state
-						if (params.row.state == "treated") {state = '已修复'}
-						if (params.row.state == "untreated") {state = '维修中'}
+						if (params.row.state == "treated") {state = '已结束'}
+						if (params.row.state == "untreated") {state = '处理中'}
 						return h('div', state)
 					}
 				},
@@ -205,11 +213,10 @@
 				},
 				async getList() {
 					this.loading = true
-					if (this.show.state=="all") {this.options.state=""; this.options.result=''}
-					else {
-						if (this.show.state =='untreated') {this.options.state=this.show.state; this.options.result='' }
-						else {this.options.state='treated';this.options.result=this.show.state}
-						}
+					if (this.show.state=="all") {this.options.state="";}
+					else {this.options.state=this.show.state}
+					if (this.show.order_type=="all") {this.options.order_type="";}
+					else {this.options.order_type=this.show.order_type}
 					let res = await this.$api.getRepair(this.options)
 					var ech
 						this.loading = false

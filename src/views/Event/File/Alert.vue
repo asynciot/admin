@@ -18,11 +18,14 @@
 												Radio(key="1" label="故障" value='1')
 												Radio(key="2" label="保养" value='2')
 												Radio(key="3" label="校检" value='3')
-
-										Form-item(label="故障代码" v-if="(form.type == '故障')")
-											input(style="width:50px" maxlength="2" v-model='ctrlfault' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-										Form-item(label="故障代码" v-if="(form.type != '故障')")
-											input(style="width:50px" maxlength="2" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')" readonly)
+										Form-item(label="故障代码" v-if="(form.type == '故障')&&(list.device_type==15)" prop="door")
+											Input(style="width:50px;" maxlength="2" v-model='ctrlfault')
+										Form-item(label="故障代码" v-if="(form.type == '故障')&&(list.device_type==15)")
+											Input(style="width:50px" maxlength="2" readonly)
+										Form-item(label="故障代码" v-if="(form.type == '故障')&&(list.device_type==240)" prop="ctrl")
+											Input(style="width:50px;" maxlength="2" v-model='ctrlfault')
+										Form-item(label="故障代码" v-if="(form.type != '故障')&&(list.device_type==240)")
+											Input(style="width:50px" maxlength="2" readonly)
 						Col(span=24)
 							Col(span=12 align="center")
 								Button(type="success",icon="plus",@click="sentalert()")|创建工单
@@ -57,6 +60,14 @@
 				file:'',
 				filename:'',
 				upsuccess:false,
+// 				rules: {
+// 					door: [{
+// 						required: true,
+// 						message: '请填写正确的故障代码',
+// 						trigger: 'blur',
+// 						pattern:/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+// 					}],
+// 				}
 			}
 		},
 		computed: {

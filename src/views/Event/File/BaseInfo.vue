@@ -126,7 +126,7 @@ div.layout-content-main
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent')|提交信息
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
 					Col(span=11)
-						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%")|删除设备
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%")|信息重置
 	el-dialog(title="历史故障", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		div(style="margin: 0 auto")

@@ -315,22 +315,22 @@
                 this.tagsList = curItem;
             },
             // 设置标签
-            setTags(route){
-                const isExist = this.tagsList.some(item => {
-                    return item.path === route.fullPath;
-                })
-                if(!isExist){
-                    if(this.tagsList.length >= 8){
-                        this.tagsList.shift();
-                    }
-                    this.tagsList.push({
-                        title: route.meta.name,
-                        path: route.fullPath,
-                        name: route.matched[1].components.default.name
-                    })
-                }
-                bus.$emit('tags', this.tagsList);
-            },
+//             setTags(route){
+//                 const isExist = this.tagsList.some(item => {
+//                     return item.path === route.fullPath;
+//                 })
+//                 if(!isExist){
+//                     if(this.tagsList.length >= 8){
+//                         this.tagsList.shift();
+//                     }
+//                     this.tagsList.push({
+//                         title: route.meta.name,
+//                         path: route.fullPath,
+//                         name: route.matched[1].components.default.name
+//                     })
+//                 }
+//                 bus.$emit('tags', this.tagsList);
+//             },
             handleTags(command){
                 command === 'other' ? this.closeOther() : this.closeAll();
             }
