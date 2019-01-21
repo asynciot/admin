@@ -19,9 +19,11 @@
 												Radio(key="2" label="保养" value='2')
 												Radio(key="3" label="校检" value='3')
 										Form-item(label="故障代码" v-if="(form.type == '故障')&&(list.device_type==15)" prop="door")
-											Input(style="width:50px;" maxlength="2" v-model='ctrlfault')
-										Form-item(label="故障代码" v-if="(form.type == '故障')&&(list.device_type==15)")
-											Input(style="width:50px" maxlength="2" readonly)
+											Select(v-model="doorCode" style="width:200px")
+												Option(v-for="item in dcode" ,:value="item.value" ,:key="item.value"){{ item.label }}
+										Form-item(label="故障代码" v-if="(form.type != '故障')&&(list.device_type==15)")
+											Select(v-model="doorCode" style="width:200px" disabled)
+												Option(v-for="item in dcode" ,:value="item.value" ,:key="item.value"){{ item.label }}
 										Form-item(label="故障代码" v-if="(form.type == '故障')&&(list.device_type==240)" prop="ctrl")
 											Input(style="width:50px;" maxlength="2" v-model='ctrlfault')
 										Form-item(label="故障代码" v-if="(form.type != '故障')&&(list.device_type==240)")
@@ -44,7 +46,29 @@
 				form:{
 					type:'故障',
 				},
-				faultcode:false,
+				code:'',
+				doorCode:'',
+				dcode:[
+					{
+						value:'1',
+						label:'输入电压过低'
+					},{
+						value:'2',
+						label:'输入电压过高'
+					},{
+						value:'16',
+						label:'开关门受阻'
+					},{
+						value:'32',
+						label:'飞车保护'
+					},{
+						value:'64',
+						label:'电机过载'
+					},{
+						value:'128',
+						label:'输出过流'
+					},
+				],
 				list:[],
 				query:{
 					username:window.localStorage.getItem('username'),
@@ -82,14 +106,6 @@
 			//document.getElementById('image').src=this.file
 		},
 		methods:{
-			code(){
-				if (this.form.type == '1'){
-					this.faultcode=false;
-				}
-				else {
-					this.faultcode=true;
-				}
-			},
 			async getData(){
 				let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
 				if (0 === res.data.code) {
@@ -100,15 +116,25 @@
 			async sentalert(){
 				var type=''
 				var device_type=''
-				var fault
-
-					fault=parseInt('0x'+this.ctrlfault)
-
-				if (this.list.device_type == '240') {device_type ='ctrl'}
-				if (this.list.device_type == '15') {device_type ='door'}
-				if (this.form.type=='故障') {type=1}
-				if (this.form.type=='保养') {type=2}
-				if (this.form.type=='校检') {type=3}
+				var fault=parseInt('0x'+this.ctrlfault)
+				if (this.list.device_type == '240') {
+					device_type ='ctrl'
+				}
+				if (this.list.device_type == '15') {
+					device_type ='door'
+				}
+				if (this.form.type=='故障') {
+					type=1
+					if(this.list.device_type == '15'){
+						fault=this.doorCode
+					}
+				}else if (this.form.type=='保养') {
+					type=2
+					fault=''
+				}else if (this.form.type=='校检') {
+					type=3
+					fault=''
+				}
 				let res = await this.$api.alert({code:fault,type:type,device_type:device_type,producer:this.username,device_id:this.list.device_id})
 				if(res.data == 'ok'){
 					this.$Notice.success({

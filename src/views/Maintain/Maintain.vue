@@ -240,14 +240,26 @@
 				},
 					async getList() {
 						var ech
-						if (this.show.state=="all") {this.options.state=""}
-						else {this.options.state=this.show.state}
-						if (this.show.type=="all") {this.options.type=""}
-						else {this.options.type=this.show.type}
-						if (this.show.device_type=="all") {this.options.device_type=""}
-						else {this.options.device_type=this.show.device_type}
-						if (this.last) {this.options.islast=1}
-						else {this.options.islast=''}
+						if (this.show.state=="all") {
+							this.options.state=""
+						}else {
+							this.options.state=this.show.state
+							}
+						if (this.show.type=="all") {
+							this.options.type=""
+						}else {
+							this.options.type=this.show.type
+						}
+						if (this.show.device_type=="all") {
+							this.options.device_type=""
+						}else {
+							this.options.device_type=this.show.device_type
+						}
+						if (this.last) {
+							this.options.islast=1
+						}else {
+							this.options.islast=''
+						}
 						this.loading = true
 						let res = await this.$api.fault(this.options)
 						this.loading = false
