@@ -402,7 +402,7 @@ div.layout-content-main
 						this.show.current = this.event.current[i] = (((buffer[i*8+4]&0xff)<<8)+(buffer[i*8+5]&0xff))/1000		//获取电流信号
 						this.show.speed = this.event.speed[i] = (((buffer[i*8+6]&0xff)<<8)+(buffer[i*8+7]&0xff))/1000
 					    if(this.event.speed[i]>32.767){
-							this.show.speed = this.event.speed[i]-65.535
+							this.show.speed = this.event.speed[i] = (this.event.speed[i]-65.535).toFixed(2)
 						}
 					}				
 					this.t_start = res.time

@@ -7,7 +7,7 @@
 				Col(span='1' style="font-size:15px")
 					i(class="fa fa-angle-down fa-2x" v-if='!showlist.show')
 					i(class="fa fa-angle-up fa-2x" v-if='showlist.show')
-			Card(style="width:100%; font-size:15px;height:30px;border-radius:0;" v-bind:padding='5' v-for="item in showlist.list" v-if="showlist.show")
+			Card(style="width:100%; font-size:15px;height:30px;border-radius:0;" v-bind:padding='5' v-for="item in showlist.list" key="item" v-if="showlist.show")
 				Col(span='10')|{{item.label}}
 				Col(span='14' style="text-align:right;color:#878787;")|{{item.value}}
 		div(style="margin: 0 auto;width: 800px" v-for="showlist in menuT" v-if="$route.params.device_model == '2' ")
@@ -16,7 +16,7 @@
 				Col(span='1' style="font-size:15px")
 					i(class="fa fa-angle-down fa-2x" v-if='!showlist.show')
 					i(class="fa fa-angle-up fa-2x" v-if='showlist.show')
-			Card(style="width:100%; font-size:15px;height:30px;border-radius:0;" v-bind:padding='5' v-for="item in showlist.list" v-if="showlist.show")
+			Card(style="width:100%; font-size:15px;height:30px;border-radius:0;" v-bind:padding='5' v-for="item in showlist.list" key="item" v-if="showlist.show")
 				Col(span='10')|{{item.label}}
 				Col(span='14' style="text-align:right;color:#878787;")|{{item.value}}
 </template>
