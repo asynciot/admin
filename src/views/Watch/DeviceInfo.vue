@@ -141,7 +141,7 @@
 								input(style="width:100%" maxlength="2" v-model='res[6]' readonly)
 							Col(span=3)|:
 								input(style="width:33%" maxlength="2" v-model='res[7]' readonly)
-						Row(style="margin-top:35px")		
+						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
 								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
 					card.card(align='center' style='height: 500px',v-if='data.device_type == 15')
