@@ -29,7 +29,7 @@
 			<Layout>
 				<Header  class="clearfix" :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)',height:'80px'}">
 					<Row>
-					<h1 class="header-title fl" style="margin-top:10px">宁波申菱 管理系统</h1>
+					<h3 class="header-titles fl" style="margin-top:10px">宁波申菱 管理系统</h3>
 					<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px">
 						<Button type="ghost" long style="margin-bottom: 5px;">
 							{{role[$cookie.get('role')]}}
@@ -129,6 +129,10 @@
 						name: 'index',
 						icon: 'cube',
 						label: '系统首页',
+					},{
+						name: 'dashboard',
+						icon: 'cube',
+						label: 'Dashboard',
 					},{
 						name: 'menu',
 						icon: 'map',
@@ -440,7 +444,7 @@
 		padding: 8px 24px;
 	}
 
-	.header-title {
+	.header-titles {
 		line-height: 60px;
 		padding-left: 20px;
 		margin-top: -1%;

@@ -5,6 +5,8 @@ const Register = resolve => require(['@/views/Register'], resolve)
 const Reset = resolve => require(['@/views/Reset'], resolve)
 const Home = resolve => require(['@/views/Home'], resolve)
 const Index = resolve => require(['@/views/Menu/Index'], resolve)
+const Dashboard = resolve => require(['@/views/Dashboard/Index'], resolve)
+const Start = resolve => require(['@/views/Dashboard/Start'], resolve)
 
 const User = resolve => require(['@/views/User/Index'], resolve)
 const UserInfo = resolve => require(['@/views/User/Info/UserInfo'], resolve)
@@ -89,6 +91,11 @@ export default new Router({
 			meta:{name:'登录'},
       component: Login
     },{
+      path: '/start',
+      name: 'start',
+			meta:{name:'start'},
+      component: Start
+    },{
 		path: '/register',
 		name: 'register',
 		meta:{name:'注册'},
@@ -109,6 +116,11 @@ export default new Router({
 					name: 'index',
 					meta:{name:'主页'},
 					component: Index
+				},{
+					path: '/dashboard',
+					name: 'dashboard',
+					meta:{name:'Dash'},
+					component: Dashboard
 				},
 				//user
 				{

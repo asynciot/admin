@@ -187,13 +187,13 @@ div.layout-content-main
 						 		addr=params.row.cell_address.substring(0,50)+"…"
 						 	}
 							}
-						return  h('Poptip',{
-									props: {
-										trigger:"hover",										
-										placement:"top-start",
-										content:params.row.cell_address
-									},
-								},addr)
+							return  h('Poptip',{
+								props: {
+									trigger:"hover",										
+									placement:"top-start",
+									content:params.row.cell_address
+								},
+							},addr)
 						}
 					},
 //					{

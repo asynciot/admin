@@ -163,20 +163,20 @@ export default {
     height: 100%;
     background: url('../assets/page.jpg') center center no-repeat;
     background-size: 100% auto;
-	.account-title {
-		color: #606266;
-		font-size: 30px;
-		line-height: 100px;
-		height: 100px;
-	}
-	.account-form {
-		display: block;
-		width: 350px;
-		margin-left: -80px;
-	}
-	.register-form {
-		width: 270px;
-		display: block;
-	}
+		.account-title {
+			color: #606266;
+			font-size: 30px;
+			line-height: 100px;
+			height: 100px;
+		}
+		.account-form {
+			display: block;
+			width: 350px;
+			margin-left: -80px;
+		}
+		.register-form {
+			width: 270px;
+			display: block;
+		}
 	}
 </style>

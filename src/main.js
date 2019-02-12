@@ -20,10 +20,17 @@ import 'element-ui/lib/theme-chalk/index.css';
 import echarts from 'echarts'
 import vuescroll from 'vuescroll';
 import 'vuescroll/dist/vuescroll.css';
-import 'babel-polyfill'
-import Icon from 'vue2-svg-icon/Icon.vue'
+import 'babel-polyfill';
+import Icon from 'vue2-svg-icon/Icon.vue';
+import './lib/jquery-vender.js';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'admin-lte';
+import 'admin-lte/dist/css/AdminLTE.min.css';
+import 'admin-lte/dist/css/skins/_all-skins.min.css';
 
-Vue.component('icon', Icon)
+
+Vue.component('icon', Icon);
 Vue.use(vuescroll);
 Vue.use(ElementUI, { size: 'small' });
 Vue.use(VueResource); 
