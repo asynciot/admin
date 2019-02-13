@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="wrapper" style="background:#FFFACD">
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
 			<section class="content">
@@ -73,7 +73,36 @@
 					<!-- <section class="col-lg-5 connectedSortable"> -->
 					
 					<Col span='14'>
-					<draggable :options="{animation: 60}">
+					<draggable :options="{animation: 60,group:'panel'}">
+						<!-- Map box -->
+						  <div class="box box-solid bg-light-blue-gradient" v-if="visitor">
+							<div class="box-header">
+							  <!-- tools box -->
+							  <div class="pull-right box-tools">
+								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="visitor=!visitor"><i class="fa fa-times"></i>
+								  </button>
+								<button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" style="margin-right: 5px;"
+										title="Date range">
+								  <i class="fa fa-calendar"></i></button>
+								<button type="button" class="btn btn-primary btn-sm pull-right" title="Collapse" style="margin-right: 5px;" @click="visitorbody=!visitorbody">
+								  <i class="fa fa-minus" v-if="visitorbody"></i> <i class="fa fa-plus" v-if="!visitorbody"></i>
+								</button>
+							  </div>
+							  <!-- /. tools -->
+
+							  <i class="fa fa-map-marker"></i>
+
+							  <h3 class="box-title">
+								Visitors
+							  </h3>
+							</div>
+							<div class="box-body" style="height:480px;" v-if="visitorbody">
+								<div style=""><Map style="margin-top:20px;"></Map></div>
+							</div>
+							<!-- /.box-body-->
+
+						  </div>
+						  <!-- /.box -->
 						<!-- Chat box -->
 						<div class="box box-success">
 							<div class="box-header">
@@ -311,7 +340,7 @@
 					<!-- /.Left col -->
 					<!-- right col (We are only adding the ID to make the widgets sortable)-->
 					<Col span="10">
-						<draggable :options="{animation: 60}">
+						<draggable :options="{animation: 60,group:'panel'}">
 						<!-- solid sales graph -->
 						<div class="box box-solid bg-teal-gradient">
 							<div class="box-header">
@@ -444,16 +473,19 @@
 </template>
 <script>
 	import draggable from 'vuedraggable'
+	import Mapp from '@/views/Dashboard/Map'
 	export default {
 		name: 'HelloWorld',
 		data() {
 			return {
 				msg: 'Welcome to Your Vue.js App',
 				visitor: true,
+				visitorbody: true,
 			}
 		},
 		components: {
 			draggable,
+			'Map': Mapp,
 		}
 	}
 </script>

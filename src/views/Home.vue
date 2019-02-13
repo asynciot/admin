@@ -55,7 +55,7 @@
 						</div>
 					</Row>
 				</Header>
-				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh'}" >				
+				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh',background: '#FFFACD'}" >				
 					<div class="layout-content">
 						<transition name="fade">
 							<router-view></router-view>

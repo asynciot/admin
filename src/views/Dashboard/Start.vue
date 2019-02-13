@@ -1,5 +1,5 @@
 <template>
-<div class="wrapper">
+<div class="" style="background:#FFFACD">
 
   <header class="main-header">
     <!-- Logo -->
