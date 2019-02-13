@@ -178,6 +178,9 @@
 						label: '工作流',
 						sub: [{
 								name: 'maintain',
+								label: '审核列表',
+							},{
+								name: 'maintain',
 								label: '工单列表',
 							},
 							{
