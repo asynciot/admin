@@ -71,7 +71,6 @@
 				<Row gutter="20">
 					<!-- Left col -->
 					<!-- <section class="col-lg-5 connectedSortable"> -->
-					
 					<Col span='14'>
 					<draggable :options="{animation: 60}">
 						<!-- Chat box -->

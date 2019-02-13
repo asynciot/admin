@@ -1,25 +1,37 @@
 <template >
 	<div class="layout">
 		<Layout :style="{minHeight: '100vh'}">
-			<Sider  hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" >
-				<Menu :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active">
-					<img src="../assets/logo-menu.png" style="padding-left: 20%;cursor: pointer;" v-on:click="goHome">
+			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" >
+				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
+					<div style="width: 100%;height: 64px;background: #367fa9;">
+						<img src="../assets/logo-menu.png" style="padding-left: 33%;cursor: pointer;width: 66%;" v-on:click="goHome">
+					</div>
+					<template>
+						<div class="user-panel">
+							<Col span="8" >
+								<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
+							</Col>
+							<Col span="16" style="color: #fff;padding-top: 10px;">
+								<p>{{username}}</p>
+							</Col>
+						</div>
+					</template>
 					<template v-for="item in menu" v-if="!item.sub" >
-						<Menu-item :key="item.name" :name="item.name" >
-							<Icon :type="item.icon" size="16" ></Icon>
+						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}">
+							<i :key="item.name" :class="item.icon" size="16" ></i>
 							{{isCollapsed?'':item.label}}
-						</Menu-item>
+						</MenuItem >
 					</template>
 					<template v-else>
 						<Submenu :name="item.name">
-							<template slot="title">
+							<template slot="title" >
 								<Icon :type="item.icon" size="16"></Icon>
 								<Badge v-if="item.count" :count="item.count" class-name="badge-sub-alone" :dot="true">
 									{{isCollapsed?'':item.label}}
 								</Badge>
 								<i v-else>{{isCollapsed?'':item.label}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :name="sub.name" v-if="(sub.label!='用户管理')||(username=='admin')">
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="(sub.label!='用户管理')||(username=='admin')">
 								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{sub.label}}</Badge>
 							</Menu-item>
 						</Submenu>
@@ -27,21 +39,37 @@
 				</Menu>
 			</Sider>
 			<Layout>
-				<Header  class="clearfix" :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)',height:'80px'}">
+				<Header  class="m-header" >
 					<Row>
-					<h3 class="header-titles fl" style="margin-top:10px">宁波申菱 管理系统</h3>
-					<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px">
-						<Button type="ghost" long style="margin-bottom: 5px;">
-							{{role[$cookie.get('role')]}}
-							<Icon type="ios-contact"></Icon>
-						</Button>
-						<Dropdown-menu slot="list">
-							<Dropdown-item :name="4">个人信息</Dropdown-item>
-							<Dropdown-item :name="6">修改密码</Dropdown-item>
-							<Dropdown-item :name="5">微信关注</Dropdown-item>
-							<Dropdown-item :name="3">退出</Dropdown-item>
-						</Dropdown-menu>
-					</Dropdown>
+						<Col span="20">
+							<Col span="22">
+								<Badge dot style="float: right;margin-top: 25px;"></Badge>
+								<span class="fa fa-bell-o" style="color:white;float: right;padding-top: 25px;" />
+							</Col>
+							<Col span="1">
+								<Badge dot style="float: right;margin-top: 25px;"></Badge>
+								<span class="fa fa-envelope-o" style="color:white;float: right;padding-top: 25px;" />
+							</Col>
+						</Col>
+						<Col span="4">
+							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px;float: left;">
+								<Button type="ghost" long class="w-button" style="margin-top: 10px;">
+									<Col span="6">
+										<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
+									</Col>
+									<Col span="12">
+										<p style="color: #fff;padding-top: 5px;">{{username}}</p>
+									</Col>
+								</Button>
+								<Dropdown-menu slot="list">
+									<Dropdown-item :name="4">个人信息</Dropdown-item>
+									<Dropdown-item :name="6">修改密码</Dropdown-item>
+									<Dropdown-item :name="5">微信关注</Dropdown-item>
+									<Dropdown-item :name="3">退出</Dropdown-item>
+								</Dropdown-menu>
+							</Dropdown>
+						</Col>
+					
 					</Row> <Row>
 						<div style="background:#000; color:#FFF';" v-if="showTags">
 							<ul>
@@ -127,11 +155,11 @@
 				menu: [
 					{
 						name: 'index',
-						icon: 'cube',
+						icon: 'fa fa-cube',
 						label: '系统首页',
 					},{
 						name: 'dashboard',
-						icon: 'cube',
+						icon: 'fa fa-dashboard',
 						label: 'Dashboard',
 					},{
 						name: 'menu',
@@ -147,7 +175,7 @@
 					},{
 						name: 'maintain',
 						icon: 'settings',
-						label: '维修管理',
+						label: '工作流',
 						sub: [{
 								name: 'maintain',
 								label: '工单列表',
@@ -189,7 +217,7 @@
 					},{
 						name: 'event',
 						icon: 'ios-list',
-						label: '档案管理',
+						label: '基础信息维护',
 						sub: [{
 							name: 'alList',
 							label: '设备信息',
@@ -337,8 +365,11 @@
 //             },
             handleTags(command){
                 command === 'other' ? this.closeOther() : this.closeAll();
-            }
-        },	
+            },
+			collapsedSider () {
+				this.$refs.side1.toggleCollapse();
+			},
+        },
         watch:{
             $route(newValue, oldValue){
                 this.setTags(newValue);
@@ -383,7 +414,11 @@
 		// min-height: 500px;
 		// min-height: 100%;
 	}
-
+	.m-header{
+		background: #3c8dbc;
+		boxShadow: 0 2px 3px 2px rgba(0,0,0,.1);
+		min-height:64px;
+	}
 	.layout-copy {
 		position: absolute;
 		left: 0;
@@ -408,8 +443,9 @@
 	}
 
 	.layout-header {
+		padding: 0px;
 		height: 60px;
-		background: #fff;
+		background: #3c8dbc;
 	}
 
 	.layout-header-user {
@@ -524,4 +560,20 @@
         height: 30px;
         background: #0ff;
     }
+	.w-button{
+		min-width: 150px;
+		border: #fff;
+	}
+	.img-circle{
+		width: 100%;
+		max-width: 45px;
+		height: auto;
+		border-radius: 50%;
+	}
+	.user-panel{
+		padding-left: 20%;
+	}
+	.label{
+		
+	}
 </style>
