@@ -1,15 +1,8 @@
 <template lang="jade">
 div.layout-content-main
-	Row(:gutter=20)
-		Col(span=22)
-			Tabs.pd-heard(value="name1",:animated="false",@on-click="Onchange")
-				TabPane(label="地图",name="map")
-				TabPane(label="列表",name="list")
-		Col(span=2)
-			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
-	div(v-if="div_show" id="serClick" style="margin-top:-30px")
+	div
 		Form.imr(ref='form',:model="query",label-position="left",:label-width="100")
-			Row(:gutter=1)
+			Row(:gutter=1 style="margin-top:-10px;")
 				Col(span=2)
 					Select.smr(v-model="show.device_type" style="width:100%" placeholder="类型" @on-change="search()")
 						Option(key="1" label="全部" value='all')
@@ -25,28 +18,12 @@ div.layout-content-main
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=1)
 					Button.mr-10(type="default",icon="search",@click="search()" style="margin-left:1px")
-				Col(span=1)
-					Button(type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag')
-					Button(type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag')
-				Col(span=4 v-if='showtag')
-					Col(span=4)
-						span.mt(id="green" style="color:green" class="fa fa-tag fa-2x",@click="checkcolor(0)" )
-					Col(span=4)
-						span.mt(id="red" style="color:red" class="fa fa-tag fa-2x",@click="checkcolor(1)")
-					Col(span=4)
-						span.mt(id="yellow" style="color:yellow" class="fa fa-tag fa-2x",@click="checkcolor(2)")
-					Col(span=4)
-						span.mt(id="blue" style="color:blue" class="fa fa-tag fa-2x",@click="checkcolor(3)")
-					Col(span=4)
-						span.mt(id="gray" style="color:gray" class="fa fa-tag fa-2x",@click="checkcolor(4)")
-					Col(span=4)
-						span.mt(id="black" style="" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 	div.ssa
 		Table.deviceList(border,:columns="columns",:data="list",size="small" stripe)
 	div.form
 		Col(span='6')|&nbsp;
 		Col(span='18')
-			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
+			Page.fonts(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>	
@@ -96,14 +73,8 @@ div.layout-content-main
 				},
 				map: null,
 				list: [],
-				div_show: true,
 				openAnimateList: [],
 				columns: [
-					{
-					title: '编号',
-					key: 'device_id',
-					width: 40,
-					},
 					{
 						title: '设备名称',
 						width: 120,
@@ -133,48 +104,33 @@ div.layout-content-main
 										}
 									}
 								}, params.row.device_name)],
-// 								[
-// 								h('span',{
-// 									props: {
-// 										class: 'fa fa-tag fa-2x',
-// 									},
-// 									style: {
-// 										color: 'red',
-// 									},
-// 								})]
-								)
+							)
 					},
 					{
-					title: 'IMEI(设备识别码)',
-					key: 'IMEI',
-					width: 140,
-					},
-					{
-					title: 'IMSI(用户识别码)',
-					key: 'device_IMSI',
-					width: 140,
+						title: 'IMEI(设备识别码)',
+						key: 'IMEI',
+						width: 140,
 					},
 					{
 						title: '设备类型',
-						width: 100,
+						width: 70,
 						key: 'device_type',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
 						}
 					},
 					{
-					  title: '状态',
-					  key: 'state',
-						width: 100,
-					  render: (h, params) => {
+						title: '状态',
+						key: 'state',
+						width: 80,
+						render: (h, params) => {
 							return h('p',model[params.row.state]||'')
-					  }
+						}
 					},
 					{
-						title: 'IP定位',
-		                width: 120,
+						title: '安装地址',
 					    render: (h, params) => {
-					    return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
+							return h('div',params.row.install_addr)
 					   }
 					},
 					{
@@ -183,9 +139,9 @@ div.layout-content-main
 						render: (h,params) => {
 							var addr= params.row.cell_address
 			  		 		if (params.row.cell_address !=null) {
-							if(params.row.cell_address.length>=50){
-						 		addr=params.row.cell_address.substring(0,50)+"…"
-						 	}
+								if(params.row.cell_address.length>=50){
+									addr=params.row.cell_address.substring(0,50)+"…"
+								}
 							}
 							return  h('Poptip',{
 								props: {
@@ -196,38 +152,40 @@ div.layout-content-main
 							},addr)
 						}
 					},
-//					{
-//					title: '操作',
-//					key: 'companyName',
-//					width: 100,
-//					align: 'center',
-//					render: (h, params) => {
-//						return h('div', [
-//							h('Button', {
-//								props: {
-//									type: 'success',
-//									size: 'small'
-//								},
-//								style: {
-//									marginRight: '5px'
-//								},
-//								on: {
-//								}
-//							}, '关注'),
-//							h('Button', {
-//								props: {
-//									type: 'warning',
-//									size: "small",
-//								},
-//								on: {
-//									click: () => {
-//										this.clear(params.row)
-//									}
-//								}
-//							}, '清除'),
-//						]);
-//					}
-//				}
+					{
+					title: '操作',
+					key: 'companyName',
+					width: 100,
+					align: 'center',
+					render: (h, params) => {
+						return h('div', [
+							h('Button', {
+								props: {
+									type: 'success',
+									size: 'small'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+// 									click: () => {
+// 									}
+								}
+							}, '订阅'),
+// 							h('Button', {
+// 								props: {
+// 									type: 'warning',
+// 									size: "small",
+// 								},
+// 								on: {
+// 									click: () => {
+// 										this.clear(params.row)
+// 									}
+// 								}
+// 							}, '清除'),
+						]);
+					}
+				}
 				],
 				markerClusterer: null,
 				markers: [],
@@ -338,42 +296,6 @@ div.layout-content-main
 					document.getElementById("1").className = "fa fa-angle-up fa-3x"
 					this.div_show = true
 				}						
-			},
-			async clear(item) {
-				let res = await this.$api.logoutdevices(item.id)
-				if (res.data.code === 0) {
-					this.getList()
-					this.$Notice.success({
-						title: '成功',
-						desc: '开始清除'
-					});
-				} else {
-					this.$Notice.error({
-						title: '错误',
-						desc: '开始清除失败'
-					});
-				}
-			},
-			async checkcolor(c) {
-				this.color[c]=!this.color[c]
-				if (this.color[c]) {
-					document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
-					document.getElementById(this.col[c]).style.marginTop = "4px"
-				}
-				else {
-					document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
-					document.getElementById(this.col[c]).style.marginTop = "4px"
-				}
-				this.query.tagcolor=''
-				for (var i=0;i<6;i++) {
-					if (this.color[i]) {
-						if (this.query.tagcolor!='') {
-							this.query.tagcolor=this.query.tagcolor+';'
-							}
-						this.query.tagcolor=this.query.tagcolor+this.col[i]
-					}
-				}
-				this.search()
 			},
 		}
 	}

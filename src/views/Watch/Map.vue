@@ -67,7 +67,7 @@ div.layout-content-main()
 						p()|基站定位:{{device.cell_address}}
 						p()|ip定位:{{device.ip_country+device.ip_region+device.ip_city}}
 						p()|安装地址:{{device.install_addr}}
-			Page.pagination(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange")
+			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange")
 </template>
 
 
@@ -306,7 +306,6 @@ div.layout-content-main()
 				}
 			},
 			async addMark() {
-				console.log(this.map)
 				this.map.clearOverlays();
 				this.markerClusterer.removeMarkers(this.markers)
 				this.markers = []
@@ -523,5 +522,8 @@ div.layout-content-main()
 		display:inline;
 		float: right;
 		padding-right: 2px;
+	}
+	.fonts{
+		font-size: 12px;
 	}
 </style>

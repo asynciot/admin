@@ -161,7 +161,7 @@
 								DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
 						div(style='font-size: large;', v-if='total==0')| 这台设备没有事件记录
 						Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="height: 360px; margin-top: 10px")
-							card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='height: 80px; font-size: 16px; cursor: pointer;', @click.native='history(item.id)')
+							card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='height: 60px; font-size: 12px; cursor: pointer;', @click.native='history(item.id)')
 								Col(span=22)|  事件序号： {{item.id}}
 								Col(span=2)
 									div(style="color:red" v-if="(now-item.time)<300000")| New!
@@ -185,7 +185,6 @@
 				address:['00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00'],
 				res:['00','00','00','00','00','00','00','00'],
 				segment:['00','00','00','00'],
-				ctn:false,
 				duration:30,
 				keyword:'time',
 				search_info: '',
@@ -277,6 +276,7 @@
 				let res = await this.$api.devices({num:1,page:1,IMEI:this.$route.params.IMEI})
 				if(!res.data.code){
 					this.data = res.data.data.list[0]
+					this.data.ipaddr = res.data.data.list[0].ip_country+res.data.data.list[0].ip_region+res.data.data.list[0].ip_city
 					this.options.device_id=this.data.id
 					if(this.data.state == "online"){
 						this.data.state = "在线"
@@ -285,25 +285,21 @@
 					}else if(this.data.state == "longoffline"){
 						this.data.state = "长期离线"
 					}
-						if (this.data.rssi != ''){
-							if (this.data.rssi==0) {this.sign[0]=true}
-							else{
-								if (this.data.rssi<=2) {this.sign[1]=true}
-								else{
-									if (this.data.rssi<=4) {this.sign[2]=true}
-									else {
-										if (this.data.rssi<=8) {this.sign[3]=true}
-										else{
-											if (this.data.rssi<=16) {this.sign[4]=true}
-											else{
-												if (this.data.rssi<=32) {this.sign[5]=true}
-											}
-										}
-									}
-								}
-							}
-
+					if (this.data.rssi != ''){
+						if (this.data.rssi==0) {
+							this.sign[0]=true
+						}else if(this.data.rssi<=2){
+							this.sign[1]=true
+						}else if (this.data.rssi<=4) {
+							this.sign[2]=true
+						}else if (this.data.rssi<=8) {
+							this.sign[3]=true
+						}else if (this.data.rssi<=16) {
+							this.sign[4]=true
+						}else if (this.data.rssi<=32) {
+							this.sign[5]=true
 						}
+					}
 					let eve = await this.$api.event(this.options)
 					if(!eve.data.code){
 						this.list = eve.data.data.list
@@ -561,5 +557,8 @@
 		flex-flow: row;
 		justify-content: center;
 		align-items: center;
+	}
+	.ivu-scroll-container{
+		height:311px !important;
 	}
 </style>

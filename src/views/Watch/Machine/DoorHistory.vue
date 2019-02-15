@@ -521,7 +521,7 @@ div.layout-content-main
 		background-color: #EEEEEE;
 	}
 	.outer {
-		background: url("../../assets/ladder-bg.jpg") repeat;
+		background: url("../../../assets/ladder-bg.jpg") repeat;
 		width: 68%;
 		height: 230px;
 		padding: 15px;
@@ -536,7 +536,7 @@ div.layout-content-main
 			width: 50%;
 			height: 100%;
 			left: 0;
-			background: url("../../assets/ladder-bg.jpg") repeat;
+			background: url("../../../assets/ladder-bg.jpg") repeat;
 		}
 		& > section:nth-child(2) {
 			left: 50%;
@@ -669,7 +669,7 @@ div.layout-content-main
 			position: absolute;
 			width: 50%;
 			height: 100%;
-			background: url("../../assets/ladder-bg.jpg") repeat;
+			background: url("../../../assets/ladder-bg.jpg") repeat;
 			background-size: 100% 100%;
 		}
 		& > .doorbox:first-child {

@@ -31,7 +31,7 @@
 								</Badge>
 								<i v-else>{{isCollapsed?'':item.label}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="(sub.label!='用户管理')||(username=='admin')">
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="((sub.label!='用户管理')||(username=='admin'))&&((sub.label!='权限管理')||(username=='admin'))">
 								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{sub.label}}</Badge>
 							</Menu-item>
 						</Submenu>
@@ -169,6 +169,9 @@
 							name:'map',
 							label:'运行状态',
 						},{
+							name:'alertTake',
+							label:'告警订阅',
+						},{
 							name:'evolution',
 							label:'更新状态',
 						}]
@@ -177,7 +180,7 @@
 						icon: 'settings',
 						label: '工作流',
 						sub: [{
-								name: 'maintain',
+								name: 'auditinglist',
 								label: '审核列表',
 							},{
 								name: 'maintain',
@@ -224,12 +227,6 @@
 						sub: [{
 							name: 'alList',
 							label: '设备信息',
-// 						},{
-// 							name: 'assessHistory',
-// 							label: '评估管理',
-// 						},{
-// 							name: 'checkIndex',
-// 							label: '检验记录',
 						}],
 					},{
 						name: 'system',
@@ -244,6 +241,9 @@
 						},{
 							name: 'instructions',
 							label: '说明文档',
+						},{
+							name: 'authority',
+							label: '权限管理',
 						}]
 					},{
 						name: 'setting',
@@ -327,28 +327,28 @@
 			isActive(path) {
                 return path === this.$route.fullPath;
             },
-            // 关闭单个标签
-            closeTags(index) {
-                const delItem = this.tagsList.splice(index, 1)[0];
-                const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
-                if (item) {
-                    delItem.path === this.$route.fullPath && this.$router.push(item.path);
-                }else{
-                    this.$router.push('/home');
-                }
-            },
-            // 关闭全部标签
-            closeAll(){
-                this.tagsList = [];
-                this.$router.push('/home');
-            },
-            // 关闭其他标签
-            closeOther(){
-                const curItem = this.tagsList.filter(item => {
-                    return item.path === this.$route.fullPath;
-                })
-                this.tagsList = curItem;
-            },
+//             // 关闭单个标签
+//             closeTags(index) {
+//                 const delItem = this.tagsList.splice(index, 1)[0];
+//                 const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
+//                 if (item) {
+//                     delItem.path === this.$route.fullPath && this.$router.push(item.path);
+//                 }else{
+//                     this.$router.push('/home');
+//                 }
+//             },
+//             // 关闭全部标签
+//             closeAll(){
+//                 this.tagsList = [];
+//                 this.$router.push('/home');
+//             },
+//             // 关闭其他标签
+//             closeOther(){
+//                 const curItem = this.tagsList.filter(item => {
+//                     return item.path === this.$route.fullPath;
+//                 })
+//                 this.tagsList = curItem;
+//             },
             // 设置标签
 //             setTags(route){
 //                 const isExist = this.tagsList.some(item => {
@@ -374,12 +374,12 @@
 			},
         },
         watch:{
-            $route(newValue, oldValue){
-                this.setTags(newValue);
-            }
+//             $route(newValue, oldValue){
+//                 this.setTags(newValue);
+//             }
         },
         created(){
-            this.setTags(this.$route);
+            // this.setTags(this.$route);
         }
 	}
 </script>
