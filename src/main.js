@@ -28,7 +28,10 @@ import 'admin-lte/dist/css/AdminLTE.min.css'
 import 'admin-lte/dist/css/skins/_all-skins.min.css'
 import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
+import vueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 
+Vue.use(vueAwesomeSwiper);
 Vue.component('icon', Icon);
 Vue.use(vuescroll);
 Vue.use(ElementUI, { size: 'small' });

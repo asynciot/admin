@@ -87,12 +87,12 @@
 						</div>
 					</Row>
 				</Header>
+				<div @click="full=false" v-if="full" style="text-align:right;height:10px;">
+					&nbsp;
+					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;"></icon> &nbsp;&nbsp;&nbsp;&nbsp;
+				</div>
 				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh'}" >
 					<div class="layout-content">
-						<div style="text-align:right;margin:0px auto 0px auto;background:#FFFACD" v-if="full==true">
-						<Button style="border:0;background:transparent" size="small" @click="full=false">
-							<div><icon name="quit" width="10" height="10" slot="prepend"></icon></div>
-						</Button></div>
 						<div>
 						<transition name="fade">
 							<router-view></router-view>

@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper" style="background:#FFFACD">
+	<div class="wrapper layout-content-main" style="background:#FFFACD">
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
 			<section class="content">
@@ -403,8 +403,14 @@
 	import draggable from 'vuedraggable'
 	import Mapp from '@/views/Dashboard/Map'
 	import echarts from 'echarts'
+	import {swiper,swiperSlide} from 'vue-awesome-swiper'
 	export default {
 		name: 'HelloWorld',
+		components: {
+			draggable,
+			'Map': Mapp,
+			swiper,swiperSlide,
+		},
 		data() {
 			return {
 				msg: 'Welcome to Your Vue.js App',
@@ -527,10 +533,6 @@
 									]
 								},
 			}
-		},
-		components: {
-			draggable,
-			'Map': Mapp,
 		},
 		mounted(){
 			this.shineword();
