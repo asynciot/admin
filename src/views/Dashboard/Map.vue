@@ -391,7 +391,7 @@ div.layout-content-main()
 		margin-top: 4px;
 	}
 	.map {
-		height: calc(100vh - 180px);
+		height: calc(60vh - 108px);
 	}
 	#map {
 		position: relative;
