@@ -59,10 +59,11 @@ export default {
 			columns: [{
           type: 'selection',
           align: 'center',
-					width: 55,
+					width: 60,
         },{
           title: '设备名称',
           key: 'device_name',
+					align: 'center',
 					width: 110,
         },{
           title: 'IMEI(设备识别码)',

@@ -10,24 +10,24 @@
 							Card
 								div.form-group
 									Card()
-										p(slot="title")角色名称
+										p(slot="title")|角色名称
 										div.col-sm-8.col-md-6
 											Input(type='text', placeholder='请输入角色名称',)
 								div.form-group
 									Card
-										p(slot="title")菜单名称
+										p(slot="title")|菜单名称
 										Row()
 											Tree(:data="menu" show-checkbox)
 						Col(span="16")
 							Card()
-								p(slot="title")当前已有角色
+								p(slot="title")|当前已有角色
 								div()
-									Button.lp(type="error" @click="goRole()")超级管理员
-									Button.lp(type="primary")普通用户
-									Button.lp(type="success")游客
+									Button.lp(type="error" @click="goRole()")|超级管理员
+									Button.lp(type="primary")|普通用户
+									Button.lp(type="success")|游客
 				div.box-footer
 					div.col-sm-offset-2
-						button.btn.btn-success(@click='submit()', type='button') 添加
+						button.btn.btn-success(@click='submit()', type='button')|添加
 </template>
 
 <script>

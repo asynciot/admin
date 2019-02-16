@@ -30,7 +30,7 @@
 								Col(span="10")
 									Form-item(label="门锁信号：",:label-width="100")
 										p(v-text="show.lock ? '通':'断'")
-							Row(:gutter="16")		
+							Row(:gutter="16")
 								Col(span="12")
 									Form-item(label="开门信号：")
 										p(v-text="show.open ? '动作':'不动作'")

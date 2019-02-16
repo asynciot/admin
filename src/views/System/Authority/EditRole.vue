@@ -10,34 +10,34 @@
 							Card
 								div.form-group
 									Card()
-										p(slot="title")角色名称
+										p(slot="title")|角色名称
 										div.col-sm-8.col-md-6
 											Input(type='text', placeholder='请输入角色名称',v-model="name")
 								div.form-group
 									Card()
-										p(slot="title")可执行功能
+										p(slot="title")|可执行功能
 										div()
-											Checkbox()读取
-											Checkbox()写入
+											Checkbox()|读取
+											Checkbox()|写入
 						Col(span="8")
 							Card
-								p(slot="title")菜单名称
+								p(slot="title")|菜单名称
 								Row()
 									Tree(:data="menu" show-checkbox)
 						Col(span="8")
 							Card()
-								p(slot="title")当前已有角色
+								p(slot="title")|当前已有角色
 								div()
-									Button.lp(type="error")超级管理员
-									Button.lp(type="primary")普通用户
-									Button.lp(type="success")游客
+									Button.lp(type="error")|超级管理员
+									Button.lp(type="primary")|普通用户
+									Button.lp(type="success")|游客
 				div.box-footer
 					Col(span="2")
-						Button(@click='submit()', type='success') 完成
+						Button(@click='submit()', type='success')|完成
 					Col(span="2")
-						Button(@click='submit()', type='error') 删除
+						Button(@click='submit()', type='error')|删除
 					Col(span="2")
-						Button(@click='submit()', type='cancel') 取消
+						Button(@click='submit()', type='cancel')|取消
 </template>
 
 <script>

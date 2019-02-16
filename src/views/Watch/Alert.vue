@@ -19,9 +19,10 @@ div.layout-content-main
 				Col(span=1)
 					Button.mr-10(type="default",icon="search",@click="search()" style="margin-left:1px")
 	div.ssa
-		Table.deviceList(border,:columns="columns",:data="list",size="small" stripe)
+		Table.deviceList(@on-selection-change="selection" border,:columns="columns",:data="list",size="small" stripe)
 	div.form
-		Col(span='6')|&nbsp;
+		Col(span='6')
+			Button(type="default")|批量订阅
 		Col(span='18')
 			Page.fonts(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
@@ -74,12 +75,18 @@ div.layout-content-main
 				map: null,
 				list: [],
 				openAnimateList: [],
+				select: [],
 				columns: [
+					{
+						type: 'selection',
+						width: 55,
+						align: 'center'
+					},
 					{
 						title: '设备名称',
 						width: 120,
+						align: 'center',
 						key: 'device_name',
-						align:'left',
 						render: (h, params) =>
 							h('div',[
 								h('Button', {
@@ -109,11 +116,13 @@ div.layout-content-main
 					{
 						title: 'IMEI(设备识别码)',
 						key: 'IMEI',
+						align: 'center',
 						width: 140,
 					},
 					{
 						title: '设备类型',
 						width: 70,
+						align: 'center',
 						key: 'device_type',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
@@ -122,6 +131,7 @@ div.layout-content-main
 					{
 						title: '状态',
 						key: 'state',
+						align: 'center',
 						width: 80,
 						render: (h, params) => {
 							return h('p',model[params.row.state]||'')
@@ -296,6 +306,12 @@ div.layout-content-main
 					document.getElementById("1").className = "fa fa-angle-up fa-3x"
 					this.div_show = true
 				}						
+			},
+			selection(data) {
+				this.select=[]
+				data.forEach(item=>{
+					this.select.push(item)
+				})
 			},
 		}
 	}
