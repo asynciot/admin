@@ -1,7 +1,7 @@
 <template >
 	<div class="layout">
 		<Layout :style="{minHeight: '100vh'}">
-			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" >
+			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
 					<div style="width: 100%;height: 64px;background: #367fa9;">
 						<img src="../assets/logo-menu.png" style="padding-left: 33%;cursor: pointer;width: 66%;" v-on:click="goHome">
@@ -39,7 +39,7 @@
 				</Menu>
 			</Sider>
 			<Layout>
-				<Header  class="m-header" >
+				<Header  class="m-header" v-if="!full">
 					<Row>
 						<Col span="20">
 							<Col span="22">
@@ -51,7 +51,7 @@
 								<span class="fa fa-envelope-o" style="color:white;float: right;padding-top: 25px;" />
 							</Col>
 						</Col>
-						<Col span="4">
+						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px;float: left;">
 								<Button type="ghost" long class="w-button" style="margin-top: 10px;">
 									<Col span="6">
@@ -69,7 +69,11 @@
 								</Dropdown-menu>
 							</Dropdown>
 						</Col>
-					
+						<Col span="1">
+							<Button style="border:0;background:transparent" size="small" @click="full=true">
+								<div><icon name="full" width="10" height="10" slot="prepend"></icon></div>
+							</Button>
+						</Col>
 					</Row> <Row>
 						<div style="background:#000; color:#FFF';" v-if="showTags">
 							<ul>
@@ -83,11 +87,17 @@
 						</div>
 					</Row>
 				</Header>
-				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh'}" >				
+				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh'}" >
 					<div class="layout-content">
+						<div style="text-align:right;margin:0px auto 0px auto;background:#FFFACD" v-if="full==true">
+						<Button style="border:0;background:transparent" size="small" @click="full=false">
+							<div><icon name="quit" width="10" height="10" slot="prepend"></icon></div>
+						</Button></div>
+						<div>
 						<transition name="fade">
 							<router-view></router-view>
 						</transition>
+						</div>
 					</div>
 				</Content>
 			</Layout>
@@ -109,6 +119,7 @@
 				}
 			};
 			return {
+				full:false,
 				tagsList: [],
 				isCollapsed: false,
 				modal: false,

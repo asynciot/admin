@@ -1,4 +1,3 @@
-@@ -1,496 +0,0 @@
 <template>
 	<div class="wrapper" style="background:#FFFACD">
 		<!-- Content Wrapper. Contains page content -->
@@ -9,10 +8,10 @@
 					<div class="col-lg-3 col-xs-10">
 						<!-- small box -->
 						<div class="small-box bg-aqua">
-							<div class="inner">
-								<h3>150</h3>
+							<div class="inner" style="text-align:center;">
+								<h3>175/190</h3>
 
-								<p>New Orders</p>
+								<p>在线维保人员</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-bag"></i>
@@ -24,10 +23,10 @@
 					<div class="col-lg-3 col-xs-6">
 						<!-- small box -->
 						<div class="small-box bg-green">
-							<div class="inner">
-								<h3>53<sup style="font-size: 20px">%</sup></h3>
+							<div class="inner" style="text-align:center;">
+								<h3>53<sup style="font-size: 20px"></sup></h3>
 
-								<p>Bounce Rate</p>
+								<p>备件待发</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
@@ -39,10 +38,10 @@
 					<div class="col-lg-3 col-xs-6">
 						<!-- small box -->
 						<div class="small-box bg-yellow">
-							<div class="inner">
-								<h3>44</h3>
+							<div class="inner" style="text-align:center;">
+								<h3>18/197</h3>
 
-								<p>User Registrations</p>
+								<p>今日完成事件 9%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
@@ -54,10 +53,10 @@
 					<div class="col-lg-3 col-xs-6">
 						<!-- small box -->
 						<div class="small-box bg-red">
-							<div class="inner">
-								<h3>65</h3>
-
-								<p>Unique Visitors</p>
+							<div class="inner" style="text-align:center;">
+								<h3 v-if="shine">5</h3>
+								<h3 style="color:#FF2C00" v-if="!shine">5</h3>
+								<p>故障电梯数</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
@@ -94,7 +93,7 @@
 							  <i class="fa fa-map-marker"></i>
 
 							  <h3 class="box-title">
-								Visitors
+								Map
 							  </h3>
 							</div>
 							<div class="box-body" style="height:480px;" v-if="visitorbody">
@@ -109,7 +108,7 @@
 							<div class="box-header">
 								<i class="fa fa-comments-o"></i>
 
-								<h3 class="box-title">Chat</h3>
+								<h3 class="box-title">客户意见反馈</h3>
 
 								<div class="box-tools pull-right" data-toggle="tooltip" title="Status">
 									<div class="btn-group" data-toggle="btn-toggle">
@@ -122,59 +121,61 @@
 							<div class="box-body chat" id="chat-box">
 								<!-- chat item -->
 								<div class="item">
-									<img src="dist/img/user4-128x128.jpg" alt="user image" class="online">
+									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
 
 									<p class="message">
 										<a href="#" class="name">
 											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-											Mike Doe
+											南京巨人通力电梯有限公司
 										</a>
-										I would like to meet you to discuss the latest news about
-										the arrival of the new theme. They say it is going to be one the
-										best themes on the market
+										NSFC01-01A型门机变频器关门有撞击声。
 									</p>
 									<div class="attachment">
-										<h4>Attachments:</h4>
+										<h4>宋工:</h4>
 
 										<p class="filename">
-											Theme-thumbnail-image.jpg
+											建议减小关门低速1、低速2。
 										</p>
-
-										<div class="pull-right">
-											<button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-										</div>
 									</div>
 									<!-- /.attachment -->
 								</div>
 								<!-- /.item -->
 								<!-- chat item -->
 								<div class="item">
-									<img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
+									<img src="../../assets/img/user3-128x128.jpg" alt="user image" class="offline">
 
 									<p class="message">
 										<a href="#" class="name">
 											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-											Alexander Pierce
+											上海三菱电梯有限公司
 										</a>
-										I would like to meet you to discuss the latest news about
-										the arrival of the new theme. They say it is going to be one the
-										best themes on the market
+										THPB1-52型双折变频门机无法开门现象。
 									</p>
+									<div class="attachment">
+										<h4>杜工:</h4>
+										<p class="filename">
+											建议将层门撞弓与轿门锁门球间隙调至7-8mm位置。
+										</p>
+									</div>
 								</div>
 								<!-- /.item -->
 								<!-- chat item -->
 								<div class="item">
-									<img src="dist/img/user2-160x160.jpg" alt="user image" class="offline">
+									<img src="../../assets/img/user2-160x160.jpg" alt="user image" class="offline">
 
 									<p class="message">
 										<a href="#" class="name">
 											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-											Susan Doe
+											南浔中菱通达有限公司
 										</a>
-										I would like to meet you to discuss the latest news about
-										the arrival of the new theme. They say it is going to be one the
-										best themes on the market
+										电梯正常运行报E12号故障。
 									</p>
+									<div class="attachment">
+										<h4>高工:</h4>
+										<p class="filename">
+											请排查抱闸反馈开关是否异常，监控主板X7、X8指灯信号。
+										</p>
+									</div>
 								</div>
 								<!-- /.item -->
 							</div>
@@ -195,108 +196,27 @@
 						<div class="box box-primary">
 							<div class="box-header">
 								<i class="ion ion-clipboard"></i>
-
-								<h3 class="box-title">To Do List</h3>
-
-								<div class="box-tools pull-right">
-									<ul class="pagination pagination-sm inline">
-										<li><a href="#">&laquo;</a></li>
-										<li><a href="#">1</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">&raquo;</a></li>
-									</ul>
-								</div>
+								<h3 class="box-title">故障电梯处理进程</h3>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
 								<!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 								<ul class="todo-list">
-									<li>
-										<!-- drag handle -->
-										<span class="handle">
-											<i class="fa fa-ellipsis-v"></i>
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<!-- checkbox -->
-										<input type="checkbox" value="">
+									<li v-for="item in todo">
 										<!-- todo text -->
-										<span class="text">Design a nice theme</span>
+										<span class="text">项目：{{item.pro}}</span>
 										<!-- Emphasis label -->
-										<small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
+										<small class="label label-danger" ><i class="fa fa-clock-o"></i> 2 mins</small>
 										<!-- General tools such as edit or delete-->
 										<div class="tools">
 											<i class="fa fa-edit"></i>
 											<i class="fa fa-trash-o"></i>
 										</div>
-									</li>
-									<li>
-										<span class="handle">
-											<i class="fa fa-ellipsis-v"></i>
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<input type="checkbox" value="">
-										<span class="text">Make the theme responsive</span>
-										<small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-										<div class="tools">
-											<i class="fa fa-edit"></i>
-											<i class="fa fa-trash-o"></i>
-										</div>
-									</li>
-									<li>
-										<span class="handle">
-											<i class="fa fa-ellipsis-v"></i>
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<input type="checkbox" value="">
-										<span class="text">Let theme shine like a star</span>
-										<small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-										<div class="tools">
-											<i class="fa fa-edit"></i>
-											<i class="fa fa-trash-o"></i>
-										</div>
-									</li>
-									<li>
-										<span class="handle">
-											<i class="fa fa-ellipsis-v"></i>
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<input type="checkbox" value="">
-										<span class="text">Let theme shine like a star</span>
-										<small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-										<div class="tools">
-											<i class="fa fa-edit"></i>
-											<i class="fa fa-trash-o"></i>
-										</div>
-									</li>
-									<li>
-										<span class="handle">
-											<i class="fa fa-ellipsis-v"></i>
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<input type="checkbox" value="">
-										<span class="text">Check your messages and notifications</span>
-										<small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-										<div class="tools">
-											<i class="fa fa-edit"></i>
-											<i class="fa fa-trash-o"></i>
-										</div>
-									</li>
-									<li>
-										<span class="handle">
-											<i class="fa fa-ellipsis-v"></i>
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<input type="checkbox" value="">
-										<span class="text">Let theme shine like a star</span>
-										<small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-										<div class="tools">
-											<i class="fa fa-edit"></i>
-											<i class="fa fa-trash-o"></i>
-										</div>
+										<div>问题描述：{{item.explain}}</div>
 									</li>
 								</ul>
 							</div>
+							&laquo; &raquo;
 							<!-- /.box-body -->
 							<div class="box-footer clearfix no-border">
 								<button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
@@ -347,7 +267,7 @@
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
-								<h3 class="box-title">Sales Graph</h3>
+								<h3 class="box-title">业务图表</h3>
 
 								<div class="box-tools pull-right">
 									<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -357,7 +277,9 @@
 								</div>
 							</div>
 							<div class="box-body border-radius-none">
-								<div class="chart" id="line-chart" style="height: 250px;"></div>
+								<div style=''>
+								<div id="line" style="height: 200px; width:80%"></div>
+								</div>
 							</div>
 							<!-- /.box-body -->
 							<div class="box-footer no-border">
@@ -468,13 +390,19 @@
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
-
 			</section>
+			<Poptip trigger="hover" placement="left" style="margin-top:10px;margin-left:1600px;" width="50">
+				<div style="cursor: pointer;color:#0000FF">显示内容</div>
+				<div class="api" slot="content">
+					<checkbox v-model="visitor">map</checkbox>
+				</div>
+			</Poptip>
 	</div>
 </template>
 <script>
 	import draggable from 'vuedraggable'
 	import Mapp from '@/views/Dashboard/Map'
+	import echarts from 'echarts'
 	export default {
 		name: 'HelloWorld',
 		data() {
@@ -482,11 +410,143 @@
 				msg: 'Welcome to Your Vue.js App',
 				visitor: true,
 				visitorbody: true,
+				shine:true,
+				todo:[{pro:"江南一号",explain:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。"},
+						{pro:"上海科技大学",explain:"电梯在使用时光幕异常。经排查，光幕接收信号异常。预计后天购买光幕，恢复电梯正常使用。"},
+						{pro:"江南一号",explain:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。"},
+				],
+				option1:{
+									title: {
+											// text: '折线图堆叠'
+									},
+									tooltip: {
+											trigger: 'axis'
+									},
+									legend: {
+											data:['数据1','数据2','数据3','数据4','数据5'],
+											textStyle: {
+											            color: '#FF7F00',
+											            fontSize:'16'
+											            },
+									},
+									grid: {
+											left: '3%',
+											right: '4%',
+											bottom: '3%',
+											containLabel: true
+									},
+									toolbox: {
+											feature: {
+													// saveAsImage: {}
+											}
+									},
+									xAxis: {
+											type: 'category',
+											boundaryGap: false,
+											color:'#f0f',
+											data: ['周一','周二','周三','周四','周五','周六','周日'],
+														splitLine: {
+				               			show: false, 
+				                    //  改变轴线颜色
+				                    lineStyle: {
+				                        // 使用深浅的间隔色
+				                        color: ['red']
+				                        }                            
+				                    },
+				                    //  改变x轴颜色
+				                    axisLine:{
+				                        lineStyle:{
+				                            color:'#df0af8',
+				//                            width:8,//这里是为了突出显示加上的，可以去掉
+				                        }
+				                    },                         
+				                    //  改变x轴字体颜色和大小
+				                    axisLabel: {
+				                        textStyle: {
+				                            color: '#FF7F00',
+				                            fontSize:'16'
+				                        },
+				                    },
+									},
+									yAxis: {
+											type: 'value',
+											splitLine: {
+											               			show: false, 
+											                    //  改变轴线颜色
+											                    lineStyle: {
+											                        // 使用深浅的间隔色
+											                        color: ['white']
+											                        }                            
+											                    },
+											                    //  改变x轴颜色
+											                    axisLine:{
+											                        lineStyle:{
+											                            color:'#df0af8',
+											//                            width:8,//这里是为了突出显示加上的，可以去掉
+											                        }
+											                    },                         
+											                    //  改变x轴字体颜色和大小
+											                    axisLabel: {
+											                        textStyle: {
+											                            color: '#FF7F00',
+											                            fontSize:'16'
+											                        },
+											                    },
+									},
+									series: [
+											{
+													name:'数据1',
+													type:'line',
+													stack: '总量',
+													data:[120, 132, 101, 134, 90, 230, 210]
+											},
+											{
+													name:'数据2',
+													type:'line',
+													stack: '总量',
+													data:[220, 182, 191, 234, 290, 330, 310]
+											},
+											{
+													name:'数据3',
+													type:'line',
+													stack: '总量',
+													data:[150, 232, 201, 154, 190, 330, 410]
+											},
+											{
+													name:'数据4',
+													type:'line',
+													stack: '总量',
+													data:[320, 332, 301, 334, 390, 330, 320]
+											},
+											{
+													name:'数据5',
+													type:'line',
+													stack: '总量',
+													data:[820, 932, 901, 934, 1290, 1330, 1320]
+											}
+									]
+								},
 			}
 		},
 		components: {
 			draggable,
 			'Map': Mapp,
+		},
+		mounted(){
+			this.shineword();
+			this.draw();
+		},
+		methods: {
+			draw(){
+				var myChart = echarts.init(document.getElementById('line'));
+				myChart.setOption(this.option1);
+			},
+			shineword(){
+				setTimeout(()=>{
+					this.shine=!this.shine
+					this.shineword()
+				}, 1000)
+			}
 		}
 	}
 </script>
