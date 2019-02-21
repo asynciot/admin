@@ -1,7 +1,7 @@
 <template>
 	<div class="layout-content-main">
 		<div>
-		<Form class="imr" ref="form" label-position="left" :label-width="100">
+		<Form class="imr" ref="form" label-position="left" :label-width="100" @keydown.enter.native.prevent="search()">
 		  <Row gutter="1">
 		  <Col span='3'>
 		  <Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
@@ -14,30 +14,30 @@
 		  <Select class="smr" v-model="show.type" style="width:100%;" placeholder="事件类型" @on-change="search()">
 		    <Option key="1" label="全部" value="all"></Option>
 		    <Option key="2" label="故障" value="1"></Option>
-			<Option key="3" label="保养" value="2"></Option>
-			<Option key="4" label="校检" value="3"></Option>
+				<Option key="3" label="保养" value="2"></Option>
+				<Option key="4" label="校检" value="3"></Option>
 		  </Select>
 		  </Col>
 		  <Col span='3'>
-		  <Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
-		  <Option key="1" label="全部" value="all"></Option>
-		  <Option key="2" label="控制器" value="door"></Option>
-		  <Option key="3" label="控制柜" value="ctrl"></Option>
-		  </Select>
+				<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
+					<Option key="1" label="全部" value="all"></Option>
+					<Option key="2" label="控制器" value="door"></Option>
+					<Option key="3" label="控制柜" value="ctrl"></Option>
+				</Select>
 		  </Col>
 		  <Col span='4'>
-		  <AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
+				<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
 		  </Col>
 		  <Col span='1'>
-		  <Button class="mr-10" type="default" icon="search" @click="search()"></Button>
+				<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
 		  </Col>
 		  <Col span='6'>
-		  <checkbox style="margin-top:10px" v-model="last" @on-change="search()">只显示每个设备最后一个工单</checkbox>
+				<checkbox style="margin-top:10px" v-model="last" @on-change="search()">只显示每个设备最后一个工单</checkbox>
 		  </Col>
 		  <Col span='4'>
-		  <Button type="default" icon="" @click="code()">
-			  控制柜故障代码
-		  </Button>
+				<Button type="default" icon="" @click="code()">
+					控制柜故障代码
+				</Button>
 		  </Col>
 		  </Row>
 		</Form>

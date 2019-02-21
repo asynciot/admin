@@ -3,13 +3,15 @@ div.layout-content-main
 	Form(ref="form",:model="form",:rules="rules",:label-width="90")
 		Row(:gutter="16")
 			Col(span="10",offset="1")
+				Form-item(label="联系人",prop="mobile")
+					Input(v-model="form.username",placeholder="请输入联系方式",:maxlength="11" ,:disabled="disabled")
 				Form-item(label="联系人电话",prop="mobile")
 					Input(v-model="form.mobile",placeholder="请输入联系方式",:maxlength="11")
 				Form-item(label="维保群组",prop="groupId")
 					Select(placeholder="请选择",v-model="form.groupId" )
 						Option(v-for="item in groupList",:key="item.id",:value="item.id" v-text="item.name")|{{item.value}}
 				Form-item.tc
-					Button.mr-10(icon="close",@click="reset('form')")|取消
+					Button.mr-10(icon="close",@click="$router.back(-1)")|取消
 					Button(type="success",icon="plus",@click="create('form')",:loading="loading")|提交
 </template>
 
@@ -26,6 +28,7 @@ export default {
 				companyId: -1,
 				groupId: '',
 			},
+			disabled:false,
 			rules: {
 // 				name: [{
 // 					required: true,
@@ -51,9 +54,10 @@ export default {
 	},
 	created(){
 		if(this.$route.params.id){
+			this.disabled = true
 			this.getData()
 		}
-		this.getOption()
+		// this.getOption()
 	},
 	methods: {
 		async getData() {
@@ -62,11 +66,11 @@ export default {
 			})
 			this.form = res.data.data.list[0]
 		},
-		getOption() {
-			this.$api.team({page: 1,num: 100}).then(res => {
-				this.groupList = res.data.data.list
-			})
-		},
+// 		getOption() {
+// 			this.$api.team({page: 1,num: 100}).then(res => {
+// 				this.groupList = res.data.data.list
+// 			})
+// 		},
 		create(name) {
 			this.loading = true
 			this.$refs[name].validate(async(valid) => {

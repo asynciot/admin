@@ -2,7 +2,7 @@
 div.layout-content-main
 	Tabs(value="name1",:animated="false",@on-click="Onchange")
 		TabPane(label="维保单位",name="Unit")
-		TabPane(label="维保站点",name="Site")
+		//TabPane(label="维保站点",name="Site")
 		TabPane(label="维保群组",name="Group")
 		TabPane(label="维保人员",name="Member")
 	Form(ref='form',:model="query",label-position="left",:label-width="100")

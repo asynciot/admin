@@ -57,16 +57,19 @@ const AuditingList = resolve => require(['@/views/Maintain/AuditingList'], resol
 const Auditing = resolve => require(['@/views/Maintain/Auditing'], resolve)
 
 //Setting
-const FileIndex = resolve => require(['@/views/Event/File/BaseInfo'], resolve)
-const AlList = resolve => require(['@/views/Event/File/List'], resolve)
-const Alert = resolve => require(['@/views/Event/File/Alert'], resolve)
-const AssessHistory = resolve => require(['@/views/Event/Assess/History'], resolve)
-const AssessPrint = resolve => require(['@/views/Event/Assess/Print'], resolve)
-const AssessReport = resolve => require(['@/views/Event/Assess/Report'], resolve)
-const CheckIndex = resolve => require(['@/views/Event/Check/Index'], resolve)
-const CheckHistory = resolve => require(['@/views/Event/Check/History'], resolve)
-const CheckPrint = resolve => require(['@/views/Event/Check/Print'], resolve)
-const CheckReport = resolve => require(['@/views/Event/Check/Report'], resolve)
+const FileIndex = resolve => require(['@/views/Information/File/BaseInfo'], resolve)
+const AlList = resolve => require(['@/views/Information/File/List'], resolve)
+const Alert = resolve => require(['@/views/Information/File/Alert'], resolve)
+const AssessHistory = resolve => require(['@/views/Information/Assess/History'], resolve)
+const AssessPrint = resolve => require(['@/views/Information/Assess/Print'], resolve)
+const AssessReport = resolve => require(['@/views/Information/Assess/Report'], resolve)
+const CheckIndex = resolve => require(['@/views/Information/Check/Index'], resolve)
+const CheckHistory = resolve => require(['@/views/Information/Check/History'], resolve)
+const CheckPrint = resolve => require(['@/views/Information/Check/Print'], resolve)
+const CheckReport = resolve => require(['@/views/Information/Check/Report'], resolve)
+const Elevator = resolve => require(['@/views/Information/Elevator/Index'], resolve)
+const AddGroup = resolve => require(['@/views/Information/Elevator/AddGroup'], resolve)
+const EditGroup = resolve => require(['@/views/Information/Elevator/EditGroup'], resolve)
 
 //system
 const Print = resolve => require(['@/views/System/Print'], resolve)
@@ -451,7 +454,7 @@ export default new Router({
 				},
 				//信息管理	
 				{
-					path: '/evnet/list',
+					path: '/information/list',
 					name: 'alList',
 					meta: {
 						name: '电梯列表/全部'
@@ -459,7 +462,7 @@ export default new Router({
 					component: AlList
 				},
 				{
-					path: '/evnet/alert/:IMEI',
+					path: '/information/alert/:IMEI',
 					name: 'alert',
 					meta: {
 						name: '确认事件'
@@ -467,61 +470,82 @@ export default new Router({
 					component: Alert
 				},
 				{
-					path: '/evnet/file/:IMEI',
+					path: '/information/file/:IMEI',
 					name: 'elevatorFiles',
 					meta: {
 						name: '电梯档案'
 					},
 					component: FileIndex
 				}, {
-					path: '/evnet/assess/history',
+					path: '/information/assess/history',
 					name: 'assessHistory',
 					meta: {
 						name: '历史记录'
 					},
 					component: AssessHistory
 				}, {
-					path: '/evnet/assess/print',
+					path: '/information/assess/print',
 					name: 'assessPrint',
 					meta: {
 						name: '打印工单'
 					},
 					component: AssessPrint
 				}, {
-					path: '/evnet/assess/report',
+					path: '/information/assess/report',
 					name: 'assessReport',
 					meta: {
 						name: '评估报告'
 					},
 					component: AssessReport
 				}, {
-					path: '/evnet/check',
+					path: '/information/check',
 					name: 'checkIndex',
 					meta: {
 						name: '检验记录'
 					},
 					component: CheckIndex
 				}, {
-					path: '/evnet/check/history',
+					path: '/information/check/history',
 					name: 'checkHistory',
 					meta: {
 						name: '历史记录'
 					},
 					component: CheckHistory
 				}, {
-					path: '/evnet/check/print',
+					path: '/information/check/print',
 					name: 'checkPrint',
 					meta: {
 						name: '打印工单'
 					},
 					component: CheckPrint
 				}, {
-					path: '/evnet/check/report',
+					path: '/information/check/report',
 					name: 'checkReport',
 					meta: {
 						name: '评估报告'
 					},
 					component: CheckReport
+				}, {
+					path: '/information/elevator',
+					name: 'elevator',
+					meta: {
+						name: '电梯组'
+					},
+					component: Elevator
+				},{
+					path: '/information/addgroup',
+					name: 'addgroup',
+					meta: {
+						name: '添加电梯组'
+					},
+					component: AddGroup
+				},{
+					path: '/information/editgroup/:id',
+					name: 'editgroup',
+					meta: {
+						name: '编辑电梯组'
+					},
+					component: EditGroup
 				},
 				//系统管理
 				{

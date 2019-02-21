@@ -75,13 +75,14 @@
 					<Col span='14'>
 					<draggable :options="{animation: 60,group:'panel'}">
 						<!-- Map box -->
-						<div class="box box-solid bg-light-blue-gradient" v-if="visitor">
+						  <div class="box box-solid bg-light-blue-gradient" v-if="visitor">
 							<div class="box-header">
 							  <!-- tools box -->
 							  <div class="pull-right box-tools">
 								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="visitor=!visitor"><i class="fa fa-times"></i>
 								  </button>
-								<button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" style="margin-right: 5px;" title="Date range">
+								<button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" style="margin-right: 5px;"
+										title="Date range">
 								  <i class="fa fa-calendar"></i></button>
 								<button type="button" class="btn btn-primary btn-sm pull-right" title="Collapse" style="margin-right: 5px;" @click="visitorbody=!visitorbody">
 								  <i class="fa fa-minus" v-if="visitorbody"></i> <i class="fa fa-plus" v-if="!visitorbody"></i>
@@ -103,7 +104,7 @@
 						  </div>
 						  <!-- /.box -->
 						<!-- Chat box -->
-						<div class="box box-success" v-if="chat">
+						<div class="box box-success">
 							<div class="box-header">
 								<i class="fa fa-comments-o"></i>
 
@@ -111,17 +112,13 @@
 
 								<div class="box-tools pull-right" data-toggle="tooltip" title="Status">
 									<div class="btn-group" data-toggle="btn-toggle">
-										<button type="button" class="btn btn-success btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
-											<i class="fa fa-minus" v-if="chatbody"></i>
-											<i class="fa fa-plus" v-if="!chatbody"></i>
+										<button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i>
 										</button>
-										<button type="button" class="btn btn-success btn-sm" @click="chat=false"><i class="fa fa-times"></i>
-										</button>
-									
+										<button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
 									</div>
 								</div>
 							</div>
-							<div class="box-body chat" id="chat-box" v-if="chatbody">
+							<div class="box-body chat" id="chat-box">
 								<!-- chat item -->
 								<div class="item">
 									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
@@ -181,6 +178,9 @@
 									</div>
 								</div>
 								<!-- /.item -->
+							</div>
+							<!-- /.chat -->
+							<div class="box-footer">
 								<div class="input-group">
 									<input class="form-control" placeholder="Type message...">
 
@@ -189,27 +189,17 @@
 									</div>
 								</div>
 							</div>
-							<!-- /.chat -->
 						</div>
 						<!-- /.box (chat box) -->
 
 						<!-- TO DO List -->
-						<div class="box box-primary" v-if="progress">
+						<div class="box box-primary">
 							<div class="box-header">
 								<i class="ion ion-clipboard"></i>
 								<h3 class="box-title">故障电梯处理进程</h3>
-								<div class="pull-right box-tools">
-									<button type="button" class="btn btn-primary btn-sm pull-right" @click="progress=!progress"><i class="fa fa-times"></i>
-									</button>
-								<button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" style="margin-right: 5px;" title="Date range">
-									<i class="fa fa-calendar"></i></button>
-								<button type="button" class="btn btn-primary btn-sm pull-right" title="Collapse" style="margin-right: 5px;" @click="progressbody=!progressbody">
-									<i class="fa fa-minus" v-if="progressbody"></i> <i class="fa fa-plus" v-if="!progressbody"></i>
-								</button>
-								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" v-if="progressbody">
+							<div class="box-body">
 								<!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 								<ul class="todo-list">
 									<li v-for="item in todo">
@@ -226,7 +216,11 @@
 									</li>
 								</ul>
 							</div>
+							&laquo; &raquo;
 							<!-- /.box-body -->
+							<div class="box-footer clearfix no-border">
+								<button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
+							</div>
 						</div>
 						<!-- /.box -->
 
@@ -269,69 +263,48 @@
 					<Col span="10">
 						<draggable :options="{animation: 60,group:'panel'}">
 						<!-- solid sales graph -->
-						<div class="box box-solid bg-teal-gradient" v-if="chart">
+						<div class="box box-solid bg-teal-gradient">
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
 								<h3 class="box-title">业务图表</h3>
-								
+
 								<div class="box-tools pull-right">
-									<button type="button" class="btn bg-teal btn-sm" @click="chartbody=!chartbody">
-										<i class="fa fa-minus" v-if="chartbody"></i>
-										<i class="fa fa-plus" v-if="!chartbody"></i>
+									<button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
 									</button>
-									<button type="button" class="btn bg-teal btn-sm" @click="chart=false"><i class="fa fa-times"></i>
+									<button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i>
 									</button>
 								</div>
 							</div>
-							<div class="box-body border-radius-none" v-if="chartbody">
-								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
-									<swiper-slide>
-										<div class="chart">
-											<canvas id="areaChart" style="height:250px"></canvas>
-										</div>
-									</swiper-slide>
-									<swiper-slide>
-										<div class="chart">
-											<canvas id="lineChart" style="height:250px"></canvas>
-										</div>
-									</swiper-slide>
-									<swiper-slide>
-										<div class="chart">
-											<canvas id="barChart" style="height:250px"></canvas>
-										</div>
-									</swiper-slide>
-									<swiper-slide>
-										<div class="chart">
-											<canvas id="pieChart" style="height:250px"></canvas>
-										</div>
-									</swiper-slide>
-								</swiper>
+							<div class="box-body border-radius-none">
+								<div style=''>
+								<div id="line" style="height: 200px; width:80%"></div>
+								</div>
 							</div>
 							<!-- /.box-body -->
-<!-- 							<div class="box-footer no-border">
+							<div class="box-footer no-border">
 								<div class="row">
 									<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
 										<input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
 
 										<div class="knob-label">Mail-Orders</div>
 									</div>
-
+									<!-- ./col -->
 									<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
 										<input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
 
 										<div class="knob-label">Online</div>
 									</div>
-
+									<!-- ./col -->
 									<div class="col-xs-4 text-center">
 										<input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
 
 										<div class="knob-label">In-Store</div>
 									</div>
-
+									<!-- ./col -->
 								</div>
-
-							</div> -->
+								<!-- /.row -->
+							</div>
 							<!-- /.box-footer -->
 						</div>
 						<!-- /.box -->
@@ -420,11 +393,8 @@
 			</section>
 			<Poptip trigger="hover" placement="left" style="margin-top:10px;margin-left:1600px;" width="50">
 				<div style="cursor: pointer;color:#0000FF">显示内容</div>
-				<div slot="content" style="width:100px;height:100px">
-					<div><checkbox v-model="visitor">Map</checkbox></div>
-					<div><checkbox v-model="chat">客户意见反馈</checkbox></div>
-					<div><checkbox v-model="progress">故障处理进程</checkbox></div>
-					<div><checkbox v-model="chart">业务图表</checkbox></div>
+				<div class="api" slot="content">
+					<checkbox v-model="visitor">map</checkbox>
 				</div>
 			</Poptip>
 	</div>
@@ -445,455 +415,142 @@
 			return {
 				msg: 'Welcome to Your Vue.js App',
 				visitor: true,
-				chat: true,
-				chart: true,
-				progress: true,
 				visitorbody: true,
-				chatbody: true,
-				chartbody: true,
-				progressbody: true,
 				shine:true,
 				todo:[{pro:"江南一号",explain:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。"},
 						{pro:"上海科技大学",explain:"电梯在使用时光幕异常。经排查，光幕接收信号异常。预计后天购买光幕，恢复电梯正常使用。"},
 						{pro:"江南一号",explain:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。"},
 				],
-				swiperOption:{
-					autoplay:true,
-					delay:10000,
-					notNextTick:true,
-					direction:'horizontal',
-					grabCursor:true,
-					setWrapperSize:true,
-					autoHerght:true,
-					slidesPerView: 1,
-					mousewheel:true,
-					mousewheelControl:true,
-					height:window.innerHeight,
-					resistanceRatio:0,
-					observeParents:true,
-					observer:true,//修改swiper自己或子元素时，自动初始化swiper
-					allowTouchMove: false,
-					navigation: {
-						prevEl: '.swiper-button-prev',
-						nextEl: '.swiper-button-next',
-					},
-				},
+				option1:{
+									title: {
+											// text: '折线图堆叠'
+									},
+									tooltip: {
+											trigger: 'axis'
+									},
+									legend: {
+											data:['数据1','数据2','数据3','数据4','数据5'],
+											textStyle: {
+											            color: '#FF7F00',
+											            fontSize:'16'
+											            },
+									},
+									grid: {
+											left: '3%',
+											right: '4%',
+											bottom: '3%',
+											containLabel: true
+									},
+									toolbox: {
+											feature: {
+													// saveAsImage: {}
+											}
+									},
+									xAxis: {
+											type: 'category',
+											boundaryGap: false,
+											color:'#f0f',
+											data: ['周一','周二','周三','周四','周五','周六','周日'],
+														splitLine: {
+				               			show: false, 
+				                    //  改变轴线颜色
+				                    lineStyle: {
+				                        // 使用深浅的间隔色
+				                        color: ['red']
+				                        }                            
+				                    },
+				                    //  改变x轴颜色
+				                    axisLine:{
+				                        lineStyle:{
+				                            color:'#df0af8',
+				//                            width:8,//这里是为了突出显示加上的，可以去掉
+				                        }
+				                    },                         
+				                    //  改变x轴字体颜色和大小
+				                    axisLabel: {
+				                        textStyle: {
+				                            color: '#FF7F00',
+				                            fontSize:'16'
+				                        },
+				                    },
+									},
+									yAxis: {
+											type: 'value',
+											splitLine: {
+											               			show: false, 
+											                    //  改变轴线颜色
+											                    lineStyle: {
+											                        // 使用深浅的间隔色
+											                        color: ['white']
+											                        }                            
+											                    },
+											                    //  改变x轴颜色
+											                    axisLine:{
+											                        lineStyle:{
+											                            color:'#df0af8',
+											//                            width:8,//这里是为了突出显示加上的，可以去掉
+											                        }
+											                    },                         
+											                    //  改变x轴字体颜色和大小
+											                    axisLabel: {
+											                        textStyle: {
+											                            color: '#FF7F00',
+											                            fontSize:'16'
+											                        },
+											                    },
+									},
+									series: [
+											{
+													name:'数据1',
+													type:'line',
+													stack: '总量',
+													data:[120, 132, 101, 134, 90, 230, 210]
+											},
+											{
+													name:'数据2',
+													type:'line',
+													stack: '总量',
+													data:[220, 182, 191, 234, 290, 330, 310]
+											},
+											{
+													name:'数据3',
+													type:'line',
+													stack: '总量',
+													data:[150, 232, 201, 154, 190, 330, 410]
+											},
+											{
+													name:'数据4',
+													type:'line',
+													stack: '总量',
+													data:[320, 332, 301, 334, 390, 330, 320]
+											},
+											{
+													name:'数据5',
+													type:'line',
+													stack: '总量',
+													data:[820, 932, 901, 934, 1290, 1330, 1320]
+											}
+									]
+								},
 			}
 		},
 		mounted(){
 			this.shineword();
-			this.drawchart();
+			this.draw();
 		},
 		methods: {
+			draw(){
+				var myChart = echarts.init(document.getElementById('line'));
+				myChart.setOption(this.option1);
+			},
 			shineword(){
 				setTimeout(()=>{
 					this.shine=!this.shine
 					this.shineword()
 				}, 1000)
-			},
-			drawchart(){
-			    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-			    // This will get the first returned node in the jQuery collection.
-			    var areaChart       = new Chart(areaChartCanvas)
-			
-			    var areaChartData = {
-			      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			      datasets: [
-			        {
-			          label               : 'Electronics',
-			          fillColor           : 'rgba(210, 214, 222, 1)',
-			          strokeColor         : 'rgba(210, 214, 222, 1)',
-			          pointColor          : 'rgba(210, 214, 222, 1)',
-			          pointStrokeColor    : '#c1c7d1',
-			          pointHighlightFill  : '#fff',
-			          pointHighlightStroke: 'rgba(220,220,220,1)',
-			          data                : [65, 59, 80, 81, 56, 55, 40]
-			        },
-			        {
-			          label               : 'Digital Goods',
-			          fillColor           : 'rgba(60,141,188,0.9)',
-			          strokeColor         : 'rgba(60,141,188,0.8)',
-			          pointColor          : '#3b8bba',
-			          pointStrokeColor    : 'rgba(60,141,188,1)',
-			          pointHighlightFill  : '#fff',
-			          pointHighlightStroke: 'rgba(60,141,188,1)',
-			          data                : [28, 48, 40, 19, 86, 27, 90]
-			        }
-			      ]
-			    }
-			
-			    var areaChartOptions = {
-			      //Boolean - If we should show the scale at all
-			      showScale               : true,
-			      //Boolean - Whether grid lines are shown across the chart
-			      scaleShowGridLines      : false,
-			      //String - Colour of the grid lines
-			      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-			      //Number - Width of the grid lines
-			      scaleGridLineWidth      : 1,
-			      //Boolean - Whether to show horizontal lines (except X axis)
-			      scaleShowHorizontalLines: true,
-			      //Boolean - Whether to show vertical lines (except Y axis)
-			      scaleShowVerticalLines  : true,
-			      //Boolean - Whether the line is curved between points
-			      bezierCurve             : true,
-			      //Number - Tension of the bezier curve between points
-			      bezierCurveTension      : 0.3,
-			      //Boolean - Whether to show a dot for each point
-			      pointDot                : false,
-			      //Number - Radius of each point dot in pixels
-			      pointDotRadius          : 4,
-			      //Number - Pixel width of point dot stroke
-			      pointDotStrokeWidth     : 1,
-			      //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-			      pointHitDetectionRadius : 20,
-			      //Boolean - Whether to show a stroke for datasets
-			      datasetStroke           : true,
-			      //Number - Pixel width of dataset stroke
-			      datasetStrokeWidth      : 2,
-			      //Boolean - Whether to fill the dataset with a color
-			      datasetFill             : true,
-			      //String - A legend template
-			      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-			      //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-			      maintainAspectRatio     : true,
-			      //Boolean - whether to make the chart responsive to window resizing
-			      responsive              : true
-			    }
-			
-			    //Create the line chart
-			    areaChart.Line(areaChartData, areaChartOptions)
-			
-			    //-------------
-			    //- LINE CHART -
-			    //--------------
-			    var lineChartCanvas          = $('#lineChart').get(0).getContext('2d')
-			    var lineChart                = new Chart(lineChartCanvas)
-			    var lineChartOptions         = areaChartOptions
-			    lineChartOptions.datasetFill = false
-			    lineChart.Line(areaChartData, lineChartOptions)
-			
-			    //-------------
-			    //- PIE CHART -
-			    //-------------
-			    // Get context with jQuery - using jQuery's .get() method.
-			    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-			    var pieChart       = new Chart(pieChartCanvas)
-			    var PieData        = [
-			      {
-			        value    : 700,
-			        color    : '#f56954',
-			        highlight: '#f56954',
-			        label    : 'Chrome'
-			      },
-			      {
-			        value    : 500,
-			        color    : '#00a65a',
-			        highlight: '#00a65a',
-			        label    : 'IE'
-			      },
-			      {
-			        value    : 400,
-			        color    : '#f39c12',
-			        highlight: '#f39c12',
-			        label    : 'FireFox'
-			      },
-			      {
-			        value    : 600,
-			        color    : '#00c0ef',
-			        highlight: '#00c0ef',
-			        label    : 'Safari'
-			      },
-			      {
-			        value    : 300,
-			        color    : '#3c8dbc',
-			        highlight: '#3c8dbc',
-			        label    : 'Opera'
-			      },
-			      {
-			        value    : 100,
-			        color    : '#d2d6de',
-			        highlight: '#d2d6de',
-			        label    : 'Navigator'
-			      }
-			    ]
-			    var pieOptions     = {
-			      //Boolean - Whether we should show a stroke on each segment
-			      segmentShowStroke    : true,
-			      //String - The colour of each segment stroke
-			      segmentStrokeColor   : '#fff',
-			      //Number - The width of each segment stroke
-			      segmentStrokeWidth   : 2,
-			      //Number - The percentage of the chart that we cut out of the middle
-			      percentageInnerCutout: 50, // This is 0 for Pie charts
-			      //Number - Amount of animation steps
-			      animationSteps       : 100,
-			      //String - Animation easing effect
-			      animationEasing      : 'easeOutBounce',
-			      //Boolean - Whether we animate the rotation of the Doughnut
-			      animateRotate        : true,
-			      //Boolean - Whether we animate scaling the Doughnut from the centre
-			      animateScale         : false,
-			      //Boolean - whether to make the chart responsive to window resizing
-			      responsive           : true,
-			      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-			      maintainAspectRatio  : true,
-			      //String - A legend template
-			      legendTemplate       : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
-			    }
-			    //Create pie or douhnut chart
-			    // You can switch between pie and douhnut using the method below.
-			    pieChart.Doughnut(PieData, pieOptions)
-			
-			    //-------------
-			    //- BAR CHART -
-			    //-------------
-			    var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
-			    var barChart                         = new Chart(barChartCanvas)
-			    var barChartData                     = areaChartData
-			    barChartData.datasets[1].fillColor   = '#00a65a'
-			    barChartData.datasets[1].strokeColor = '#00a65a'
-			    barChartData.datasets[1].pointColor  = '#00a65a'
-			    var barChartOptions                  = {
-			      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-			      scaleBeginAtZero        : true,
-			      //Boolean - Whether grid lines are shown across the chart
-			      scaleShowGridLines      : true,
-			      //String - Colour of the grid lines
-			      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-			      //Number - Width of the grid lines
-			      scaleGridLineWidth      : 1,
-			      //Boolean - Whether to show horizontal lines (except X axis)
-			      scaleShowHorizontalLines: true,
-			      //Boolean - Whether to show vertical lines (except Y axis)
-			      scaleShowVerticalLines  : true,
-			      //Boolean - If there is a stroke on each bar
-			      barShowStroke           : true,
-			      //Number - Pixel width of the bar stroke
-			      barStrokeWidth          : 2,
-			      //Number - Spacing between each of the X value sets
-			      barValueSpacing         : 5,
-			      //Number - Spacing between data sets within X values
-			      barDatasetSpacing       : 1,
-			      //String - A legend template
-			      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-			      //Boolean - whether to make the chart responsive
-			      responsive              : true,
-			      maintainAspectRatio     : true
-			    }
-			
-			    barChartOptions.datasetFill = false
-			    barChart.Bar(barChartData, barChartOptions)
 			}
 		}
 	}
-	
-	
-	  $(function () {
-    /* ChartJS
-     * -------
-     * Here we will create a few charts using ChartJS
-     */
-
-    //--------------
-    //- AREA CHART -
-    //--------------
-
-    // Get context with jQuery - using jQuery's .get() method.
-    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-    // This will get the first returned node in the jQuery collection.
-    var areaChart       = new Chart(areaChartCanvas)
-
-    var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
-        }
-      ]
-    }
-
-    var areaChartOptions = {
-      //Boolean - If we should show the scale at all
-      showScale               : true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : false,
-      //String - Colour of the grid lines
-      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth      : 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines  : true,
-      //Boolean - Whether the line is curved between points
-      bezierCurve             : true,
-      //Number - Tension of the bezier curve between points
-      bezierCurveTension      : 0.3,
-      //Boolean - Whether to show a dot for each point
-      pointDot                : false,
-      //Number - Radius of each point dot in pixels
-      pointDotRadius          : 4,
-      //Number - Pixel width of point dot stroke
-      pointDotStrokeWidth     : 1,
-      //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-      pointHitDetectionRadius : 20,
-      //Boolean - Whether to show a stroke for datasets
-      datasetStroke           : true,
-      //Number - Pixel width of dataset stroke
-      datasetStrokeWidth      : 2,
-      //Boolean - Whether to fill the dataset with a color
-      datasetFill             : true,
-      //String - A legend template
-      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-      //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-      maintainAspectRatio     : true,
-      //Boolean - whether to make the chart responsive to window resizing
-      responsive              : true
-    }
-
-    //Create the line chart
-    areaChart.Line(areaChartData, areaChartOptions)
-
-    //-------------
-    //- LINE CHART -
-    //--------------
-    var lineChartCanvas          = $('#lineChart').get(0).getContext('2d')
-    var lineChart                = new Chart(lineChartCanvas)
-    var lineChartOptions         = areaChartOptions
-    lineChartOptions.datasetFill = false
-    lineChart.Line(areaChartData, lineChartOptions)
-
-    //-------------
-    //- PIE CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieChart       = new Chart(pieChartCanvas)
-    var PieData        = [
-      {
-        value    : 700,
-        color    : '#f56954',
-        highlight: '#f56954',
-        label    : 'Chrome'
-      },
-      {
-        value    : 500,
-        color    : '#00a65a',
-        highlight: '#00a65a',
-        label    : 'IE'
-      },
-      {
-        value    : 400,
-        color    : '#f39c12',
-        highlight: '#f39c12',
-        label    : 'FireFox'
-      },
-      {
-        value    : 600,
-        color    : '#00c0ef',
-        highlight: '#00c0ef',
-        label    : 'Safari'
-      },
-      {
-        value    : 300,
-        color    : '#3c8dbc',
-        highlight: '#3c8dbc',
-        label    : 'Opera'
-      },
-      {
-        value    : 100,
-        color    : '#d2d6de',
-        highlight: '#d2d6de',
-        label    : 'Navigator'
-      }
-    ]
-    var pieOptions     = {
-      //Boolean - Whether we should show a stroke on each segment
-      segmentShowStroke    : true,
-      //String - The colour of each segment stroke
-      segmentStrokeColor   : '#fff',
-      //Number - The width of each segment stroke
-      segmentStrokeWidth   : 2,
-      //Number - The percentage of the chart that we cut out of the middle
-      percentageInnerCutout: 50, // This is 0 for Pie charts
-      //Number - Amount of animation steps
-      animationSteps       : 100,
-      //String - Animation easing effect
-      animationEasing      : 'easeOutBounce',
-      //Boolean - Whether we animate the rotation of the Doughnut
-      animateRotate        : true,
-      //Boolean - Whether we animate scaling the Doughnut from the centre
-      animateScale         : false,
-      //Boolean - whether to make the chart responsive to window resizing
-      responsive           : true,
-      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-      maintainAspectRatio  : true,
-      //String - A legend template
-      legendTemplate       : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    pieChart.Doughnut(PieData, pieOptions)
-
-    //-------------
-    //- BAR CHART -
-    //-------------
-    var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
-    var barChart                         = new Chart(barChartCanvas)
-    var barChartData                     = areaChartData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
-    var barChartOptions                  = {
-      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-      scaleBeginAtZero        : true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : true,
-      //String - Colour of the grid lines
-      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth      : 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines  : true,
-      //Boolean - If there is a stroke on each bar
-      barShowStroke           : true,
-      //Number - Pixel width of the bar stroke
-      barStrokeWidth          : 2,
-      //Number - Spacing between each of the X value sets
-      barValueSpacing         : 5,
-      //Number - Spacing between data sets within X values
-      barDatasetSpacing       : 1,
-      //String - A legend template
-      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-      //Boolean - whether to make the chart responsive
-      responsive              : true,
-      maintainAspectRatio     : true
-    }
-
-    barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
-  })
-	
 </script>
 <style lang="scss" scoped>
 	.wrapper{

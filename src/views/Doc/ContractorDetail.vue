@@ -12,10 +12,10 @@ div.layout-content-main
 								Option(v-for="item in region",:key="item.province",:value="item.value")|{{item.value}}
 						Col(span="6" style="padding-right:5px")
 							Select(placeholder="请选择",v-model="form.city")
-								Option(v-for="item in cityList",:key="item.city",:value="item.value")|{{item.value}}
+								Option(v-for="city in cityList",:key="city.city",:value="city.value")|{{city.value}}
 						Col(span="6" style="padding-right:5px")
 								Select(placeholder="请选择",v-model="form.district")
-									Option(v-for="item in districtList",:key="item.name2",:value="item.value")|{{item.value}}				
+									Option(v-for="distric in districtList",:key="distric.name",:value="distric.value")|{{distric.value}}
 				Form-item(label="单位负责人",prop="contactor")
 					Input(v-model="form.contactor",placeholder="请输入单位负责人")
 				Form-item(label="负责人电话",prop="mobile")
@@ -34,47 +34,47 @@ import region from '@/views/region.json'
 export default {
   data() {
     return {
-		region: region,
-		cityList: [],
-		districtList: [],
-		loading:false,
-		form: {
-			name:'',
-			type: 0,
-			province: '',
-			city: '',
-			district: '',
-			address:'',
-			contactor:'',
-			mobile:'',
-		},
-		rules: {
-			name: [{
-				required: true,
-					type: 'string',
-					message: '请填写安装单位名称',
-					trigger: 'blur'
-			}],
-				contactor: [{
-					required: false,
-					type: 'string',
-					message: '请填写单位负责人',
-					trigger: 'blur'
-			}],
-				mobile: [{
-					required: false,
-					type: 'string',
-					pattern:/^1(3|4|5|7|8)\d{9}$/,
-					message: '请填写正确的号码',
-					trigger: 'blur'
-			}],
-				address: [{
-					required: false,
-					type: 'string',
-					message: '请填写单位位置',
-					trigger: 'blur'
-			}],
-		},
+			region: region,
+			cityList: [],
+			districtList: [],
+			loading:false,
+			form: {
+				name:'',
+				type: 0,
+				province: '',
+				city: '',
+				district: '',
+				address:'',
+				contactor:'',
+				mobile:'',
+			},
+			rules: {
+				name: [{
+					required: true,
+						type: 'string',
+						message: '请填写安装单位名称',
+						trigger: 'blur'
+				}],
+					contactor: [{
+						required: false,
+						type: 'string',
+						message: '请填写单位负责人',
+						trigger: 'blur'
+				}],
+					mobile: [{
+						required: false,
+						type: 'string',
+						pattern:/^1(3|4|5|7|8)\d{9}$/,
+						message: '请填写正确的号码',
+						trigger: 'blur'
+				}],
+					address: [{
+						required: false,
+						type: 'string',
+						message: '请填写单位位置',
+						trigger: 'blur'
+				}],
+			},
     }
   },
 	created(){

@@ -8,7 +8,7 @@ div.layout-content-main()
 		Col(span=2)
 			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
 	div(v-if="div_show" id="serClick" style="margin-top:-30px")
-		Form.imr(ref='form',:model="query",label-position="left",:label-width="100")
+		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=1)
 				Col(span=2)
 					Select.smr(v-model="show.device_type" style="width:100%" placeholder="类型" @on-change="search()")
@@ -24,7 +24,7 @@ div.layout-content-main()
 				Col(span=4)
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=1)
-					Button.mr-10(type="default",icon="search",@click="search()" style="margin-left:1px")
+					Button.mr-10(type="default",icon="search",@click="search()" style="margin-left:1px" )
 				Col(span=1)
 					Button(type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag')
 					Button(type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag')
@@ -314,32 +314,25 @@ div.layout-content-main()
 					{
 						const point = new BMap.Point(item.cell_lon+Math.random()/500, item.cell_lat);
 						let marker = null;
-						if (item.isLoss) {
-							labelStyle.color = 'red';
-							labelStyle.borderColor = 'red';
-							marker = new BMap.Marker(point, {
-								icon: redMark
-							});
-						}
-						if (!item.isLoss && item.Alert == '0') {
+						if (item.state  == "在线") {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: greenMark
 							});
 						}
-						if (!item.isLoss && item.Alert != '0') {
+						if (item.state == "离线") {
+							labelStyle.color = 'red';
+							labelStyle.borderColor = 'red';
+							marker = new BMap.Marker(point, {
+								icon: redMark
+							});
+						}
+						if (item.state  == '长期离线') {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: lostMark
-							});
-						}
-						if (!item.isLoss && parseInt(item.isOpen) === 1) {
-							labelStyle.color = '#55BC52';
-							labelStyle.borderColor = '#55BC52';
-							marker = new BMap.Marker(point, {
-								icon: createMark(`/open.gif?timestamp=${new Date().getTime()}`)
 							});
 						}
 						marker.addEventListener('click', () => this.goDevice(item));

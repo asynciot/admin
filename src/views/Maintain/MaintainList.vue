@@ -3,29 +3,29 @@
 		<div>
 		<Form class="imr" ref="form" label-position="left" :label-width="100">
 		  <Row gutter="1">
-		  <Col span='3'>
-		  <Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
-		  <Option key="1" label="全部" value="all"></Option>
-		  <Option key="2" label="处理中" value="untreated"></Option>
-		  <Option key="3" label="已结束" value="treated"></Option>
-		  </Select>
-		  </Col>
-		  <Col span='3'>
-		  <Select class="smr" v-model="show.order_type" style="width:100%;" placeholder="事件类型" @on-change="search()">
-		  <Option key="1" label="全部" value="all"></Option>
-		  <Option key="2" label="故障" value="1"></Option>
-		  <Option key="3" label="保养" value="2"></Option>
-		  <Option key="4" label="校检" value="3"></Option>
-		  </Select>
-		  </Col>
-		  <Col span='2'>
-		  </Col>
-		  <Col span='4'>
-		  <AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
-		  </Col>
-		  <Col span='1'>
-		  <Button class="mr-10" type="default" icon="search" @click="search()"></Button>
-		  </Col>
+				<Col span='3'>
+					<Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
+						<Option key="1" label="全部" value="all"></Option>
+						<Option key="2" label="处理中" value="untreated"></Option>
+						<Option key="3" label="已结束" value="treated"></Option>
+					</Select>
+				</Col>
+				<Col span='3'>
+					<Select class="smr" v-model="show.order_type" style="width:100%;" placeholder="事件类型" @on-change="search()">
+						<Option key="1" label="全部" value="all"></Option>
+						<Option key="2" label="故障" value="1"></Option>
+						<Option key="3" label="保养" value="2"></Option>
+						<Option key="4" label="校检" value="3"></Option>
+					</Select>
+				</Col>
+				<Col span='2'>
+				</Col>
+				<Col span='4'>
+					<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
+				</Col>
+				<Col span='1'>
+					<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
+				</Col>
 		  </Row>
 		</Form>
 		</div>

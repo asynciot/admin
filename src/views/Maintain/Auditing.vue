@@ -2,9 +2,8 @@
 	div.layout-content-main
 		div.form
 			Row(:gutter=30)
-				Col(span=7)| &nbsp;
 				Col(span=10)
-					Card(style="height:600px")
+					Card(style="height:500px")
 						Col(span=24)
 							Form(ref="form",:model="form",:rules="rules",:label-width="120")
 								Row(:gutter="5")
@@ -18,11 +17,19 @@
 										Form-item(label="基站定位:")|{{list.cell_address}}
 										Form-item(label="安装地址:")|{{list.install_addr}}
 										Form-item(label="提交时间:")|{{this.$format(parseInt(list.createTime), 'YYYY-MM-DD HH:mm:ss')}}
-						Col(span=24)
-							Col(span=12 align="center")
-								Button(type="success",icon="plus",@click="")|同意
-							Col(span=12 align='center')
-								Button(icon="close",@click="$router.back(-1)")|取消
+				Col(span=10)
+					Card()
+						Row
+							Col(span=24)
+								Form(ref="form",:model="form",:rules="rules",:label-width="120" style="height:200px")
+									Row(:gutter="5")
+										Col(span="20",offset="2")
+											Form-item(label="详细说明:")|{{ps}}
+							Col(span=24)
+								Col(span=12 align="center")
+									Button(type="success",icon="plus",@click="test")|同意
+								Col(span=12 align='center')
+									Button(icon="close",@click="$router.back(-1)")|取消
 </template>
 
 <script>
@@ -35,6 +42,7 @@
 					type:'1',
 				},
 				faultcode:false,
+				ps:'因零件未到位，请求搁置3日后维修。',
 				list:[],
 				query:{
 					username:window.localStorage.getItem('username'),
@@ -71,6 +79,13 @@
 				else {
 					this.faultcode=true;
 				}
+			},
+			test(){
+				this.$Notice.success({
+					title: '成功',
+					desc: '自动生成工单！'
+				})
+				this.$router.back()
 			},
 			async getData(){
 				let res = await this.$api.fault({num:1,page:1,id:this.$route.params.id})

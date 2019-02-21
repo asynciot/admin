@@ -1,59 +1,36 @@
-<template>
-	<div class="layout-content-main">
-		<div>
-			<Form class="imr" ref="form" label-position="left" :label-width="100">
-				<Row gutter="1">
-					<Col span='3'>
-						<Select class="smr" v-model="show.type" style="width:100%;" placeholder="事件类型" @on-change="search()">
-							<Option key="1" label="全部" value="all"></Option>
-							<Option key="2" label="故障" value="1"></Option>
-							<Option key="3" label="保养" value="2"></Option>
-							<Option key="4" label="校检" value="3"></Option>
-						</Select>
-					</Col>
-					<Col span='3'>
-						<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
-							<Option key="1" label="全部" value="all"></Option>
-							<Option key="2" label="控制器" value="door"></Option>
-							<Option key="3" label="控制柜" value="ctrl"></Option>
-						</Select>
-					</Col>
-					<Col span='4'>
-						<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1"
-						 placeholder="按设备名称,安装地址查询" style="width:100%;" id="serch1"></AutoComplete>
-					</Col>
-					<Col span='1'>
-						<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
-					</Col>
-					<Col span='4'>
-						<Button type="default" icon="" @click="code()">
-							控制柜故障代码
-						</Button>
-					</Col>
-				</Row>
-			</Form>
-		</div>
-		<el-dialog title="故障提示" :visible.sync="ctrl" width="30%">
-			<img id='c' width="100%" src=''></img>
-			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="ctrl = false">确 定</el-button>
-			</span>
-		</el-dialog>
-		<el-dialog title="故障提示" :visible.sync="door" width="30%">
-			<img id='d' width="100%" src=''></img>
-			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="door = false">确 定</el-button>
-			</span>
-		</el-dialog>
-		<div style="min-height: 450px; margin-top: 20px;">
-			<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
-		</div>
-		<Col span='6'>&nbsp;</Col>
-		<Col span='18'>
-		<Page show-elevator :total="data.length" :page-size="options.num" :current="options.page" @on-change="pageChange" class="fonts"
-		 show-total></Page>
-		</Col>
-	</div>
+<template lang="jade">
+	div.layout-content-main
+		div
+			Form(ref='form', label-position='left', :label-width='100' @keydown.enter.native.prevent="search()")
+				Row(gutter=5)
+					Col(span="2")
+						Select.smr(v-model='show.type', style='width:100%;', placeholder='事件类型', @on-change='search()')
+							Option(key='1', label='全部', value='all')
+							Option(key='2', label='故障', value='1')
+							Option(key='3', label='保养', value='2')
+							Option(key='4', label='校检', value='3')
+					Col(span="2")
+						Select.smr(v-model='show.device_type', style='width:100%;', placeholder='设备类型', @on-change='search()')
+							Option(key='1', label='全部', value='all')
+							Option(key='2', label='控制器', value='door')
+							Option(key='3', label='控制柜', value='ctrl')
+					Col(span="4")
+						Input(v-model="options.search_info" ,:data="menu" , placeholder="设备地址和名称" max=15)
+					Col(span="4")
+						Button.mr-10(type='default', icon='search', @click='search()')
+						Button(type='default', icon='', @click='code()')|控制柜故障代码
+		el-dialog(title='故障提示', :visible.sync='ctrl', width='30%')
+			img#c(width='100%', src='')
+			span.dialog-footer(slot='footer')
+				el-button(type='primary', @click='ctrl = false') 确 定
+		el-dialog(title='故障提示', :visible.sync='door', width='30%')
+			img#d(width='100%', src='')
+			span.dialog-footer(slot='footer')
+				el-button(type='primary', @click='door = false') 确 定
+		div(style='min-height: 450px; margin-top: 20px;')
+			Table.mb-10(border='', :columns='columns', :data='data', size='small')
+		Col(span="24" style="text-align:center;")
+			page.fonts(show-elevator='', :total='data.length', :page-size='options.num', :current='options.page', @on-change='pageChange', show-total='')
 </template>
 
 <script>
@@ -79,7 +56,21 @@
 						producer: "admin",
 						state: "untreated",
 						type: 1,
-					}
+					},{
+						IMEI: "868998030425132",
+						device_name: "01B-N0001",
+						install_addr: "测试",
+						code: 4,
+						createTime: "1550121375478",
+						device_id: 3,
+						device_type: "door",
+						id: 149,
+						islast: 1,
+						producer: "nbas1203",
+						state: "untreated",
+						type: 1,	
+						ps:'因零件未到位，请求搁置'
+					},
 				],
 				show: {
 					state: 'untreated',
@@ -179,6 +170,9 @@
 					{
 						title: '安装地址',
 						key: 'install_addr'
+					},{
+						title: '说明',
+						key: 'ps'
 					},
 					{
 						title: '提交时间',
@@ -193,7 +187,7 @@
 						render: (h, params) => {
 							var order
 							if (params.row.state == "untreated") {
-								order = '同意'
+								order = '查看'
 							}
 							return h('div', [
 								h('Button', {
@@ -227,18 +221,6 @@
 			this.getList()
 		},
 		methods: {
-			handleSearch1() {
-				this.menu = [];
-				var str;
-				for (var i = 0; i < this.list.length; i++) {
-					str = this.list[i].device_id;
-					if (str != null) {
-						if (str.indexOf(this.options.search_info) >= 0)
-							this.menu.push(str)
-					}
-				}
-			},
-
 			pageChange(val) {
 				this.options.page = val
 				// this.getList()

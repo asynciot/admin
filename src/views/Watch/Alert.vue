@@ -21,10 +21,10 @@ div.layout-content-main
 	div.ssa
 		Table.deviceList(@on-selection-change="selection" border,:columns="columns",:data="list",size="small" stripe)
 	div.form
-		Col(span='6')
+		Col(span='2')
 			Button(type="default")|批量订阅
-		Col(span='18')
-			Page.fonts(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
+		Col(span='22' style="text-align:center;")
+			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>	
@@ -171,34 +171,62 @@ div.layout-content-main
 						return h('div', [
 							h('Button', {
 								props: {
-									type: 'success',
-									size: 'small'
+									type: 'primary',
+									size: 'small',
+									disabled:this.auditing,
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
-// 									click: () => {
-// 									}
+									click: () => {
+										this.auditing = !this.auditing
+										this.$Modal.confirm({
+											title: '您确定要订阅该设备么？',
+											content:name,
+											onOk: () => {
+												this.$Notice.success({
+													title: '成功',
+													desc: '订阅成功'
+												});
+											},
+											onCancel: () => {
+											}
+										})
+									}
 								}
 							}, '订阅'),
-// 							h('Button', {
-// 								props: {
-// 									type: 'warning',
-// 									size: "small",
-// 								},
-// 								on: {
-// 									click: () => {
-// 										this.clear(params.row)
-// 									}
-// 								}
-// 							}, '清除'),
+							h('Button', {
+								props: {
+									type: 'warning',
+									size: "small",
+									disabled:!this.auditing,
+								},
+								on: {
+									click: () => {
+										this.auditing = !this.auditing
+										this.$Modal.warning({
+											title: '您确定要取消订阅该设备么？',
+											content:name,
+											onOk: () => {
+												this.$Notice.success({
+													title: '成功',
+													desc: '取消订阅成功'
+												});
+											},
+											onCancel: () => {
+											}
+										})
+									}
+								}
+							}, '取消'),
 						]);
 					}
 				}
 				],
 				markerClusterer: null,
 				markers: [],
+				auditing:false,
 				options: {
 					name:'',
 					page: 1,

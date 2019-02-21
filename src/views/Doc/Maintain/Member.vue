@@ -2,7 +2,7 @@
 div.layout-content-main
 	Tabs(value="name1",:animated="false",@on-click="Onchange")
 		TabPane(label="维保单位",name="Unit")
-		TabPane(label="维保站点",name="Site")
+		//TabPane(label="维保站点",name="Site")
 		TabPane(label="维保群组",name="Group")
 		TabPane(label="维保人员",name="Member")
 	div.form
@@ -10,7 +10,7 @@ div.layout-content-main
 			Row(:gutter="12")
 				Col(span="6")
 					Form-item(label="姓名：")
-						Input(v-model="query.name",placeholder="请输入姓名")
+						Input(v-model="query.username",placeholder="请输入姓名")
 				Col(span="6")
 					Form-item(label="手机号码：")
 						Input(v-model="query.mobile",placeholder="请输入手机号码")
@@ -38,7 +38,7 @@ export default {
 			column: [
 				{
 					title: '人员姓名',
-					key: 'name',
+					key: 'username',
 				},
 				{
 					title: '手机号码',
@@ -48,10 +48,10 @@ export default {
 					title: '维保班组',
 					key: 'groupName',
 				},
-				{
-					title: '维保站点',
-					key: 'siteName',
-				},
+// 				{
+// 					title: '维保站点',
+// 					key: 'siteName',
+// 				},
 				{
 					title: '维保单位',
 					key: 'companyName',
@@ -128,7 +128,7 @@ export default {
 			options: {
 				name:'',
 				page: 1,
-				num: 15,
+				num: 10,
 				total: 0
 			}
 		}

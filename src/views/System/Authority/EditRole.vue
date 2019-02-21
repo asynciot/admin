@@ -19,6 +19,13 @@
 										div()
 											Checkbox()|读取
 											Checkbox()|写入
+											Checkbox()|创建电梯组
+											Checkbox()|删除电梯组
+											Checkbox()|权限编辑
+											Checkbox()|固件更新
+											Checkbox()|告警订阅
+											Checkbox()|订单审核
+											
 						Col(span="8")
 							Card
 								p(slot="title")|菜单名称

@@ -1,7 +1,7 @@
 <template lang="jade">
 div.layout-content-main
 	div.form
-		Form(ref='query',:model="query",label-position="right",:label-width="100")
+		Form(ref='query',:model="query",label-position="right",:label-width="100" @keydown.enter.native.prevent="getList()")
 			Row(:gutter=1)
 				Col(span="5")
 					Form-item(label="可用版本：")
@@ -57,30 +57,30 @@ export default {
 			ladderApi: ladderApi,
 			loading:false,
 			columns: [{
-          type: 'selection',
-          align: 'center',
-					width: 60,
-        },{
-          title: '设备名称',
-          key: 'device_name',
-					align: 'center',
-					width: 110,
-        },{
-          title: 'IMEI(设备识别码)',
-          key: 'IMEI',
-					width: 140,
-					minWidth:140,
-        },{
-          title: '设备类型',
-          key: 'device_type',
-					width:90,
-          render: (h, params) => {
-				var i='';
-				if (params.row.device_type==240) i='控制柜';
-				if (params.row.device_type==15) i='控制器';
-            return h('p',i)
-          }
-        },
+				type: 'selection',
+				align: 'center',
+				width: 60,
+			},{
+				title: '设备名称',
+				key: 'device_name',
+				align: 'center',
+				width: 110,
+			},{
+				title: 'IMEI(设备识别码)',
+				key: 'IMEI',
+				width: 140,
+				minWidth:140,
+			},{
+				title: '设备类型',
+				key: 'device_type',
+				width:90,
+				render: (h, params) => {
+					var i='';
+					if (params.row.device_type==240) i='控制柜';
+					if (params.row.device_type==15) i='控制器';
+					return h('p',i)
+				}
+			},
 //      {
 //        title: '网络类型',
 //        key: 'networkType',
@@ -89,63 +89,62 @@ export default {
 //          return h('p',netWork[params.row.networkType]||'-')
 //        }
 //      },
-        {
-          title: '版本',
-          key: 'device_firmware',
-					width:90,
-        },
-				{
-          title: '状态',
-					width:90,
-					render: (h, params) => {
-            return h('p',(params.row.commond=='update') ? '更新中':'未在更新')
-          }
-        },
-        {
-    	title: 'IP定位',
-           width: 110,
-		   render: (h, params) => {
-		   return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
-		   }
-        },
-		{
-			title: '基站定位',
-			key: 'cell_address',
-			render: (h,params) => {
-				var addr= params.row.cell_address
-  		 		 if (params.row.cell_address !=null) {
-				if(params.row.cell_address.length>=38){
-			 		addr=item.cell_address.substring(0,38)+"…"
-			 	}
+			{
+				title: '版本',
+				key: 'device_firmware',
+				width:90,
+			},
+			{
+				title: '状态',
+				width:90,
+				render: (h, params) => {
+					return h('p',(params.row.commond=='update') ? '更新中':'未在更新')
 				}
-			return  h('Poptip',{
+			},
+			{
+				title: 'IP定位',
+						 width: 110,
+				 render: (h, params) => {
+				 return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
+				 }
+			},
+			{
+				title: '基站定位',
+				key: 'cell_address',
+				render: (h,params) => {
+					var addr= params.row.cell_address
+					if (params.row.cell_address !=null) {
+						if(params.row.cell_address.length>=38){
+							addr=item.cell_address.substring(0,38)+"…"
+						}
+					}
+					return  h('Poptip',{
 						props: {
 							trigger:"hover",										
 							placement:"top-start",
 							content:params.row.cell_address
 						},
 					},addr)
-			}
-		},
-        {
-          title: '操作',
-					width:80,
-          render: (h, params) => {
-            return h('Button', {
-              props: {
-                type: 'primary',
-                size: "small",
-								disabled: !this.version
-              },
-              on: {
-                click: () => {
-                  this.update([params.row])
-                }
-              }
-            }, '更新')
-          }
-        }
-      ],
+				}
+			},
+			{
+				title: '操作',
+				width:80,
+				render: (h, params) => {
+					return h('Button', {
+						props: {
+							type: 'primary',
+							size: "small",
+							disabled: !this.version
+						},
+						on: {
+							click: () => {
+								this.update([params.row])
+							}
+						}
+					}, '更新')
+				}
+			}],
       data: [],
 			menu:[],
 			file: null,

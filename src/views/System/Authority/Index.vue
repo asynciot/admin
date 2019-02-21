@@ -1,21 +1,21 @@
 <template lang="jade">
 div.layout-content-main
 	div.form
-		Form(ref='form',:model="options",label-position="left",:label-width="100")
-			Row(:gutter="10")
-				Col(span="2")
-					Select(style="width:100%" placeholder="全部")
-						Option(key="1" label="全部")
-						Option(key="2" label="游客")
-						Option(key="3" label="普通用户")
-						Option(key="4" label="超级管理员")
-				Col(span="6")
-					Form-item(label="关键词：")
-						Input(v-model="options.username",placeholder="请输入搜索内容")
-				Col(span="14")
-					Button(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")|搜索
-				Col(span="2")
-					Button.mr-10(type="success",icon="plus",:loading="loading",@click="goRole()")|添加角色
+		Form(ref='form',:model="options",label-position="left",:label-width="60" @keydown.enter.native.prevent="options.page=1,search()")
+			div(style="padding-bottom:5px")
+				Row(:gutter="10")
+					Col(span="2")
+						Select(style="width:100%" placeholder="全部")
+							Option(key="1" label="全部")
+							Option(key="2" label="游客")
+							Option(key="3" label="普通用户")
+							Option(key="4" label="超级管理员")
+					Col(span="17")
+						Button.mr-10(type="success",icon="plus",:loading="loading",@click="goRole()")|添加角色
+					Col(span="5")
+						Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")
+						Input(v-model="options.username",placeholder="请输入搜索内容" style="width:75%;")
+						
 	div(style="min-height: 450px")
 		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")
 	Col(span=6)|&nbsp;
@@ -140,6 +140,6 @@ export default {
 
 <style lang="scss" scoped>
 	.mr-10{
-		text-align: right;
+		margin-right: 10px;
 	}
 </style>

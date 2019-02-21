@@ -58,7 +58,7 @@
 							Form.status(label-position="left",:label-width="70")
 								Col(span="23")
 									Form-item(label="监控时长(s):")
-										Input(v-model='realtime.duration' maxlength="4")
+										input.iv(v-model='realtime.duration' ,:maxlength=4)
 								Col(span="23" style="")
 									Form-item(label="采样周期(ms):")
 										Select(v-model='realtime.interval')
@@ -75,72 +75,49 @@
 						Row(style="margin-top:20px")|{{this.loading}}
 						Row(style="margin-top:20px")
 							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[1]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[5]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[7]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%"  ,:maxlength=4, v-model='address[0]' name="sn1" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[1]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 						Row(style="margin-top:20px")
+							Col(span=5 style="height: 30px;font-size:16px")|段地址:
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[5]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+						Row(style="margin-top:35px")
 							Col(span=5 style="height: 30px;font-size:16px")
 								checkbox(v-model="ctn" @on-change="contn()")|连续
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[9]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[10]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[11]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[12]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[13]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='address[14]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='address[15]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-						Row(style="margin-top:35px")
-							Col(span=5 style="height: 30px;font-size:16px")|段地址:
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='segment[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='segment[1]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='segment[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='segment[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=4 style="height: 30px;font-size:16px")|时长(s):
-							Col(span=2)
-								input(style="width:100%" maxlength="4" v-model='duration' onkeyup="value=value.replace(/([^0-9])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[7]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[9]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 						Row(style="margin-top:35px")
 							Col(span=5 style="height: 30px;font-size:16px")|结果:
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='res[0]' readonly)
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='res[1]' readonly)
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='res[2]' readonly)
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='res[3]' readonly)
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='res[4]' readonly)
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='res[5]' readonly)
-							Col(span=1)
-								input(style="width:100%" maxlength="2" v-model='res[6]' readonly)
-							Col(span=3)|:
-								input(style="width:33%" maxlength="2" v-model='res[7]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
 								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
@@ -179,10 +156,11 @@
 			return {
 				sign:[false,false,false,false,false,false],
 				ctn: false,
+				a:'',
 				loading:'',
 				websock:'',
 				test:'',
-				address:['00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00'],
+				address:['0000','0000','0000','0000','0000','0000','0000','0000','0000','0000','0000'],
 				res:['00','00','00','00','00','00','00','00'],
 				segment:['00','00','00','00'],
 				duration:30,
@@ -226,31 +204,24 @@
 			}
 		},
 		created() {
-				this.getData()
+			this.getData()
 		},
 		methods: {
 			contn(){
 				if (this.ctn){
-					if (this.address[0] == '') this.address[0]='00'
-					if (this.address[1] == '') this.address[1]='00'
-					for (var i=1;i<8;i++){
-						if (this.address[2*i-1] == 'ff') {
-							this.address[2*i+1] ='00'
-							this.address[2*i] = (parseInt('0x'+this.address[2*i-2])+1).toString(16)
-							if (this.address[2*i] == '100') this.address[2*i]='00'
+					if (this.address[0] == '') this.address[0]='0000'
+					if (this.address[1] == '') this.address[1]='0000'
+					for (var i=3;i<10;i++){
+						if (this.address[i-1] == 'ffff') {
+							this.address[i] ='0000'
+							break;
 						}
 						else{
-							this.address[2*i] = this.address[2*i-2]
-							this.address[2*i+1] = (parseInt('0x'+this.address[2*i-1])+1).toString(16)
+							this.address[i] = (parseInt('0x'+this.address[i-1])+1).toString(16)
 						}
 					}
-					for (var i=0;i<16;i++){
+					for (var i=3;i<10;i++){
 						if (this.address[i].length == 1) this.address[i]='0'+this.address[i]
-					}
-				}
-				else {
-					for (var i=0;i<16;i++){
-						this.address[i]='00'
 					}
 				}
 			},
@@ -560,5 +531,20 @@
 	}
 	.ivu-scroll-container{
 		height:311px !important;
+	}
+	.iv{
+		display: inline-block;
+    width: 100%;
+    height: 32px;
+    line-height: 1.5;
+    padding: 4px 7px;
+    font-size: 12px;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    color: #495060;
+    background-color: #fff;
+    background-image: none;
+    position: relative;
+    cursor: text;
 	}
 </style>

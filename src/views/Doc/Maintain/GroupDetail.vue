@@ -3,25 +3,25 @@ div.layout-content-main
 	Form(ref="form",:model="form",:rules="rules",:label-width="120")
 		Row(:gutter="18")
 			Col(span="10",offset="2")
-				Form-item(label="班组名称",prop="name")
+				Form-item(label="班组名称:",prop="name")
 					Input(v-model="form.name",placeholder="请输入班组名称")
-				Form-item(label="维保站点",prop="id")
-					Row(:gutter="18")
-						Col(span="6")
+				//Form-item(label="维保站点:",prop="id")
+					Row(:gutter="10")
+						Col(span="24")
 							Select(placeholder="请选择",v-model="form.siteId" )
 								Option(v-for="item in siteList",:key="item.id",:value="item.id" v-text="item.name")|{{item.value}}
-				Form-item(label="班组负责人",prop="contactor")
+				Form-item(label="班组负责人:",prop="contactor")
 					Input(v-model="form.contactor",placeholder="请输入班组负责人")
-				Form-item(label="负责人电话",prop="mobile")
+				Form-item(label="负责人电话:",prop="mobile")
 					Input(v-model="form.mobile",placeholder="请输入负责人电话",:maxlength="11")
-				Form-item(label="维保单位",prop="maintenanceCompanyName")
+				Form-item(label="维保单位:",prop="maintenanceCompanyName")
 					Input(v-model="form.maintenanceCompanyName",placeholder="请输入维保单位名称")
 
 		Row.mb-20
 			Col(span="14",offset="2")
 				Form-item.tc
-					Button.mr-10(icon="close",@click="reset('form')")|取消
-					Button(type="success",icon="plus",@click="submit('form')",:loading="loading")|提交
+					Button.mr-10(icon="close",@click="$router.back(-1)")|取消
+					Button(type="success",icon="plus",@click="submit('form')")|提交
 </template>
 
 <script>
@@ -57,12 +57,12 @@ export default {
 					message: '请填写正确的号码',
 					trigger: 'blur'
 				}],
-				siteId: [{
-					required: true,
-					type: 'string',
-					message: '请填写维保站点',
-					trigger: 'blur'
-				}],
+// 				siteId: [{
+// 					required: true,
+// 					type: 'string',
+// 					message: '请填写维保站点',
+// 					trigger: 'blur'
+// 				}],
 			},
 		}
 	},
@@ -92,28 +92,26 @@ export default {
 					if(this.$route.params.id) {
 						res = await this.$api.updateTeam(this.form)
 					} else {
-						res = await this.$api.addTeam(this.form)
+						// res = await this.$api.addTeam(this.form)
 					}	
 					this.loading = false
-					if (res.data.code == 0) {
-					  this.$refs[name].resetFields();
-						this.$router.back();
-					  this.$Notice.success({
-							title: '成功',
-							desc: '成功添加群组！',
-							onClose: () => {
-								this.$router.back()
-							}
-					  },
-						
-						)
-					}else{
+// 					if (res.data.code == 0) {
+// 					  this.$refs[name].resetFields();
+// 						this.$router.back();
+// 					  this.$Notice.success({
+// 							title: '成功',
+// 							desc: '成功添加群组！',
+// 							onClose: () => {
+// 								this.$router.back()
+// 							}
+// 					  },)
+// 					}else{
 						this.loading = false
 						this.$Notice.error({
 							title: '错误',
 							desc: '添加群组失败！'
 						})
-					}
+					// }
 				}else{
 					this.loading = false
 					this.$Notice.error({

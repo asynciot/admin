@@ -8,7 +8,7 @@ div.layout-content-main
 		Col(span=2)
 			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
 	div(v-if="div_show" id="serClick" style="margin-top:-30px")
-		Form.imr(ref='form',:model="query",label-position="left",:label-width="100")
+		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=1)
 				Col(span=2)
 					Select.smr(v-model="show.device_type" style="width:100%" placeholder="类型" @on-change="search()")
@@ -42,7 +42,7 @@ div.layout-content-main
 					Col(span=4)
 						span.mt(id="black" style="" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 	div.ssa
-		Table.deviceList(border,:columns="columns",:data="list",size="small" stripe)
+		Table(border,:columns="columns",:data="list",size="small" stripe)
 	div.form
 		Col(span='6')|&nbsp;
 		Col(span='18')
@@ -102,7 +102,7 @@ div.layout-content-main
 					{
 					title: '编号',
 					key: 'device_id',
-					width: 40,
+					width: 60,
 					},
 					{
 						title: '设备名称',
@@ -156,7 +156,7 @@ div.layout-content-main
 					},
 					{
 						title: '设备类型',
-						width: 100,
+						width: 90,
 						key: 'device_type',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
@@ -165,17 +165,17 @@ div.layout-content-main
 					{
 					  title: '状态',
 					  key: 'state',
-						width: 100,
+						width: 90,
 					  render: (h, params) => {
 							return h('p',model[params.row.state]||'')
 					  }
 					},
 					{
 						title: 'IP定位',
-		                width: 120,
-					    render: (h, params) => {
-					    return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
-					   }
+						width: 120,
+						render: (h, params) => {
+							return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
+					 }
 					},
 					{
 						title: '基站定位',

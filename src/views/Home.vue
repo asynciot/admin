@@ -182,10 +182,7 @@
 						},{
 							name:'alertTake',
 							label:'告警订阅',
-						},{
-							name:'evolution',
-							label:'更新状态',
-						}]
+						},]
 					},{
 						name: 'maintain',
 						icon: 'settings',
@@ -210,18 +207,19 @@
 // 								label: '故障等级',
 // 							}
 						],
-// 					},{
-// 						name: 'company',
-// 						icon: 'home',
-// 						label: '单位管理',
-// 						sub: [{
+					},{
+						name: 'company',
+						icon: 'home',
+						label: '单位管理',
+						sub: [
+// 							{
 // 								name: 'contractor',
 // 								label: '安装单位',
 // 							},
-// 							{
-// 								name: 'maintainCompany',
-// 								label: '维保单位',
-// 							},
+							{
+								name: 'maintainCompany',
+								label: '维保单位',
+							},
 // 							{
 // 								name: 'usedep',
 // 								label: '使用单位',
@@ -230,7 +228,7 @@
 // 								name: 'property',
 // 								label: '物业单位',
 // 							}
-// 						],
+						],
 					},{
 						name: 'event',
 						icon: 'ios-list',
@@ -238,6 +236,12 @@
 						sub: [{
 							name: 'alList',
 							label: '设备信息',
+						},{
+							name:'evolution',
+							label:'固件更新',
+						},{
+							name:'elevator',
+							label:'电梯组',
 						}],
 					},{
 						name: 'system',
