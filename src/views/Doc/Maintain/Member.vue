@@ -18,8 +18,11 @@ div.layout-content-main
 					Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")|搜索
 					router-link(:to="{ name: 'maintainMemberNew'}")
 						Button.mr-10(type="success",icon="plus",:loading="loading")|添加人员
-	Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe)
-	Page(style="padding-right: 38%;" class="pagination" show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange()" show-total )
+	div(style="min-height:450px")
+		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe)
+	div.form
+		Col(span='24' style="text-align:center;")
+			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>

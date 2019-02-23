@@ -9,13 +9,13 @@ div.layout-content-main
 					Row(:gutter="18")
 						Col(span="6" style="padding-right:5px")
 							Select(placeholder="请选择",v-model="form.province")
-								Option(v-for="item in region",:key="item.province",:value="item.value")|{{item.value}}
+								Option(v-for="item in region",:key="item.province",:value="item.value")
 						Col(span="6" style="padding-right:5px")
 							Select(placeholder="请选择",v-model="form.city")
-								Option(v-for="item in cityList",:key="item.city",:value="item.value")|{{item.value}}
+								Option(v-for="city in cityList",:key="city.value",:value="city.value")
 						Col(span="6" style="padding-right:5px")
 								Select(placeholder="请选择",v-model="form.district")
-									Option(v-for="item in districtList",:key="item.district",:value="item.value")|{{item.value}}
+									Option(v-for="distric in districtList",:key="distric.value",:value="distric.value")
 				Form-item(label="单位负责人",prop="contactor")
 					Input(v-model="form.contactor",placeholder="请输入单位负责人")
 				Form-item(label="负责人电话",prop="mobile")
@@ -25,8 +25,8 @@ div.layout-content-main
 		Row.mb-20
 			Col(span="14",offset="2")
 				Form-item.tc
-					Button.mr-10(icon="close",@click="reset('form')")|取消
-					Button(type="success",icon="plus",@click="create('form')",:loading="loading")|提交
+					Button.mr-10(icon="close",@click="$router.back(-1)")|取消
+					Button(type="success",icon="plus",@click="create('form')")|提交
 </template>
 
 <script>
@@ -89,15 +89,15 @@ export default {
 			let index = this.region.findIndex(item=>item.value==val)
 			if(index > -1){
 				this.cityList = this.region[index].children
-				this.form.city = this.list.city
-				this.form.district = this.list.district
+				this.form.city = ''
+				this.form.district = ''
 			}
 		},
 		'form.city': function(val){
 			let index = this.cityList.findIndex(item=>item.value==val)
 			if(index > -1){
 				this.districtList = this.cityList[index].children
-				this.form.district = this.list.district
+				this.form.district = ''
 			}
 		},
 	},
@@ -105,7 +105,7 @@ export default {
 		async getData(){
 			let res = await this.$api.company({ id: this.$route.params.id})
 			this.form = res.data.data.list[0]
-		},		
+		},
     create(name) {
 			this.loading = true
 			this.$refs[name].validate(async (valid) => {

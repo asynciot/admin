@@ -46,7 +46,7 @@ export default {
 					key: 'profession',
 				},
 				{
-					title: '权限',
+					title: '角色',
 					render: (h, params) => {
 						var authority;
 						if (params.row.username=='admin') {authority='超级管理员'}

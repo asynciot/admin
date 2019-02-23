@@ -12,9 +12,8 @@
 	<div style="min-height:450px; margin-top: 10px;">
 		<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
 	</div>
-	<Col span=6> &nbsp; </Col>
-	<Col span=18>
-	<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
+	<Col span="24" style="text-align: center;">
+		<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
 	</Col>
 	<div id="capture"></div>
 	<div id="printer" >

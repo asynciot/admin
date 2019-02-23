@@ -1,7 +1,7 @@
 <template lang="jade">
 	div.layout-content-main
 		div.form
-			Row(:gutter=30)
+			Row(:gutter=5)
 				Col(span=9)
 					Card
 						Row
@@ -30,6 +30,18 @@
 				Col(span=15)
 					Card
 						Row
+							div.form
+								Form(ref='query',:model="query",label-position="right",:label-width="100" @keydown.enter.native.prevent="search()")
+									div
+										Row(:gutter=5)
+											Col(span="9")
+												Input(v-model="options.username",placeholder="请输入搜索内容" style="width:60%;")
+												Button.ml-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")
+											Col(span="15")
+												Form-item(label="设备串号:" v-model="IMEI")
+													Input(:value="IMEI" style="width:60%;")
+													Button.ml-10(type="success",icon="plus",@click="" )|添加设备
+												
 							div.minheight
 								Table(border,:columns="columns",:data="list",size="small" stripe)
 						Row
@@ -46,6 +58,7 @@
 				cityList: [],
 				districtList: [],
 				loading:false,
+				IMEI:'',
 				options:{
 					total:10,
 					num:10,
@@ -213,5 +226,8 @@
 	}
 	.minheight{
 		min-height: 450px;
+	}
+	.ml-10{
+		margin-left: 5px;
 	}
 </style>

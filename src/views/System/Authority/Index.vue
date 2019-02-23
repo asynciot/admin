@@ -15,11 +15,9 @@ div.layout-content-main
 					Col(span="5")
 						Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")
 						Input(v-model="options.username",placeholder="请输入搜索内容" style="width:75%;")
-						
 	div(style="min-height: 450px")
 		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")
-	Col(span=6)|&nbsp;
-	Col(span=18)
+	Col(span=24 style="text-align:center;")
 		Page(show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange" show-total )
 </template>
 

@@ -20,8 +20,9 @@ div.layout-content-main
 						Button.mr-10(type="success",icon="plus",)|添加维保班组		
 	div(style="min-height:450px")
 		Table(:stripe="true",:columns="column",:data="list",stripe)
-	Col(span="24" style="text-align:center;")
-		Page(class="pagination" show-elevator :total="options.total" ,:page-size="options.num" ,:current="options.page" ,@on-change="pageChange()" show-total )
+	div.form
+		Col(span='24' style="text-align:center;")
+			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
 <script>

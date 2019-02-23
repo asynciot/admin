@@ -44,8 +44,7 @@ div.layout-content-main
 	div.ssa
 		Table(border,:columns="columns",:data="list",size="small" stripe)
 	div.form
-		Col(span='6')|&nbsp;
-		Col(span='18')
+		Col(span='24' style="text-align:center;")
 			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 

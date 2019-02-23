@@ -38,15 +38,17 @@
 										upload(:before-upload='after3')
 											img(id="after3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
 						Col(span=24 style="margin-top: 10px")
-							Col(span=8 align="center")
+							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
 								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))")|完成工单
 								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(sent))" disabled)|完成工单
-							Col(span=8 align="center")
+							Col(span=6 align="center")
+								Button(type="primary",@click="test()" )|请求搁置
+							Col(span=6 align="center")
 								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
 								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))")|转办
 								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(sent))" disabled)|转办
-							Col(span=8 align='center')
+							Col(span=6 align='center')
 								Button(@click="$router.back(-1)")|取消
 </template>
 
@@ -400,6 +402,13 @@
 					});
 					this.getList()
 				}
+			},
+			test(){
+				this.$Notice.success({
+					title: '成功',
+					desc: '已提交，正在审核请等待！'
+				});
+				this.$router.back()
 			}
 		}
 	}	

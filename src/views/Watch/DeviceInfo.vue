@@ -74,77 +74,67 @@
 						Col(span="24" style="height: 35px;font-size:20px")|内存调试
 						Row(style="margin-top:20px")|{{this.loading}}
 						Row(style="margin-top:20px")
-							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
-							Col(span=4)
-								input.iv(style="width:55%"  ,:maxlength=4, v-model='address[0]' name="sn1" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[1]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-						Row(style="margin-top:20px")
 							Col(span=5 style="height: 30px;font-size:16px")|段地址:
 							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[0]' ,:autofocus="fcous.fir" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=4)
+								input.iv(style="width:55%" ,:maxlength=4 v-model='address[1]' ,:autofocus="fcous.sec" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+						Row(style="margin-top:20px")
+							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
+							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[5]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 						Row(style="margin-top:35px")
 							Col(span=5 style="height: 30px;font-size:16px")
 								checkbox(v-model="ctn" @on-change="contn()")|连续
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[7]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=4)
 								input.iv(style="width:55%" ,:maxlength=4 v-model='address[9]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-						Row(style="margin-top:35px")
-							Col(span=5 style="height: 30px;font-size:16px")|结果:
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=2)
-								input.iv(style="width:70%" ,:maxlength=2 v-model='res[0]' readonly)
+								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
 								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
-					card.card(align='center' style='height: 500px',v-if='data.device_type == 15')
-						div( style="height: 35px;font-size:20px")
-							Col(span=4)|事件记录
-							Col(span=4)
-								Select.smr(v-model="keyword"  placeholder="类型" style="width:100%")
-									Option(key="1" label="id" value='id')
-									Option(key="2" label="长度" value="length")
-									Option(key="3" label="间隔" value="interval")
-							Col(span=5)
-								AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , placeholder="关键词" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
-							Col(span=5)
-								DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="options.starttime" style='width: 100%;' @on-change="search()")
-							Col(span=1)|→
-							Col(span=5)
-								DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
-						div(style='font-size: large;', v-if='total==0')| 这台设备没有事件记录
-						Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="height: 360px; margin-top: 10px")
-							card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='height: 60px; font-size: 12px; cursor: pointer;', @click.native='history(item.id)')
-								Col(span=22)|  事件序号： {{item.id}}
-								Col(span=2)
-									div(style="color:red" v-if="(now-item.time)<300000")| New!
-								Col(span=24)|  发生时间： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
-								Col(span=24)|  结束时间： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
-						div(style='font-size: large;') 共 {{total}} 条
+					card.card(align='center',v-if='data.device_type == 15')
+						Row
+							Col(span=24 style="font-size:20px;text-align:left;")|事件记录
+							div( style="height: 35px;")
+								Col(span=4)
+									Select(v-model="keyword"  placeholder="类型" style="width:75%")
+										Option(key="1" label="id" value='id')
+										Option(key="2" label="长度" value="length")
+										Option(key="3" label="间隔" value="interval")
+								Col(span=7)
+									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , placeholder="关键词" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
+								Col(span=6)
+									DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="options.starttime" style='width: 100%;' @on-change="search()")
+								Col(span=1)|→
+								Col(span=6)
+									DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
+							div(style='font-size: large;margin-top:40px;', v-if='total==0')| 这台设备没有事件记录
+							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px")
+								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
+									Row
+										Col(span=22)|  事件序号： {{item.id}}
+										Col(span=12)|  发生时间： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
+										Col(span=12)|  结束时间： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
+							div(style='font-size: large;') 共 {{total}} 条
 </template>
 
 <script>
@@ -163,7 +153,7 @@
 				address:['0000','0000','0000','0000','0000','0000','0000','0000','0000','0000','0000'],
 				res:['00','00','00','00','00','00','00','00'],
 				segment:['00','00','00','00'],
-				duration:30,
+				duration:120,
 				keyword:'time',
 				search_info: '',
 				door:true,
@@ -174,9 +164,14 @@
 				list:[],
 				list2:[],
 				total:'',
+				fcous:{
+					fir:true,
+					sec:false,
+					thr:false,
+				},
 				realtime: {
 					threshold:'1',
-					duration:20,
+					duration:120,
 					interval:'1000',
 				},
 				options: {
@@ -193,14 +188,14 @@
 					starttime:'',
 					endtime:'',
 				},
-				columns: [ {
-						title: ' ',
-						key: 'device_name'
-					},
-					{
+				columns: [{
+					title: ' ',
+					key: 'device_name'
+				},
+				{
 					title: ' ',
 					key: 'IMEI',
-					},],
+				}],
 			}
 		},
 		created() {
@@ -215,13 +210,18 @@
 						if (this.address[i-1] == 'ffff') {
 							this.address[i] ='0000'
 							break;
-						}
-						else{
+						}else{
 							this.address[i] = (parseInt('0x'+this.address[i-1])+1).toString(16)
 						}
 					}
 					for (var i=3;i<10;i++){
-						if (this.address[i].length == 1) this.address[i]='0'+this.address[i]
+						if (this.address[i].length == 1){
+							this.address[i]='000'+this.address[i]
+						}else if(this.address[i].length == 2){
+							this.address[i]='00'+this.address[i]
+						}else if(this.address[i].length == 3){
+							this.address[i]='0'+this.address[i]
+						}
 					}
 				}
 			},
@@ -361,66 +361,66 @@
 					});
 				},
 			monitor(val) {
-					if (this.data.device_type=='15'){
-						if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
-							this.$Notice.error({
-								title: '错误',
-								desc: '所有参数都必须是数字！'
-							})
-						}else{
+				if (this.data.device_type=='15'){
+					if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
+						this.$Notice.error({
+							title: '错误',
+							desc: '所有参数都必须是数字！'
+						})
+					}else{
 						if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
 							this.$Notice.error({
 								title: '错误',
 								desc: '监控时长必须大于采样周期'
 							})
 						}else{
-						this.$router.push({
-							name: 'doormonitor',
-							params: {			
-								duration: this.realtime.duration,
-								interval: this.realtime.interval,
-								threshold: this.realtime.threshold,
-								IMEI: this.data.IMEI,
-								id: this.data.device_id,
-								device_model: this.data.device_model,
-							}
-						})
-						}
+							this.$router.push({
+								name: 'doormonitor',
+								params: {
+									duration: this.realtime.duration,
+									interval: this.realtime.interval,
+									threshold: this.realtime.threshold,
+									IMEI: this.data.IMEI,
+									id: this.data.device_id,
+									device_model: this.data.device_model,
+								}
+							})
 						}
 					}
-					if ((this.data.device_type=='240')&&(val=='1')){
-						if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
-							this.$Notice.error({
-								title: '错误',
-								desc: '所有参数都必须是数字！'
-							})
-						}else{
+				}
+				if ((this.data.device_type=='240')&&(val=='1')){
+					if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
+						this.$Notice.error({
+							title: '错误',
+							desc: '所有参数都必须是数字！'
+						})
+					}else{
 						if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
 							this.$Notice.error({
 								title: '错误',
 								desc: '监控时长必须大于采样周期'
 							})
 						}else{
-						this.$router.push({
-							name: 'ctrlmonitor',
-							params: {
-								duration: this.realtime.duration,
-								interval: this.realtime.interval,
-								threshold: this.realtime.threshold,
-								IMEI: this.data.IMEI,
-								id: this.data.device_id,
-							}
-						})
-						}
+							this.$router.push({
+								name: 'ctrlmonitor',
+								params: {
+									duration: this.realtime.duration,
+									interval: this.realtime.interval,
+									threshold: this.realtime.threshold,
+									IMEI: this.data.IMEI,
+									id: this.data.device_id,
+								}
+							})
 						}
 					}
-					if ((this.data.device_type=='240')&&(val=='2')){
-						var f=true;
-						for (var i=0;i<16;i++){
-							if(/^\d+$/.test(this.address[i])) f=false
-						}
-						this.initWebsocket()
+				}
+				if ((this.data.device_type=='240')&&(val=='2')){
+					var f=true;
+					for (var i=0;i<16;i++){
+						if(/^\d+$/.test(this.address[i])) f=false
 					}
+					this.initWebsocket()
+				}
 			},
 			history(val) {
 				if (this.data.device_type=='15'){
@@ -439,20 +439,18 @@
 						}
 					})
 				}
-				
 			},
 			formatDate(val, format) {
 				return formatDate(val, format)
 			},
-			async initWebsocket(){ //初始化weosocket			
+			async initWebsocket(){ //初始化weosocket
 				let res = await this.$api.monitor({
 					device_type: 240,
 					type: 1,
-					address: (this.address[0]+','+this.address[1]+','+this.address[2]+','+this.address[3]+
-						  ','+this.address[4]+','+this.address[5]+','+this.address[6]+','+this.address[7]+
-						  ','+this.address[8]+','+this.address[9]+','+this.address[10]+','+this.address[11]+
-						  ','+this.address[12]+','+this.address[13]+','+this.address[14]+','+this.address[15]),
-					segment: (this.segment[0]+','+this.segment[1]+','+this.segment[2]+','+this.segment[3]),
+					address: (this.address[2]+','+this.address[3]+','+this.address[4]+','+
+						this.address[5]+','+this.address[6]+','+this.address[7]+','+
+						this.address[8]+','+this.address[9]),
+					segment: (this.address[0]+','+this.address[1]),
 					IMEI: this.data.IMEI,
 					duration: this.duration,
 					threshold: 1,
@@ -461,6 +459,11 @@
 				});
 				if(res.data.code != 0){
 					alert("该电梯已被其他人启动实时监控")
+				}else{
+					this.$Notice.success({
+						title: '成功',
+						desc: '监控已开启，两分钟后自动关闭！'
+					})
 				}
 				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.data.id+'&userId='+window.localStorage.getItem('id')
 				this.websock = new WebSocket(wsurl);

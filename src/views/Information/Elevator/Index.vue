@@ -9,7 +9,6 @@
 						Col(span="5")
 							Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")
 							Input(v-model="options.username",placeholder="请输入搜索内容" style="width:75%;")
-						
 		div(style="min-height:450px")
 			Table(border,:columns="columns",:data="list",size="small" stripe)
 		Col(span="24" style="text-align:center;")
@@ -23,6 +22,7 @@
 				options:{
 					page:1,
 					nums:10,
+					total:7,
 				},
 				query:{
 					
@@ -64,8 +64,7 @@
 					iddr:'浙江省宁波市高新区',
 					phone:'15743415321',
 				}],
-				columns: [
-				{
+				columns: [{
 					title: '组名',
 					key: 'groupname',
 				},
