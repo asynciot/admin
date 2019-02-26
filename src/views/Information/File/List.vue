@@ -28,8 +28,8 @@
 					<AutoComplete class="handle-input mr10" v-model="options.search_info" :data="menu" @on-search="handleSearch1"
 					 placeholder="关键词" style="width:100%;" id="serch1"></AutoComplete>
 				</Col>
-				<Col span='1'>
-				<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
+				<Col span='2'>
+				<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
 				</Col>
 				<Col span='1'>
 				<Button class="mr-10" type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
@@ -552,5 +552,8 @@
 		position: absolute;
 		margin-left: 20%;
 		margin-top: 3%;
+	}
+	.mr-10{
+		margin-left: 5px;
 	}
 </style>

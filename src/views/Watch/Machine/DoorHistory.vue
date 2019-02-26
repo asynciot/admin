@@ -161,6 +161,7 @@ div.layout-content-main
 		},
 		created(){
 			this.getData();
+			this.getDoorWidth();
 			if(this.$route.params.id){
 				this.getData();
 				setTimeout(() => {
@@ -175,7 +176,7 @@ div.layout-content-main
 			draggable,
 		},
 		methods: {
-			async getData(){
+			async getDoorWidth(){
 				var buffer
 				if (this.$route.params.device_model == '1') {
 					let dor = await this.$api.runtime({page:1,num:20,type: 4101,device_id:this.id})
@@ -204,7 +205,7 @@ div.layout-content-main
 					legend: {
 						data:['开门信号', '关门信号']
 					},
-					grid: {					
+					grid: {
 						left: '3%',
 						right: '4%',
 						containLabel: true
@@ -232,8 +233,7 @@ div.layout-content-main
 						type:'line',
 						step: 'start',
 						data:this.event.closeIn
-					},
-					]
+					}]
 				});				
 				closeIn.setOption({
 					tooltip: {

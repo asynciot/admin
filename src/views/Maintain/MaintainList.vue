@@ -24,7 +24,7 @@
 					<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
 				</Col>
 				<Col span='1'>
-					<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
+					<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
 				</Col>
 		  </Row>
 		</Form>
@@ -145,7 +145,7 @@
 						return h('div', [
 							h('Button', {
 								props: {
-									type: 'success',
+									type: 'primary',
 									size: 'small',
 									// disabled: (params.row.state == "treated"),
 								},			

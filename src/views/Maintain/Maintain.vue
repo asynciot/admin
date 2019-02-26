@@ -28,10 +28,10 @@
 		  <Col span='4'>
 				<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
 		  </Col>
-		  <Col span='1'>
-				<Button class="mr-10" type="default" icon="search" @click="search()"></Button>
+		  <Col span='2'>
+				<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
 		  </Col>
-		  <Col span='6'>
+		  <Col span='5'>
 				<checkbox style="margin-top:10px" v-model="last" @on-change="search()">只显示每个设备最后一个工单</checkbox>
 		  </Col>
 		  <Col span='4'>
@@ -448,5 +448,8 @@
 	position: absolute;
 	margin-left: 30%;
 	margin-top: 3%;
+	}
+	.mr-10{
+		margin-left: 5px;
 	}
 </style>

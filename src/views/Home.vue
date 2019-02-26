@@ -18,6 +18,7 @@
 					</template>
 					<template v-for="item in menu" v-if="!item.sub" >
 						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}">
+							<!-- <Icon :key="item.name" :class="item.icon" size="16" ></icon> -->
 							<i :key="item.name" :class="item.icon" size="16" ></i>
 							{{isCollapsed?'':item.label}}
 						</MenuItem >
@@ -25,7 +26,7 @@
 					<template v-else>
 						<Submenu :name="item.name">
 							<template slot="title" >
-								<Icon :type="item.icon" size="16"></Icon>
+								<i :key="item.name" :class="item.icon" size="16"></i>
 								<Badge v-if="item.count" :count="item.count" class-name="badge-sub-alone" :dot="true">
 									{{isCollapsed?'':item.label}}
 								</Badge>
@@ -174,7 +175,7 @@
 						label: 'Dashboard',
 					},{
 						name: 'menu',
-						icon: 'map',
+						icon: 'fa fa-map-o',
 						label: '运行监控',
 						sub:[{
 							name:'map',
@@ -184,8 +185,16 @@
 							label:'告警订阅',
 						},]
 					},{
+						name: 'report',
+						icon: 'fa fa-newspaper-o',
+						label: '报表分析',
+						sub:[{
+								name: 'report',
+								label: '测试',
+							},]
+					},{
 						name: 'maintain',
-						icon: 'settings',
+						icon: 'fa fa-cogs',
 						label: '工作流',
 						sub: [{
 								name: 'auditinglist',
@@ -209,7 +218,7 @@
 						],
 					},{
 						name: 'company',
-						icon: 'home',
+						icon: 'fa fa-home',
 						label: '单位管理',
 						sub: [
 // 							{
@@ -231,7 +240,7 @@
 						],
 					},{
 						name: 'event',
-						icon: 'ios-list',
+						icon: 'fa fa-list-alt',
 						label: '基础信息维护',
 						sub: [{
 							name: 'alList',
@@ -245,7 +254,7 @@
 						}],
 					},{
 						name: 'system',
-						icon: 'ios-person-outline',
+						icon: 'fa fa-address-card-o',
 						label: '系统管理',
 						sub:[{
 							name: 'userManage',
@@ -262,7 +271,7 @@
 						}]
 					},{
 						name: 'setting',
-						icon: 'ios-settings',
+						icon: 'fa fa-cog',
 						label: '出厂设置',
 						sub:[{
 							name:'print',

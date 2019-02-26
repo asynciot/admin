@@ -22,13 +22,12 @@ div.layout-content-main
 		Table.deviceList(@on-selection-change="selection" border,:columns="columns",:data="list",size="small" stripe)
 	div.form
 		Col(span='2')
-			Button(type="default")|批量订阅
+			Button(type="default" @click="alert()")|批量订阅
 		Col(span='22' style="text-align:center;")
 			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 </template>
 
-<script>	
-	var tagCor = '';
+<script>
 	export default {
 		created() {
 			this.getList()
@@ -180,19 +179,22 @@ div.layout-content-main
 								},
 								on: {
 									click: () => {
-										this.auditing = !this.auditing
-										this.$Modal.confirm({
-											title: '您确定要订阅该设备么？',
-											content:name,
-											onOk: () => {
-												this.$Notice.success({
-													title: '成功',
-													desc: '订阅成功'
-												});
-											},
-											onCancel: () => {
+										// this.auditing = !this.auditing
+										this.$router.push({
+											name:'alertInfo',
+											parms:{
+												id: params.row.id
 											}
 										})
+// 										this.$Modal.confirm({
+// 											title: '您确定要订阅该设备么？',
+// 											content:name,
+// 											onOk: () => {
+// 												
+// 											},
+// 											onCancel: () => {
+// 											}
+// 										})
 									}
 								}
 							}, '订阅'),
@@ -340,6 +342,20 @@ div.layout-content-main
 				data.forEach(item=>{
 					this.select.push(item)
 				})
+				console.log(data)
+			},
+			alert(){
+				if(this.select.length==0){
+					this.$Notice.info({
+						title: '提示',
+						desc: '请选择要订阅的设备！',
+					})
+				}else{
+					this.$Notice.success({
+						title: '成功',
+						desc: '订阅以下设备的告警推送！',
+					})
+				}
 			},
 		}
 	}

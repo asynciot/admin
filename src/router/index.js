@@ -27,7 +27,10 @@ const Map = resolve => require(['@/views/Watch/Map'], resolve)
 const DeviceInfo = resolve => require(['@/views/Watch/DeviceInfo'], resolve)
 const List = resolve => require(['@/views/Watch/List'], resolve)
 const AlertTake = resolve => require(['@/views/Watch/Alert'], resolve)
+const AlertInfo = resolve => require(['@/views/Watch/AlertInfo'], resolve)
 
+//report
+const Report = resolve => require(['@/views/Report/Index'], resolve)
 //company
 const Company = resolve => require(['@/views/Doc/Company'], resolve)
 const Member = resolve => require(['@/views/Doc/Maintain/Member'], resolve)
@@ -210,6 +213,13 @@ export default new Router({
 					},
 					component: AlertTake
 				}, {
+					path: '/watch/alertinfo',
+					name: 'alertInfo',
+					meta: {
+						name: '告警订阅'
+					},
+					component: AlertInfo
+				},{
 					path: '/watch/device/:IMEI',
 					name: 'deviceInfo',
 					meta: {
@@ -258,6 +268,15 @@ export default new Router({
 						name: '参数信息'
 					},
 					component: DoorParameter
+				},
+				//报表
+				{
+					path: '/report',
+					name: 'report',
+					meta: {
+						name: '报表分析'
+					},
+					component: Report
 				},
 				//维保管理
 				{

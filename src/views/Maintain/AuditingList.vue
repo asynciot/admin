@@ -16,8 +16,8 @@
 							Option(key='3', label='控制柜', value='ctrl')
 					Col(span="4")
 						Input(v-model="options.search_info" ,:data="menu" , placeholder="设备地址和名称" max=15)
-					Col(span="4")
-						Button.mr-10(type='default', icon='search', @click='search()')
+					Col(span="5")
+						Button.mr-10(type='primary', icon='search', @click='search()')|搜索
 						Button(type='default', icon='', @click='code()')|控制柜故障代码
 		el-dialog(title='故障提示', :visible.sync='ctrl', width='30%')
 			img#c(width='100%', src='')

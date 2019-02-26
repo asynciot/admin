@@ -62,7 +62,6 @@ export default {
 					title: '邮箱',
 					key: 'email',
 				},
-
 				{
 					title: '操作',
 					key: 'userName',

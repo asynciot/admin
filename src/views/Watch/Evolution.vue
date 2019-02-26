@@ -9,10 +9,9 @@ div.layout-content-main
 							Option(v-for="item in versions",:key="item",:value="item")|{{item}}
 				Col(span='3')
 					AutoComplete(name="inpSer" v-model="options.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
-				Col(span="1")
-					Button(icon='search' @click='getList()')
-				Col(span="3")
-					Button(style="width:90%" type="primary",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备			
+				Col(span="5")
+					Button.mr-10(type="primary" icon='search' @click='getList()')|搜索
+					Button(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备			
 				Col(span="3")
 					upload(:before-upload='handleUpload')
 						Button(icon='ios-cloud-upload-outline' style="width: 130px") {{filename}}
@@ -326,4 +325,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	.mr-10{
+		margin-left: 5px;
+	}
 </style>
