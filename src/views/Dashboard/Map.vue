@@ -1,6 +1,6 @@
 <template lang="jade">
 div.layout-content-main()
-	Col.map(span="24")
+	Col.map(span="24" id="mapsize")
 		div#map
 </template>
 
@@ -101,8 +101,16 @@ div.layout-content-main()
 		mounted() {			
 			this.initMap()
 			this.getList()
+			this.setsize()
 		},
 		methods: {
+			setsize(){
+				const mapsize = document.getElementById('mapsize')
+				const deviceWidth = document.documentElement.clientWidth
+				const deviceHeight = document.documentElement.clientHeight
+				// mapsize.style.width = '100%'
+				mapsize.style.height = (Number(deviceHeight)/2.7) + 'px'
+			},
 			async handleSearch1 () {
 				this.menu=[];
 				var str;
