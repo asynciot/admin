@@ -49,7 +49,7 @@
 							</Col>
 							<Col span="1">
 								<Badge dot style="float: right;margin-top: 25px;"></Badge>
-								<span class="fa fa-envelope-o" style="color:white;float: right;padding-top: 25px;" />
+								<span class="fa fa-envelope-o" v-on:click="emil" style="color:white;float: right;padding-top: 25px;cursor: pointer;" />
 							</Col>
 						</Col>
 						<Col span="3">
@@ -395,6 +395,11 @@
             },
 			collapsedSider () {
 				this.$refs.side1.toggleCollapse();
+			},
+			emil(){
+				this.$router.push({
+					name:'inform'
+				})
 			},
         },
         watch:{

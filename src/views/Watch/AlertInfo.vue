@@ -2,7 +2,7 @@
 	div.layout-content-main
 		div.form
 			Row(:gutter=30)
-				Col(span=6 align="center")&nbsp;
+				Col(span=6 align="center")|&nbsp;
 				Col(span=12 align="center")
 					Card()
 						p(slot="title")|订阅内容
@@ -80,9 +80,8 @@
 						title: '成功',
 						desc: '订阅成功！'
 					})
+					this.$router.back()
 				}
-				
-				this.$router.back()
 			},
 			async getData(){
 				let res = await this.$api.fault({num:1,page:1,id:this.$route.params.id})

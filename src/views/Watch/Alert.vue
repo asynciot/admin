@@ -172,14 +172,12 @@ div.layout-content-main
 								props: {
 									type: 'primary',
 									size: 'small',
-									disabled:this.auditing,
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click: () => {
-										// this.auditing = !this.auditing
 										this.$router.push({
 											name:'alertInfo',
 											parms:{
@@ -202,11 +200,9 @@ div.layout-content-main
 								props: {
 									type: 'warning',
 									size: "small",
-									disabled:!this.auditing,
 								},
 								on: {
 									click: () => {
-										this.auditing = !this.auditing
 										this.$Modal.warning({
 											title: '您确定要取消订阅该设备么？',
 											content:name,
@@ -228,7 +224,6 @@ div.layout-content-main
 				],
 				markerClusterer: null,
 				markers: [],
-				auditing:false,
 				options: {
 					name:'',
 					page: 1,
