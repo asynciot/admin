@@ -2,7 +2,7 @@
 	div.layout-content-main
 		div
 			Form(ref='form', label-position='left', :label-width='100' @keydown.enter.native.prevent="search()")
-				Row(gutter=5)
+				Row(:gutter=5)
 					Col(span="2")
 						Select.smr(v-model='show.type', style='width:100%;', placeholder='事件类型', @on-change='search()')
 							Option(key='1', label='全部', value='all')
@@ -218,7 +218,7 @@
 
 		},
 		created() {
-			this.getList()
+			// this.getList()
 		},
 		methods: {
 			pageChange(val) {

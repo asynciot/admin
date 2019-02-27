@@ -2,7 +2,7 @@
 	<div class="layout-content-main">
 		<div>
 		<Form class="imr" ref="form" label-position="left" :label-width="100">
-		  <Row gutter="1">
+		  <Row :gutter=5>
 				<Col span='3'>
 					<Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
 						<Option key="1" label="全部" value="all"></Option>

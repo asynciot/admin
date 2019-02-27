@@ -18,7 +18,6 @@
 					</template>
 					<template v-for="item in menu" v-if="!item.sub" >
 						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}">
-							<!-- <Icon :key="item.name" :class="item.icon" size="16" ></icon> -->
 							<i :key="item.name" :class="item.icon" size="16" ></i>
 							{{isCollapsed?'':item.label}}
 						</MenuItem >
@@ -76,7 +75,7 @@
 							</Button>
 						</Col>
 					</Row> <Row>
-						<div style="background:#000; color:#FFF';" v-if="showTags">
+			<!-- 			<div style="background:#000; color:#FFF';" v-if="showTags">
 							<ul>
 								<li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.path)}" :key="index">
 									<router-link :to="item.path" class="tags-li-title">
@@ -85,7 +84,7 @@
 									<span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
 								</li>
 							</ul>
-						</div>
+						</div> -->
 					</Row>
 				</Header>
 				<div @click="full=false" v-if="full" style="text-align:right;height:10px;">
@@ -288,10 +287,10 @@
 					this.isCollapsed ? 'collapsed-menu' : ''
 				]
 			},
-			showTags() {
-                // return this.tagsList.length > 0;
-				return false;
-            }
+// 			showTags() {
+//                 return this.tagsList.length > 0;
+// 				return false;
+//             }
 		},
 		
 		methods: {
