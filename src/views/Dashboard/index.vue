@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper layout-content-main" style="background:#FFFACD;padding:0">
+	<div class="wrapper layout-content-main" style="background:#ecf0f5;padding:0">
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
 			<section class="content">
@@ -82,22 +82,22 @@
 					
 
 					<draggable :options="{animation: 60,group:'panel'}">
-						<!-- Map box --> <Col span='6' id="visitorwidth">
-						<div class="box box-solid bg-light-blue-gradient" v-if="visitor" style="height:420px">
+						<!-- Map box --> <Col span='12' id="mapwidth">
+						<div class="box box-solid bg-light-blue-gradient" v-if="visitor" style="">
 							<div class="box-header">
 							  <!-- tools box -->
 							  <div class="pull-right box-tools">
 								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="visitor=!visitor"><i class="fa fa-times"></i>
 								  </button>
 									<div class="btn-group" style="margin-right: 5px;">
-										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('visitorwidth')">
+										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('mapwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
 											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('visitorwidth')" @click.native="widthblock3('visitorwidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('visitorwidth')" @click.native="widthblock3('visitorwidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('visitorwidth')" @click.native="widthblock3('visitorwidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('visitorwidth')" @click.native="widthblock3('visitorwidth',4)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',4)"></Card>
 										</div>
 									</div>
 
@@ -113,7 +113,7 @@
 								Map
 							  </h3>
 							</div>
-							<div class="box-body" style="height:480px;" v-if="visitorbody">
+							<div class="box-body" style="height:380px;" v-if="visitorbody">
 								<div style=""><Map style="margin-top:20px;"></Map></div>
 							</div>
 							<!-- /.box-body-->
@@ -122,7 +122,7 @@
 						<Col span='6' id="chatwidth">
 						  <!-- /.box -->
 						<!-- Chat box -->
-						<div class="box box-success" v-if="chat" style="height:420px">
+						<div class="box box-success" v-if="chat" >
 							<div class="box-header">
 								<i class="fa fa-comments-o"></i>
 
@@ -150,7 +150,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:420px">
+							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:380px">
 								<!-- chat item -->
 								<div class="item">
 									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
@@ -214,7 +214,7 @@
 						<!-- /.box (chat box) -->
 
 						<!-- TO DO List -->
-						<div class="box box-primary" v-if="progress" style="height:420px">
+						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
 								<i class="ion ion-clipboard"></i>
 								<h3 class="box-title">故障电梯处理进程</h3>
@@ -238,7 +238,7 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" v-if="progressbody">
+							<div class="box-body" v-if="progressbody" style="height:380px">
 								<!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 								<ul class="todo-list">
 									<li v-for="item in todo">
@@ -268,7 +268,7 @@
 						</Col>
 						<Col span='6' id="emailwidth">
 						<!-- quick email widget -->
-						<div class="box box-info" style="height:420px">
+						<div class="box box-info" >
 							<div class="box-header">
 								<i class="fa fa-envelope"></i>
 
@@ -291,7 +291,7 @@
 								</div>
 								<!-- /. tools -->
 							</div>
-							<div class="box-body">
+							<div class="box-body" style="height:318px">
 								<form action="#" method="post">
 									<div class="form-group">
 										<input type="email" class="form-control" name="emailto" placeholder="Email to:">
@@ -315,7 +315,7 @@
 					<!-- /.Left col -->
 					<!-- right col (We are only adding the ID to make the widgets sortable)-->
 						<!-- solid sales graph -->
-						<div class="box box-solid bg-teal-gradient" v-if="chart" style="height:420px">
+						<div class="box box-solid bg-teal-gradient" v-if="chart">
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
@@ -341,7 +341,7 @@
 									</button>
 								</div>
 							</div>
-							<div class="box-body border-radius-none" v-if="chartbody">
+							<div class="box-body border-radius-none" v-if="chartbody" style="height:380px">
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
 										<div>
@@ -384,7 +384,7 @@
 						</Col>
 						<Col span='6' id="calenderwidth">
 						<!-- Calendar -->
-						<div class="box box-solid bg-green-gradient" style="height:420px">
+						<div class="box box-solid bg-green-gradient">
 							<div class="box-header">
 								<i class="fa fa-calendar"></i>
 
@@ -411,7 +411,7 @@
 								<!-- /. tools -->
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body no-padding">
+							<div class="box-body no-padding" style="height:310px">
 								<!--The calendar -->
 								<div id="calendar" style="width: 100%"></div>
 							</div>
@@ -544,6 +544,12 @@
 		mounted(){
 			// this.shineword();
 			this.drawchart();
+// 			widthblock3('mapwidth',3)
+// 			widthblock3('chatwidth',3)
+// 			widthblock3('chartwidth',3)
+// 			widthblock3('progresswidth',3)
+// 			widthblock3('calenderwidth',3)
+// 			widthblock3('emailwidth',3)
 			this.OrderCharts();
 		},
 		created(){
