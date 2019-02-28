@@ -2,23 +2,22 @@
 div.layout-content-main
 	div.form
 		Form(ref='query',:model="query",label-position="right",:label-width="100" @keydown.enter.native.prevent="getList()")
-			Row(:gutter=1)
-				Col(span="5")
-					Form-item(label="可用版本：")
-						Select(placeholder="请选择",v-model="version" style="width:100%" @on-change="getList()")
-							Option(v-for="item in versions",:key="item",:value="item")|{{item}}
+			Row(:gutter=5)
+				Col(span="3")
+					Select(placeholder="请选择版本号",v-model="version" style="width:100%" @on-change="getList()")
+						Option(v-for="item in versions",:key="item",:value="item")|{{item}}
 				Col(span='3')
 					AutoComplete(name="inpSer" v-model="options.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
-				Col(span="5")
-					Button.mr-10(type="primary" icon='search' @click='getList()')|搜索
-					Button(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备			
+				Col(span="13")
+					Button(type="primary" icon='search' @click='getList()')|搜索
+					Button.mr-10(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备
 				Col(span="3")
 					upload(:before-upload='handleUpload')
-						Button(icon='ios-cloud-upload-outline' style="width: 130px") {{filename}}
+						Button(icon='ios-cloud-upload-outline') {{filename}}
 				Col(span="2")
-					Button(type='success', @click='confirm()' style='' v-if='!upsuccess') 上传
+					Button.mr-10(type='success', @click='confirm()' style='' v-if='!upsuccess') 上传
 	div(style="min-height: 450px;")
-		Table(@on-selection-change="selection",border,:columns="columns",:data="data",size="small")
+		Table(@on-selection-change="selection",:columns="columns",:data="data",size="small")
 	div
 	Col(span='6')|&nbsp;
 	Col(span='18')

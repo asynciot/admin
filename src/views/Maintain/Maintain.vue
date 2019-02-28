@@ -55,7 +55,7 @@
 			</span>
 		</el-dialog>
 		<div style="min-height: 450px; margin-top: 20px;">
-			<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
+			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
 		<Col span='24' style="text-align: center;">
 		<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  

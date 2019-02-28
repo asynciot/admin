@@ -53,7 +53,7 @@
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px;float: left;">
-								<Button type="ghost" long class="w-button" style="margin-top: 10px;">
+								<Button type="ghost" long class="w-button" >
 									<Col span="6">
 										<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
 									</Col>
@@ -92,12 +92,10 @@
 					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;"></icon> &nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
 				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh'}" >
-					<div class="layout-content">
-						<div>
+					<div class="layout-content-main">
 						<transition name="fade">
 							<router-view></router-view>
 						</transition>
-						</div>
 					</div>
 				</Content>
 			</Layout>
@@ -216,28 +214,6 @@
 // 							}
 						],
 					},{
-						name: 'company',
-						icon: 'fa fa-home',
-						label: '单位管理',
-						sub: [
-// 							{
-// 								name: 'contractor',
-// 								label: '安装单位',
-// 							},
-							{
-								name: 'maintainCompany',
-								label: '维保单位',
-							},
-// 							{
-// 								name: 'usedep',
-// 								label: '使用单位',
-// 							},
-// 							{
-// 								name: 'property',
-// 								label: '物业单位',
-// 							}
-						],
-					},{
 						name: 'event',
 						icon: 'fa fa-list-alt',
 						label: '基础信息维护',
@@ -250,7 +226,10 @@
 						},{
 							name:'elevator',
 							label:'电梯组',
-						}],
+						},{
+							name: 'maintainCompany',
+							label: '维保单位信息',
+						},],
 					},{
 						name: 'system',
 						icon: 'fa fa-address-card-o',
@@ -604,7 +583,8 @@
 	.user-panel{
 		padding-left: 20%;
 	}
-	.label{
-		
+	.layout-content-main{
+		background-color: white;
+		overflow-y: hidden;
 	}
 </style>

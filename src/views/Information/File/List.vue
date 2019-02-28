@@ -1,7 +1,7 @@
 <template>
 	<div class="layout-content-main">
 		<Form class="imr" ref="form" label-position="left" :label-width="100" @keydown.enter.native.prevent="search()">
-			<Row gutter="1">
+			<Row gutter="5">
 				<Col span='2'>
 				<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
 					<Option key="1" label="全部" value="all"></Option>
@@ -58,7 +58,7 @@
 			</Row>
 		</Form>
 		<div style="min-height: 450px; margin-top: 5px;">
-			<Table border class="mb-10" :columns="columns" :data="data" size="small"></Table>
+			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
 		<Col span="24" style="text-align: center;">
 			<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange"

@@ -23,9 +23,8 @@ div.layout-content-main()
 						Option(key="4" label="长期离线" value="longoffline")
 				Col(span=4)
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
-				Col(span=2)
+				Col(span=3)
 					Button.mr-10(type="primary",icon="search",@click="search()" style="margin-left:1px" )|搜索
-				Col(span=1)
 					Button(type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag')
 					Button(type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag')
 				Col(span=4 v-if='showtag')
@@ -44,10 +43,10 @@ div.layout-content-main()
 	Row(:gutter="8")
 		Col.map(span="20")
 			div#map
-		Col.fa(span="4")
+		Col(span="4")
 			div.dv()
 				Poptip(v-for="device in devices" ,:data="devices" trigger="hover" placement="left" v-bind:key="devices.id" word-wrap="true")
-					card.text(v-on:click.native="cardClick(device.cell_lat,device.cell_lon)" style="cursor: pointer;")
+					Card.text(v-on:click.native="cardClick(device.cell_lat,device.cell_lon)" style="cursor: pointer;")
 						Row(:gutter="10")
 							div(style="margin-top:-20px")
 								div.ss()
@@ -67,7 +66,7 @@ div.layout-content-main()
 						p()|基站定位:{{device.cell_address}}
 						p()|ip定位:{{device.ip_country+device.ip_region+device.ip_city}}
 						p()|安装地址:{{device.install_addr}}
-			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange")
+			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;")
 </template>
 
 
@@ -482,8 +481,9 @@ div.layout-content-main()
 		padding-bottom: 1px;
 	}
 	.dv{
+		height: 460px;
+		overflow-x: hidden;
 		overflow-y: scroll;
-		min-height: 600px;
 	}
 	.pd{
 		padding-right: 2px;

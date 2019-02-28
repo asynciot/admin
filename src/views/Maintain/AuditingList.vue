@@ -28,7 +28,7 @@
 			span.dialog-footer(slot='footer')
 				el-button(type='primary', @click='door = false') 确 定
 		div(style='min-height: 450px; margin-top: 20px;')
-			Table.mb-10(border='', :columns='columns', :data='data', size='small')
+			Table.mb-10(:columns='columns', :data='data' stripe, size='small')
 		Col(span="24" style="text-align:center;")
 			page.fonts(show-elevator='', :total='data.length', :page-size='options.num', :current='options.page', @on-change='pageChange', show-total='')
 </template>

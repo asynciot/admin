@@ -42,7 +42,7 @@ div.layout-content-main
 					Col(span=4)
 						span.mt(id="black" style="" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 	div.ssa
-		Table(border,:columns="columns",:data="list",size="small" stripe)
+		Table(:columns="columns",:data="list",size="small" stripe)
 	div.form
 		Col(span='24' style="text-align:center;")
 			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)

@@ -2,7 +2,7 @@
 div.layout-content-main
 	div
 		Form.imr(ref='form',:model="query",label-position="left",:label-width="100")
-			Row(:gutter=1 style="margin-top:-10px;")
+			Row(:gutter=5 style="margin-top:-10px;")
 				Col(span=2)
 					Select.smr(v-model="show.device_type" style="width:100%" placeholder="类型" @on-change="search()")
 						Option(key="1" label="全部" value='all')
@@ -19,7 +19,7 @@ div.layout-content-main
 				Col(span=1)
 					Button.mr-10(type="default",icon="search",@click="search()" style="margin-left:1px")
 	div.ssa
-		Table.deviceList(@on-selection-change="selection" border,:columns="columns",:data="list",size="small" stripe)
+		Table.deviceList(@on-selection-change="selection" ,:columns="columns",:data="list",size="small" stripe)
 	div.form
 		Col(span='2')
 			Button(type="default" @click="alert()")|批量订阅
