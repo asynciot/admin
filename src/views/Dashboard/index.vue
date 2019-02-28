@@ -83,7 +83,7 @@
 
 					<draggable :options="{animation: 60,group:'panel'}">
 						<!-- Map box --> <Col span='12' id="mapwidth">
-						<div class="box box-solid bg-light-blue-gradient" v-if="visitor" style="">
+						<div class="box box-primary" v-if="visitor" style="">
 							<div class="box-header">
 							  <!-- tools box -->
 							  <div class="pull-right box-tools">

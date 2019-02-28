@@ -91,7 +91,7 @@
 					&nbsp;
 					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;"></icon> &nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
-				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh',background:'#ecf0f5'}" >
+				<Content :style="{padding: '0 16px 16px',position:'relative',minHeight: '91vh',background:'#f5f3f0'}" >
 					<div class="layout-content">
 						<div>
 						<transition name="fade">
