@@ -17,7 +17,7 @@ div.layout-content-main
 				Col(span="2")
 					Button.mr-10(type='success', @click='confirm()' style='' v-if='!upsuccess') 上传
 	div(style="min-height: 450px;")
-		Table(@on-selection-change="selection",:columns="columns",:data="data",size="small")
+		Table(@on-selection-change="selection",:columns="columns",:data="data",size="small" stripe)
 	div
 	Col(span='6')|&nbsp;
 	Col(span='18')
