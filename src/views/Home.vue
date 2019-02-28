@@ -584,7 +584,7 @@
 		padding-left: 20%;
 	}
 	.layout-content-main{
-		background-color: white;
+		// background-color: white;
 		overflow-y: hidden;
 	}
 </style>
