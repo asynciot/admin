@@ -1,6 +1,6 @@
 <template >
 	<div class="layout">
-		<Layout :style="{minHeight: '100vh'}">
+		<Layout class="test"  :style="{minHeight: '100vh'}">
 			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
 					<div style="width: 100%;height: 64px;background: #367fa9;">
@@ -41,7 +41,7 @@
 			<Layout>
 				<Header  class="m-header" v-if="!full">
 					<Row>
-						<Col span="20">
+						<Col span="19">
 							<Col span="22">
 								<Badge dot style="float: right;margin-top: 25px;"></Badge>
 								<span class="fa fa-bell-o" style="color:white;float: right;padding-top: 25px;" />
@@ -52,13 +52,13 @@
 							</Col>
 						</Col>
 						<Col span="3">
-							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" style="margin-left: 0px;float: left;">
+							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
 								<Button type="ghost" long class="w-button" >
-									<Col span="6">
+									<Col span="5">
 										<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
 									</Col>
-									<Col span="12">
-										<p style="color: #fff;padding-top: 5px;">{{username}}</p>
+									<Col span="19">
+										<p style="color: white;width: 100%;">{{username}}</p>
 									</Col>
 								</Button>
 								<Dropdown-menu slot="list">
@@ -69,9 +69,9 @@
 								</Dropdown-menu>
 							</Dropdown>
 						</Col>
-						<Col span="1">
-							<Button style="border:0;background:transparent" size="small" @click="full=true">
-								<div><icon name="full" width="10" height="10" slot="prepend"></icon></div>
+						<Col span="2" style="">
+							<Button style="border:0;background:transparent;right: 0px;" size="small" @click="full=true">
+								<div style=""><icon name="full" width="10" height="10" slot="prepend"></icon></div>
 							</Button>
 						</Col>
 					</Row> <Row>
@@ -187,7 +187,13 @@
 						label: '报表分析',
 						sub:[{
 								name: 'report',
-								label: '测试',
+								label: '报表分析',
+							},{
+								name: 'eventreport',
+								label: '事件报表分析',
+							},{
+								name: 'orderreport',
+								label: '故障报表分析',
 							},]
 					},{
 						name: 'maintain',
@@ -460,6 +466,7 @@
 
 	.layout-header-user {
 		height: 40px;
+		float: left;
 	}
 
 	.layout-logo-left {
@@ -573,6 +580,7 @@
 	.w-button{
 		min-width: 150px;
 		border: #fff;
+		height: 64px;
 	}
 	.img-circle{
 		width: 100%;
@@ -586,5 +594,15 @@
 	.layout-content-main{
 		background-color: white;
 		overflow-y: hidden;
+	}
+	.test{
+		margin-top: -1px;
+		margin-left: -1px;
+	}
+	.box-username{
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+		width: 100%;
 	}
 </style>

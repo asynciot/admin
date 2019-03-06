@@ -1,7 +1,7 @@
 <template lang="jade">
 	div.layout-content-main
 		div.form
-			Row(:gutter=1)
+			Row(:gutter=5)
 				Col(span=12)
 					card(style="height: 280px")
 						Col(span="24" style="height: 35px;font-size:20px")|基础信息
@@ -49,65 +49,115 @@
 										p()|{{data.install_addr}}
 								Col(span="4")
 									Button(type="primary" @click="parameter()")|菜单
-					Col(span=12)
-						card.card(style='height: 220px')
-							img(src='../../assets/wave.gif', width='100%', height='200')
-					Col(span=12)
-						card.card(style='height: 220px')
-							p.clearfix(slot='title' style="height: 20px", align='center')|状态监控
-							Form.status(label-position="left",:label-width="70")
-								Col(span="23")
-									Form-item(label="监控时长(s):")
-										input.iv(v-model='realtime.duration' ,:maxlength=4)
-								Col(span="23" style="")
-									Form-item(label="采样周期(ms):")
-										Select(v-model='realtime.interval')
-											Option(key="1" label="100" value='100')
-											Option(key="2" label="200" value='200')
-											Option(key="3" label="500" value='500')
-											Option(key="4" label="1000" value='1000')
-											Option(key="5" label="2000" value='2000')
-								Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
-									Button(type="success" @click="monitor('1')" style="width:100%")|状态监控
+					Row(:gutter=5 style="padding-top:5px;")
+						Col(span=12)
+							card.card(style='height: 220px')
+								img(src='../../assets/wave.gif', width='100%', height='200')
+						Col(span=12)
+							card.card(style='height: 220px')
+								p.clearfix(slot='title' style="height: 20px", align='center')|状态监控
+								Form.status(label-position="left",:label-width="70")
+									Col(span="23")
+										Form-item(label="监控时长(s):")
+											input.iv(v-model='realtime.duration' ,:maxlength=4)
+									Col(span="23" style="")
+										Form-item(label="采样周期(ms):")
+											Select(v-model='realtime.interval')
+												Option(key="1" label="100" value='100')
+												Option(key="2" label="200" value='200')
+												Option(key="3" label="500" value='500')
+												Option(key="4" label="1000" value='1000')
+												Option(key="5" label="2000" value='2000')
+									Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
+										Button(type="success" @click="monitor('1')" style="width:100%")|状态监控
 				Col(span=12)
-					card.card(align='left' style='height: 500px',v-if='data.device_type == 240')
+					card.card(align='left' style='height: 505px',v-if='data.device_type == 240')
 						Col(span="24" style="height: 35px;font-size:20px")|内存调试
 						Row(style="margin-top:20px")|{{this.loading}}
 						Row(style="margin-top:20px")
 							Col(span=5 style="height: 30px;font-size:16px")|段地址:
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[0]' ,:autofocus="fcous.fir" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[1]' ,:autofocus="fcous.sec" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='segment[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='segment[1]' id="fir" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='segment[2]' id="sec" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=3)
+								input.iv(style="width:44%" ,:maxlength=4 v-model='segment[3]' id="thr" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 						Row(style="margin-top:20px")
 							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[5]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-						Row(style="margin-top:35px")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[1]' id="fou" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=5)
+								&nbsp;
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[9]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[4]' readonly)
+							Col(span=5)
+								&nbsp;
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[3]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[1]' readonly)
+							Col(span=5)
+								&nbsp;
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[10]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[11]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[5]' readonly)
+							Col(span=5)
+								&nbsp;
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[5]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[2]' readonly)
+							Col(span=5)
+								&nbsp;
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[12]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[13]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[6]' readonly)
 							Col(span=5 style="height: 30px;font-size:16px")
 								checkbox(v-model="ctn" @on-change="contn()")|连续
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[7]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
-							Col(span=4)
-								input.iv(style="width:55%" ,:maxlength=4 v-model='address[9]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
-								input.iv(style="width:35%" ,:maxlength=2 v-model='res[0]' readonly)
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[7]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[3]' readonly)
+							Col(span=5)
+								&nbsp;
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[14]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+								|&nbsp;:
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=4 v-model='address[15]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
+							Col(span=2)
+								input.iv(style="width:66%" ,:maxlength=2 v-model='res[7]' readonly)
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
 								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
@@ -150,9 +200,9 @@
 				loading:'',
 				websock:'',
 				test:'',
-				address:['0000','0000','0000','0000','0000','0000','0000','0000','0000','0000','0000'],
+				address:['','','','','','','','','','','','','','','',''],
 				res:['00','00','00','00','00','00','00','00'],
-				segment:['00','00','00','00'],
+				segment:['','','',''],
 				duration:120,
 				keyword:'time',
 				search_info: '',
@@ -201,26 +251,41 @@
 		created() {
 			this.getData()
 		},
+		watch:{
+			'segment': function(val){
+				if(val[0].length==2&&val[1].length==0){
+					document.getElementById("fir").focus()
+				}
+				if(val[1].length==2&&val[2].length==0){
+					document.getElementById("sec").focus()
+				}
+				if(val[2].length==2&&val[3].length==0){
+					document.getElementById("thr").focus()
+				}
+			},
+			'address': function(val){
+				if(val[0].length==2&&val[1].length==0){
+					document.getElementById("fou").focus()
+				}
+			},
+		},
 		methods: {
 			contn(){
 				if (this.ctn){
-					if (this.address[0] == '') this.address[0]='0000'
-					if (this.address[1] == '') this.address[1]='0000'
-					for (var i=3;i<10;i++){
-						if (this.address[i-1] == 'ffff') {
-							this.address[i] ='0000'
-							break;
+					if (this.address[0] == '') this.address[0]='00'
+					if (this.address[1] == '') this.address[1]='00'
+					for (var i=1;i<8;i++){
+						if (this.address[i*2-1] == 'ff') {
+							this.address[i*2] =(parseInt('0x'+this.address[(i-1)*2])+1).toString(16)
+							this.address[i*2+1] ='00'
 						}else{
-							this.address[i] = (parseInt('0x'+this.address[i-1])+1).toString(16)
+							this.address[i*2] =this.address[(i-1)*2]
+							this.address[i*2+1] = (parseInt('0x'+this.address[(i-1)*2+1])+1).toString(16)
 						}
 					}
-					for (var i=3;i<10;i++){
-						if (this.address[i].length == 1){
-							this.address[i]='000'+this.address[i]
-						}else if(this.address[i].length == 2){
-							this.address[i]='00'+this.address[i]
-						}else if(this.address[i].length == 3){
-							this.address[i]='0'+this.address[i]
+					for (var i=1;i<10;i++){
+						if (this.address[i*2+1].length == 1){
+							this.address[i*2+1]='0'+this.address[i*2+1]
 						}
 					}
 				}
@@ -228,19 +293,19 @@
 			handleSearch1 (selectword) {
 				this.menu=[];
 				var str;
-					for (var i=0;i<this.list.length;i++){
-						str=this.list[i].IMEI;
-							if (str != null){
-								if (str.indexOf(selectword)>=0)
-								this.menu.push(str)
-							}
-						str=this.list[i].device_name;		  	    	
-							if (str != null){
-								if (str.indexOf(selectword)>=0){
-								this.menu.push(str)
-								}
-							} 
+				for (var i=0;i<this.list.length;i++){
+					str=this.list[i].IMEI;
+					if (str != null){
+						if (str.indexOf(selectword)>=0)
+						this.menu.push(str)
+					}
+					str=this.list[i].device_name;		  	    	
+					if (str != null){
+						if (str.indexOf(selectword)>=0){
+						this.menu.push(str)
 						}
+					} 
+				}
 			},
 			async getData() {
 				this.options.IMEI=this.$route.params.IMEI
@@ -447,10 +512,12 @@
 				let res = await this.$api.monitor({
 					device_type: 240,
 					type: 1,
-					address: (this.address[2]+','+this.address[3]+','+this.address[4]+','+
-						this.address[5]+','+this.address[6]+','+this.address[7]+','+
-						this.address[8]+','+this.address[9]),
-					segment: (this.address[0]+','+this.address[1]),
+					address: (this.address[0]+','+this.address[1]+','+this.address[2]+','+
+						this.address[3]+','+this.address[4]+','+this.address[5]+','+
+						this.address[6]+','+this.address[7]+this.address[8]+','+this.address[9]+','+this.address[10]+','+
+						this.address[11]+','+this.address[12]+','+this.address[13]+','+
+						this.address[14]+','+this.address[15]),
+					segment: (this.segment[0]+','+this.segment[1]+','+this.segment[2]+','+this.segment[3]),
 					IMEI: this.data.IMEI,
 					duration: this.duration,
 					threshold: 1,

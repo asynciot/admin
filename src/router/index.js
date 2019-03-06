@@ -31,6 +31,10 @@ const AlertInfo = resolve => require(['@/views/Watch/AlertInfo'], resolve)
 
 //report
 const Report = resolve => require(['@/views/Report/Index'], resolve)
+const EventReport = resolve => require(['@/views/Report/Event'], resolve)
+const OrderReport = resolve => require(['@/views/Report/Order'], resolve)
+
+
 //company
 const Company = resolve => require(['@/views/Doc/Company'], resolve)
 const Member = resolve => require(['@/views/Doc/Maintain/Member'], resolve)
@@ -277,6 +281,20 @@ export default new Router({
 						name: '报表分析'
 					},
 					component: Report
+				},{
+					path: '/report/event',
+					name: 'eventreport',
+					meta: {
+						name: '事件报表分析'
+					},
+					component: EventReport
+				},{
+					path: '/report/order',
+					name: 'orderreport',
+					meta: {
+						name: '事件报表分析'
+					},
+					component: OrderReport
 				},
 				//维保管理
 				{

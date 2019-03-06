@@ -69,7 +69,7 @@
 				year=now.getFullYear();
 				month=now.getMonth()+1;
 				date=now.getDate();
-				var s=year+"/"+(month<10?('0'+month):month)+"/"+(date<10?('0'+date):date);
+				var s=year+"-"+(month<10?('0'+month):month)+"-"+(date<10?('0'+date):date);
 				return s
 			},
 			MemberCharts() {
@@ -343,5 +343,8 @@
 	.ch{
 		width: 100%;
 		height: 350px;
+	}
+	.layout-content-main{
+		overflow-y: scroll;
 	}
 </style>
