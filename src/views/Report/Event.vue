@@ -17,6 +17,7 @@
 				LastWeekend:'',
 				NowWeek:'',
 				NowWeekend:'',
+				list:[],
 			};
 		},
 		created(){
@@ -27,11 +28,20 @@
 			setTimeout(() => {
 				this.OrderCharts();
 			},500)
+			this.getData(this.LastWeek,this.LastWeekend)
 		},
 		components: {
 			draggable,
 		},
 		methods: {
+			async getData(val,item){
+				let res = await this.$api.eventCount({
+					starttime:val,
+					endtime:item,
+				})
+				this.list = res.data.data.list
+				console.log(this.list)
+			},
 			getWeek(n){
 				var now = new Date()
 				var year = now.getFullYear()
@@ -55,7 +65,7 @@
 				year=now.getFullYear();
 				month=now.getMonth()+1;
 				date=now.getDate();
-				var s=year+"/"+(month<10?('0'+month):month)+"/"+(date<10?('0'+date):date);
+				var s=year+"-"+(month<10?('0'+month):month)+"-"+(date<10?('0'+date):date);
 				return s
 			},
 			OrderCharts() {

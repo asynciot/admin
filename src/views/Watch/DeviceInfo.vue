@@ -96,7 +96,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[0]' readonly)
 							Col(span=5)
-								&nbsp;
+								|&nbsp;
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[8]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -105,7 +105,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[4]' readonly)
 							Col(span=5)
-								&nbsp;
+								|&nbsp;
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[2]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -114,7 +114,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[1]' readonly)
 							Col(span=5)
-								&nbsp;
+								|&nbsp;
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[10]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -123,7 +123,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[5]' readonly)
 							Col(span=5)
-								&nbsp;
+								|&nbsp;
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[4]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -132,7 +132,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[2]' readonly)
 							Col(span=5)
-								&nbsp;
+								|&nbsp;
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[12]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -150,7 +150,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[3]' readonly)
 							Col(span=5)
-								&nbsp;
+								|&nbsp;
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[14]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:

@@ -135,5 +135,11 @@ export default {
 	},
 	runtime:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Runtime'}, data))
-	}
+	},
+	eventCount:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadCount'}, data))
+	},
+	orderCount:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Order',key2:'ReadCount'}, data))
+	},
 }

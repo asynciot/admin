@@ -17,6 +17,24 @@
 				LastWeekend:'',
 				NowWeek:'',
 				NowWeekend:'',
+				Lastlist:{
+					monday:'0',
+					tuesday:'0',
+					wensday:'0',
+					thursday:'0',
+					friday:'0',
+					saturday:"0",
+					sunday:"0",
+				},
+				list:{
+					monday:'0',
+					tuesday:'0',
+					wensday:'0',
+					thursday:'0',
+					friday:'0',
+					saturday:"0",
+					sunday:"0",
+				},
 			};
 		},
 		created(){
@@ -24,6 +42,8 @@
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)
 			this.NowWeekend = this.getWeek(-6)
+			this.getLastData(this.LastWeek,this.LastWeekend)
+			this.getData(this.NowWeek,this.NowWeekend)
 			setTimeout(() => {
 				this.OrderCharts();
 			},500)
@@ -32,6 +52,32 @@
 			draggable,
 		},
 		methods: {
+			async getLastData(val,item){
+				let res = await this.$api.orderCount({
+					starttime:val,
+					endtime:item,
+				})
+				this.Lastlist.monday = res.data.data.monday
+				this.Lastlist.tuesday = res.data.data.tuesday
+				this.Lastlist.wensday = res.data.data.wensday
+				this.Lastlist.thursday = res.data.data.thursday
+				this.Lastlist.friday = res.data.data.friday
+				this.Lastlist.saturday = res.data.data.saturday
+				this.Lastlist.sunday = res.data.data.sunday
+			},
+			async getData(val,item){
+				let res = await this.$api.orderCount({
+					starttime:val,
+					endtime:item,
+				})
+				this.list.monday = res.data.data.monday
+				this.list.tuesday = res.data.data.tuesday
+				this.list.wensday = res.data.data.wensday
+				this.list.thursday = res.data.data.thursday
+				this.list.friday = res.data.data.friday
+				this.list.saturday = res.data.data.saturday
+				this.list.sunday = res.data.data.sunday
+			},
 			getWeek(n){
 				var now = new Date()
 				var year = now.getFullYear()
@@ -55,7 +101,7 @@
 				year=now.getFullYear();
 				month=now.getMonth()+1;
 				date=now.getDate();
-				var s=year+"/"+(month<10?('0'+month):month)+"/"+(date<10?('0'+date):date);
+				var s=year+"-"+(month<10?('0'+month):month)+"-"+(date<10?('0'+date):date);
 				return s
 			},
 			OrderCharts() {
@@ -82,7 +128,8 @@
 					series: [{
 						name: '本周故障数量',
 						type: 'line',
-						data: [1, 3, 2, 5, 3, 2, 0],
+						data: [this.list.monday, this.list.thursday, this.list.wensday,this.list.thursday,
+						this.list.friday,this.list.saturday,this.list.sunday,],
 						markPoint: {
 							data: [
 								{type: 'max', name: '最大值'},
@@ -101,7 +148,8 @@
 					{
 						name: '上周故障数量',
 						type: 'line',
-						data: [1, 3, 2, 1, 1, 0, 2],
+						data: [this.Lastlist.monday, this.Lastlist.tuesday, this.Lastlist.wensday, this.Lastlist.thursday,
+						this.Lastlist.friday, this.Lastlist.saturday, this.Lastlist.sunday],
 						markPoint: {
 							data: [
 								{type: 'max', name: '最大值'},
