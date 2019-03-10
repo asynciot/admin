@@ -13,17 +13,15 @@ div.layout-content-main
 							input(v-model="list.device_id" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|IMEI:
-							input(v-model="list.IMEI" style="border: 0" maxlength='15')
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+							input(v-model="list.IMEI" style="border: 0" maxlength='15' readonly)
 						Col(span="12")|IMSI:
-							input(v-model="list.IMSI" style="border: 0" maxlength='15')
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+							input(v-model="list.device_IMSI" style="border: 0" maxlength='15' readonly)
 					Row(:gutter="30" style="padding-top:10px" )
 						Col(span="12" v-if="list.device_type==15")|设备类型:控制器
 						Col(span="12" v-if="list.device_type==240")|设备类型:控制柜
 						Col(span="12" v-if="list.device_model==1")|型号:NSFC01-01B
 						Col(span="12" v-if="list.device_model==2")|型号:NSFC01-02T
-				Card(v-if="list.device_type == 15")
+				Card(v-if="list.device_type == 15" style="margin-top:5px")
 					p(slot="title")|参数信息
 					Row(:gutter="30")
 						Col(span="12")|报告时间:
@@ -36,8 +34,8 @@ div.layout-content-main
 						Col(span="8")|缓存中的事件数:
 							input(v-model="parameter.wavenumber" style="border: 0;;width:50%" readonly)
 						Col(span="4")
-							Button(style="border: 0;width:90%" @click="getList();history=true")|查看历史故障
-				Card(v-if="list.device_type == 240")
+							Button(type='cancel' @click="getList();history=true")|查看历史故障
+				Card(v-if="list.device_type == 240" style="margin-top:5px")
 					p(slot="title")|参数信息
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|累计运行次数:
@@ -50,8 +48,8 @@ div.layout-content-main
 						Col(span="8")|最近故障楼层:
 							input(v-model="parameter.faultfloor" style="border: 0;width:50%" readonly)
 						Col(span="4")
-							Button(style="border: 0;width:90%" @click="getList();history=true")|查看历史故障
-				Card(style="margin-top:10px")
+							Button(type='cancel' @click="getList();history=true")|查看历史故障
+				//Card(style="margin-top:5px")
 					p(slot="title")|生产
 					Row(:gutter="30")
 						Col(span="12")
@@ -61,7 +59,7 @@ div.layout-content-main
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|生产批次:
 							input( style="border: 0" readonly)
-				Card(style="margin-top:10px")
+				Card(style="margin-top:5px")
 					p(slot="title")|维保
 					Row(:gutter="30")
 						Col(span="12")|下次维保:
@@ -78,7 +76,7 @@ div.layout-content-main
 								Option(key="3" label="校检" value="3")
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|上次维保:{{options.maintenance_lasttime}}
-				Card(style="margin-top:10px")
+				Card(style="margin-top:5px")
 					p(slot="title")|系统
 					Row(:gutter="30")
 						Col(span="12")|入网状态:
@@ -91,15 +89,15 @@ div.layout-content-main
 						Col(span="12")|梯号:
 							input( style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|安装地址::
+						Col(span="12")|安装地址:
 							input(v-model="list.install_addr" style="border: 0" @input="" maxlength='18')
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
-						Col(span="12")|安装日期::
+						Col(span="12")|安装日期:
 							input(v-model="options.install_date" style="border: 0" readonly)
 			Col(span="7" )
 				Card()
 					img(src="../../../assets/ladder.jpg" width="100%")
-				Col(span = 12)
+				Col(span = 12 style="margin-top:5px")
 					Col(span=4)
 						span.pd(id="green" style="color:green;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(0)")
 					Col(span=4)
@@ -114,19 +112,19 @@ div.layout-content-main
 						span.pd(id="black" style="color:black;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 				Col(span=24)
 					Col(span=12)
-						Button(@click="burnn()" type="primary" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%")|注册设备
-						Button(@click="clearr()" type="primary" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%")|解除注册
+						Button(@click="burnn()" type="primary" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|注册设备
+						Button(@click="clearr()" type="primary" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|解除注册
 						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 92%")|注册中
 					Col(span=11)
-						Button(@click="burn()" type="warning" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 100%")|强制注册
-						Button(@click="clear()" type="warning" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px;width: 100%")|强制解除
+						Button(@click="burn()" type="warning" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 100%" ,:disabled='upsuccess')|强制注册
+						Button(@click="clear()" type="warning" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|强制解除
 						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 100%")|注册中
 				Col(span=24)
 					Col(span=12)
-						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent')|提交信息
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent' ,:disabled='upsuccess')|提交信息
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
 					Col(span=11)
-						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%")|信息重置
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|信息重置
 	el-dialog(title="历史故障", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		div(style="margin: 0 auto")
@@ -222,7 +220,7 @@ export default {
 			total:'',
 			fault:{
 				page: 1,
-				num: 10,
+				num: 1,
 				state:'',
 				device_id:'',
 			},
@@ -243,6 +241,7 @@ export default {
 			data: '',
 			maintain:[],
 			loading: false,
+			username:window.localStorage.getItem('username'),
 			columns: [
 			{
 				title: '设备类型',
@@ -256,6 +255,9 @@ export default {
 	created(){
 		this.getData()
 		this.getList()
+		if(this.username=="demo"){
+			this.upsuccess = true 
+		}
 	},
 
 	methods: {
@@ -312,7 +314,6 @@ export default {
 			var time;
 			let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
 			this.list = res.data.data.list[0]
-			
 			setTimeout(()=>{
 				this.showcolor()
 			}, 300)
@@ -569,5 +570,8 @@ export default {
 	.h2{
 		position: absolute;
 		padding-top: 27%;
+	}
+	.layout-content-main{
+		overflow-y: scroll !important;
 	}
 </style>

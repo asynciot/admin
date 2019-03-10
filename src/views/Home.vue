@@ -177,18 +177,22 @@
 						sub:[{
 							name:'map',
 							label:'运行状态',
-						},{
-							name:'alertTake',
-							label:'告警订阅',
-						},]
+						},
+// 						{
+// 							name:'alertTake',
+// 							label:'告警订阅',
+// 						},
+						]
 					},{
 						name: 'report',
 						icon: 'fa fa-newspaper-o',
 						label: '报表分析',
-						sub:[{
-								name: 'report',
-								label: '报表分析',
-							},{
+						sub:[
+// 							{
+// 								name: 'report',
+// 								label: '报表分析',
+// 							},
+							{
 								name: 'eventreport',
 								label: '事件报表分析',
 							},{
@@ -229,13 +233,16 @@
 						},{
 							name:'evolution',
 							label:'固件更新',
-						},{
-							name:'elevator',
-							label:'电梯组',
-						},{
-							name: 'maintainCompany',
-							label: '维保单位信息',
-						},],
+						},
+// 						{
+// 							name:'elevator',
+// 							label:'电梯组',
+// 						},
+// 						{
+// 							name: 'maintainCompany',
+// 							label: '维保单位信息',
+// 						},
+						],
 					},{
 						name: 'system',
 						icon: 'fa fa-address-card-o',

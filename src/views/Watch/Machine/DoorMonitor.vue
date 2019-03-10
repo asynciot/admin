@@ -82,16 +82,16 @@
 								div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
-						Card(style="margin-bottom:10px")
+						Card(style="margin-top:5px")
 							p.drag(slot="title")|开关门信号 {{this.interval}} ms
 							div.ss(id="openIn" draggable=false)
-						Card(style="margin-bottom:10px")
+						Card(style="margin-top:5px")
 							p.drag(slot="title")|开关门到位信号
 							div.ss(id="closeIn" draggable=false)
-						Card(style="margin-bottom:10px")
+						Card(style="margin-top:5px")
 							p.drag(slot="title" )|门电流
 							div.ss1(id="current" draggable=false)
-						Card(style="margin-bottom:10px")
+						Card(style="margin-top:5px")
 							p.drag(slot="title")|门速度 m/s
 							div.ss1(id="speed" draggable=false)
 						div(style="color:#f00")|注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.
@@ -504,6 +504,7 @@
 		height: 150px;
 	}
 	.card {
+		margin-top: 5px;
 		min-height: 340px;
 		.fr {
 			font-style: normal;
@@ -808,5 +809,8 @@
 	.chart-title {
 		font-size: 12px;
 		padding-left: 8px;
+	}
+	.layout-content-main{
+		overflow-y: scroll;
 	}
 </style>

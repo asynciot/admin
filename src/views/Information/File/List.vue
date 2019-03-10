@@ -80,12 +80,13 @@
 				show: {
 					device_type: 'all',
 					register: 'all',
-					state: 'all',
+					state: 'online',
 				},
 				color: [false, false, false, false, false, false],
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
 				menu: [],
 				follow: [],
+				username:window.localStorage.getItem('username'),
 				options: {
 					search_info: '',
 					device_type: '',
@@ -260,6 +261,7 @@
 									props: {
 										type: 'error',
 										size: "small",
+										disabled:this.username=="demo",
 									},
 									style: {
 										marginRight: '10px',
@@ -327,12 +329,13 @@
 				for (var i = 0; i < this.data.length; i++) {
 					str = this.data[i].IMEI;
 					// if ((str != null)&&(selectword!= null)){
-					if (str.indexOf(selectword) >= 0)
+					if(str.indexOf(selectword) >= 0){
 						this.menu.push(str)
+					}
 					// }
 					str = this.data[i].device_name;
 					// if ((str != null)&&(selectword!= null)){
-					if (str.indexOf(selectword) >= 0) {
+					if(str.indexOf(selectword) >= 0){
 						this.menu.push(str)
 					}
 					// } 

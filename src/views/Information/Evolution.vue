@@ -54,6 +54,7 @@ export default {
 			api: api,
 			ladderApi: ladderApi,
 			loading:false,
+			username:window.localStorage.getItem('username'),
 			columns: [{
 				type: 'selection',
 				align: 'center',
@@ -133,7 +134,7 @@ export default {
 						props: {
 							type: 'primary',
 							size: "small",
-							disabled: !this.version
+							disabled: (!this.version||this.username=="demo"),
 						},
 						on: {
 							click: () => {

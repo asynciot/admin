@@ -1,5 +1,5 @@
 <template lang="jade">
-	div.layout-content-main()
+	div.layout-content-main
 		div.box
 			div.box-header.with-border
 				p.box-title 角色对应菜单信息
@@ -112,5 +112,8 @@
 	}
 	.lp{
 		margin-right: 5px;
+	}
+	.layout-content-main{
+		overflow-y: scroll;
 	}
 </style>

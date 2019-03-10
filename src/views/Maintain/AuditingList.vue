@@ -14,6 +14,10 @@
 							Option(key='1', label='全部', value='all')
 							Option(key='2', label='控制器', value='door')
 							Option(key='3', label='控制柜', value='ctrl')
+					Col(span="2")
+						Select.smr(v-model='show.list_type', style='width:100%;', placeholder='设备类型', @on-change='getList()')
+							Option(key='2', label='工单审核', value='order')
+							Option(key='3', label='维保审核', value='dispatch')
 					Col(span="4")
 						Input(v-model="options.search_info" ,:data="menu" , placeholder="设备地址和名称" max=15)
 					Col(span="5")
@@ -22,15 +26,15 @@
 		el-dialog(title='故障提示', :visible.sync='ctrl', width='30%')
 			img#c(width='100%', src='')
 			span.dialog-footer(slot='footer')
-				el-button(type='primary', @click='ctrl = false') 确 定
+				Button(type='primary', @click='ctrl = false') 确 定
 		el-dialog(title='故障提示', :visible.sync='door', width='30%')
 			img#d(width='100%', src='')
 			span.dialog-footer(slot='footer')
-				el-button(type='primary', @click='door = false') 确 定
+				Button(type='primary', @click='door = false') 确 定
 		div(style='min-height: 450px; margin-top: 20px;')
-			Table.mb-10(:columns='columns', :data='data' stripe, size='small')
+			Table.mb-10(:columns='columns', :data='list' stripe, size='small')
 		Col(span="24" style="text-align:center;")
-			page.fonts(show-elevator='', :total='data.length', :page-size='options.num', :current='options.page', @on-change='pageChange', show-total='')
+			page.fonts(show-elevator='', :total='totalNumber', :page-size='options.num', :current='options.page', @on-change='pageChange', show-total='')
 </template>
 
 <script>
@@ -43,46 +47,20 @@
 				color: [false, false, false, false, false, false],
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
 				menu: [],
-				data: [{
-						IMEI: "868998030425132",
-						device_name: "01B-N0001",
-						install_addr: "门机实验室",
-						code: 2,
-						createTime: "1550121375478",
-						device_id: 3,
-						device_type: "door",
-						id: 149,
-						islast: 1,
-						producer: "admin",
-						state: "untreated",
-						type: 1,
-					},{
-						IMEI: "868998030425132",
-						device_name: "01B-N0001",
-						install_addr: "测试",
-						code: 4,
-						createTime: "1550121375478",
-						device_id: 3,
-						device_type: "door",
-						id: 149,
-						islast: 1,
-						producer: "nbas1203",
-						state: "untreated",
-						type: 1,	
-						ps:'因零件未到位，请求搁置'
-					},
-				],
+				list:[],
+				totalNumber:'',
 				show: {
 					state: 'untreated',
 					type: 'all',
 					device_type: 'all',
+					list_type:'order',
 				},
-				options: {
+				options:{
 					search_info: '',
 					page: 1,
 					num: 10,
 					isreg: "True",
-					state: '',
+					state:'examined',
 					type: '',
 					device_type: '',
 					device_id: '',
@@ -172,7 +150,7 @@
 						key: 'install_addr'
 					},{
 						title: '说明',
-						key: 'ps'
+						key: 'remarks'
 					},
 					{
 						title: '提交时间',
@@ -185,31 +163,35 @@
 						title: '操作',
 						width: 100,
 						render: (h, params) => {
-							var order
-							if (params.row.state == "untreated") {
-								order = '查看'
-							}
 							return h('div', [
 								h('Button', {
 									props: {
 										type: 'primary',
 										size: "small",
-										disabled: (params.row.state != 'untreated'),
 									},
 									style: {
 										marginRight: '10px',
 									},
 									on: {
 										click: () => {
-											this.$router.push({
-												name: 'auditing',
-												params: {
-													id: params.row.id
-												}
-											})
+											if(this.show.list_type=="dispatch"){
+												this.$router.push({
+													name: 'dispatchadopt',
+													params: {
+														id: params.row.id
+													}
+												})
+											}else{
+												this.$router.push({
+													name: 'orderadopt',
+													params: {
+														id: params.row.id
+													}
+												})
+											}
 										},
 									}
-								}, order),
+								}, "查看"),
 							])
 						}
 					}
@@ -218,16 +200,107 @@
 
 		},
 		created() {
-			// this.getList()
+			this.getData()
 		},
 		methods: {
+			getList(){
+				if(this.show.list_type=='order'){
+					this.getData()
+				}else{
+					this.getDipatch()
+				}
+			},
+			async getData(){
+				if (this.show.type == "all") {
+					this.options.type = ""
+				} else {
+					this.options.type = this.show.type
+				}
+				if (this.show.device_type == "all") {
+					this.options.device_type = ""
+				} else {
+					this.options.device_type = this.show.device_type
+				}
+				let res = await this.$api.fault(this.options)
+				if(res.data.code==0){
+					for (var i = 0; i < res.data.data.list.length; i++) {
+						var ech = await this.$api.devices({
+							device_id: res.data.data.list[i].device_id,
+							num: 10,
+							page: 1
+						})
+						if (ech.data.data.list.length == 1) {
+							res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+							res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+							res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
+							res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data
+								.list[0].ip_city
+							res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+						}
+						ech = await this.$api.runtime({
+							page: 1,
+							num: 20,
+							type: 8195,
+							device_id: res.data.data.list[i].device_id
+						})
+					}
+					this.list = res.data.data.list
+					this.totalNumber = res.data.data.totalNumber
+				}
+			},
+			async getDipatch(){
+				if (this.show.type == "all") {
+					this.options.type = ""
+				} else {
+					this.options.type = this.show.type
+				}
+				if (this.show.device_type == "all") {
+					this.options.device_type = ""
+				} else {
+					this.options.device_type = this.show.device_type
+				}
+				let res = await this.$api.getRepair(this.options)
+				if(res.data.code==0){
+					for (var i = 0; i < res.data.data.list.length; i++) {
+						var ech = await this.$api.devices({
+							device_id: res.data.data.list[i].device_id,
+							num: 10,
+							page: 1
+						})
+						if (ech.data.data.list.length == 1) {
+							res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+							res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+							res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
+							res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data
+								.list[0].ip_city
+							res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+						}
+						ech = await this.$api.runtime({
+							page: 1,
+							num: 20,
+							type: 8195,
+							device_id: res.data.data.list[i].device_id
+						})
+					}
+					this.list = res.data.data.list
+					this.totalNumber = res.data.data.totalNumber
+				}
+			},
 			pageChange(val) {
 				this.options.page = val
-				// this.getList()
+				if(this.show.list_type=='order'){
+					this.getData()
+				}else{
+					this.getDipatch()
+				}
 			},
 			async search() {
 				this.options.page = 1
-				// this.getList()
+				if(this.show.list_type=='order'){
+					this.getData()
+				}else{
+					this.getDipatch()
+				}
 			},
 			code() {
 				this.$router.push({

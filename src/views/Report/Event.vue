@@ -17,7 +17,24 @@
 				LastWeekend:'',
 				NowWeek:'',
 				NowWeekend:'',
-				list:[],
+				Lastlist:{
+					monday:'',
+					tuesday:'',
+					wensday:'',
+					thursday:'',
+					friday:'',
+					saturday:'',
+					sunday:'',
+				},
+				list:{
+					monday:'',
+					tuesday:'',
+					wensday:'',
+					thursday:'',
+					friday:'',
+					saturday:'',
+					sunday:'',
+				},
 			};
 		},
 		created(){
@@ -25,22 +42,41 @@
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)
 			this.NowWeekend = this.getWeek(-6)
+			this.getLastData(this.LastWeek,this.LastWeekend)
+			this.getData(this.NowWeek,this.NowWeekend)
 			setTimeout(() => {
 				this.OrderCharts();
 			},500)
-			this.getData(this.LastWeek,this.LastWeekend)
 		},
 		components: {
 			draggable,
 		},
 		methods: {
+			async getLastData(val,item){
+				let res = await this.$api.eventCount({
+					starttime:val,
+					endtime:item,
+				})
+				this.Lastlist.monday = res.data.data.monday
+				this.Lastlist.tuesday = res.data.data.tuesday
+				this.Lastlist.wensday = res.data.data.wensday
+				this.Lastlist.thursday = res.data.data.thursday
+				this.Lastlist.friday = res.data.data.friday
+				this.Lastlist.saturday = res.data.data.saturday
+				this.Lastlist.sunday = res.data.data.sunday
+			},
 			async getData(val,item){
 				let res = await this.$api.eventCount({
 					starttime:val,
 					endtime:item,
 				})
-				this.list = res.data.data.list
-				console.log(this.list)
+				this.list.monday = res.data.data.monday
+				this.list.tuesday = res.data.data.tuesday
+				this.list.wensday = res.data.data.wensday
+				this.list.thursday = res.data.data.thursday
+				this.list.friday = res.data.data.friday
+				this.list.saturday = res.data.data.saturday
+				this.list.sunday = res.data.data.sunday
 			},
 			getWeek(n){
 				var now = new Date()
@@ -92,7 +128,8 @@
 					series: [{
 						name: '本周事件数量',
 						type: 'line',
-						data: [41, 55, 60, 43, 52, 33, 20],
+						data: [this.list.monday, this.list.thursday, this.list.wensday,this.list.thursday,
+						this.list.friday,this.list.saturday,this.list.sunday,],
 						markPoint: {
 							data: [
 								{type: 'max', name: '最大值'},
@@ -103,7 +140,8 @@
 					{
 						name: '上周事件数量',
 						type: 'line',
-						data: [60, 75, 67, 83, 52, 33, 40],
+						data: [this.Lastlist.monday, this.Lastlist.tuesday, this.Lastlist.wensday, this.Lastlist.thursday,
+						this.Lastlist.friday, this.Lastlist.saturday, this.Lastlist.sunday],
 						markPoint: {
 							data: [
 								{type: 'max', name: '最大值'},

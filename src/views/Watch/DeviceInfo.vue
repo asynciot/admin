@@ -514,7 +514,7 @@
 					type: 1,
 					address: (this.address[0]+','+this.address[1]+','+this.address[2]+','+
 						this.address[3]+','+this.address[4]+','+this.address[5]+','+
-						this.address[6]+','+this.address[7]+this.address[8]+','+this.address[9]+','+this.address[10]+','+
+						this.address[6]+','+this.address[7]+','+this.address[8]+','+this.address[9]+','+this.address[10]+','+
 						this.address[11]+','+this.address[12]+','+this.address[13]+','+
 						this.address[14]+','+this.address[15]),
 					segment: (this.segment[0]+','+this.segment[1]+','+this.segment[2]+','+this.segment[3]),
@@ -553,9 +553,10 @@
 				}else{
 					var redata = JSON.parse(e.data)
 					var buffer = base64url.toBuffer(redata.data);
-					console.log(buffer)
-					for (var i=0;i<8;i++) {this.res[i]=buffer[i].toString(16)}
-					
+					for (var i=0;i<8;i++) {
+						// this.res[i]=buffer[i].toString(16)
+						this.$set(this.res, i, buffer[i].toString(16))
+					}
 				}
 			},
 			async closed(){//数据发送

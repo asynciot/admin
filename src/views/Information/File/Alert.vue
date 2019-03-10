@@ -81,6 +81,7 @@
 					num: 300,
 					total: 0,
 				},
+				id:'',
 				file:'',
 				filename:'',
 				upsuccess:false,
@@ -136,25 +137,39 @@
 					fault=''
 				}
 				let res = await this.$api.alert({code:fault,type:type,device_type:device_type,producer:this.username,device_id:this.list.device_id})
+				let ret = await this.$api.fault({
+					page: 1,
+					num:10,
+					search_info: '',
+					isreg: "True",
+					state: 'untreated',
+					type: type,
+					device_type: device_type,
+					device_id: this.list.device_id,
+					islast: 1,
+				})
+				this.id = ret.data.data.list[0].id
+				let thr = await this.$api.orderExamine({id:this.id})
 				if(res.data == 'ok'){
 					this.$Notice.success({
 						title: '成功',
 						desc: '发送成功，等待处理'
 					});
 					this.$router.back(-1)
-				}
-				else{
+				}else{
 					if (res.data == 'already in db') {
 						this.$Notice.error({
 							title: '失败',
 							desc: '该设备已经告警'
 						});
+						this.$router.back(-1)
 					}
 					else{
 						this.$Notice.error({
 							title: '失败',
 							desc: '发送失败'
 						});
+						this.$router.back(-1)
 					}
 				}
 			}

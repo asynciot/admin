@@ -27,7 +27,7 @@
 											Form-item(label="详细说明:")|{{ps}}
 							Col(span=24)
 								Col(span=12 align="center")
-									Button(type="success",icon="plus",@click="adopt")|同意
+									Button(type="success",icon="plus",@click="adopt" ,:disabled='upsuccess')|同意
 								Col(span=12 align='center')
 									Button(icon="close",@click="$router.back(-1)")|取消
 </template>
@@ -67,6 +67,9 @@
 		},
 		created(){
 			this.getData();
+			if(this.username=="demo"){
+				this.upsuccess = true 
+			}
 		},
 		mounted(){
 			//document.getElementById('image').src=this.file
@@ -81,7 +84,7 @@
 				}
 			},
 			adopt(){
-				
+				this.$api.orderAdopt({id:this.$route.params.id})
 				this.$Notice.success({
 					title: '成功',
 					desc: '已通过审核！'

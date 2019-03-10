@@ -16,7 +16,7 @@
 										Col(span="8" style="margin-top:10px" v-if="list.state == 'untreated'")|状态:处理中
 										Col(span="8" style="margin-top:10px")|确认时间:{{list.confirm_time}}
 										Col(span='24' style="margin-top:10px")
-											textarea(style="width:100%;height:60px" placeholder="本次维保说明")
+											textarea(v-model='ps' style="width:100%;height:60px" placeholder="本次维保说明")
 									Col(span=24 style="margin-top:10px")|处理前的照片:
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='before1')
@@ -40,13 +40,13 @@
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))")|完成工单
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))" ,:disabled='upsuccess')|完成工单
 								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(sent))" disabled)|完成工单
 							Col(span=6 align="center")
-								Button(type="primary",@click="test()" )|请求搁置
+								Button(type="primary",@click="examine()",:disabled='upsuccess')|请求搁置
 							Col(span=6 align="center")
 								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))")|转办
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))" ,:disabled='upsuccess')|转办
 								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(sent))" disabled)|转办
 							Col(span=6 align='center')
 								Button(@click="$router.back(-1)")|取消
@@ -85,6 +85,7 @@
 				file:'',
 				filename:'',
 				upsuccess:false,
+				ps:'',
 			}
 		},
 		computed: {
@@ -94,6 +95,9 @@
 		},
 		created(){
 			this.getData();
+			if(this.username=="demo"){
+				this.upsuccess = true 
+			}
 		},
 		mounted(){
 			//document.getElementById('image').src=this.file
@@ -403,7 +407,11 @@
 					this.getList()
 				}
 			},
-			test(){
+			async examine(){
+				let res = await this.$api.dispatchExamine({
+					id:this.$route.params.id,
+					remarks:this.ps,
+				})
 				this.$Notice.success({
 					title: '成功',
 					desc: '已提交，正在审核请等待！'

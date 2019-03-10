@@ -6,8 +6,9 @@
 				<Col span='3'>
 					<Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
 						<Option key="1" label="全部" value="all"></Option>
-						<Option key="2" label="处理中" value="untreated"></Option>
-						<Option key="3" label="已结束" value="treated"></Option>
+						<Option key="2" label="搁置" value="reprieve"></Option>
+						<Option key="3" label="处理中" value="untreated"></Option>
+						<Option key="4" label="已结束" value="treated"></Option>
 					</Select>
 				</Col>
 				<Col span='3'>
@@ -42,6 +43,7 @@
 	export default {
 		data() {
 			return{
+				username:window.localStorage.getItem('username'),
 				color:[false,false,false,false,false,false],
 				col:['green','red','yellow','blue','gray','black'],
 				menu:[],
@@ -183,126 +185,134 @@
 		},
 		methods: {
 			handleSearch1 (selectword) {
-					this.menu=[];
-					var str;
-						for (var i=0;i<this.list.length;i++){
-							str=this.list[i].device_id;
-							if (str != null){
-								if (str.indexOf(selectword)>=0)
-								this.menu.push(str)
-							}
+				this.menu=[];
+				var str;
+					for (var i=0;i<this.list.length;i++){
+						str=this.list[i].device_id;
+						if (str != null){
+							if (str.indexOf(selectword)>=0)
+							this.menu.push(str)
 						}
-				},
-				async finish(val) {
-					let res = await this.$api.finish({id:val.id,result:'finish'})
-					if (res.data.code == 0){
-						this.$Notice.success({
-							title: '成功',
-							desc: '完成工单'
-						});
-						this.getList()
 					}
-					else{
-						this.$Notice.error({
-							title: '错误',
-							desc: '发生错误'
-						});
-						this.getList()
-					}
-				},
-				async getList() {
-					this.loading = true
-					if (this.show.state=="all") {this.options.state="";}
-					else {this.options.state=this.show.state}
-					if (this.show.order_type=="all") {this.options.order_type="";}
-					else {this.options.order_type=this.show.order_type}
-					let res = await this.$api.getRepair(this.options)
-					var ech
-						this.loading = false
-						if (res.data.code === 0) {
-							for (var i=0;i<res.data.data.list.length;i++) {
-								ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
-								res.data.data.list[i].device_name = ech.data.data.list[0].device_name
-								res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
-								res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
-								res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
-								res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-							}
-							this.data = res.data.data.list
-							this.options.total = res.data.data.totalNumber
-						} else {
-							this.$Notice.error({
-								title: '错误',
-								desc: '获取列表失败'
-							});
-						}
-					},
-					pageChange(val) {
-						this.options.page = val
-						this.getList()
-					},
-					async search() {
-						this.options.page = 1
-						this.getList()
-					},	
-					async checkcolor(c) {
-						this.color[c]=!this.color[c]
-						if (this.color[c]) {
-							document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
-						}
-						else {
-							document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
-						}
-						this.options.tagcolor=''
-						for (var i=0;i<6;i++) {
-						if (this.color[i]) {
-							if (this.options.tagcolor!='') {
-								this.options.tagcolor=this.options.tagcolor+';'
-								}
-							this.options.tagcolor=this.options.tagcolor+this.col[i]
-						}
-						}
-						this.search()
-					},
-					handleUpload (file) {
-						var type = file.name.split('.')
-						if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
-						this.file = file;
-						this.filename = this.file.name;
-						this.upsuccess = true;
-						// document.getElementById('image').src=this.file;
-						this.confirm()
-						return false;
-						}
-						else{
-							this.$Notice.warning({
-								title: '警告',
-								desc: '只能上传图片类型的文件'
-							})
-						}
-					},
-					async confirm(){
-						var formData = new FormData()
-						var formData = new window.FormData()
-						formData.append('file',this.file)
-						let res = await this.$api.portrait(formData)
-						if (res.data.code == 0){
-						this.upsuccess=false
-						this.$Notice.success({
-							title: '成功',
-							desc: ('成功上传'+this.filename)
+			},
+			async finish(val) {
+				let res = await this.$api.finish({id:val.id,result:'finish'})
+				if (res.data.code == 0){
+					this.$Notice.success({
+						title: '成功',
+						desc: '完成工单'
+					});
+					this.getList()
+				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '发生错误'
+					});
+					this.getList()
+				}
+			},
+			async getList() {
+				this.loading = true
+				if(this.show.state == "all"){
+					this.options.state = ""
+				}else{
+					this.options.state = this.show.state
+				}
+				if(this.show.order_type == "all"){
+					this.options.order_type=""
+				}else{
+					this.options.order_type = this.show.order_type
+				}
+				let res = await this.$api.getRepair(this.options)
+				this.loading = false
+				if (res.data.code === 0) {
+					for (var i=0;i<res.data.data.list.length;i++) {
+						let ech = await this.$api.devices({
+							device_id:res.data.data.list[i].device_id,
+							num:10,
+							page:1,
 						})
-						this.filename='已上传'+this.filename
+						res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+						res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
+						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
+					}
+					this.data = res.data.data.list
+					this.options.total = res.data.data.totalNumber
+				} else {
+					this.$Notice.error({
+						title: '错误',
+						desc: '获取列表失败'
+					});
+				}
+			},
+			pageChange(val) {
+				this.options.page = val
+				this.getList()
+			},
+			async search() {
+				this.options.page = 1
+				this.getList()
+			},	
+			async checkcolor(c) {
+				this.color[c]=!this.color[c]
+				if (this.color[c]) {
+					document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
+				}
+				else {
+					document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
+				}
+				this.options.tagcolor=''
+				for (var i=0;i<6;i++) {
+				if (this.color[i]) {
+					if (this.options.tagcolor!='') {
+						this.options.tagcolor=this.options.tagcolor+';'
 						}
-						else{
-							this.$Notice.error({
-								title: '错误',
-								desc: '上传失败'
-							})
-						}
-					},
+					this.options.tagcolor=this.options.tagcolor+this.col[i]
+				}
+				}
+				this.search()
+			},
+			handleUpload (file) {
+				var type = file.name.split('.')
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				this.file = file;
+				this.filename = this.file.name;
+				this.upsuccess = true;
+				// document.getElementById('image').src=this.file;
+				this.confirm()
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: '警告',
+						desc: '只能上传图片类型的文件'
+					})
+				}
+			},
+			async confirm(){
+				var formData = new FormData()
+				var formData = new window.FormData()
+				formData.append('file',this.file)
+				let res = await this.$api.portrait(formData)
+				if (res.data.code == 0){
+				this.upsuccess=false
+				this.$Notice.success({
+					title: '成功',
+					desc: ('成功上传'+this.filename)
+				})
+				this.filename='已上传'+this.filename
+				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '上传失败'
+					})
+				}
+			},
 		}
-		
 	}
 </script>
 

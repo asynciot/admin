@@ -410,28 +410,28 @@
 			parseStatus(event) {//状态
 				let statusName = '';
 				if ((event.status&(0x01)) == 1) {
-					statusName+= '自动,';
+					statusName+= '自动;';
 				}
 				if ((event.status&(0x02))>>1 == 1) {
-					statusName+= '检修,';
+					statusName+= '检修;';
 				}
 				if ((event.status&(0x04))>>2 == 1) {
-					statusName+= '司机,';
+					statusName+= '司机;';
 				}
 				if ((event.status&(0x08))>>3 == 1) {
-					statusName+= '消防,';
+					statusName+= '消防;';
 				}
 				if ((event.status&(0x10))>>4 == 1) {
-					statusName+= '锁体,';
+					statusName+= '锁体;';
 				}
 				if ((event.status&(0x20))>>5 == 1) {
-					statusName+= '故障,';
+					statusName+= '故障;';
 				}
 				if ((event.status&(0x40))>>6 == 1) {
-					statusName+= '超载,';
+					statusName+= '超载;';
 				}
 				if ((event.status&(0x80))>>7 == 1) {
-					statusName+= '满载,';
+					statusName+= '满载;';
 				}
 				return statusName
 			},
@@ -803,5 +803,8 @@
 	.chart-title {
 		font-size: 12px;
 		padding-left: 8px;
+	}
+	.layout-content-main{
+		overflow-y: scroll;
 	}
 </style>

@@ -798,4 +798,7 @@ div.layout-content-main
 		font-size: 12px;
 		padding-left: 8px;
 	}
+	.layout-content-main{
+		overflow-y: scroll;
+	}
 </style>

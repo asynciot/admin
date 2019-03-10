@@ -22,7 +22,6 @@ const DoorMonitor = resolve => require(['@/views/Watch/Machine/DoorMonitor'], re
 const CtrlParameter = resolve => require(['@/views/Watch/Machine/CtrlParameter'], resolve)
 const DoorParameter = resolve => require(['@/views/Watch/Machine/DoorParameter'], resolve)
 const Memory = resolve => require(['@/views/Watch/Memory'], resolve)
-const Evolution = resolve => require(['@/views/Watch/Evolution'], resolve)
 const Map = resolve => require(['@/views/Watch/Map'], resolve)
 const DeviceInfo = resolve => require(['@/views/Watch/DeviceInfo'], resolve)
 const List = resolve => require(['@/views/Watch/List'], resolve)
@@ -61,9 +60,10 @@ const Maintain = resolve => require(['@/views/Maintain/Maintain'], resolve)
 const Finish = resolve => require(['@/views/Maintain/Finish'], resolve)
 const Order = resolve => require(['@/views/Maintain/Order'], resolve)
 const AuditingList = resolve => require(['@/views/Maintain/AuditingList'], resolve)
-const Auditing = resolve => require(['@/views/Maintain/Auditing'], resolve)
+const OrderAdopt = resolve => require(['@/views/Maintain/OrderAdopt'], resolve)
+const DispatchAdopt = resolve => require(['@/views/Maintain/DispatchAdopt'], resolve)
 
-//Setting
+//Information
 const FileIndex = resolve => require(['@/views/Information/File/BaseInfo'], resolve)
 const AlList = resolve => require(['@/views/Information/File/List'], resolve)
 const Alert = resolve => require(['@/views/Information/File/Alert'], resolve)
@@ -77,6 +77,7 @@ const CheckReport = resolve => require(['@/views/Information/Check/Report'], res
 const Elevator = resolve => require(['@/views/Information/Elevator/Index'], resolve)
 const AddGroup = resolve => require(['@/views/Information/Elevator/AddGroup'], resolve)
 const EditGroup = resolve => require(['@/views/Information/Elevator/EditGroup'], resolve)
+const Evolution = resolve => require(['@/views/Information/Evolution'], resolve)
 
 //system
 const Print = resolve => require(['@/views/System/Print'], resolve)
@@ -95,7 +96,6 @@ const NewPassword = resolve => require(['@/views/System/NewPassword'], resolve)
 const Authority = resolve => require(['@/views/System/Authority/Index'], resolve)
 const AddRole = resolve => require(['@/views/System/Authority/AddRole'], resolve)
 const EditRole = resolve => require(['@/views/System/Authority/EditRole'], resolve)
-EditRole
 
 Vue.use(Router)
 export default new Router({
@@ -189,13 +189,6 @@ export default new Router({
 				},
 				//设备管理
 				{
-					path: '/watch/evolution',
-					name: 'evolution',
-					meta: {
-						name: '版本更新'
-					},
-					component: Evolution
-				}, {
 					path: '/watch/map',
 					name: 'map',
 					meta: {
@@ -326,12 +319,13 @@ export default new Router({
 					},
 					component: AuditingList
 				},{
-					path: '/maintain/auditing/:id',
-					name: 'auditing',
-					meta: {
-						name: '审核'
-					},
-					component: Auditing
+					path: '/maintain/dispatchadopt/:id',
+					name: 'dispatchadopt',
+					component: DispatchAdopt
+				}, {
+					path: '/maintain/orderadopt/:id',
+					name: 'orderadopt',
+					component: OrderAdopt
 				}, {
 					path: '/maintain/finish/:id',
 					name: 'finish',
@@ -489,7 +483,15 @@ export default new Router({
 					},
 					component: PropertyDetail
 				},
-				//信息管理	
+				//信息管理
+				{
+					path: '/information/evolution',
+					name: 'evolution',
+					meta: {
+						name: '版本更新'
+					},
+					component: Evolution
+				}, 
 				{
 					path: '/information/list',
 					name: 'alList',

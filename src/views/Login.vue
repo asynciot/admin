@@ -51,7 +51,7 @@ export default {
           },
           {
             type: 'string',
-            min: 5,
+            min: 4,
             message: '用户名长度不能小于6位',
             trigger: 'blur'
           }

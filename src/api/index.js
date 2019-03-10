@@ -97,6 +97,9 @@ export default {
 	delevent: (data) => {
 		return DeviceApi.remove(Object.assign({key1:'Event'}, data))
 	},
+	eventCount:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadCount'}, data))
+	},
 	upload: (data) => {
 		return DeviceApi.save({key1:'Upload'}, data)
 	},
@@ -121,25 +124,34 @@ export default {
 	delfollow:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'follow'}, data))
 	},
+	getRepair:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Dispatch'}, data))
+	},
+	dispatchExamine:(data)=> {
+		return DeviceApi.save({key1:'Dispatch',key2:'examine'}, data)
+	},
+	finish:(data)=> {
+		return DeviceApi.save({key1:'Dispatch',key2:'finish'}, data)
+	},
+	adopt:(data)=> {
+		return DeviceApi.save({key1:'Dispatch',key2:'adopt'}, data)
+	},
+	runtime:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Runtime'}, data))
+	},
 	fault:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Order'}, data))
 	},
 	order:(data)=> {
 		return DeviceApi.save({key1:'Order',key2:'receipt'}, data)
 	},
-	getRepair:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Dispatch'}, data))
-	},
-	finish:(data)=> {
-		return DeviceApi.save({key1:'Dispatch',key2:'finish'}, data)
-	},
-	runtime:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Runtime'}, data))
-	},
-	eventCount:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadCount'}, data))
-	},
 	orderCount:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Order',key2:'ReadCount'}, data))
+	},
+	orderExamine:(data)=> {
+		return DeviceApi.save({key1:'Order',key2:'examine'}, data)
+	},
+	orderAdopt:(data)=> {
+		return DeviceApi.save({key1:'Order',key2:'adopt'}, data)
 	},
 }

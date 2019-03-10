@@ -27,7 +27,7 @@
 											Form-item(label="详细说明:")|{{ps}}
 							Col(span=24)
 								Col(span=12 align="center")
-									Button(type="success",icon="plus",@click="adopt")|同意
+									Button(type="success",icon="plus",@click="adopt",:disabled='upsuccess')|同意
 								Col(span=12 align='center')
 									Button(icon="close",@click="$router.back(-1)")|取消
 </template>
@@ -67,6 +67,9 @@
 		},
 		created(){
 			this.getData();
+			if(this.username=="demo"){
+				this.upsuccess = true 
+			}
 		},
 		mounted(){
 			//document.getElementById('image').src=this.file
@@ -81,7 +84,7 @@
 				}
 			},
 			adopt(){
-				
+				this.$api.adopt({id:this.$route.params.id})
 				this.$Notice.success({
 					title: '成功',
 					desc: '已通过审核！'
@@ -89,7 +92,7 @@
 				this.$router.back()
 			},
 			async getData(){
-				let res = await this.$api.fault({num:1,page:1,id:this.$route.params.id})
+				let res = await this.$api.getRepair({num:1,page:1,id:this.$route.params.id})
 				if (0 === res.data.code) {
 					let ech = await this.$api.devices({device_id:res.data.data.list[0].device_id,num:10,page:1})
 					res.data.data.list[0].device_name = ech.data.data.list[0].device_name
