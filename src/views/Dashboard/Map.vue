@@ -1,5 +1,5 @@
 <template lang="jade">
-div.layout-content-main()
+div()
 	Col.map(span="24" id="mapsize")
 		div#map
 </template>
@@ -109,7 +109,7 @@ div.layout-content-main()
 				const deviceWidth = document.documentElement.clientWidth
 				const deviceHeight = document.documentElement.clientHeight
 				// mapsize.style.width = '100%'
-				mapsize.style.height = (Number(deviceHeight)/2.7) + 'px'
+				mapsize.style.height = (Number(deviceHeight)/2.6) + 'px'
 			},
 			async handleSearch1 () {
 				this.menu=[];
@@ -399,7 +399,7 @@ div.layout-content-main()
 		margin-top: 4px;
 	}
 	.map {
-		height: calc(45vh - 81px);
+		height: calc(50vh - 90px);
 	}
 	#map {
 		position: relative;
