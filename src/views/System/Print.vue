@@ -6,7 +6,7 @@
 				<AutoComplete v-model="query.search_info" :data="menu" @on-search="handleSearch1" placeholder="请输入关键词" style="width:100%"></AutoComplete>
 			</Col>
 			<Col span='2'>
-				<Button class="mr-10" type="primary" icon="search" @click="search()" style="margin-left:10px">搜索</Button>
+				<Button class="mr-10" type="primary" icon="ios-search" @click="search()" style="margin-left:10px">搜索</Button>
 			</Col>
 		</Row>
 	<div style="min-height:450px; margin-top: 10px;">

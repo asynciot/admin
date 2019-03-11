@@ -26,9 +26,9 @@ div.layout-content-main()
 				Col(span=3)
 					Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
 				Col(span=3)
-					Button.mr-10(type="primary",icon="search",@click="search()" style="margin-left:1px" )|搜索
-					Button(type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag')
-					Button(type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag')
+					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|搜索
+					Button(type="default" icon="md-add" @click="showtag=!showtag" shape="circle" v-if='!showtag')
+					Button(type="default" icon="md-remove" @click="showtag=!showtag" shape="circle" v-if='showtag')
 				Col(span=4 v-if='showtag')
 					Col(span=4)
 						span.mt(id="green" style="color:green" class="fa fa-tag fa-2x",@click="checkcolor(0)" )

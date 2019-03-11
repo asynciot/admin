@@ -9,7 +9,7 @@ div.layout-content-main
 				Col(span='3')
 					AutoComplete(name="inpSer" v-model="options.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span="13")
-					Button(type="primary" icon='search' @click='getList()')|搜索
+					Button(type="primary" icon='ios-search' @click='getList()')|搜索
 					Button.mr-10(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备
 				Col(span="3")
 					upload(:before-upload='handleUpload')

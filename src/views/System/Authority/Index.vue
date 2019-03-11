@@ -11,9 +11,9 @@ div.layout-content-main
 							Option(key="3" label="普通用户")
 							Option(key="4" label="超级管理员")
 					Col(span="17")
-						Button.mr-10(type="success",icon="plus",:loading="loading",@click="goRole()")|添加角色
+						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goRole()")|添加角色
 					Col(span="5")
-						Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")
+						Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")
 						Input(v-model="options.username",placeholder="请输入搜索内容" style="width:75%;")
 	div(style="min-height: 450px")
 		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")

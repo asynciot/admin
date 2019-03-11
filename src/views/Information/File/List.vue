@@ -33,11 +33,11 @@
 				</Col>
 					
 				<Col span='2'>
-					<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
+					<Button class="mr-10" type="primary" icon="ios-search" @click="search()">搜索</Button>
 				</Col>
 				<Col span='1'>
-					<Button class="mr-10" type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
-					<Button class="mr-10" type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag'></Button>
+					<Button class="mr-10" type="default" icon="md-add" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
+					<Button class="mr-10" type="default" icon="md-remove" @click="showtag=!showtag" shape="circle" v-if='showtag'></Button>
 				</Col>
 				<Col span='3' v-if='showtag'>
 				<Col span='4'>

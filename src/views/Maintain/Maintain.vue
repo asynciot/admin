@@ -30,7 +30,7 @@
 						 placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
 					</Col>
 					<Col span='2'>
-						<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
+						<Button class="mr-10" type="primary" icon="ios-search" @click="search()">搜索</Button>
 					</Col>
 					<Col span='5'>
 						<checkbox style="margin-top:10px" v-model="last" @on-change="search()">只显示每个设备最后一个工单</checkbox>

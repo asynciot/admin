@@ -10,7 +10,7 @@ div.layout-content-main
 					Form-item(label="手机号码：")
 						Input(v-model="options.mobile",placeholder="请输入手机号码")
 				Col(span="6")
-					Button.mr-10(type="primary",icon="search",:loading="loading",@click="options.page=1,search()")|搜索
+					Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")|搜索
 	div(style="min-height: 450px")
 		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")
 	Col(span=6)|&nbsp;
