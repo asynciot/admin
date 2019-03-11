@@ -1,5 +1,13 @@
 <template>
-	<div class="wrapper layout-content-main" style="background:#ecf0f5;padding:0">
+	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;">
+		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
+			<div><checkbox v-model="visitor">Map</checkbox></div>
+			<div><checkbox v-model="chat">客户意见反馈</checkbox></div>
+			<div><checkbox v-model="progress">故障处理进程</checkbox></div>
+			<div><checkbox v-model="chart">业务图表</checkbox></div>
+			<div><checkbox v-model="chart2">用户组成</checkbox></div>
+			<div><checkbox v-model="email">Quick Email</checkbox></div>
+		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
 			<section class="content">
@@ -8,16 +16,16 @@
 					<div class="col-lg-3 col-xs-10">
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
-						<div class="small-box bg-aqua">
+						<div class="small-box bg-green">
 							<div class="inner" style="text-align:center;">
-								<h3>175/190</h3>
+								<h3>{{usernum}}</h3>
 
-								<p>在线维保人员</p>
+								<p>用户人数</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-bag"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'userManage'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -25,16 +33,16 @@
 					<div class="col-lg-3 col-xs-6">
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
-						<div class="small-box bg-green">
+						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center;">
-								<h3>53<sup style="font-size: 20px"></sup></h3>
+								<h3>{{emailnum}}<sup style="font-size: 20px"></sup></h3>
 
-								<p>备件待发</p>
+								<p>未读邮件</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'inform'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -44,14 +52,14 @@
 						<!-- small box -->
 						<div class="small-box bg-yellow">
 							<div class="inner" style="text-align:center;">
-								<h3>18/197</h3>
+								<h3>{{today}}/{{allevents}}</h3>
 
 								<p>今日完成事件 9%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'maintainList'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -61,14 +69,14 @@
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center;">
-								<h3 v-if="shine">{{faultdevice}}</h3>
-								<h3 style="color:#FF2C00" v-if="!shine">5</h3>
-								<p>故障电梯数</p>
+								<h3 v-if="shine">{{faultdevice}}/{{alldevice}}</h3>
+								<h3 style="color:#FF2C00" v-if="!shine"></h3>
+								<p>故障设备数</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
 							</div>
-							<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'alList'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -83,8 +91,8 @@
 
 					<draggable :options="{animation: 60,group:'panel'}">
 						<!-- Map box --> <Col span='12' id="mapwidth">
-						<div class="box box-primary" v-if="visitor" style="">
-							<div class="box-header">
+						<div class="box box-primary" v-if="visitor" >
+							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
 							  <div class="pull-right box-tools">
 								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="visitor=!visitor"><i class="fa fa-times"></i>
@@ -108,13 +116,12 @@
 							  <!-- /. tools -->
 
 							  <i class="fa fa-map-marker"></i>
-
 							  <h3 class="box-title">
 								Map
 							  </h3>
 							</div>
-							<div class="box-body" style="height:380px;" v-if="visitorbody">
-								<div style=""><Map style="margin-top:20px;"></Map></div>
+							<div style="height:380px;background:#f5f3f0;border: 0;">
+								<Map style="margin-top:20px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
 						</div>
@@ -241,24 +248,24 @@
 							<div class="box-body" v-if="progressbody" style="height:380px">
 								<!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 								<ul class="todo-list">
-									<li v-for="item in todo">
+									<li v-for="item in todo" :style="'height:'+ ((86500/screenheight))+'px'">
 										<!-- todo text -->
 										<span class="text">项目：{{item.pro}}</span>
 										<!-- Emphasis label -->
 										<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										<!-- General tools such as edit or delete-->
-										<div class="tools">
+<!-- 										<div class="tools">
 											<i class="fa fa-edit"></i>
 											<i class="fa fa-trash-o"></i>
-										</div>
+										</div> -->
 										<div>问题描述：{{item.description}}</div>
-										<Col span='23'>
+										<Col span='22'>
 											<div class="progress horizontal active">
 												<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
 												</div>
 											</div>
 										</Col>
-										<Col span='1' style="text-align:right;color:#878787;">{{item.progress}}</Col>
+										<Col span='2' style="text-align:right;color:#878787;">{{item.progress}}</Col>
 									</li>
 								</ul>
 							</div>
@@ -268,7 +275,7 @@
 						</Col>
 						<Col span='6' id="emailwidth">
 						<!-- quick email widget -->
-						<div class="box box-info" >
+						<div class="box box-info" v-if="email">
 							<div class="box-header">
 								<i class="fa fa-envelope"></i>
 
@@ -286,26 +293,31 @@
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',4)"></Card>
 										</div>
 									</div>
-									<button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
-										<i class="fa fa-times"></i></button>
+									<button type="button" class="btn bg-teal btn-sm" @click="emailbody=!emailbody">
+										<i class="fa fa-minus" v-if="emailbody"></i>
+										<i class="fa fa-plus" v-if="!emailbody"></i>
+									</button>
+									<button type="button" class="btn bg-teal btn-sm" @click="email=false"><i class="fa fa-times"></i>
+									</button>
 								</div>
 								<!-- /. tools -->
 							</div>
-							<div class="box-body" style="height:318px">
+							<div class="box-body" style="height:321px" v-if="emailbody">
 								<form action="#" method="post">
 									<div class="form-group">
-										<input type="email" class="form-control" name="emailto" placeholder="Email to:">
+										<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId">
 									</div>
 									<div class="form-group">
-										<input type="text" class="form-control" name="subject" placeholder="Subject">
+										<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title">
 									</div>
 									<div>
-										<textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+										<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
 									</div>
 								</form>
 							</div>
-							<div class="box-footer clearfix">
-								<button type="button" class="pull-right btn btn-default" id="sendEmail">Send
+							<div class="box-footer clearfix" v-if="emailbody">
+								
+								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">Send
 									<i class="fa fa-arrow-circle-right"></i></button>
 							</div>
 						</div>
@@ -315,7 +327,7 @@
 					<!-- /.Left col -->
 					<!-- right col (We are only adding the ID to make the widgets sortable)-->
 						<!-- solid sales graph -->
-						<div class="box box-solid bg-teal-gradient" v-if="chart">
+						<div class="box box-info" v-if="chart">
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
@@ -333,7 +345,7 @@
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
 										</div>
 									</div>
-									<button type="button" class="btn bg-teal btn-sm" @click="chartbody=!chartbody">
+									<button type="button" class="btn bg-teal btn-sm" @click="chartbody=!chartbody;OrderCharts();areafault();">
 										<i class="fa fa-minus" v-if="chartbody"></i>
 										<i class="fa fa-plus" v-if="!chartbody"></i>
 									</button>
@@ -348,8 +360,8 @@
 											<Col span='12' style="font-size: large;">今年设备故障数量</Col>
 											<Col span='1'> <div style="height:20px;width:20px;background-color:#dcdcdc;" @click="fault=!fault;areafault()"></div></Col>
 											<Col span='4'> 
-											<div style="color:#888888" @click="fault=!fault;areafault()" v-if="!fault">故障设备数量</div>
-											<div style="color:#000000" @click="fault=!fault;areafault()" v-if="fault">故障设备数量</div>
+											<div style="color:#888888" @click="fault=!fault;areafault()" v-if="!fault">新添故障设备</div>
+											<div style="color:#000000" @click="fault=!fault;areafault()" v-if="fault">新添故障设备</div>
 											</Col>
 											<Col span='1'> <div style="height:20px;width:20px;background-color:#3c8cbc;" @click="fix=!fix;areafault()"></div> </Col>
 											<Col span='4'> 
@@ -366,115 +378,70 @@
 											<div id="test1" style="height:300px;width:100%"> </div>
 										</Card>
 									</swiper-slide>
-									<swiper-slide>
-										<div class="chart">
-											<canvas id="barChart" style="height:250px"></canvas>
-										</div>
-									</swiper-slide>
-									<swiper-slide>
-										<div class="chart">
-											<canvas id="pieChart" style="height:250px"></canvas>
-										</div>
-									</swiper-slide>
+
 								</swiper>
 							</div>
 
 						</div>
 						<!-- /.box -->
 						</Col>
-						<Col span='6' id="calenderwidth">
-						<!-- Calendar -->
-						<div class="box box-solid bg-green-gradient">
-							<div class="box-header">
-								<i class="fa fa-calendar"></i>
-
-								<h3 class="box-title">Calendar</h3>
-								<!-- tools box -->
-								<div class="pull-right box-tools">
-									<!-- button with a dropdown -->
-									<div class="btn-group" style="margin-right: 5px;">
-										<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('calenderwidth')">
-											<i class="fa fa-bars"></i></button>
-										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('calenderwidth')" @click.native="widthblock3('calenderwidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('calenderwidth')" @click.native="widthblock3('calenderwidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('calenderwidth')" @click.native="widthblock3('calenderwidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('calenderwidth')" @click.native="widthblock3('calenderwidth',4)"></Card>
+						<Col span='6' id="chartwidth2">
+						<!-- </section> -->
+						<!-- /.Left col -->
+						<!-- right col (We are only adding the ID to make the widgets sortable)-->
+							<!-- solid sales graph -->
+							<div class="box box-success" v-if="chart2">
+								<div class="box-header">
+									<i class="fa fa-th"></i>
+						
+									<h3 class="box-title">用户组成</h3>
+									
+									<div class="box-tools pull-right">
+										<div class="btn-group" style="margin-right: 5px;">
+											<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
+												<i class="fa fa-bars"></i></button>
+											<div class="dropdown-menu pull-right" role="menu">
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',1);chartwidth()"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',2);chartwidth()"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',3);chartwidth()"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',4);chartwidth()"></Card>
+											</div>
 										</div>
+										<button type="button" class="btn btn-success btn-sm" @click="chartbody2=!chartbody2;MemberCharts();">
+											<i class="fa fa-minus" v-if="chartbody2"></i>
+											<i class="fa fa-plus" v-if="!chartbody2"></i>
+										</button>
+										<button type="button" class="btn btn-success btn-sm" @click="chart2=false"><i class="fa fa-times"></i>
+										</button>
 									</div>
-									<button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
-									</button>
 								</div>
-								<!-- /. tools -->
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body no-padding" style="height:310px">
-								<!--The calendar -->
-								<div id="calendar" style="width: 100%"></div>
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer text-black">
-								<div class="row">
-									<div class="col-sm-6">
-										<!-- Progress bars -->
-										<div class="clearfix">
-											<span class="pull-left">Task #1</span>
-											<small class="pull-right">90%</small>
-										</div>
-										<div class="progress xs">
-											<div class="progress-bar progress-bar-green" style="width: 90%;"></div>
-										</div>
+								<div class="box-body border-radius-none" v-if="chartbody2" style="height:380px">
+									<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
 
-										<div class="clearfix">
-											<span class="pull-left">Task #2</span>
-											<small class="pull-right">70%</small>
-										</div>
-										<div class="progress xs">
-											<div class="progress-bar progress-bar-green" style="width: 70%;"></div>
-										</div>
-									</div>
-									<!-- /.col -->
-									<div class="col-sm-6">
-										<div class="clearfix">
-											<span class="pull-left">Task #3</span>
-											<small class="pull-right">60%</small>
-										</div>
-										<div class="progress xs">
-											<div class="progress-bar progress-bar-green" style="width: 60%;"></div>
-										</div>
-
-										<div class="clearfix">
-											<span class="pull-left">Task #4</span>
-											<small class="pull-right">40%</small>
-										</div>
-										<div class="progress xs">
-											<div class="progress-bar progress-bar-green" style="width: 40%;"></div>
-										</div>
-									</div>
-									<!-- /.col -->
+										<swiper-slide>
+											<Card class=''>
+												<div id="test5" style="height:300px;width:100%"> </div>
+											</Card>
+										</swiper-slide>
+									</swiper>
 								</div>
-								<!-- /.row -->
+						
 							</div>
-						</div>
-						</Col>
+							<!-- /.box -->
+							</Col>
 						<!-- /.box -->
 						</draggable>
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
 			</section>
-			<Poptip trigger="hover" placement="left" style="margin-top:10px;margin-left:1600px;" width="50">
-				<div style="cursor: pointer;color:#0000FF">显示内容</div>
-				<div slot="content" style="width:100px;height:100px">
-					<div><checkbox v-model="visitor">Map</checkbox></div>
-					<div><checkbox v-model="chat">客户意见反馈</checkbox></div>
-					<div><checkbox v-model="progress">故障处理进程</checkbox></div>
-					<div><checkbox v-model="chart">业务图表</checkbox></div>
+			<Col span='23'>&nbsp;</Col>
+			<Col span='1'>
+				<div>
+					<span style="cursor: pointer;color:blue" class="fa fa-eye fa-2x" @click="value1=true"></span>
 				</div>
-			</Poptip>
+			</Col>
 	</div>
 </template>
 <script>
@@ -491,6 +458,8 @@
 		},
 		data() {
 			return {
+				btn:true,
+				value1:false,
 				faultdevice: 0,
 				size1: '#ffffff',
 				size2: '#ffffff',
@@ -501,10 +470,14 @@
 				visitor: true,
 				chat: true,
 				chart: true,
+				chart2: true,
+				email: true,
 				progress: true,
 				visitorbody: true,
 				chatbody: true,
 				chartbody: true,
+				chartbody2: true,
+				emailbody: true,
 				progressbody: true,
 				shine:true,
 // 				todo:[{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'2 mins',progress:"40%"},
@@ -539,6 +512,25 @@
 				LastWeekend:'',
 				NowWeek:'',
 				NowWeekend:'',
+				screenwidth:'',
+				screenheight:'',
+				options: {
+					toId:'',
+					fromId:window.localStorage.getItem('id'),
+					title:'',
+					content:'',
+					info:'',
+					type:0,
+					// createTime:'123',
+					isSettled:false,
+				},
+				chartrepair:[],
+				chartorder:[],
+				usernum: 0,
+				emailnum: 0,
+				today: 0,
+				allevents: 0,
+				alldevice: 0,
 			}
 		},
 		mounted(){
@@ -550,9 +542,11 @@
 // 			widthblock3('progresswidth',3)
 // 			widthblock3('calenderwidth',3)
 // 			widthblock3('emailwidth',3)
-			this.OrderCharts();
+			this.chartwidth();
 		},
 		created(){
+			this.screenwidth = document.documentElement.clientWidth;
+			this.screenheight = document.documentElement.clientHeight;
 			this.getinfo();
 			this.LastWeek = this.getWeek(7)
 			this.LastWeekend = this.getWeek(1)
@@ -562,9 +556,27 @@
 // 				this.MemberCharts();
 		},
 		methods: {
+			async sent(){
+				this.btn = false 
+				let res= await this.$api.sentmessage(this.options)
+				this.btn= true
+				if (res.data.code == 0){
+					this.$Notice.success({
+						title: '成功',
+						desc: '已发送消息'
+					});
+				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '发送失败'
+					});
+				}
+			},
 			chartwidth(){
 				setTimeout(() => {
 					this.OrderCharts();
+					this.MemberCharts();
 				},200)
 			},
 			shineword(){
@@ -577,11 +589,38 @@
 				var res
 				var ech
 				this.faultdevice=0
+				this.usernum=0
+				this.emailnum=0
 				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'untreated',islast:1})
 				if (0 === res.data.code) {
-					this.faultdevice = res.data.data.totalNumber
+					this.faultdevice =this.faultdevice + res.data.data.totalNumber
 				}
-				
+				res = await this.$api.people({username: '',mobile: '',name:'',id:'',page: 1,num: 10,total: 0})
+				if (0 === res.data.code) {
+					this.usernum = res.data.data.totalNumber
+				}
+				res = await this.$api.message({num:10,page:1,done:false})
+				if (res.data.code == 0){
+				this.emailnum = res.data.data.totalNumber
+				}
+				res = await this.$api.getRepair({
+					search_info: '',page: 1,num: 4,isreg: "True",state:'treated',order_type:'',result:'',device_id:'',
+					finish_starttime:Date.parse(this.$format(new Date(), 'YYYY-MM-DD')),
+				})
+				if (res.data.code == 0){
+				this.today = res.data.data.totalNumber
+				}
+				res = await this.$api.getRepair({
+					search_info: '',page: 1,num: 4,isreg: "True",state:'untreated',order_type:'',result:'',device_id:'',
+				})
+				if (res.data.code == 0){
+				this.faultdevice =this.faultdevice + res.data.data.totalNumber
+				this.allevents=this.today+res.data.data.totalNumber
+				}
+				res = await this.$api.devices({page: 1,num: 10,isreg: ''})
+				if (res.data.code == 0){
+				this.alldevice =res.data.data.totalNumber
+				}
 				res = await this.$api.getRepair({
 					search_info: '',
 					page: 1,
@@ -632,6 +671,7 @@
 					if (val2==4) {document.getElementById(val1).className='ivu-col ivu-col-span-24'}
 			},
 			areafault(){
+				setTimeout(()=>{
 					var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 					// This will get the first returned node in the jQuery collection.
 					var areaChart       = new Chart(areaChartCanvas)
@@ -645,7 +685,7 @@
 						pointStrokeColor    : '#c1c7d1',
 						pointHighlightFill  : '#fff',
 						pointHighlightStroke: 'rgba(220,220,220,1)',
-						data                : [65, 59, 80, 81, 56, 55, 40]
+						data                : this.chartorder,
 						}
 					)}
 					if (this.fix) {datasets.push(
@@ -657,11 +697,11 @@
 						pointStrokeColor    : 'rgba(60,141,188,1)',
 						pointHighlightFill  : '#fff',
 						pointHighlightStroke: 'rgba(60,141,188,1)',
-						data                : [28, 48, 40, 19, 86, 27, 90]
+						data                : this.chartrepair,
 						}
 					)}
 					var areaChartData = {
-					labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+					labels  : ['January', 'February', 'March', 'April', 'May', 'June'],
 					datasets
 					}
 					console.log(areaChartData)
@@ -706,80 +746,47 @@
 				
 					//Create the line chart
 					areaChart.Line(areaChartData, areaChartOptions)
+					},200)
 			},
-			drawchart(){
+			async drawchart(){
 			    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 			    // This will get the first returned node in the jQuery collection.
 			    var areaChart       = new Chart(areaChartCanvas)
-			
-			    var areaChartData = {
-			      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			      datasets: [
-			        {
-			          label               : 'Electronics',
-			          fillColor           : 'rgba(210, 214, 222, 1)',
-			          strokeColor         : 'rgba(210, 214, 222, 1)',
-			          pointColor          : 'rgba(210, 214, 222, 1)',
-			          pointStrokeColor    : '#c1c7d1',
-			          pointHighlightFill  : '#fff',
-			          pointHighlightStroke: 'rgba(220,220,220,1)',
-			          data                : [65, 59, 80, 81, 56, 55, 40]
-			        },
-			        {
-			          label               : 'Digital Goods',
-			          fillColor           : 'rgba(60,141,188,0.9)',
-			          strokeColor         : 'rgba(60,141,188,0.8)',
-			          pointColor          : '#3b8bba',
-			          pointStrokeColor    : 'rgba(60,141,188,1)',
-			          pointHighlightFill  : '#fff',
-			          pointHighlightStroke: 'rgba(60,141,188,1)',
-			          data                : [28, 48, 40, 19, 86, 27, 90]
-			        }
-			      ]
-			    }
-			
-			    var areaChartOptions = {
-			      //Boolean - If we should show the scale at all
-			      showScale               : true,
-			      //Boolean - Whether grid lines are shown across the chart
-			      scaleShowGridLines      : true,
-			      //String - Colour of the grid lines
-			      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-			      //Number - Width of the grid lines
-			      scaleGridLineWidth      : 1,
-			      //Boolean - Whether to show horizontal lines (except X axis)
-			      scaleShowHorizontalLines: true,
-			      //Boolean - Whether to show vertical lines (except Y axis)
-			      scaleShowVerticalLines  : true,
-			      //Boolean - Whether the line is curved between points
-			      bezierCurve             : true,
-			      //Number - Tension of the bezier curve between points
-			      bezierCurveTension      : 0.3,
-			      //Boolean - Whether to show a dot for each point
-			      pointDot                : true,
-			      //Number - Radius of each point dot in pixels
-			      pointDotRadius          : 4,
-			      //Number - Pixel width of point dot stroke
-			      pointDotStrokeWidth     : 1,
-			      //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-			      pointHitDetectionRadius : 20,
-			      //Boolean - Whether to show a stroke for datasets
-			      datasetStroke           : true,
-			      //Number - Pixel width of dataset stroke
-			      datasetStrokeWidth      : 2,
-			      //Boolean - Whether to fill the dataset with a color
-			      datasetFill             : true,
-			      //String - A legend template
-			      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-			      //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-			      maintainAspectRatio     : true,
-			      //Boolean - whether to make the chart responsive to window resizing
-			      responsive              : true
-			    }
-			
-			    //Create the line chart
-			    areaChart.Line(areaChartData, areaChartOptions)
-
+				var rep=''
+				var ord=''
+				this.chartrepair=[]
+				this.chartorder=[]
+				var time=this.$format(new Date(), 'YYYY')
+				for (var i=0;i<6;i++){
+				rep = await this.$api.getRepair({
+					search_info: '',
+					page: 1,
+					num: 10,
+					isreg: "True",
+					state:'treated',
+					order_type:'',
+					result:'',
+					device_id:'',
+					finish_starttime:Date.parse(time+'-'+(i+1).toString()),
+					finish_endtime:Date.parse(time+'-'+(i+2).toString()),
+				})
+				this.chartrepair.push(rep.data.data.totalNumber)
+				}
+				for (var i=0;i<6;i++){
+				ord = await this.$api.fault({
+					search_info: '',
+					page: 1,
+					num: 10,
+					isreg: "True",
+					order_type:'',
+					result:'',
+					device_id:'',
+					starttime:Date.parse(time+'-'+(i+1).toString()),
+					endtime:Date.parse(time+'-'+(i+2).toString()),
+				})
+				this.chartorder.push(ord.data.data.totalNumber)
+				}
+			    this.areafault()
 			},
 			getWeek(n){
 				var now = new Date()
@@ -807,44 +814,7 @@
 				var s=year+"/"+(month<10?('0'+month):month)+"/"+(date<10?('0'+date):date);
 				return s
 			},
-			MemberCharts() {
-				let test1 = this.$echarts.init(document.getElementById('test5'))
-				test1.setOption({
-					title: {
-						text: '用户比例',
-						subtext: '数量',
-						left: 'center',
-					},
-					tooltip: {
-						trigger: 'item',
-						formatter: "{a} <br/>{b} : {c} ({d}%)"
-					},
-					legend: {
-						bottom: 10,
-						left: 'center',
-						data: ['游客', '普通用户','管理员','组长']
-					},
-					series : [{
-						type: 'pie',
-						radius : '65%',
-						center: ['50%', '50%'],
-						selectedMode: 'single',
-						data:[
-							{value:148, name: '游客'},
-							{value:235, name: '普通用户'},
-							{value:5, name: '管理员'},
-							{value:44, name: '组长'},
-						],
-						itemStyle: {
-							emphasis: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-							}
-						}
-					}]
-				})
-			},
+
 			DeviceCharts() {
 				let test1 = this.$echarts.init(document.getElementById('test3'))
 				let test2 = this.$echarts.init(document.getElementById('test4'))
@@ -966,7 +936,49 @@
 					}]
 				})
 			},
+			MemberCharts() {
+				setTimeout(()=>{
+				let test1 = this.$echarts.init(document.getElementById('test5'))
+				test1.resize()
+				test1.setOption({
+					title: {
+						text: '用户比例',
+						subtext: '数量',
+						left: 'center',
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+					legend: {
+						bottom: 10,
+						left: 'center',
+						data: ['游客', '普通用户','管理员','组长']
+					},
+					series : [{
+						type: 'pie',
+						radius : '65%',
+						center: ['50%', '50%'],
+						selectedMode: 'single',
+						data:[
+							{value:148, name: '游客'},
+							{value:235, name: '普通用户'},
+							{value:5, name: '管理员'},
+							{value:44, name: '组长'},
+						],
+						itemStyle: {
+							emphasis: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}]
+				})
+				},200)
+			},
 			OrderCharts() {
+				setTimeout(()=>{
 				var test1 = echarts.init(document.getElementById('test1'))
 				test1.resize()
 				test1.setOption({
@@ -1011,6 +1023,7 @@
 						},
 					}]
 				})
+				},200)
 // 				test2.setOption({
 // 					title: {
 // 						text: '故障数量对比',

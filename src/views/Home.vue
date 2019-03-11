@@ -164,10 +164,10 @@
 				active: this.$route.path.split('/')[1],
 				menu: [
 					{
-						name: 'index',
-						icon: 'fa fa-cube',
-						label: '系统首页',
-					},{
+// 						name: 'index',
+// 						icon: 'fa fa-cube',
+// 						label: '系统首页',
+// 					},{
 						name: 'dashboard',
 						icon: 'fa fa-dashboard',
 						label: 'Dashboard',
