@@ -88,7 +88,7 @@
 						</div> -->
 					</Row>
 				</Header>
-				<div @click="full=false" v-if="full" style="text-align:right;height:10px;">
+				<div @click="full=false" v-if="full" style="text-align:right;height:15px;">
 					&nbsp;
 					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;"></icon> &nbsp;&nbsp;&nbsp;&nbsp;
 				</div>

@@ -258,7 +258,7 @@
 											<i class="fa fa-edit"></i>
 											<i class="fa fa-trash-o"></i>
 										</div> -->
-										<div>问题描述：{{item.description}}</div>
+										<div>故障代码：{{item.description}}</div>
 										<Col span='22'>
 											<div class="progress horizontal active">
 												<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
@@ -622,12 +622,12 @@
 				if (res.data.code == 0){
 				this.alldevice =res.data.data.totalNumber
 				}
-				res = await this.$api.getRepair({
+				res = await this.$api.fault({
 					search_info: '',
 					page: 1,
 					num: 4,
 					isreg: "True",
-					state:'untreated',
+					state:'',
 					order_type:'',
 					result:'',
 					device_id:'',
@@ -640,15 +640,15 @@
 						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
 						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-						var t=Date.parse(new Date())-parseInt(res.data.data.list[i].create_time)
-						if(t>1000){res.data.data.list[i].create_time=parseInt(t/1000).toString()+" secs"}
-						if(t>60000){res.data.data.list[i].create_time=parseInt(t/60000).toString()+" mins"}
-						if(t>3600000){res.data.data.list[i].create_time=parseInt(t/3600000).toString()+" hours"}
-						if(t>86400000){res.data.data.list[i].create_time=parseInt(t/86400000).toString()+" days"}
+						var t=Date.parse(new Date())-parseInt(res.data.data.list[i].createTime)
+						if(t>1000){res.data.data.list[i].createTime=parseInt(t/1000).toString()+" secs"}
+						if(t>60000){res.data.data.list[i].createTime=parseInt(t/60000).toString()+" mins"}
+						if(t>3600000){res.data.data.list[i].createTime=parseInt(t/3600000).toString()+" hours"}
+						if(t>86400000){res.data.data.list[i].createTime=parseInt(t/86400000).toString()+" days"}
 					}
 					this.data = res.data.data.list
 					this.data.forEach(item=>{
-						this.todo.push({pro:item.device_name,description:"暂无描述",time:item.create_time,progress:"50%"})
+						this.todo.push({pro:item.device_name,description: 'E'+item.code.toString(16),time:item.createTime,progress:"50%"})
 					})
 				}
 			},

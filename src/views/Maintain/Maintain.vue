@@ -44,13 +44,13 @@
 			</Form>
 		</div>
 		<el-dialog title="故障提示" :visible.sync="ctrl" width="30%">
-			<img id='c' width="100%" src=''></img>
+			<img id='c' width="100%" src='' onerror="src='../../../static/miss.png'"></img>
 			<span slot="footer" class="dialog-footer">
 				<el-button type="primary" @click="ctrl = false">确 定</el-button>
 			</span>
 		</el-dialog>
 		<el-dialog title="故障提示" :visible.sync="door" width="30%">
-			<img id='d' width="100%" src=''></img>
+			<img id='d' width="100%" src='' onerror="src='../../../static/miss.png'"></img>
 			<span slot="footer" class="dialog-footer">
 				<el-button type="primary" @click="door = false">确 定</el-button>
 			</span>
