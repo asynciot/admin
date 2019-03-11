@@ -23,6 +23,8 @@ div.layout-content-main
 						Option(key="4" label="长期离线" value="longoffline")
 				Col(span=4)
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+				Col(span=3)
+					Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
 				Col(span=2)
 					Button.mr-10(type="primary",icon="search",@click="search()" style="margin-left:1px")|搜索
 				Col(span=1)
@@ -88,6 +90,7 @@ div.layout-content-main
 					device_type:"",
 					tagcolor:"",
 					register: "registered",	
+					install_addr:'',
 				},
 				show:{
 					state: 'online',

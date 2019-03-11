@@ -28,12 +28,16 @@
 					<AutoComplete class="handle-input mr10" v-model="options.search_info" :data="menu" @on-search="handleSearch1"
 					 placeholder="关键词" style="width:100%;" id="serch1"></AutoComplete>
 				</Col>
+				<Col span=2>
+					<Input v-model="options.install_addr"  placeholder="安装地址" max=10></Input>
+				</Col>
+					
 				<Col span='2'>
-				<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
+					<Button class="mr-10" type="primary" icon="search" @click="search()">搜索</Button>
 				</Col>
 				<Col span='1'>
-				<Button class="mr-10" type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
-				<Button class="mr-10" type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag'></Button>
+					<Button class="mr-10" type="default" icon="plus" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
+					<Button class="mr-10" type="default" icon="minus" @click="showtag=!showtag" shape="circle" v-if='showtag'></Button>
 				</Col>
 				<Col span='3' v-if='showtag'>
 				<Col span='4'>
@@ -96,6 +100,7 @@
 					total: 0,
 					isreg: '',
 					tagcolor: '',
+					install_addr:'',
 				},
 				searchkey: '搜索类型',
 				loading: false,

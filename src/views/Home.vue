@@ -42,14 +42,15 @@
 				<Header  class="m-header" v-if="!full">
 					<Row>
 						<Col span="19">
-							<Col span="22">
+							&nbsp;
+<!-- 							<Col span="22">
 								<Badge dot style="float: right;margin-top: 25px;"></Badge>
 								<span class="fa fa-bell-o" style="color:white;float: right;padding-top: 25px;" />
 							</Col>
 							<Col span="1">
 								<Badge dot style="float: right;margin-top: 25px;"></Badge>
 								<span class="fa fa-envelope-o" v-on:click="emil" style="color:white;float: right;padding-top: 25px;cursor: pointer;" />
-							</Col>
+							</Col> -->
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
@@ -192,10 +193,11 @@
 // 								name: 'report',
 // 								label: '报表分析',
 // 							},
+// 							{
+// 								name: 'eventreport',
+// 								label: '事件报表分析',
+// 							},
 							{
-								name: 'eventreport',
-								label: '事件报表分析',
-							},{
 								name: 'orderreport',
 								label: '故障报表分析',
 							},]
@@ -611,5 +613,8 @@
 		vertical-align: middle;
 		text-align: center;
 		width: 100%;
+	}
+	Dropdown:hover Button{
+		background-color: white;
 	}
 </style>
