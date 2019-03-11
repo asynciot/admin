@@ -10,10 +10,10 @@ div.account
 				Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 					Form-item(prop="username")
 						Input(type="text",v-model="form.username",placeholder="用户名")
-							Icon(type="ios-person-outline",size="20",slot="prepend")
+							span(class="fa fa-user-o",size="20",slot="prepend")
 					Form-item(prop="password")
 						Input(type="password",v-model="form.password",placeholder="密码",@on-keyup.enter="login('form')")
-							Icon(type="ios-locked-outline",size="18",slot="prepend")
+							span(class="fa fa-lock" ,size="20",slot="prepend")
 					Form-item
 						Row(:gutter="20")
 							Col(span=12)
