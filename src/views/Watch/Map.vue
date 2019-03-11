@@ -46,7 +46,7 @@ div.layout-content-main()
 		Col.map(span="20")
 			div#map
 		Col(span="4")
-			div.dv()
+			div.dv(id='list')
 				Poptip(v-for="device in devices" ,:data="devices" trigger="hover" placement="left" v-bind:key="devices.id" word-wrap="true")
 					Card.text(v-on:click.native="cardClick(device.cell_lat,device.cell_lon)" style="cursor: pointer;")
 						Row(:gutter="10")
@@ -168,6 +168,7 @@ div.layout-content-main()
 		mounted() {			
 			this.initMap()
 			this.getList()
+			document.getElementById('list').style.height = (Number(document.documentElement.clientHeight)/1-200) + 'px'
 		},
 		methods: {
 			async handleSearch1 () {
