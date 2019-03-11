@@ -273,55 +273,7 @@
 						</div>
 						<!-- /.box -->
 						</Col>
-						<Col span='6' id="emailwidth">
-						<!-- quick email widget -->
-						<div class="box box-info" v-if="email">
-							<div class="box-header">
-								<i class="fa fa-envelope"></i>
-
-								<h3 class="box-title">Quick Email</h3>
-								<!-- tools box -->
-								<div class="pull-right box-tools">
-									<div class="btn-group" style="margin-right: 5px;">
-										<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('emailwidth')">
-											<i class="fa fa-bars"></i></button>
-										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',4)"></Card>
-										</div>
-									</div>
-									<button type="button" class="btn bg-teal btn-sm" @click="emailbody=!emailbody">
-										<i class="fa fa-minus" v-if="emailbody"></i>
-										<i class="fa fa-plus" v-if="!emailbody"></i>
-									</button>
-									<button type="button" class="btn bg-teal btn-sm" @click="email=false"><i class="fa fa-times"></i>
-									</button>
-								</div>
-								<!-- /. tools -->
-							</div>
-							<div class="box-body" style="height:321px" v-if="emailbody">
-								<form action="#" method="post">
-									<div class="form-group">
-										<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId">
-									</div>
-									<div class="form-group">
-										<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title">
-									</div>
-									<div>
-										<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-									</div>
-								</form>
-							</div>
-							<div class="box-footer clearfix" v-if="emailbody">
-								
-								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">Send
-									<i class="fa fa-arrow-circle-right"></i></button>
-							</div>
-						</div>
-						</Col>
+						
 						<Col span='12' id="chartwidth">
 					<!-- </section> -->
 					<!-- /.Left col -->
@@ -431,6 +383,55 @@
 							<!-- /.box -->
 							</Col>
 						<!-- /.box -->
+						<Col span='6' id="emailwidth">
+						<!-- quick email widget -->
+						<div class="box box-info" v-if="email">
+							<div class="box-header">
+								<i class="fa fa-envelope"></i>
+						
+								<h3 class="box-title">Quick Email</h3>
+								<!-- tools box -->
+								<div class="pull-right box-tools">
+									<div class="btn-group" style="margin-right: 5px;">
+										<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('emailwidth')">
+											<i class="fa fa-bars"></i></button>
+										<div class="dropdown-menu pull-right" role="menu">
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',4)"></Card>
+										</div>
+									</div>
+									<button type="button" class="btn bg-teal btn-sm" @click="emailbody=!emailbody">
+										<i class="fa fa-minus" v-if="emailbody"></i>
+										<i class="fa fa-plus" v-if="!emailbody"></i>
+									</button>
+									<button type="button" class="btn bg-teal btn-sm" @click="email=false"><i class="fa fa-times"></i>
+									</button>
+								</div>
+								<!-- /. tools -->
+							</div>
+							<div class="box-body" style="height:321px" v-if="emailbody">
+								<form action="#" method="post">
+									<div class="form-group">
+										<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId">
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title">
+									</div>
+									<div>
+										<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+									</div>
+								</form>
+							</div>
+							<div class="box-footer clearfix" v-if="emailbody">
+								
+								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">Send
+									<i class="fa fa-arrow-circle-right"></i></button>
+							</div>
+						</div>
+						</Col>
 						</draggable>
 					<!-- right col -->
 				</Row>
