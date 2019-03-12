@@ -54,7 +54,7 @@
 							<div class="inner" style="text-align:center;">
 								<h3>{{today}}/{{allevents}}</h3>
 
-								<p>今日完成事件 9%</p>
+								<p>今日完成事件 {{parseInt(100*today/allevents)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
@@ -71,7 +71,7 @@
 							<div class="inner" style="text-align:center;">
 								<h3 v-if="shine">{{faultdevice}}/{{alldevice}}</h3>
 								<h3 style="color:#FF2C00" v-if="!shine"></h3>
-								<p>故障设备数</p>
+								<p>故障设备数 {{parseInt(100*faultdevice/alldevice)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
@@ -117,10 +117,10 @@
 
 							  <i class="fa fa-map-marker"></i>
 							  <h3 class="box-title">
-								Map
+								设备定位
 							  </h3>
 							</div>
-							<div style="height:380px;background:#f5f3f0;border: 0;">
+							<div style="height:380px;background:#f5f3f0;border: 0;" v-if="visitorbody">
 								<Map style="margin-top:20px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
@@ -321,16 +321,18 @@
 											<div style="color:#000000" @click="fix=!fix;areafault()" v-if="fix">修复设备数量</div>
 											</Col>
 										</div>
-										<div class="chart">
+										<div class="chart" style="width:95%">
 											<canvas id="areaChart" style="height:250px"></canvas>
 										</div>
+										<div class="swiper-button-next"></div>
 									</swiper-slide>
+									
 									<swiper-slide>
+										<div class="swiper-button-prev"></div>
 										<Card class=''>
 											<div id="test1" style="height:300px;width:100%"> </div>
 										</Card>
 									</swiper-slide>
-
 								</swiper>
 							</div>
 
@@ -389,7 +391,7 @@
 							<div class="box-header">
 								<i class="fa fa-envelope"></i>
 						
-								<h3 class="box-title">Quick Email</h3>
+								<h3 class="box-title">发送邮件</h3>
 								<!-- tools box -->
 								<div class="pull-right box-tools">
 									<div class="btn-group" style="margin-right: 5px;">
@@ -427,7 +429,7 @@
 							</div>
 							<div class="box-footer clearfix" v-if="emailbody">
 								
-								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">Send
+								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">确定
 									<i class="fa fa-arrow-circle-right"></i></button>
 							</div>
 						</div>
@@ -487,7 +489,7 @@
 // 				],
 				todo:[],
 				swiperOption:{
-					autoplay:false,
+					autoplay:true,
 					delay:10000,
 					notNextTick:true,
 					direction:'horizontal',
@@ -617,6 +619,8 @@
 				if (res.data.code == 0){
 				this.faultdevice =this.faultdevice + res.data.data.totalNumber
 				this.allevents=this.today+res.data.data.totalNumber
+				this.allevents=11
+				this.today=1
 				}
 				res = await this.$api.devices({page: 1,num: 10,isreg: ''})
 				if (res.data.code == 0){
