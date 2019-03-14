@@ -65,7 +65,7 @@
 			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
 		<Col span="24" style="text-align: center;">
-			<Page show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange"
+			<Page show-elevator :total="total" :page-size="options.num" :current="options.page" @on-change="pageChange"
 			 show-total></Page>
 		</Col>
 	</div>
@@ -74,11 +74,6 @@
 <script>
 	export default {
 		data() {
-			const state = {
-				0: '正常',
-				1: '烧录',
-				2: '清除',
-			};
 			return {
 				showtag: false,
 				show: {
@@ -97,11 +92,11 @@
 					register: 'unregistered',
 					page: 1,
 					num: 10,
-					total: 0,
 					isreg: '',
 					tagcolor: '',
 					install_addr:'',
 				},
+				total:0,
 				searchkey: '搜索类型',
 				loading: false,
 				columns: [
@@ -126,9 +121,9 @@
 							// 						if (namecolor[0] == 'gray') color='#FF8C00'
 							// 						if (namecolor[0] == 'perple') color='#7D26CD'
 							// 					}
-							if (params.row.cell_address == null) {
+							if (params.row.install_addr == null) {
 								type = 'ios-help';
-								reg = '设备没有地址;';
+								reg = '设备没有输入安装地址;';
 							}
 							if (params.row.device_name == null) {
 								type = 'ios-help';
@@ -138,7 +133,7 @@
 								type = 'ios-help';
 								reg = reg + '设备缺失IMEI;';
 							}
-							if (params.row.rssi <= 1) {
+							if (params.row.rssi <= 5) {
 								type = 'ios-help';
 								reg = reg + '信号太弱';
 							}
@@ -301,21 +296,6 @@
 										},
 									}
 								}, '查看/编辑'),
-								//                    h('Button', {
-								//                      props: {
-								//                        type: 'primary',
-								//                        size: "small",
-								//                        disabled: ((params.row.register != '注册')||(params.row.commond != 'ok')),
-								//                      },
-								//                      style: {
-								//                        marginRight: '10px',
-								//                      },
-								//                      on: {
-								//                        click: () => {  
-								// 							this.burn(params.row)
-								//                        }
-								//                      }
-								//                    }, params.row.register),
 							])
 						}
 					}
@@ -367,7 +347,6 @@
 				} else {
 					this.options.state = this.show.state
 				}
-
 				let res = await this.$api.devices(this.options)
 				let fol = await this.$api.follow({
 					num: 100,
@@ -379,7 +358,6 @@
 				}
 				if (res.data.code === 0) {
 					this.data = res.data.data.list
-
 					this.data.forEach(item => {
 						if (item.register != null) {
 							if (item.register == 'registered') {
@@ -402,8 +380,7 @@
 							}
 						}
 					})
-					this.options.total = res.data.data.totalNumber
-
+					this.total = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
 						title: '错误',
@@ -411,68 +388,9 @@
 					});
 				}
 			},
-
 			async search() {
 				this.options.page = 1
 				this.getList()
-			},
-			async burn(item) {
-				this.$Modal.confirm({
-					title: '请确认要注册的设备',
-					content: item.device_name,
-					onOk: () => {
-						this.toburn(item)
-					},
-					onCancel: () => {}
-				})
-			},
-			async toburn(item) {
-				item.commond = "contract"
-				item.register = "注册中"
-				let res = await this.$api.regdevices({
-					id: item.id,
-					IMSI: item.device_IMSI,
-					IMEI: item.IMEI,
-					op: "register"
-				})
-				if (res.data.code === 0) {
-					this.$Notice.success({
-						title: '成功',
-						desc: '开始注册！稍后在运维界面显示该设备'
-					});
-				} else {
-					item.commond = "ok"
-					item.register = "注册"
-					this.$Notice.error({
-						title: '错误',
-						desc: '注册失败'
-					});
-				}
-			},
-			refresh() {
-				setTimeout(() => {
-					this.getList()
-					if (this.refreshNum > 0) {
-						this.refresh()
-						this.refreshNum--
-					}
-				}, 5000)
-			},
-
-			async clear(item) {
-				let res = await this.$api.logoutdevices(item.id)
-				if (res.data.code === 0) {
-					this.getList()
-					this.$Notice.success({
-						title: '成功',
-						desc: '开始清除'
-					});
-				} else {
-					this.$Notice.error({
-						title: '错误',
-						desc: '开始清除失败'
-					});
-				}
 			},
 			Onchange: function(val) {
 				this.$router.push({
