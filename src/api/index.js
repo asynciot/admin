@@ -29,6 +29,12 @@ export default {
 	messagecount:(data) => {
 		return CommonApi.query(Object.assign({key1:'message',key2:'count'}, data))
 	},
+	chat:(data) => {
+		return CommonApi.query(Object.assign({key1:'chat'}, data))
+	},
+	sentchat:(data) => {
+		return CommonApi.save({key1:'chat'}, data)
+	},
 	sentMessage:(data) => {
 		return CommonApi.save({key1:'sms',key2:data}, data)
 	},

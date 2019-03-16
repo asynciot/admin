@@ -93,6 +93,7 @@ export default {
             this.loading = false;
 				window.localStorage.setItem('username',res.data.account.username)
 				window.localStorage.setItem('id',res.data.account.id)
+				window.localStorage.setItem('mobile',res.data.account.mobile),
 				// console.log(res.data.account.username)
 				window.localStorage.setItem('rem',this.rem)
 				window.localStorage.setItem('u',this.form.username)

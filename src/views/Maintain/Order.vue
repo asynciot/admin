@@ -30,6 +30,7 @@
 			return{
 				username:window.localStorage.getItem('username'),
 				id:window.localStorage.getItem('id'),
+				mobile:window.localStorage.getItem('mobile'),
 				fault:[0,0,0,0,0,0,0,0],
 				form:{
 					type:'1',
@@ -104,7 +105,7 @@
 				else{}
 			},
 			async order(){
-				let res = await this.$api.order({order_id:this.list.id})
+				let res = await this.$api.order({order_id:this.list.id,mobile:this.mobile})
 				if (res.data.code == 0) {
 					this.$Notice.success({
 					title: '成功',
