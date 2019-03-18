@@ -1,12 +1,12 @@
 <template>
 	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;">
 		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
-			<div><checkbox v-model="visitor">Map</checkbox></div>
+			<div><checkbox v-model="visitor">设备定位</checkbox></div>
 			<div><checkbox v-model="chat">客户意见反馈</checkbox></div>
 			<div><checkbox v-model="progress">故障处理进程</checkbox></div>
 			<div><checkbox v-model="chart">业务图表</checkbox></div>
 			<div><checkbox v-model="chart2">用户组成</checkbox></div>
-			<div><checkbox v-model="email">Quick Email</checkbox></div>
+			<div><checkbox v-model="email">发送邮件</checkbox></div>
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
@@ -159,19 +159,39 @@
 							</div>
 							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:321px">
 								<!-- chat item -->
-								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px">
-								<div class="item" v-for="item in chatlist">
+								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%" >
+								<div class="item" v-for="item in chatlist" >
 									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
 									<p class="message">
 										<a href="#" class="name">
-											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-											{{item.username}}
+											<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
+											<div style="font-size: large;">{{item.username}}</div>
+											<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
 										</a>
-										NSFC01-01A型门机变频器关门有撞击声。
+										<div style="display: inline-block;width:95%">
+										<Col span='11'>&nbsp;</Col>
+										<Col span='4'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
+										<Col span='5'>
+											<Button type="text" @click="item.showlist=true" v-if="!item.showlist">共{{item.followlist.length}}条回复</Button>
+											<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
+										</Col>
+										<Col span='4'>
+											<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id">回复本条</Button>
+											<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
+										</Col>
+										</div>
 									</p>
-									<div class="attachment">
-										<h4>宋工:建议减小关门低速1、低速2。</h4>
+									<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
+										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.fromId}}</h4>
+										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">:{{follow.content}}</h4>
+										<div>
+											<Col span='18'>&nbsp;</Col>
+											<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.createTime}}</Col>
+										</div>
 									</div>
+<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
+										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word; ">宋工:建议减小关门低速1、低速2。</h4>
+									</div> -->
 									<!-- /.attachment -->
 								</div>
 								</Scroll>
@@ -187,10 +207,13 @@
 							<div class="box-footer clearfix" v-if="chatbody">
 								<form action="#" method="post">
 									<div class="input-group">
-									  <input type="text" name="message" placeholder="说点什么吧 ..." class="form-control" v-model="chatoptions.content">
-									  <span class="input-group-btn">
-											<button type="button" class="btn btn-success btn-flat" @click="sentchat()">留言</button>
-										  </span>
+										<Col span='20'><textarea type="text" name="message" style="height:38px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
+										<Col span='4'>
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-success btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1">回复</button>
+											<button type="button" class="btn btn-success btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1">留言</button>
+										</span>
+										</Col>
 									</div>
 								  </form>
 							</div>
@@ -511,7 +534,7 @@
 					isSettled:false,
 				},
 				chatoptions: {
-					fromId:window.localStorage.getItem('id'),
+					fromId:window.localStorage.getItem('username'),
 					title:'1',
 					content:'',
 					info:'1',
@@ -527,6 +550,8 @@
 				alldevice: 0,
 				onlinedevice:0,
 				chatpage:0,
+				chatbottom:false,
+				reply:'请留下您的疑问和建议 ...',
 			}
 		},
 		mounted(){
@@ -554,7 +579,7 @@
 		},
 		methods: {
 			handleReachBottom(){
-				
+				this.getchat()
 			},
 			async sent(){
 				this.btn = false 
@@ -578,6 +603,9 @@
 				let res= await this.$api.sentchat(this.chatoptions)
 				this.btn= true
 				if (res.data.code == 0){
+					this.chatpage=0
+					this.chatlist=[]
+					this.getchat()
 					this.$Notice.success({
 						title: '成功',
 						desc: '已发送消息'
@@ -594,14 +622,29 @@
 				this.chatpage++
 				let cht = await this.$api.chat({num:5,page:this.chatpage,follow:-1})
 				if (cht.data.code == 0){
-					this.list = cht.data.data.list
+					if (cht.data.data.list.length == 0) {
+						this.$Notice.warning({
+							title: '提示',
+							desc: '已经到底了'
+						});
+					}
 					for(var i=0;i<cht.data.data.list.length;i++){
 						var followlist=[]
 						let ech = await this.$api.chat({num:100,page:1,follow:cht.data.data.list[i].id})
 						if (ech.data.code == 0){
-							followlist=ech.data.data.list[i]
+							followlist=ech.data.data.list
+							for(var j=0;j<followlist.length;j++){
+								var t=Date.parse(new Date())-followlist[j].createTime
+								if(t<86400000){followlist[j].createTime=this.$format(followlist[j].createTime,'HH:mm')}
+								else if(t<31536000000){followlist[j].createTime=this.$format(followlist[j].createTime,'MM-DD')}
+								else {followlist[j].createTime=this.$format(followlist[j].createTime,'yyyy-MM-DD')}
+							}
 						}
-						this.chatlist.push({username:cht.data.data.list[i].username,content:cht.data.data.list[i].content,create_time:cht.data.data.list[i].create_time,followlist:followlist})
+						var t=Date.parse(new Date())-cht.data.data.list[i].createTime
+						if(t<86400000){cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'HH:mm')}
+						else if(t<31536000000){cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'MM-DD')}
+						else {cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'yyyy-MM-DD')}
+						this.chatlist.push({id:cht.data.data.list[i].id,username:cht.data.data.list[i].fromId,content:cht.data.data.list[i].content,createTime:cht.data.data.list[i].createTime,followlist:followlist,showlist:false})
 					}
 				}
 				else {

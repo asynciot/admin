@@ -109,7 +109,8 @@ div()
 				const deviceWidth = document.documentElement.clientWidth
 				const deviceHeight = document.documentElement.clientHeight
 				// mapsize.style.width = '100%'
-				mapsize.style.height = (Number(deviceHeight)/2.6) + 'px'
+				// mapsize.style.height = (Number(deviceHeight)/2.6) + 'px'
+				mapsize.style.height ='380px'
 			},
 			async handleSearch1 () {
 				this.menu=[];
@@ -399,7 +400,7 @@ div()
 		margin-top: 4px;
 	}
 	.map {
-		height: calc(50vh - 90px);
+		height: calc(30vh - 54px);
 	}
 	#map {
 		position: relative;
