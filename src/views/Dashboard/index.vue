@@ -12,7 +12,7 @@
 			<!-- Main content -->
 			<section class="content">
 				<!-- Small boxes (Stat box) -->
-				<div class="row">
+				<div class="row" style="padding:0">
 					<div class="col-lg-3 col-xs-10">
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
