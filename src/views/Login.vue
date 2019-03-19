@@ -38,7 +38,7 @@ export default {
     return {
 			ladderApi: ladderApi,
       loading: false,
-	  rem: false,
+			rem: false,
       form: {
         username: '',
         password: '',
@@ -89,25 +89,24 @@ export default {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
 					let res = await this.$api.login(this.form)
-          if (!res.data.code) {					
+          if (!res.data.code) {
             this.loading = false;
-				window.localStorage.setItem('username',res.data.account.username)
-				window.localStorage.setItem('id',res.data.account.id)
-				// console.log(res.data.account.username)
-				window.localStorage.setItem('rem',this.rem)
-				window.localStorage.setItem('u',this.form.username)
-				if (this.rem) {
-					window.localStorage.setItem('p',this.form.password)
-				}
-            this.$Message.success({
-              content: '登录成功，正在跳转!',
-              duration: 0.5,
-              onClose: () => {
-				this.$router.push({
-					name: 'dashboard',
-				})
-              }
-            })
+						window.localStorage.setItem('username',res.data.account.username)
+						window.localStorage.setItem('id',res.data.account.id)
+						window.localStorage.setItem('rem',this.rem)
+						window.localStorage.setItem('u',this.form.username)
+						if (this.rem) {
+							window.localStorage.setItem('p',this.form.password)
+						}
+						this.$Message.success({
+							content: '登录成功，正在跳转!',
+							duration: 0.5,
+							onClose: () => {
+								this.$router.push({
+									name: 'dashboard',
+								})
+							}
+						})
           } else {
             this.loading = false;
             this.$Message.error('登录失败!');
