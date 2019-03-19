@@ -121,7 +121,7 @@
 							  </h3>
 							</div>
 							<div style="height:380px;background:#f5f3f0;border: 0;" v-if="visitorbody">
-								<Map style="margin-top:20px;margin:0"></Map>
+								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
 						</div>
@@ -328,16 +328,17 @@
 											</Col>
 										</div>
 										<div class="chart" style="width:95%">
-											<canvas id="areaChart" style="height:250px"></canvas>
+											<canvas id="areaChart" style="height:300px"></canvas>
 										</div>
 										<div class="swiper-button-next"></div>
 									</swiper-slide>
 									
 									<swiper-slide>
 										<div class="swiper-button-prev"></div>
-										<Card class=''>
-											<div id="test1" style="height:300px;width:100%"> </div>
-										</Card>
+										<div class='' style="height:370px">
+											<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
+											<test1></test1>
+										</div>
 									</swiper-slide>
 								</swiper>
 							</div>
@@ -454,14 +455,16 @@
 </template>
 <script>
 	import draggable from 'vuedraggable'
-	import Mapp from '@/views/Dashboard/Map'
+	import Map from '@/views/Dashboard/Map'
+	import test1 from '@/views/Dashboard/Order'
 	import echarts from 'echarts'
 	import {swiper,swiperSlide} from 'vue-awesome-swiper'
 	export default {
 		name: 'HelloWorld',
 		components: {
 			draggable,
-			'Map': Mapp,
+			'Map': Map,
+			'test1':test1,
 			swiper,swiperSlide,
 		},
 		data() {
@@ -557,12 +560,12 @@
 		mounted(){
 			// this.shineword();
 			this.drawchart();
-// 			widthblock3('mapwidth',3)
-// 			widthblock3('chatwidth',3)
-// 			widthblock3('chartwidth',3)
-// 			widthblock3('progresswidth',3)
-// 			widthblock3('calenderwidth',3)
-// 			widthblock3('emailwidth',3)
+			if (window.localStorage.getItem('mapwidth') != null) {this.widthblock3('mapwidth',window.localStorage.getItem('mapwidth'))}
+			if (window.localStorage.getItem('chatwidth') != null) {this.widthblock3('chatwidth',window.localStorage.getItem('chatwidth'))}
+			if (window.localStorage.getItem('chartwidth') != null) {this.widthblock3('chartwidth',window.localStorage.getItem('chartwidth'))}
+			if (window.localStorage.getItem('chartwidth2') != null) {this.widthblock3('chartwidth2',window.localStorage.getItem('chartwidth2'))}
+			if (window.localStorage.getItem('progresswidth') != null) {this.widthblock3('progresswidth',window.localStorage.getItem('progresswidth'))}
+			if (window.localStorage.getItem('emailwidth') != null) {this.widthblock3('emailwidth',window.localStorage.getItem('emailwidth'))}
 			this.chartwidth();
 		},
 		created(){
@@ -754,6 +757,7 @@
 					if (val2==2) {document.getElementById(val1).className='ivu-col ivu-col-span-12'}
 					if (val2==3) {document.getElementById(val1).className='ivu-col ivu-col-span-18'}
 					if (val2==4) {document.getElementById(val1).className='ivu-col ivu-col-span-24'}
+					window.localStorage.setItem(val1,val2)
 			},
 			areafault(){
 				setTimeout(()=>{
