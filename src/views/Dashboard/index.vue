@@ -1,12 +1,12 @@
 <template>
 	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;">
 		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
-			<div><checkbox v-model="visitor">Map</checkbox></div>
+			<div><checkbox v-model="visitor">设备定位</checkbox></div>
 			<div><checkbox v-model="chat">客户意见反馈</checkbox></div>
 			<div><checkbox v-model="progress">故障处理进程</checkbox></div>
 			<div><checkbox v-model="chart">业务图表</checkbox></div>
 			<div><checkbox v-model="chart2">用户组成</checkbox></div>
-			<div><checkbox v-model="email">Quick Email</checkbox></div>
+			<div><checkbox v-model="email">发送邮件</checkbox></div>
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
@@ -16,7 +16,7 @@
 					<div class="col-lg-3 col-xs-10">
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
-						<div class="small-box bg-green">
+						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center;">
 								<h3>{{usernum}}</h3>
 
@@ -67,11 +67,11 @@
 					<div class="col-lg-3 col-xs-6">
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
-						<div class="small-box bg-red">
+						<div class="small-box bg-green">
 							<div class="inner" style="text-align:center;">
-								<h3 v-if="shine">{{faultdevice}}/{{alldevice}}</h3>
+								<h3 v-if="shine">{{onlinedevice}}/{{alldevice}}</h3>
 								<h3 style="color:#FF2C00" v-if="!shine"></h3>
-								<p>故障设备数 {{parseInt(100*faultdevice/alldevice)}}%</p>
+								<p>在线设备数 {{parseInt(100*onlinedevice/alldevice)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
@@ -157,54 +157,44 @@
 									</div>
 								</div>
 							</div>
-							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:380px">
+							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:321px">
 								<!-- chat item -->
-								<div class="item">
+								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%" >
+								<div class="item" v-for="item in chatlist" >
 									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
 									<p class="message">
 										<a href="#" class="name">
-											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-											南京巨人通力电梯有限公司
+											<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
+											<div style="font-size: large;">{{item.username}}</div>
+											<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
 										</a>
-										NSFC01-01A型门机变频器关门有撞击声。
+										<div style="display: inline-block;width:95%">
+										<Col span='11'>&nbsp;</Col>
+										<Col span='4'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
+										<Col span='5'>
+											<Button type="text" @click="item.showlist=true" v-if="!item.showlist">共{{item.followlist.length}}条回复</Button>
+											<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
+										</Col>
+										<Col span='4'>
+											<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id">回复本条</Button>
+											<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
+										</Col>
+										</div>
 									</p>
-									<div class="attachment">
-										<h4>宋工:建议减小关门低速1、低速2。</h4>
+									<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
+										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.fromId}}</h4>
+										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">:{{follow.content}}</h4>
+										<div>
+											<Col span='18'>&nbsp;</Col>
+											<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.createTime}}</Col>
+										</div>
 									</div>
+<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
+										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word; ">宋工:建议减小关门低速1、低速2。</h4>
+									</div> -->
 									<!-- /.attachment -->
 								</div>
-								<!-- /.item -->
-								<!-- chat item -->
-								<div class="item">
-									<img src="../../assets/img/user3-128x128.jpg" alt="user image" class="offline">
-
-									<p class="message">
-										<a href="#" class="name">
-											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-											上海三菱电梯有限公司
-										</a>
-										THPB1-52型双折变频门机无法开门现象。
-									</p>
-									<div class="attachment">
-										<h4>杜工:建议将层门撞弓与轿门锁门球间隙调至7-8mm位置。</h4>
-									</div>
-								</div>
-								<!-- /.item -->
-								<!-- chat item -->
-								<div class="item">
-									<img src="../../assets/img/user2-160x160.jpg" alt="user image" class="offline">
-
-									<p class="message">
-										<a href="#" class="name">
-											<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-											南浔中菱通达有限公司
-										</a>
-										电梯正常运行报E12号故障。
-									</p>
-									<div class="attachment">
-										<h4>高工:请排查抱闸反馈开关是否异常，监控主板X7、X8指灯信号。</h4>
-									</div>
-								</div>
+								</Scroll>
 								<!-- /.item -->
 <!-- 								<div class="input-group">
 									<input class="form-control" placeholder="Type message...">
@@ -213,6 +203,19 @@
 										<button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
 									</div>
 								</div> -->
+							</div>
+							<div class="box-footer clearfix" v-if="chatbody">
+								<form action="#" method="post">
+									<div class="input-group">
+										<Col span='20'><textarea type="text" name="message" style="height:38px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
+										<Col span='4'>
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-success btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1">回复</button>
+											<button type="button" class="btn btn-success btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1">留言</button>
+										</span>
+										</Col>
+									</div>
+								  </form>
 							</div>
 							<!-- /.chat -->
 						</div>
@@ -258,7 +261,10 @@
 											<i class="fa fa-edit"></i>
 											<i class="fa fa-trash-o"></i>
 										</div> -->
-										<div>故障代码：{{item.description}}</div>
+										<div>
+											<Col span='8'>故障代码：{{item.description}}</Col>
+											<Col span='16'>安装地址：{{item.addr}}</Col>
+										</div>
 										<Col span='22'>
 											<div class="progress horizontal active">
 												<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
@@ -428,7 +434,6 @@
 								</form>
 							</div>
 							<div class="box-footer clearfix" v-if="emailbody">
-								
 								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">确定
 									<i class="fa fa-arrow-circle-right"></i></button>
 							</div>
@@ -488,9 +493,10 @@
 // 						{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'3 hours',progress:"70%"},
 // 				],
 				todo:[],
+				chatlist:[],
 				swiperOption:{
 					autoplay:true,
-					delay:10000,
+					delay:20000,
 					notNextTick:true,
 					direction:'horizontal',
 					grabCursor:true,
@@ -527,6 +533,14 @@
 					// createTime:'123',
 					isSettled:false,
 				},
+				chatoptions: {
+					fromId:window.localStorage.getItem('username'),
+					title:'1',
+					content:'',
+					info:'1',
+					type:0,
+					follow: -1,
+				},
 				chartrepair:[],
 				chartorder:[],
 				usernum: 0,
@@ -534,6 +548,10 @@
 				today: 0,
 				allevents: 0,
 				alldevice: 0,
+				onlinedevice:0,
+				chatpage:0,
+				chatbottom:false,
+				reply:'请留下您的疑问和建议 ...',
 			}
 		},
 		mounted(){
@@ -550,6 +568,7 @@
 		created(){
 			this.screenwidth = document.documentElement.clientWidth;
 			this.screenheight = document.documentElement.clientHeight;
+			this.getchat()
 			this.getinfo();
 			this.LastWeek = this.getWeek(7)
 			this.LastWeekend = this.getWeek(1)
@@ -559,6 +578,9 @@
 // 				this.MemberCharts();
 		},
 		methods: {
+			handleReachBottom(){
+				this.getchat()
+			},
 			async sent(){
 				this.btn = false 
 				let res= await this.$api.sentmessage(this.options)
@@ -574,6 +596,62 @@
 						title: '错误',
 						desc: '发送失败'
 					});
+				}
+			},
+			async sentchat(){
+				this.btn = false 
+				let res= await this.$api.sentchat(this.chatoptions)
+				this.btn= true
+				if (res.data.code == 0){
+					this.chatpage=0
+					this.chatlist=[]
+					this.getchat()
+					this.$Notice.success({
+						title: '成功',
+						desc: '已发送消息'
+					});
+				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '发送失败'
+					});
+				}
+			},
+			async getchat(){
+				this.chatpage++
+				let cht = await this.$api.chat({num:5,page:this.chatpage,follow:-1})
+				if (cht.data.code == 0){
+					if (cht.data.data.list.length == 0) {
+						this.$Notice.warning({
+							title: '提示',
+							desc: '已经到底了'
+						});
+					}
+					for(var i=0;i<cht.data.data.list.length;i++){
+						var followlist=[]
+						let ech = await this.$api.chat({num:100,page:1,follow:cht.data.data.list[i].id})
+						if (ech.data.code == 0){
+							followlist=ech.data.data.list
+							for(var j=0;j<followlist.length;j++){
+								var t=Date.parse(new Date())-followlist[j].createTime
+								if(t<86400000){followlist[j].createTime=this.$format(followlist[j].createTime,'HH:mm')}
+								else if(t<31536000000){followlist[j].createTime=this.$format(followlist[j].createTime,'MM-DD')}
+								else {followlist[j].createTime=this.$format(followlist[j].createTime,'yyyy-MM-DD')}
+							}
+						}
+						var t=Date.parse(new Date())-cht.data.data.list[i].createTime
+						if(t<86400000){cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'HH:mm')}
+						else if(t<31536000000){cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'MM-DD')}
+						else {cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'yyyy-MM-DD')}
+						this.chatlist.push({id:cht.data.data.list[i].id,username:cht.data.data.list[i].fromId,content:cht.data.data.list[i].content,createTime:cht.data.data.list[i].createTime,followlist:followlist,showlist:false})
+					}
+				}
+				else {
+					this.$Notice.error({
+						title: '错误',
+						desc: '获取通知失败！'
+					})
 				}
 			},
 			chartwidth(){
@@ -618,13 +696,15 @@
 				})
 				if (res.data.code == 0){
 				this.faultdevice =this.faultdevice + res.data.data.totalNumber
-				this.allevents=this.today+res.data.data.totalNumber
-				this.allevents=11
-				this.today=1
+				this.allevents=this.today+this.faultdevice
 				}
 				res = await this.$api.devices({page: 1,num: 10,isreg: ''})
 				if (res.data.code == 0){
 				this.alldevice =res.data.data.totalNumber
+				}
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online'})
+				if (res.data.code == 0){
+				this.onlinedevice =res.data.data.totalNumber
 				}
 				res = await this.$api.fault({
 					search_info: '',
@@ -652,7 +732,7 @@
 					}
 					this.data = res.data.data.list
 					this.data.forEach(item=>{
-						this.todo.push({pro:item.device_name,description: 'E'+item.code.toString(16),time:item.createTime,progress:"50%"})
+						this.todo.push({pro:item.device_name,description: 'E'+item.code.toString(16),time:item.createTime,progress:"50%",addr:item.install_addr})
 					})
 				}
 			},
