@@ -259,32 +259,25 @@ div()
 					{
 						const point = new BMap.Point(item.cell_lon+Math.random()/500, item.cell_lat);
 						let marker = null;
-						if (item.isLoss) {
-							labelStyle.color = 'red';
-							labelStyle.borderColor = 'red';
-							marker = new BMap.Marker(point, {
-								icon: redMark
-							});
-						}
-						if (!item.isLoss && item.Alert == '0') {
+						if (item.state  == "在线") {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: greenMark
 							});
 						}
-						if (!item.isLoss && item.Alert != '0') {
+						if (item.state == "离线") {
+							labelStyle.color = 'red';
+							labelStyle.borderColor = 'red';
+							marker = new BMap.Marker(point, {
+								icon: redMark
+							});
+						}
+						if (item.state  == '长期离线') {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: lostMark
-							});
-						}
-						if (!item.isLoss && parseInt(item.isOpen) === 1) {
-							labelStyle.color = '#55BC52';
-							labelStyle.borderColor = '#55BC52';
-							marker = new BMap.Marker(point, {
-								icon: createMark(`/open.gif?timestamp=${new Date().getTime()}`)
 							});
 						}
 						var steelContent ='设备id:'+item.device_id+'<div></div>设备名称:'+item.device_name+'<div></div>基站地址:'+item.cell_address
