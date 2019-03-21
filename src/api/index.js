@@ -97,6 +97,7 @@ export default {
  	regdevices: (data) => {
 		return DeviceApi.save({key1:'Register'}, data)
 	},
+	//event
 	event: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Event'}, data))
 	},
@@ -112,6 +113,7 @@ export default {
 	updat: (data) => {
 		return DeviceApi.save({key1:'Update'}, data)
 	},
+	//monitor
 	monitor: (data) => {
 		return DeviceApi.save({key1:'Monitor'}, data)
 	},
@@ -121,6 +123,7 @@ export default {
 	gettype:(data) => {
 		return DeviceApi.query(Object.assign({key1:'Binary'}, data))
 	},
+	//follow
 	follow:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'follow'}, data))
 	},
@@ -130,6 +133,7 @@ export default {
 	delfollow:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'follow'}, data))
 	},
+	//dispatch
 	getRepair:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Dispatch'}, data))
 	},
@@ -145,6 +149,7 @@ export default {
 	runtime:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Runtime'}, data))
 	},
+	//order
 	fault:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Order'}, data))
 	},
@@ -159,5 +164,12 @@ export default {
 	},
 	orderAdopt:(data)=> {
 		return DeviceApi.save({key1:'Order',key2:'adopt'}, data)
+	},
+	//ladder
+	newLadder:(data)=> {
+		return DeviceApi.save({key1:'Ladder'}, data)
+	},
+	readLadder:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Ladder'}, data))
 	},
 }

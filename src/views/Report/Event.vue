@@ -42,11 +42,16 @@
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)
 			this.NowWeekend = this.getWeek(-6)
+			this.$Modal.info({
+				title: "正在生产图表",
+				content: "请稍后",
+			});
 			this.getLastData(this.LastWeek,this.LastWeekend)
 			this.getData(this.NowWeek,this.NowWeekend)
-			setTimeout(() => {
-				this.OrderCharts();
-			},500)
+		},
+		update(){
+			console.log(this.Lastlist)
+			
 		},
 		components: {
 			draggable,
@@ -64,6 +69,7 @@
 				this.Lastlist.friday = res.data.data.friday
 				this.Lastlist.saturday = res.data.data.saturday
 				this.Lastlist.sunday = res.data.data.sunday
+				this.OrderCharts();
 			},
 			async getData(val,item){
 				let res = await this.$api.eventCount({
@@ -77,6 +83,7 @@
 				this.list.friday = res.data.data.friday
 				this.list.saturday = res.data.data.saturday
 				this.list.sunday = res.data.data.sunday
+				this.OrderCharts();
 			},
 			getWeek(n){
 				var now = new Date()
@@ -128,7 +135,7 @@
 					series: [{
 						name: '本周事件数量',
 						type: 'line',
-						data: [this.list.monday, this.list.thursday, this.list.wensday,this.list.thursday,
+						data: [this.list.monday, this.list.tuesday, this.list.wensday,this.list.thursday,
 						this.list.friday,this.list.saturday,this.list.sunday,],
 						markPoint: {
 							data: [

@@ -54,7 +54,7 @@
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
-								<Button type="ghost" long class="w-button" >
+								<Button type="primary" long class="w-button">
 									<Col span="5">
 										<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
 									</Col>
@@ -71,7 +71,7 @@
 							</Dropdown>
 						</Col>
 						<Col span="2" style="">
-							<Button style="border:0;background:transparent;right: 0px;" size="small" @click="full=true">
+							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px" size="small" @click="full=true">
 								<div style=""><icon name="full" width="10" height="10" slot="prepend"></icon></div>
 							</Button>
 						</Col>
@@ -193,10 +193,10 @@
 // 								name: 'report',
 // 								label: '报表分析',
 // 							},
-// 							{
-// 								name: 'eventreport',
-// 								label: '事件报表分析',
-// 							},
+							{
+								name: 'eventreport',
+								label: '事件报表分析',
+							},
 							{
 								name: 'orderreport',
 								label: '故障报表分析',
@@ -235,6 +235,9 @@
 						},{
 							name:'evolution',
 							label:'固件更新',
+						},{
+							name:'ladder',
+							label:'电梯信息',
 						},
 // 						{
 // 							name:'elevator',
@@ -590,6 +593,10 @@
 		min-width: 150px;
 		border: #fff;
 		height: 64px;
+		background-color: #3c8dbc;
+	}
+	.w-button:hover{
+		background-color: #0B93D5;
 	}
 	.img-circle{
 		width: 100%;

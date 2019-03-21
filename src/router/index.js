@@ -67,17 +67,12 @@ const DispatchAdopt = resolve => require(['@/views/Maintain/DispatchAdopt'], res
 const FileIndex = resolve => require(['@/views/Information/File/BaseInfo'], resolve)
 const AlList = resolve => require(['@/views/Information/File/List'], resolve)
 const Alert = resolve => require(['@/views/Information/File/Alert'], resolve)
-const AssessHistory = resolve => require(['@/views/Information/Assess/History'], resolve)
-const AssessPrint = resolve => require(['@/views/Information/Assess/Print'], resolve)
-const AssessReport = resolve => require(['@/views/Information/Assess/Report'], resolve)
-const CheckIndex = resolve => require(['@/views/Information/Check/Index'], resolve)
-const CheckHistory = resolve => require(['@/views/Information/Check/History'], resolve)
-const CheckPrint = resolve => require(['@/views/Information/Check/Print'], resolve)
-const CheckReport = resolve => require(['@/views/Information/Check/Report'], resolve)
 const Elevator = resolve => require(['@/views/Information/Elevator/Index'], resolve)
 const AddGroup = resolve => require(['@/views/Information/Elevator/AddGroup'], resolve)
 const EditGroup = resolve => require(['@/views/Information/Elevator/EditGroup'], resolve)
 const Evolution = resolve => require(['@/views/Information/Evolution'], resolve)
+const Ladder = resolve => require(['@/views/Information/Ladder/Index'], resolve)
+const AddLadder = resolve => require(['@/views/Information/Ladder/AddLadder'], resolve)
 
 //system
 const Print = resolve => require(['@/views/System/Print'], resolve)
@@ -515,56 +510,7 @@ export default new Router({
 						name: '电梯档案'
 					},
 					component: FileIndex
-				}, {
-					path: '/information/assess/history',
-					name: 'assessHistory',
-					meta: {
-						name: '历史记录'
-					},
-					component: AssessHistory
-				}, {
-					path: '/information/assess/print',
-					name: 'assessPrint',
-					meta: {
-						name: '打印工单'
-					},
-					component: AssessPrint
-				}, {
-					path: '/information/assess/report',
-					name: 'assessReport',
-					meta: {
-						name: '评估报告'
-					},
-					component: AssessReport
-				}, {
-					path: '/information/check',
-					name: 'checkIndex',
-					meta: {
-						name: '检验记录'
-					},
-					component: CheckIndex
-				}, {
-					path: '/information/check/history',
-					name: 'checkHistory',
-					meta: {
-						name: '历史记录'
-					},
-					component: CheckHistory
-				}, {
-					path: '/information/check/print',
-					name: 'checkPrint',
-					meta: {
-						name: '打印工单'
-					},
-					component: CheckPrint
-				}, {
-					path: '/information/check/report',
-					name: 'checkReport',
-					meta: {
-						name: '评估报告'
-					},
-					component: CheckReport
-				}, {
+				},{
 					path: '/information/elevator',
 					name: 'elevator',
 					meta: {
@@ -585,6 +531,20 @@ export default new Router({
 						name: '编辑电梯组'
 					},
 					component: EditGroup
+				},{
+					path: '/information/ladder',
+					name: 'ladder',
+					meta: {
+						name: '电梯信息'
+					},
+					component: Ladder
+				},{
+					path: '/information/ladder/add',
+					name: 'addladder',
+					meta: {
+						name: '新增电梯'
+					},
+					component: AddLadder
 				},
 				//系统管理
 				{

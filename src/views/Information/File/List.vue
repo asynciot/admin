@@ -1,7 +1,7 @@
 <template>
 	<div class="layout-content-main">
 		<Form class="imr" ref="form" label-position="left" :label-width="100" @keydown.enter.native.prevent="search()">
-			<Row gutter="5">
+			<Row :gutter=5>
 				<Col span='2'>
 				<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
 					<Option key="1" label="全部" value="all"></Option>
