@@ -172,4 +172,10 @@ export default {
 	readLadder:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder'}, data))
 	},
+	faultfreq:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Order',key2:'Faultfreq'}, data))
+	},
+	eventtop:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'Activedoor'}, data))
+	},
 }

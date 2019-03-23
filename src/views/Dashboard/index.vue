@@ -91,7 +91,7 @@
 
 					<draggable :options="{animation: 60,group:'panel'}">
 						<!-- Map box --> <Col span='12' id="mapwidth">
-						<div class="box box-primary" v-if="visitor" >
+						<div class="box box-primary" v-if="visitor" @start="visitor=!visitor">
 							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
 							  <div class="pull-right box-tools">
@@ -315,7 +315,7 @@
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
 										<div>
-											<Col span='12' style="font-size: large;">今年设备故障数量</Col>
+											<Col span='12' style="font-size: large;font-weight: bold;color:#333" >今年设备故障数量</Col>
 											<Col span='1'> <div style="height:20px;width:20px;background-color:#dcdcdc;" @click="fault=!fault;areafault()"></div></Col>
 											<Col span='4'> 
 											<div style="color:#888888" @click="fault=!fault;areafault()" v-if="!fault">新添故障设备</div>
@@ -332,7 +332,13 @@
 										</div>
 										<div class="swiper-button-next"></div>
 									</swiper-slide>
-									
+									<!-- <swiper-slide>
+										<div class="swiper-button-prev"></div>
+										<div class='' style="height:370px">
+											<freq></freq>
+										</div>
+										<div class="swiper-button-next"></div>
+									</swiper-slide> -->
 									<swiper-slide>
 										<div class="swiper-button-prev"></div>
 										<div class='' style="height:370px">
@@ -354,9 +360,7 @@
 							<div class="box box-success" v-if="chart2">
 								<div class="box-header">
 									<i class="fa fa-th"></i>
-						
 									<h3 class="box-title">用户组成</h3>
-									
 									<div class="box-tools pull-right">
 										<div class="btn-group" style="margin-right: 5px;">
 											<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
@@ -379,18 +383,55 @@
 								</div>
 								<div class="box-body border-radius-none" v-if="chartbody2" style="height:380px">
 									<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
-
 										<swiper-slide>
-											<Card class=''>
 												<div id="test5" style="height:300px;width:100%"> </div>
-											</Card>
 										</swiper-slide>
 									</swiper>
 								</div>
-						
 							</div>
 							<!-- /.box -->
 							</Col>
+							<Col span='6' id="chartwidth3">
+							<!-- </section> -->
+							<!-- /.Left col -->
+							<!-- right col (We are only adding the ID to make the widgets sortable)-->
+								<!-- solid sales graph -->
+								<div class="box box-success" v-if="chart3">
+									<div class="box-header">
+										<i class="fa fa-th"></i>
+										<h3 class="box-title">常见故障</h3>
+										<div class="box-tools pull-right">
+											<div class="btn-group" style="margin-right: 5px;">
+												<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
+													<i class="fa fa-bars"></i></button>
+												<div class="dropdown-menu pull-right" role="menu">
+													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',1);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',2);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',3);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',4);chartwidth()"></Card>
+												</div>
+											</div>
+											<button type="button" class="btn btn-success btn-sm" @click="chartbody3=!chartbody3;MemberCharts();">
+												<i class="fa fa-minus" v-if="chartbody3"></i>
+												<i class="fa fa-plus" v-if="!chartbody3"></i>
+											</button>
+											<button type="button" class="btn btn-success btn-sm" @click="chart3=false"><i class="fa fa-times"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body border-radius-none" v-if="chartbody3" style="height:380px">
+										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
+											<swiper-slide>
+												<div class='' style="height:370px">
+												<faultfreq></faultfreq>
+												</div>
+											</swiper-slide>
+										</swiper>
+									</div>
+								</div>
+								<!-- /.box -->
+								</Col>
 						<!-- /.box -->
 						<Col span='6' id="emailwidth">
 						<!-- quick email widget -->
@@ -457,6 +498,7 @@
 	import draggable from 'vuedraggable'
 	import Map from '@/views/Dashboard/Map'
 	import test1 from '@/views/Dashboard/Order'
+	import faultfreq from '@/views/Dashboard/faultfreq'
 	import echarts from 'echarts'
 	import {swiper,swiperSlide} from 'vue-awesome-swiper'
 	export default {
@@ -465,6 +507,7 @@
 			draggable,
 			'Map': Map,
 			'test1':test1,
+			'faultfreq':faultfreq,
 			swiper,swiperSlide,
 		},
 		data() {
@@ -482,12 +525,14 @@
 				chat: true,
 				chart: true,
 				chart2: true,
+				chart3: true,
 				email: true,
 				progress: true,
 				visitorbody: true,
 				chatbody: true,
 				chartbody: true,
 				chartbody2: true,
+				chartbody3: true,
 				emailbody: true,
 				progressbody: true,
 				shine:true,
@@ -793,7 +838,7 @@
 					labels  : ['January', 'February', 'March', 'April', 'May', 'June'],
 					datasets
 					}
-					console.log(areaChartData)
+					// console.log(areaChartData)
 					var areaChartOptions = {
 					//Boolean - If we should show the scale at all
 					showScale               : true,
