@@ -1,5 +1,5 @@
 <template lang="jade">
-div.layout-content-main()
+div
 	Row(:gutter=20)
 		Col(span=22)
 			Tabs.pd-heard(value="name1",:animated="false",@on-click="Onchange")

@@ -73,6 +73,7 @@ const EditGroup = resolve => require(['@/views/Information/Elevator/EditGroup'],
 const Evolution = resolve => require(['@/views/Information/Evolution'], resolve)
 const Ladder = resolve => require(['@/views/Information/Ladder/Index'], resolve)
 const AddLadder = resolve => require(['@/views/Information/Ladder/AddLadder'], resolve)
+const EditLadder = resolve => require(['@/views/Information/Ladder/EditLadder'], resolve)
 
 //system
 const Print = resolve => require(['@/views/System/Print'], resolve)
@@ -545,6 +546,13 @@ export default new Router({
 						name: '新增电梯'
 					},
 					component: AddLadder
+				},{
+					path: '/information/editladder/:id',
+					name: 'editladder',
+					meta: {
+						name: '电梯编辑'
+					},
+					component: EditLadder
 				},
 				//系统管理
 				{

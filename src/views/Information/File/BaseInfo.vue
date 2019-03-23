@@ -1,5 +1,5 @@
 <template lang="jade">
-div.layout-content-main
+div
 	div.form
 		Row(:gutter="30")
 			Col(span="16")

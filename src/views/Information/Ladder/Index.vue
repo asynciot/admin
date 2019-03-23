@@ -1,5 +1,5 @@
 <template lang="jade">
-	div.layout-content-main
+	div
 		Form.imr(ref="form" label-position="left" ,:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=5)
 				Col(span='2')
@@ -14,7 +14,7 @@
 				Col( span=2)
 					Input( v-model="options.install_addr"  placeholder="安装地址" max=10)
 				Col( span='10')
-					Button(type="primary" icon="ios-search" @click="search()")搜索
+					Button(type="primary" icon="ios-search" @click="search()")|搜索
 					Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goLadder()")|添加电梯
 		div( style="min-height: 450px; margin-top: 5px;")
 			Table.mb-10( stripe :columns="columns" ,:data="list" size="small")
@@ -135,9 +135,9 @@
 									on: {
 										click: () => {
 											this.$router.push({
-												name: 'elevatorFiles',
+												name: 'editladder',
 												params: {
-													IMEI: params.row.IMEI
+													id: params.row.id
 												}
 											})
 										},
