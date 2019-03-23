@@ -14,7 +14,7 @@
 				Col( span=2)
 					Input( v-model="options.install_addr"  placeholder="安装地址" max=10)
 				Col( span='10')
-					Button(type="primary" icon="ios-search" @click="search()")搜索
+					Button(type="primary" icon="ios-search" @click="search()")|搜索
 					Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goLadder()")|添加电梯
 		div( style="min-height: 450px; margin-top: 5px;")
 			Table.mb-10( stripe :columns="columns" ,:data="list" size="small")
@@ -97,55 +97,55 @@
 							}, addr)
 						}
 					},
-					{
-						title: '操作',
-						render: (h, params) => {
-							var follow = "关注电梯"
-							this.follow.forEach(item => {
-								if (params.row.IMEI == item.imei) {
-									follow = '取消关注'
-								}
-							})
-							return h('div', [
-								h('Button', {
-									props: {
-										type: 'success',
-										size: "small",
-									},
-									style: {
-										marginRight: '10px',
-									},
-									on: {
-										click: () => {
-											if (follow == "关注电梯")
-												this.addfl(params.row.IMEI)
-											if (follow == "取消关注")
-												this.delfl(params.row.id)
-										},
-									}
-								}, follow),
-								h('Button', {
-									props: {
-										type: 'primary',
-										size: "small",
-									},
-									style: {
-										marginRight: '10px',
-									},
-									on: {
-										click: () => {
-											this.$router.push({
-												name: 'elevatorFiles',
-												params: {
-													IMEI: params.row.IMEI
-												}
-											})
-										},
-									}
-								}, '查看/编辑'),
-							])
-						}
-					}
+// 					{
+// 						title: '操作',
+// 						render: (h, params) => {
+// 							var follow = "关注电梯"
+// 							this.follow.forEach(item => {
+// 								if (params.row.IMEI == item.imei) {
+// 									follow = '取消关注'
+// 								}
+// 							})
+// 							return h('div', [
+// 								h('Button', {
+// 									props: {
+// 										type: 'success',
+// 										size: "small",
+// 									},
+// 									style: {
+// 										marginRight: '10px',
+// 									},
+// 									on: {
+// 										click: () => {
+// 											if (follow == "关注电梯")
+// 												this.addfl(params.row.IMEI)
+// 											if (follow == "取消关注")
+// 												this.delfl(params.row.id)
+// 										},
+// 									}
+// 								}, follow),
+// 								h('Button', {
+// 									props: {
+// 										type: 'primary',
+// 										size: "small",
+// 									},
+// 									style: {
+// 										marginRight: '10px',
+// 									},
+// 									on: {
+// 										click: () => {
+// 											this.$router.push({
+// 												name: 'elevatorFiles',
+// 												params: {
+// 													IMEI: params.row.IMEI
+// 												}
+// 											})
+// 										},
+// 									}
+// 								}, '查看/编辑'),
+// 							])
+// 						}
+// 					}
 				],
 				refreshNum: 0,
 				data: [],
