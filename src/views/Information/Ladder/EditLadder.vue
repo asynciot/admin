@@ -14,7 +14,7 @@
 										Form-item(label="电梯名称：")
 											Input(type='text', v-model="ladder.name" placeholder='请输入电梯名称')
 										Form-item(label="安装地址：")
-											Input(type='text', v-model="ladder.name" placeholder='请输入安装地址')
+											Input(type='text', v-model="ladder.install_addr" placeholder='请输入安装地址')
 						div.form-group
 							Card()
 								p(slot="title")|设备绑定
@@ -154,6 +154,7 @@
 					ctrl:'',
 					door1:'',
 					door2:'',
+					install_addr:'',
 				},
 			}
 		},

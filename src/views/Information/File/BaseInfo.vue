@@ -34,7 +34,7 @@ div
 						Col(span="8")|缓存中的事件数:
 							input(v-model="parameter.wavenumber" style="border: 0;;width:50%" readonly)
 						Col(span="4")
-							Button(type='cancel' @click="getList();history=true")|查看历史故障
+							Button(@click="getList();history=true")|查看历史故障
 				Card(v-if="list.device_type == 240" style="margin-top:5px")
 					p(slot="title")|参数信息
 					Row(:gutter="30" style="padding-top:10px")
@@ -48,17 +48,7 @@ div
 						Col(span="8")|最近故障楼层:
 							input(v-model="parameter.faultfloor" style="border: 0;width:50%" readonly)
 						Col(span="4")
-							Button(type='cancel' @click="getList();history=true")|查看历史故障
-				//Card(style="margin-top:5px")
-					p(slot="title")|生产
-					Row(:gutter="30")
-						Col(span="12")
-							p()|出厂编号:
-						Col(span="12")|出厂日期:
-							input( style="border: 0" readonly)
-					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|生产批次:
-							input( style="border: 0" readonly)
+							Button(@click="getList();history=true")|查看历史故障
 				Card(style="margin-top:5px")
 					p(slot="title")|维保
 					Row(:gutter="30")
@@ -124,7 +114,7 @@ div
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent' ,:disabled='upsuccess')|提交信息
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
 					Col(span=11)
-						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|信息重置
+						Button(@click="del()" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|信息重置
 	el-dialog(title="历史故障", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		div(style="margin: 0 auto")
@@ -173,7 +163,7 @@ export default {
 										this.$router.push({
 											name: 'finish',
 											params: {
-												id: params.row.id										
+												id: params.row.id
 											}
 										})
 									}
@@ -242,6 +232,7 @@ export default {
 			maintain:[],
 			loading: false,
 			username:window.localStorage.getItem('username'),
+			upsuccess:false,
 			columns: [
 			{
 				title: '设备类型',
@@ -279,7 +270,6 @@ export default {
 						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
 					}
-					console.log(res.data.data.list)
 					this.data = res.data.data.list
 					this.total = res.data.data.totalNumber
 				} else {
@@ -301,8 +291,7 @@ export default {
 					title: '成功',
 					desc: '已提交信息'
 				});
-			}
-			else {
+			}else {
 				this.$Notice.error({
 					title: '失败',
 					desc: '更新信息失败'
@@ -323,7 +312,9 @@ export default {
 					if (item.type == 4096) {
 						buffer = base64url.toBuffer(item.data)
 						time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
-						if (time == 0) {this.parameter.reporttime=''} 
+						if(time == 0){
+							this.parameter.reporttime=''
+						}
 						else {this.parameter.reporttime=new Date(time*1000+1262275200000)}
 						this.parameter.rssi=buffer[4]
 						this.parameter.wavenumber=buffer[14]*256+buffer[15]
@@ -349,7 +340,6 @@ export default {
 					}
 				})
 			}
-			console.log(buffer)
 			this.options.install_date=this.$format(this.list.install_date, 'YYYY-MM-DD')
 			this.list.maintenance_nexttime=parseInt(this.list.maintenance_nexttime)
 			this.list.maintenance_lasttime=parseInt(this.list.maintenance_lasttime)
@@ -396,10 +386,36 @@ export default {
 				content:'',
 				onOk: () => {
 					this.toburnn()
+					setTimeout(()=>{
+						this.$Modal.confirm({
+							title: '绑定电梯',
+							content:'请选择绑定的方式',
+							okText: '新建电梯',
+							cancelText: '添加到已有电梯',
+							onOk: () => {
+								this.$router.push({
+									name: 'addladder',
+									params: {
+										IMEI: this.list.IMEI,
+										type: this.list.device_type,
+									}
+								})
+							},
+							onCancel: () => {
+								this.$router.push({
+									name: 'coverladder',
+									params: {
+										IMEI: this.list.IMEI,
+										type: this.list.device_type,
+									}
+								})
+							}
+						})
+					}, 1000)
 				},
 				onCancel: () => {
 				}
-			})	
+			})
 		},
 		async burn() {
 			this.$Modal.confirm({

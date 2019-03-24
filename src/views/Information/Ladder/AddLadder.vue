@@ -10,9 +10,14 @@
 							Card
 								div.form-group
 									Card()
-										p(slot="title")|电梯名称
-										div.col-sm-8.col-md-6
-											Input(type='text', v-model="ladder.name" placeholder='请输入电梯名称',)
+										p(slot="title")|基本信息
+										Form(:label-width="120")
+											Row(:gutter="5")
+												Col(span="20")
+													Form-item(label="电梯名称：")
+														Input(type='text', v-model="ladder.name" placeholder='请输入电梯名称')
+													Form-item(label="安装地址：")
+														Input(type='text', v-model="ladder.install_addr" placeholder='请输入安装地址')
 								div.form-group
 									Card
 										p(slot="title")|设备绑定
@@ -153,15 +158,20 @@
 					ctrl:'',
 					door1:'',
 					door2:'',
+					install_addr:'',
 				},
 			}
 		},
 		created() {
+			if(this.$route.params.type == 240){
+				this.ladder.ctrl = this.$route.params.IMEI
+			}else{
+				this.ladder.door1 = this.$route.params.IMEI
+			}
 			this.getList("240")
 		},
 		methods: {
 			async getList(item) {
-				console.log(item)
 				if(item!=null){
 					this.query.device_type= item
 				}
