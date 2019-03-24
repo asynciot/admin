@@ -1,6 +1,6 @@
 <template lang="jade">
 	div.layout-content-main(style="padding:0")
-		div.ch(id="freq" style="height:360px;width:100%")
+		div.ch(id="activedoor" style="height:360px;width:100%")
 </template>
 
 <script>
@@ -58,7 +58,7 @@
 				},2000)
 			},
 			async getfaultfreq(){
-				let res = await this.$api.faultfreq()
+				let res = await this.$api.activedoor()
 				
 				if (res.data.code == 0){
 					this.topcode=res.data.list
@@ -68,9 +68,9 @@
 			},
 			OrderCharts() {
 
-				let freq = this.$echarts.init(document.getElementById('freq'))
-				freq.resize()
-				freq.setOption({
+				let activedoor = this.$echarts.init(document.getElementById('activedoor'))
+				activedoor.resize()
+				activedoor.setOption({
 					title: {
 							text: '控制柜常见故障TOP5',
 							textStyle: {
@@ -123,7 +123,7 @@
 	                    axisLine:{
 	                        barStyle:{
 	                            color:'#007F00',
-	                            width:0.5,//这里是为了突出显示加上的，可以去掉
+	//                            width:8,//这里是为了突出显示加上的，可以去掉
 	                        }
 	                    },                         
 	                    //  改变x轴字体颜色和大小
@@ -143,7 +143,6 @@
 							],
 							type: 'bar',
 							color:'#FF7F00',
-							barWidth: 40,
 							itemStyle: {
 								normal: {
 									//通过数组下标选择颜色

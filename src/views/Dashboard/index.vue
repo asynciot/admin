@@ -390,13 +390,8 @@
 									</swiper>
 								</div>
 							</div>
-							<!-- /.box -->
 							</Col>
 							<Col span='12' id="chartwidth3">
-							<!-- </section> -->
-							<!-- /.Left col -->
-							<!-- right col (We are only adding the ID to make the widgets sortable)-->
-								<!-- solid sales graph -->
 								<div class="box box-success" v-if="chart3">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
@@ -431,8 +426,43 @@
 										</swiper>
 									</div>
 								</div>
-								<!-- /.box -->
-								</Col>
+							</Col>
+							<Col span='12' id="chartwidth4">
+								<div class="box box-success" v-if="chart4">
+									<div class="box-header">
+										<i class="fa fa-th"></i>
+										<h3 class="box-title">活跃设备</h3>
+										<div class="box-tools pull-right">
+											<div class="btn-group" style="margin-right: 5px;">
+												<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
+													<i class="fa fa-bars"></i></button>
+												<div class="dropdown-menu pull-right" role="menu">
+													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',1);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',2);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',3);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',4);chartwidth()"></Card>
+												</div>
+											</div>
+											<button type="button" class="btn btn-success btn-sm" @click="chartbody4=!chartbody4;MemberCharts();">
+												<i class="fa fa-minus" v-if="chartbody4"></i>
+												<i class="fa fa-plus" v-if="!chartbody4"></i>
+											</button>
+											<button type="button" class="btn btn-success btn-sm" @click="chart4=false"><i class="fa fa-times"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body border-radius-none" v-if="chartbody4" style="height:380px">
+										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
+											<swiper-slide>
+												<div class='' style="height:370px">
+												<activedoor></activedoor>
+												</div>
+											</swiper-slide>
+										</swiper>
+									</div>
+								</div>
+							</Col>
 						<!-- /.box -->
 						<Col span='6' id="emailwidth">
 						<!-- quick email widget -->
@@ -500,6 +530,7 @@
 	import Map from '@/views/Dashboard/Map'
 	import test1 from '@/views/Dashboard/Order'
 	import faultfreq from '@/views/Dashboard/faultfreq'
+	import activedoor from '@/views/Dashboard/activedoor'
 	import echarts from 'echarts'
 	import {swiper,swiperSlide} from 'vue-awesome-swiper'
 	export default {
@@ -509,6 +540,7 @@
 			'Map': Map,
 			'test1':test1,
 			'faultfreq':faultfreq,
+			'activedoor':activedoor,
 			swiper,swiperSlide,
 		},
 		data() {
@@ -527,6 +559,7 @@
 				chart: true,
 				chart2: true,
 				chart3: true,
+				chart4: true,
 				email: true,
 				progress: true,
 				mapbody: true,
@@ -534,6 +567,7 @@
 				chartbody: true,
 				chartbody2: true,
 				chartbody3: true,
+				chartbody4: true,
 				emailbody: true,
 				progressbody: true,
 				shine:true,

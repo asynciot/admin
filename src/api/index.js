@@ -175,7 +175,7 @@ export default {
 	faultfreq:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Order',key2:'Faultfreq'}, data))
 	},
-	eventtop:(data)=> {
+	activedoor:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Event',key2:'Activedoor'}, data))
 	},
 }
