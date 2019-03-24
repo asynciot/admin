@@ -41,13 +41,19 @@
 			this.getLastData(this.LastWeek,this.LastWeekend)
 			this.getData(this.NowWeek,this.NowWeekend)
 			setTimeout(() => {
-				this.OrderCharts();
+				this.refresh();
 			},500)
 		},
 		components: {
 			draggable,
 		},
 		methods: {
+			refresh(){
+				this.OrderCharts();
+				setTimeout(() => {
+					this.refresh();
+				},2000)
+			},
 			async getLastData(val,item){
 				let res = await this.$api.orderCount({
 					starttime:val,
@@ -102,6 +108,7 @@
 			},
 			OrderCharts() {
 				let test1 = this.$echarts.init(document.getElementById('test1'))
+				test1.resize()
 				test1.setOption({
 					title: {
 						text: '故障数量对比',

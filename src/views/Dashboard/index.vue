@@ -1,12 +1,13 @@
 <template>
 	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;">
 		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
-			<div><checkbox v-model="visitor">设备定位</checkbox></div>
-			<div><checkbox v-model="chat">客户意见反馈</checkbox></div>
-			<div><checkbox v-model="progress">故障处理进程</checkbox></div>
-			<div><checkbox v-model="chart">业务图表</checkbox></div>
-			<div><checkbox v-model="chart2">用户组成</checkbox></div>
-			<div><checkbox v-model="email">发送邮件</checkbox></div>
+			<div><Checkbox @on-change='showpanel("map",map)' v-model="map">设备定位</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chat",chat)' v-model="chat">客户意见反馈</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("progress",progress)' v-model="progress">故障处理进程</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart",chart)' v-model="chart">业务图表</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">常见故障</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div>
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
@@ -91,11 +92,11 @@
 
 					<draggable :options="{animation: 60,group:'panel'}">
 						<!-- Map box --> <Col span='12' id="mapwidth">
-						<div class="box box-primary" v-if="visitor" @start="visitor=!visitor">
+						<div class="box box-primary" v-if="map">
 							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
 							  <div class="pull-right box-tools">
-								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="visitor=!visitor"><i class="fa fa-times"></i>
+								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="map=!map;showpanel('map',map)"><i class="fa fa-times"></i>
 								  </button>
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('mapwidth')">
@@ -109,8 +110,8 @@
 										</div>
 									</div>
 
-								<button type="button" class="btn btn-primary btn-sm pull-right" title="Collapse" style="margin-right: 5px;" @click="visitorbody=!visitorbody">
-								  <i class="fa fa-minus" v-if="visitorbody"></i> <i class="fa fa-plus" v-if="!visitorbody"></i>
+								<button type="button" class="btn btn-primary btn-sm pull-right" title="Collapse" style="margin-right: 5px;" @click="mapbody=!mapbody">
+								  <i class="fa fa-minus" v-if="mapbody"></i> <i class="fa fa-plus" v-if="!mapbody"></i>
 								</button>
 							  </div>
 							  <!-- /. tools -->
@@ -120,7 +121,7 @@
 								设备定位
 							  </h3>
 							</div>
-							<div style="height:380px;background:#f5f3f0;border: 0;" v-if="visitorbody">
+							<div style="height:380px;background:#f5f3f0;border: 0;" v-if="mapbody">
 								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
@@ -303,7 +304,7 @@
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
 										</div>
 									</div>
-									<button type="button" class="btn bg-teal btn-sm" @click="chartbody=!chartbody;OrderCharts();areafault();">
+									<button type="button" class="btn bg-teal btn-sm" @click="chartbody=!chartbody;areafault();">
 										<i class="fa fa-minus" v-if="chartbody"></i>
 										<i class="fa fa-plus" v-if="!chartbody"></i>
 									</button>
@@ -391,7 +392,7 @@
 							</div>
 							<!-- /.box -->
 							</Col>
-							<Col span='6' id="chartwidth3">
+							<Col span='12' id="chartwidth3">
 							<!-- </section> -->
 							<!-- /.Left col -->
 							<!-- right col (We are only adding the ID to make the widgets sortable)-->
@@ -521,14 +522,14 @@
 				size4: '#ffffff',
 				fault:true,
 				fix:true,
-				visitor: true,
+				map: true,
 				chat: true,
 				chart: true,
 				chart2: true,
 				chart3: true,
 				email: true,
 				progress: true,
-				visitorbody: true,
+				mapbody: true,
 				chatbody: true,
 				chartbody: true,
 				chartbody2: true,
@@ -609,8 +610,16 @@
 			if (window.localStorage.getItem('chatwidth') != null) {this.widthblock3('chatwidth',window.localStorage.getItem('chatwidth'))}
 			if (window.localStorage.getItem('chartwidth') != null) {this.widthblock3('chartwidth',window.localStorage.getItem('chartwidth'))}
 			if (window.localStorage.getItem('chartwidth2') != null) {this.widthblock3('chartwidth2',window.localStorage.getItem('chartwidth2'))}
+			if (window.localStorage.getItem('chartwidth3') != null) {this.widthblock3('chartwidth3',window.localStorage.getItem('chartwidth3'))}
 			if (window.localStorage.getItem('progresswidth') != null) {this.widthblock3('progresswidth',window.localStorage.getItem('progresswidth'))}
 			if (window.localStorage.getItem('emailwidth') != null) {this.widthblock3('emailwidth',window.localStorage.getItem('emailwidth'))}
+			if (window.localStorage.getItem('map') == 1) {this.map=false}
+			if (window.localStorage.getItem('chat') == 1) {this.chat=false}
+			if (window.localStorage.getItem('chart') == 1) {this.chart=false}
+			if (window.localStorage.getItem('chart2') == 1) {this.chart2=false}
+			if (window.localStorage.getItem('chart3') == 1) {this.chart3=false}
+			if (window.localStorage.getItem('progress') == 1) {this.progress=false}
+			if (window.localStorage.getItem('email') == 1) {this.email=false}
 			this.chartwidth();
 		},
 		created(){
@@ -628,6 +637,11 @@
 		methods: {
 			handleReachBottom(){
 				this.getchat()
+			},
+			showpanel(val1,val2){
+				alert(val2)
+				if (val2) {window.localStorage.setItem(val1,0)}
+				else {window.localStorage.setItem(val1,1)}
 			},
 			async sent(){
 				this.btn = false 
@@ -704,7 +718,6 @@
 			},
 			chartwidth(){
 				setTimeout(() => {
-					this.OrderCharts();
 					this.MemberCharts();
 				},200)
 			},
@@ -1110,112 +1123,6 @@
 					}]
 				})
 				},200)
-			},
-			OrderCharts() {
-				setTimeout(()=>{
-				var test1 = echarts.init(document.getElementById('test1'))
-				test1.resize()
-				test1.setOption({
-					title: {
-						text: '事件对比',
-						subtext: '次数'
-					},
-					tooltip: {
-						trigger: 'axis'
-					},
-					legend: {
-						data: ['本周事件数量', '上周事件数量']
-					},
-					xAxis: {
-						type: 'category',
-						boundaryGap: false,
-						data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-					},
-					yAxis: {
-						type: 'value',
-					},
-					series: [{
-						name: '本周事件数量',
-						type: 'line',
-						data: [41, 55, 60, 43, 52, 33, 20],
-						markPoint: {
-							data: [
-								{type: 'max', name: '最大值'},
-								{type: 'min', name: '最小值'}
-							]
-						},
-					},
-					{
-						name: '上周事件数量',
-						type: 'line',
-						data: [60, 75, 67, 83, 52, 33, 40],
-						markPoint: {
-							data: [
-								{type: 'max', name: '最大值'},
-								{type: 'min', name: '最小值'}
-							]
-						},
-					}]
-				})
-				},200)
-// 				test2.setOption({
-// 					title: {
-// 						text: '故障数量对比',
-// 						subtext: '次数'
-// 					},
-// 					tooltip: {
-// 						trigger: 'axis'
-// 					},
-// 					legend: {
-// 						data: ['本周故障数量', '上周故障数量']
-// 					},
-// 					xAxis: {
-// 						type: 'category',
-// 						boundaryGap: false,
-// 						data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-// 					},
-// 					yAxis: {
-// 						type: 'value',
-// 					},
-// 					series: [{
-// 						name: '本周故障数量',
-// 						type: 'line',
-// 						data: [1, 3, 2, 5, 3, 2, 0],
-// 						markPoint: {
-// 							data: [
-// 								{type: 'max', name: '最大值'},
-// 								{type: 'min', name: '最小值'}
-// 							]
-// 						},
-// 						itemStyle : {
-// 							normal : {
-// 								color:'#e69d87',
-// 								lineStyle:{
-// 									color:'#e69d87'
-// 								}
-// 							}
-// 						},
-// 					},
-// 					{
-// 						name: '上周故障数量',
-// 						type: 'line',
-// 						data: [1, 3, 2, 1, 1, 0, 2],
-// 						markPoint: {
-// 							data: [
-// 								{type: 'max', name: '最大值'},
-// 								{type: 'min', name: '最小值'}
-// 							]
-// 						},
-// 						itemStyle : {
-// 							normal : {
-// 								color:'#759aa0',
-// 								lineStyle:{
-// 									color:'#759aa0'
-// 								}
-// 							}
-// 						},
-// 					}]
-// 				})
 			},
 		}
 	}

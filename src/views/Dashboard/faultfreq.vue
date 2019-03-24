@@ -32,16 +32,17 @@
 					sunday:"0",
 				},
 				topcode:[],
-				codelist:[]
+				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
+						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
+						'E10','E11','E12','E13','E14',
+						'E15','层站召唤通讯故障','轿厢通讯故障','并联通讯故障','开门故障',
+						'关门故障','开关门到位故障','平层信号异常','终端减速开关故障','下限位信号异常',
+						'上限位信号异常','打滑故障','电梯速度异常','电机反转故障','磁极位置学习故障',
+						'E30','停车速度检测','井道自学习故障','马达过热故障','制动力严重不足',
+						  '制动力不足警告',]
 			};
 		},
 		created(){
-			this.LastWeek = this.getWeek(7)
-			this.LastWeekend = this.getWeek(1)
-			this.NowWeek = this.getWeek(0)
-			this.NowWeekend = this.getWeek(-6)
-			this.getLastData(this.LastWeek,this.LastWeekend)
-			this.getData(this.NowWeek,this.NowWeekend)
 			// setTimeout(() => {
 				this.getfaultfreq();
 			// },500)
@@ -50,57 +51,11 @@
 			draggable,
 		},
 		methods: {
-			async getLastData(val,item){
-				let res = await this.$api.orderCount({
-					starttime:val,
-					endtime:item,
-				})
-				this.Lastlist.monday = res.data.data.monday
-				this.Lastlist.tuesday = res.data.data.tuesday
-				this.Lastlist.wensday = res.data.data.wensday
-				this.Lastlist.thursday = res.data.data.thursday
-				this.Lastlist.friday = res.data.data.friday
-				this.Lastlist.saturday = res.data.data.saturday
-				this.Lastlist.sunday = res.data.data.sunday
-			},
-			async getData(val,item){
-				let res = await this.$api.orderCount({
-					starttime:val,
-					endtime:item,
-				})
-				this.list.monday = res.data.data.monday
-				this.list.tuesday = res.data.data.tuesday
-				this.list.wensday = res.data.data.wensday
-				this.list.thursday = res.data.data.thursday
-				this.list.friday = res.data.data.friday
-				this.list.saturday = res.data.data.saturday
-				this.list.sunday = res.data.data.sunday
-			},
-			getWeek(n){
-				var now = new Date()
-				var year = now.getFullYear()
-				var month = now.getMonth()+1
-				var date = now.getDate()
-				var day = now.getDay()
-				if(day !== 0){
-					n =n+day-1
-				}else{
-					n =n+day
-				}
-				if(day){
-					if(month>1){
-						month=month
-					}else{
-						year=year-1
-						month=12
-					}
-				}
-				now.setDate(now.getDate()-n);	
-				year=now.getFullYear();
-				month=now.getMonth()+1;
-				date=now.getDate();
-				var s=year+"-"+(month<10?('0'+month):month)+"-"+(date<10?('0'+date):date);
-				return s
+			refresh(){
+				this.OrderCharts();
+				setTimeout(() => {
+					this.refresh();
+				},2000)
 			},
 			async getfaultfreq(){
 				let res = await this.$api.faultfreq()
@@ -109,73 +64,85 @@
 					this.topcode=res.data.list
 					// console.log(res.data)
 				}
-				this.OrderCharts()
+				this.refresh()
 			},
 			OrderCharts() {
+
 				let freq = this.$echarts.init(document.getElementById('freq'))
+				freq.resize()
 				freq.setOption({
 					title: {
-							text: '出现最多的故障TOP5',
+							text: '控制柜常见故障TOP5',
 							textStyle: {
 				              color: '#333333',
 				              fontSize:'16'
 				              },
 					},
 					xAxis: {
-							type: 'category',
-							data: [code[this.topcode[0].code]||'', '2', '3', '4', '5'],
-							splitLine: {
-							               			show: false, 
-							                    //  改变轴线颜色
-							                    lineStyle: {
-							                        // 使用深浅的间隔色
-							                        color: ['white']
-							                        }                            
-							                    },
-							                    //  改变x轴颜色
-							                    axisLine:{
-							                        lineStyle:{
-							                            color:'#224488',
-							                            width:0.5,//这里是为了突出显示加上的，可以去掉
-							                        }
-							                    },                         
-							                    //  改变x轴字体颜色和大小
-							                    axisLabel: {
-							                        textStyle: {
-							//                             color: '#333333',
-							                            fontSize:'16'
-							                        },
-							                    },
+						type: 'category',
+						data: [this.codelist[parseInt(this.topcode[0].code.toString(16))], 
+								this.codelist[parseInt(this.topcode[1].code.toString(16))], 
+								this.codelist[parseInt(this.topcode[2].code.toString(16))], 
+								this.codelist[parseInt(this.topcode[3].code.toString(16))], 
+								this.codelist[parseInt(this.topcode[4].code.toString(16))], 
+						],
+						splitLine: {
+	               			show: false, 
+		                    //  改变轴线颜色
+		                    lineStyle: {
+		                        // 使用深浅的间隔色
+		                        color: ['white']
+							}                            
+						},
+		                    //  改变x轴颜色
+	                    axisLine:{
+	                        lineStyle:{
+	                            color:'#FF7F00',
+	                            width:0.5,//这里是为了突出显示加上的，可以去掉
+	                        }
+	                    },                         
+	                    //  改变x轴字体颜色和大小
+	                    axisLabel: {
+	                        textStyle: {
+	//                             color: '#333333',
+	                            fontSize:'13'
+	                        },
+	                    },
 					},
 					yAxis: {
-							type: 'value',
-							splitLine: {
-							               			show: false, 
-							                    //  改变轴线颜色
-							                    lineStyle: {
-							                        // 使用深浅的间隔色
-							                        color: ['white']
-							                        }                            
-							                    },
-							                    //  改变x轴颜色
-							                    axisLine:{
-							                        lineStyle:{
-							                            color:'#333333',
-							//                            width:8,//这里是为了突出显示加上的，可以去掉
-							                        }
-							                    },                         
-							                    //  改变x轴字体颜色和大小
-							                    axisLabel: {
-							                        textStyle: {
-							                            color: '#333333',
-							                            fontSize:'16'
-							                        },
-							                    },
+						type: 'value',
+						splitLine: {
+	               			show: false, 
+	                    //  改变轴线颜色
+	                    lineStyle: {
+	                        // 使用深浅的间隔色
+	                        color: ['white']
+	                        }                            
+	                    },
+	                    //  改变x轴颜色
+	                    axisLine:{
+	                        barStyle:{
+	                            color:'#FF7F00',
+	//                            width:8,//这里是为了突出显示加上的，可以去掉
+	                        }
+	                    },                         
+	                    //  改变x轴字体颜色和大小
+	                    axisLabel: {
+	                        textStyle: {
+	                            color: '#333333',
+	                            fontSize:'16'
+	                        },
+	                    },
 					},
 					series: [{
-							data: [120, 200, 150, 80, 70],
+							data: [this.topcode[0].counter,
+									this.topcode[1].counter,
+									this.topcode[2].counter,
+									this.topcode[3].counter,
+									this.topcode[4].counter,
+							],
 							type: 'bar',
-							color:'#8B2252',
+							color:'#FF7Fff',
 					}]
 				})
 			},
