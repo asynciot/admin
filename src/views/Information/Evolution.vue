@@ -234,6 +234,7 @@ export default {
 		  this.getList()
 		},
 		async getList() {
+			this.versions=[]
 			let typ= await this.$api.gettype({type:'firmware',num:100,page:1})
 			typ.data.data.list.forEach(item=>{
 				this.versions.push(item.name)
