@@ -26,16 +26,22 @@
 												Button(type="primary" @click='getList("240")')|控制柜
 											Col(span=10)
 												Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI')
+											Col(span=6)
+												Button(type="error" @click='remove(1)')|清除
 										Row.mt-1(:gutter=5)
 											Col(span=6)
 												Button(type="primary"  @click='getList("15")')|门机
 											Col(span=10)
 												Input(type='text' v-model='ladder.door1' placeholder='门机IMEI')
+											Col(span=6)
+												Button(type="error" @click='remove(2)')|清除
 										Row.mt-1(:gutter=5)
 											Col(span=6)
 												Button(type="primary"  @click='getList("15")')|门机
 											Col(span=10)
 												Input(type='text' v-model='ladder.door2' placeholder='门机IMEI')
+											Col(span=6)
+												Button(type="error" @click='remove(3)')|清除
 								div.form-group
 									Card
 										Button(@click='NewLadder()' type='success')|完成
@@ -130,9 +136,11 @@
 									},
 									on: {
 										click: () => {
+											console.log(this.ladder.door1+this.ladder.door2)
 											if(this.query.device_type == "240"){
 												this.ladder.ctrl = params.row.IMEI
-											}else if(this.query.device_type == "15" && this.ladder.door1 == ''){
+											}else if(this.query.device_type != "240" && this.ladder.door1==null){
+												console.log(1)
 												this.ladder.door1 = params.row.IMEI
 											}else if(this.ladder.door1 != ''){
 												this.ladder.door2 = params.row.IMEI
@@ -188,6 +196,15 @@
 				this.$router.push({
 					name: 'editrole',
 				})
+			},
+			remove(item){
+				if(item==1){
+					this.ladder.ctrl = ''
+				}else if(item == 2){
+					this.ladder.door1 = null
+				}else if(item == 3){
+					this.ladder.door2 = ''
+				}
 			},
 			pageChange(val) {
 				this.query.page = val

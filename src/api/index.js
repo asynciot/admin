@@ -107,6 +107,9 @@ export default {
 	eventCount:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadCount'}, data))
 	},
+	eventtop:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'Activedoor'}, data))
+	},
 	upload: (data) => {
 		return DeviceApi.save({key1:'Upload'}, data)
 	},
@@ -165,6 +168,9 @@ export default {
 	orderAdopt:(data)=> {
 		return DeviceApi.save({key1:'Order',key2:'adopt'}, data)
 	},
+	faultfreq:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Order',key2:'Faultfreq'}, data))
+	},
 	//ladder
 	newLadder:(data)=> {
 		return DeviceApi.save({key1:'Ladder'}, data)
@@ -172,10 +178,10 @@ export default {
 	readLadder:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder'}, data))
 	},
-	faultfreq:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Order',key2:'Faultfreq'}, data))
+	removeLadder:(data)=> {
+		return DeviceApi.remove(Object.assign({key1:'Ladder'}, data))
 	},
-	eventtop:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Event',key2:'Activedoor'}, data))
-	},
+	updateLadder: (data) => {
+		return DeviceApi.update({key1:'Ladder'}, data)
+	},	
 }

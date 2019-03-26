@@ -58,17 +58,14 @@
 					{
 						title: '控制柜',
 						key: 'ctrl',
-						width: 138,
 					},
 					{
 						title: '门机',
 						key: 'door1',
-						width: 138,
 					},
 					{
 						title: '门机',
 						key: 'door2',
-						width: 138,
 					},
 					{
 						title: 'IP定位',
@@ -143,6 +140,20 @@
 										},
 									}
 								}, '查看/编辑'),
+								h('Button', {
+									props: {
+										type: 'error',
+										size: "small",
+									},
+									style: {
+										marginRight: '10px',
+									},
+									on: {
+										click: () => {
+											this.remLadder(params.row.id)
+										},
+									}
+								}, '删除'),
 							])
 						}
 					}
@@ -212,22 +223,32 @@
 					});
 				}
 			},
-			async delfl(val) {
-				let res = await this.$api.delfollow({
-					device_id: val
+			async remLadder(val) {
+				this.$Modal.confirm({
+					title: '删除设备',
+					content:'你确定要删除该电梯么？',
+					onOk: () => {
+						let res = this.$api.removeLadder({
+							ladder_id: val
+						})
+						if(res.data.code==0){
+							this.$Notice.success({
+								title: '成功',
+								desc: '已删除该设备！'
+							});
+						}else{
+							this.$Notice.error({
+								title: '失败',
+								desc: '发生错误！'
+							});
+						}
+					},
+					onCancel: () => {
+					}
 				})
-				if (res.data.code == 0) {
-					this.$Notice.success({
-						title: '成功',
-						desc: '不再关注该设备'
-					});
+				setTimeout(()=>{
 					this.getList()
-				} else {
-					this.$Notice.error({
-						title: '失败',
-						desc: '发生错误'
-					});
-				}
+				},500)
 			},
 			goLadder(){
 				this.$router.push({
