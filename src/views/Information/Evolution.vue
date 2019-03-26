@@ -32,7 +32,6 @@ import {
 } from '@/utils'
 export default {
   created() {
-    this.getList()
 		this.getVersion()
   },
   data() {
@@ -233,12 +232,15 @@ export default {
 		  this.options.page = val
 		  this.getList()
 		},
-		async getList() {
+		async getVersion() {
 			this.versions=[]
 			let typ= await this.$api.gettype({type:'firmware',num:100,page:1})
 			typ.data.data.list.forEach(item=>{
 				this.versions.push(item.name)
 			})
+			this.getList()
+		},
+		async getList() {
       this.loading = true
       let res = await this.$api.devices(this.options)
       this.loading = false
