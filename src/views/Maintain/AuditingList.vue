@@ -48,7 +48,7 @@
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
 				menu: [],
 				list:[],
-				totalNumber:'',
+				totalNumber:0,
 				show: {
 					state: 'untreated',
 					type: 'all',

@@ -114,7 +114,12 @@ div
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent' ,:disabled='upsuccess')|提交信息
 						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
 					Col(span=11)
-						Button(@click="del()" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|信息重置
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|信息重置
+				Col(span=24)
+					Col(span=12)
+						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%")|新建电梯
+					Col(span=12)
+						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|绑定到已有电梯
 	el-dialog(title="历史故障", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		div(style="margin: 0 auto")
@@ -380,44 +385,52 @@ export default {
 		getlist(val){
 			return val.split(';')
 		},
-		async burnn() {
+		newladder(){
+			this.$Modal.confirm({
+				title: '绑定电梯',
+				content:'你确定要新建电梯么？',
+				onOk: () => {
+					this.$router.push({
+						name: 'addladder',
+						params: {
+							IMEI: this.list.IMEI,
+							type: this.list.device_type,
+						}
+					})
+				},
+				onCancel: () => {}
+			})
+		},
+		adladder(){
+			this.$Modal.confirm({
+				title: '绑定电梯',
+				content:'你确定要绑定到已有的电梯？',
+				onOk: () => {
+					this.$router.push({
+						name: 'coverladder',
+						params: {
+							IMEI: this.list.IMEI,
+							type: this.list.device_type,
+						}
+					})
+				},
+				onCancel: () => {
+					
+				}
+			})
+		},
+		burnn() {
 			this.$Modal.confirm({
 				title: '确定要注册这台设备吗',
 				content:'',
 				onOk: () => {
 					this.toburnn()
-					setTimeout(()=>{
-						this.$Modal.confirm({
-							title: '绑定电梯',
-							content:'请选择绑定的方式',
-							okText: '新建电梯',
-							cancelText: '添加到已有电梯',
-							onOk: () => {
-								this.$router.push({
-									name: 'addladder',
-									params: {
-										IMEI: this.list.IMEI,
-										type: this.list.device_type,
-									}
-								})
-							},
-							onCancel: () => {
-								this.$router.push({
-									name: 'coverladder',
-									params: {
-										IMEI: this.list.IMEI,
-										type: this.list.device_type,
-									}
-								})
-							}
-						})
-					}, 1000)
 				},
 				onCancel: () => {
 				}
 			})
 		},
-		async burn() {
+		burn() {
 			this.$Modal.confirm({
 				title: '确定要强制注册吗',
 				content:'可能会生成错误信息！',
@@ -428,7 +441,7 @@ export default {
 				}
 			})	
 		},
-		async clearr() {
+		clearr() {
 			this.$Modal.confirm({
 				title: '确定要解除注册吗',
 				content:'',
@@ -439,7 +452,7 @@ export default {
 				}
 			})	
 		},
-		async clear() {
+		clear() {
 			this.$Modal.confirm({
 				title: '确定要强制解除注册吗',
 				content:'可能会生成错误信息！',

@@ -23,7 +23,9 @@ const CtrlParameter = resolve => require(['@/views/Watch/Machine/CtrlParameter']
 const DoorParameter = resolve => require(['@/views/Watch/Machine/DoorParameter'], resolve)
 const Memory = resolve => require(['@/views/Watch/Memory'], resolve)
 const Map = resolve => require(['@/views/Watch/Map'], resolve)
+const LadderMap = resolve => require(['@/views/Watch/Ladder/Index'], resolve)
 const DeviceInfo = resolve => require(['@/views/Watch/DeviceInfo'], resolve)
+const LadderInfo = resolve => require(['@/views/Watch/Ladder/LadderInfo'], resolve)
 const List = resolve => require(['@/views/Watch/List'], resolve)
 const AlertTake = resolve => require(['@/views/Watch/Alert'], resolve)
 const AlertInfo = resolve => require(['@/views/Watch/AlertInfo'], resolve)
@@ -192,6 +194,13 @@ export default new Router({
 						name: '地图'
 					},
 					component: Map
+				},{
+					path: '/watch/ladder',
+					name: 'laddermap',
+					meta: {
+						name: '地图'
+					},
+					component: LadderMap
 				}, {
 					path: '/watch/list',
 					name: 'list',
@@ -220,6 +229,13 @@ export default new Router({
 						name: '设备'
 					},
 					component: DeviceInfo
+				}, {
+					path: '/watch/ladder/:IMEI',
+					name: 'ladderInfo',
+					meta: {
+						name: '设备'
+					},
+					component: LadderInfo
 				}, {
 					path: '/watch/device/doorhistory/:id',
 					name: 'doorhistory',

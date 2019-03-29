@@ -70,9 +70,9 @@
 					{
 						title: 'IP定位',
 						key: 'ipaddr',
-// 						render: (h, params) => {
-// 							return h('div', params.row.ip_country + params.row.ip_region + params.row.ip_city)
-// 						}
+						render: (h, params) => {
+							return h('div', params.row.ip_country + params.row.ip_region + params.row.ip_city)
+						}
 					},
 					{
 						title: '安装地址',
@@ -96,6 +96,7 @@
 					},
 					{
 						title: '操作',
+						width:240,
 						render: (h, params) => {
 							var follow = "关注电梯"
 							this.follow.forEach(item => {
@@ -114,10 +115,11 @@
 									},
 									on: {
 										click: () => {
-											if (follow == "关注电梯")
-												this.addfl(params.row.IMEI)
-											if (follow == "取消关注")
+											if (follow == "关注电梯"){
+												this.addfl(params.row.ctrl,params.row.door1,params.row.door2)
+											}else if(follow == "取消关注"){
 												this.delfl(params.row.id)
+											}
 										},
 									}
 								}, follow),
@@ -193,7 +195,7 @@
 				this.getList()
 			},
 			async getList() {
-				let res = await this.$api.readLadder(this.query)
+				let res = await this.$api.reLadder(this.query)
 				this.list = res.data.data.list
 				this.total = res.data.data.totalNumber
 			},
@@ -201,27 +203,17 @@
 				this.options.page = 1
 				this.getList()
 			},
+			addfl(val,item,inx){
+				this.$api.newfollow({
+					ctrl:val,
+					door1:item,
+					door2:inx,
+				})
+			},
 			Onchange: function(val) {
 				this.$router.push({
 					name: val,
 				})
-			},
-			async addfl(val) {
-				let res = await this.$api.addfollow({
-					imei: val
-				})
-				if (res.data.code == 0) {
-					this.$Notice.success({
-						title: '成功',
-						desc: '关注成功'
-					});
-					this.getList()
-				} else {
-					this.$Notice.error({
-						title: '错误',
-						desc: '关注失败'
-					});
-				}
 			},
 			async remLadder(val) {
 				this.$Modal.confirm({

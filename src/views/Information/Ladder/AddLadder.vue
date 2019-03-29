@@ -25,21 +25,21 @@
 											Col(span=6)
 												Button(type="primary" @click='getList("240")')|控制柜
 											Col(span=10)
-												Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI')
+												Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI' disabled)
 											Col(span=6)
 												Button(type="error" @click='remove(1)')|清除
 										Row.mt-1(:gutter=5)
 											Col(span=6)
 												Button(type="primary"  @click='getList("15")')|门机
 											Col(span=10)
-												Input(type='text' v-model='ladder.door1' placeholder='门机IMEI')
+												Input(type='text' v-model='ladder.door1' placeholder='门机IMEI' disabled)
 											Col(span=6)
 												Button(type="error" @click='remove(2)')|清除
 										Row.mt-1(:gutter=5)
 											Col(span=6)
 												Button(type="primary"  @click='getList("15")')|门机
 											Col(span=10)
-												Input(type='text' v-model='ladder.door2' placeholder='门机IMEI')
+												Input(type='text' v-model='ladder.door2' placeholder='门机IMEI' disabled)
 											Col(span=6)
 												Button(type="error" @click='remove(3)')|清除
 								div.form-group
@@ -136,11 +136,9 @@
 									},
 									on: {
 										click: () => {
-											console.log(this.ladder.door1+this.ladder.door2)
 											if(this.query.device_type == "240"){
 												this.ladder.ctrl = params.row.IMEI
 											}else if(this.query.device_type != "240" && this.ladder.door1==null){
-												console.log(1)
 												this.ladder.door1 = params.row.IMEI
 											}else if(this.ladder.door1 != ''){
 												this.ladder.door2 = params.row.IMEI
@@ -163,9 +161,9 @@
 				},
 				ladder:{
 					name:'',
-					ctrl:'',
-					door1:'',
-					door2:'',
+					ctrl:null,
+					door1:null,
+					door2:null,
 					install_addr:'',
 				},
 			}
@@ -173,7 +171,7 @@
 		created() {
 			if(this.$route.params.type == 240){
 				this.ladder.ctrl = this.$route.params.IMEI
-			}else{
+			}else if(this.$route.params.type == 15){
 				this.ladder.door1 = this.$route.params.IMEI
 			}
 			this.getList("240")
@@ -199,11 +197,11 @@
 			},
 			remove(item){
 				if(item==1){
-					this.ladder.ctrl = ''
+					this.ladder.ctrl = null
 				}else if(item == 2){
 					this.ladder.door1 = null
 				}else if(item == 3){
-					this.ladder.door2 = ''
+					this.ladder.door2 = null
 				}
 			},
 			pageChange(val) {

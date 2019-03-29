@@ -42,16 +42,12 @@
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)
 			this.NowWeekend = this.getWeek(-6)
-			this.$Modal.info({
-				title: "正在生产图表",
-				content: "请稍后",
+			this.$Notice.success({
+				title: '成功',
+				desc: '正在生产图表'
 			});
 			this.getLastData(this.LastWeek,this.LastWeekend)
 			this.getData(this.NowWeek,this.NowWeekend)
-		},
-		update(){
-			console.log(this.Lastlist)
-			
 		},
 		components: {
 			draggable,

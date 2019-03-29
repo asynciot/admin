@@ -178,6 +178,9 @@
 						sub:[{
 							name:'map',
 							label:'运行状态',
+						},{
+							name:'laddermap',
+							label:'电梯状态',
 						},
 // 						{
 // 							name:'alertTake',

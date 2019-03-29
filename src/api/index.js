@@ -130,11 +130,23 @@ export default {
 	follow:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'follow'}, data))
 	},
+	followladder:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'followladder'}, data))
+	},
+	ladder:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'followladder',key2:'ReadMore'}, data))
+	},
 	addfollow:(data)=> {
 		return DeviceApi.save({key1:'follow'}, data)
 	},
+	newfollow:(data)=> {
+		return DeviceApi.save({key1:'followladder'}, data)
+	},
 	delfollow:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'follow'}, data))
+	},
+	removefollow:(data)=> {
+		return DeviceApi.remove(Object.assign({key1:'followladder'}, data))
 	},
 	//dispatch
 	getRepair:(data)=> {
@@ -177,6 +189,9 @@ export default {
 	},
 	readLadder:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder'}, data))
+	},
+	reLadder:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadMore'}, data))
 	},
 	removeLadder:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'Ladder'}, data))

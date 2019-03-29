@@ -12,7 +12,7 @@ div.layout-content-main
 					Button(type="primary" icon='ios-search' @click='getList()')|搜索
 					Button.mr-10(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备
 				Col(span="3")
-					upload(:before-upload='handleUpload')
+					upload(:before-upload='handleUpload' action='')
 						Button(icon='ios-cloud-upload-outline') {{filename}}
 				Col(span="2")
 					Button.mr-10(type='success', @click='confirm()' style='' v-if='!upsuccess') 上传
@@ -50,6 +50,7 @@ export default {
 			upsuccess: true,
 			filename: '请选择文件',
 			select: [],
+			query:{},
 			api: api,
 			ladderApi: ladderApi,
 			loading:false,
@@ -150,8 +151,7 @@ export default {
         page: 1,
         num: 10,
         total: 1,
-				version: '0.965b',
-				search_info: '',
+		search_info: '',
       }
     }
   },
