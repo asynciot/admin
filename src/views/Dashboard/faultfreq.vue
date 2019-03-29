@@ -1,6 +1,12 @@
 <template lang="jade">
 	div.layout-content-main(style="padding:0")
-		div.ch(id="freq" style="height:360px;width:100%")
+		Col(span='10' style="font-size : large;font-weight: bold;color:#333333")|控制柜常见故障TOP5
+		Col(span='6')
+			DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="starttime" style='' @on-change="search()")
+		Col(span='1' align='center')|→
+		Col(span='6')
+			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
+		div.ch(id="freq" style="height:335px;width:100%")
 </template>
 
 <script>
@@ -9,6 +15,8 @@
 	export default {
 		data() {
 			return {
+				starttime:'',
+				endtime:'',
 				LastWeek:'',
 				LastWeekend:'',
 				NowWeek:'',
@@ -31,6 +39,7 @@
 					saturday:"0",
 					sunday:"0",
 				},
+				time:'',
 				topcode:[],
 				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
 						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
@@ -55,14 +64,27 @@
 				this.OrderCharts();
 				setTimeout(() => {
 					this.refresh();
-				},2000)
+				},1000)
 			},
-			async getfaultfreq(){
-				let res = await this.$api.faultfreq()
-				
+			async search(){
+				if ((this.starttime>this.endtime)&&(this.endtime !="")) {
+					this.endtime=this.starttime
+					this.$Notice.warning({
+						title: '提示',
+						desc: '截至日期必须大于开始日期',
+						})
+					}
+				let res = await this.$api.faultfreq({starttime: Date.parse(this.starttime),
+													endtime: Date.parse(this.endtime)+86400000})
 				if (res.data.code == 0){
 					this.topcode=res.data.list
-					// console.log(res.data)
+				}
+			},
+			async getfaultfreq(){
+				// var time=Date.parse(this.$format(new Date(), 'yyyy-MM-DD'))
+				let res = await this.$api.faultfreq()
+				if (res.data.code == 0){
+					this.topcode=res.data.list
 				}
 				this.refresh()
 			},
@@ -72,10 +94,12 @@
 				freq.resize()
 				freq.setOption({
 					title: {
+							show: false,
+							padding:0,
 							text: '控制柜常见故障TOP5',
 							textStyle: {
 				              color: '#333333',
-				              fontSize:'16'
+				              fontSize:'1'
 				              },
 					},
 					xAxis: {
@@ -149,7 +173,7 @@
 									//通过数组下标选择颜色
 									color: function(params) {
 											var colorList = [
-											 '#FF7F00','#FF7F00','#FF7F00','#FF7F00','#FF7F00',
+											 '#D02000','#708000','#308040','#006090','#0000F0',
 											 '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD'
 											 ];
 										return colorList[params.dataIndex]

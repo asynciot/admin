@@ -1,6 +1,13 @@
 <template lang="jade">
 	div.layout-content-main(style="padding:0")
-		div.ch(id="activedoor" style="height:360px;width:100%")
+		Col(span='10' style="font-size : large;font-weight: bold;color:#333333")|设备使用次数TOP5
+		Col(span='6')
+			DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="starttime" style='' @on-change="search()")
+		Col(span='1' align='center')
+			div(style="margin-top:5px")|→
+		Col(span='6')
+			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
+		div.ch(id="activedoor" style="height:335px;width:100%")
 </template>
 
 <script>
@@ -32,11 +39,13 @@
 					sunday:"0",
 				},
 				topdevice:[],
+				starttime:'',
+				endtime:'',
 			};
 		},
 		created(){
 			// setTimeout(() => {
-				this.getfaultfreq();
+				this.getactivedoor();
 			// },500)
 		},
 		components: {
@@ -44,22 +53,33 @@
 		},
 		methods: {
 			refresh(){
-				this.OrderCharts();
-				
+				this.OrderCharts()
 				setTimeout(() => {
 					this.refresh();
-				},2000)
+				},1000)
 			},
-			async getfaultfreq(){
-				let res = await this.$api.activedoor()
-				var ech
-				if (res.data.code == 0){
-					for (var i=0;i<5;i++){
-						ech = await this.$api.devices({num:1,page:1,search_info:res.data.list[i].device_id,isreg: ''})			
-						if (ech.data.data.code == 0){if (ech.data.list[0].device_name != null) {res.data.list[i].name=ech.data.list[0].device_name}}
+			async search(){
+				var starttime=''
+				var endtime=''
+				if ((this.starttime>this.endtime)&&(this.endtime !="")) {
+					this.endtime=this.starttime
+					this.$Notice.warning({
+						title: '提示',
+						desc: '截至日期必须大于开始日期',
+						})
 					}
+				let res = await this.$api.activedoor({starttime: this.$format(this.starttime.toString(),'YYYY-MM-DD'),
+													endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD')})
+				this.topdevice=res.data.list
+				if (res.data.code == 0){
 					this.topdevice=res.data.list
-					// console.log(res.data)
+				}
+			},
+			async getactivedoor(){
+				let res = await this.$api.activedoor()
+				this.topdevice=res.data.list
+				if (res.data.code == 0){
+					this.topdevice=res.data.list
 				}
 				this.refresh()
 			},
@@ -69,6 +89,7 @@
 				activedoor.resize()
 				activedoor.setOption({
 					title: {
+							show:false,
 							text: '设备使用次数TOP5',
 							textStyle: {
 				              color: '#333333',
@@ -77,11 +98,11 @@
 					},
 					xAxis: {
 						type: 'category',
-						data: [this.topdevice[0].device_id, 
-								this.topdevice[1].device_id, 
-								this.topdevice[2].device_id, 
-								this.topdevice[3].device_id, 
-								this.topdevice[4].device_id, 
+						data: [this.topdevice[0].device_name, 
+								this.topdevice[1].device_name, 
+								this.topdevice[2].device_name, 
+								this.topdevice[3].device_name, 
+								this.topdevice[4].device_name, 
 						],
 						splitLine: {
 	               			show: false, 

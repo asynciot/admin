@@ -19,14 +19,14 @@
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center;">
-								<h3>{{usernum}}</h3>
+								<h3>{{allevents}}</h3>
 
-								<p>用户人数</p>
+								<p>故障设备</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-bag"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'userManage'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -36,14 +36,14 @@
 						<!-- small box -->
 						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center;">
-								<h3>{{emailnum}}<sup style="font-size: 20px"></sup></h3>
+								<h3>{{0}}<sup style="font-size: 20px"></sup></h3>
 
-								<p>未读邮件</p>
+								<p>可更新固件数</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'inform'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'evolution'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -53,9 +53,9 @@
 						<!-- small box -->
 						<div class="small-box bg-yellow">
 							<div class="inner" style="text-align:center;">
-								<h3>{{today}}/{{allevents}}</h3>
+								<h3>{{today}}</h3>
 
-								<p>今日完成事件 {{parseInt(100*today/allevents)}}%</p>
+								<p>今日完成任务</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
@@ -316,7 +316,7 @@
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
 										<div>
-											<Col span='12' style="font-size: large;font-weight: bold;color:#333" >今年设备故障数量</Col>
+											<Col span='12' style="font-size: large;font-weight: bold;color:#333333" >今年设备故障数量</Col>
 											<Col span='1'> <div style="height:20px;width:20px;background-color:#dcdcdc;" @click="fault=!fault;areafault()"></div></Col>
 											<Col span='4'> 
 											<div style="color:#888888" @click="fault=!fault;areafault()" v-if="!fault">新添故障设备</div>
@@ -924,7 +924,6 @@
 					//Boolean - whether to make the chart responsive to window resizing
 					responsive              : true
 					}
-				
 					//Create the line chart
 					areaChart.Line(areaChartData, areaChartOptions)
 					},200)
