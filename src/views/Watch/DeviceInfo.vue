@@ -173,10 +173,10 @@
 								Col(span=7)
 									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , placeholder="关键词" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
 								Col(span=6)
-									DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="options.starttime" style='width: 100%;' @on-change="search()")
+									DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="starttime" style='width: 100%;' @on-change="search()")
 								Col(span=1)|→
 								Col(span=6)
-									DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
+									DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='width: 100%;' @on-change="search()")
 							div(style='font-size: large;margin-top:40px;', v-if='total==0')| 这台设备没有事件记录
 							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px")
 								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
@@ -238,6 +238,8 @@
 					starttime:'',
 					endtime:'',
 				},
+				starttime:'',
+				endtime:'',
 				columns: [{
 					title: ' ',
 					key: 'device_name'
@@ -308,6 +310,7 @@
 				}
 			},
 			async getData() {
+				this.options.page=1
 				this.options.IMEI=this.$route.params.IMEI
 				let res = await this.$api.devices({num:1,page:1,IMEI:this.$route.params.IMEI})
 				if(!res.data.code){
@@ -356,21 +359,24 @@
 				this.now=Date.parse(new Date())
 			},
 			async search() {
+				this.options.page=1
 				this.time=new Date(this.options.time)
 				if (this.keyword=="id") {this.options.id=this.search_info}
 				if (this.keyword=="length") {this.options["length"]=this.search_info}
 				if (this.keyword=="interval") {this.options.interval=this.search_info}			
 				if (this.options.search_info == "") {this.list=this.list2}
 				else {
-					this.options.starttime=formatDate(this.options.starttime,'yyyy-MM-dd')
-					this.options.endtime=formatDate(this.options.endtime,'yyyy-MM-dd')
-					if ((this.options.starttime>=this.options.endtime)&&(this.options.endtime !="")) {
-						this.options.endtime=formatDate(Date.parse(this.options.starttime)+86400000,'yyyy-MM-dd')
+					this.starttime=formatDate(this.starttime,'yyyy-MM-dd')
+					this.endtime=formatDate(this.endtime,'yyyy-MM-dd')
+					if ((this.starttime>this.endtime)&&(this.endtime !="")) {
+						this.endtime=this.starttime
 						this.$Notice.warning({
 							title: '提示',
 							desc: '截至日期必须大于开始日期',
 							})
 						}	
+					this.options.starttime=this.starttime
+					this.options.endtime=formatDate(Date.parse(this.endtime)+86400000,'yyyy-MM-dd')
 					let res = await this.$api.event(this.options)
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
@@ -404,8 +410,9 @@
 			},
 			async handleReachBottom () {
 				if ( this.list.length<this.total ) {
+					this.options.page++
 					var options2=this.options
-					options2.page=Math.ceil(this.list.length/9)+1
+					// options2.page=Math.ceil(this.list.length/9)+1
 					options2.num=9
 					let eve= await this.$api.event(options2)
 					for (var i=0;i<9;i++){

@@ -107,7 +107,7 @@ export default {
 	eventCount:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadCount'}, data))
 	},
-	eventtop:(data)=> {
+	activedoor:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Event',key2:'Activedoor'}, data))
 	},
 	upload: (data) => {
