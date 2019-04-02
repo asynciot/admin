@@ -77,7 +77,7 @@
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'alList'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
