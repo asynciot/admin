@@ -72,7 +72,7 @@
 						</Col>
 						<Col span="1" style="">
 							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;" size="small" @click="full=true">
-								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon></div>
+								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;全屏</div>
 							</Button>
 						</Col>
 					</Row> <Row>
@@ -89,8 +89,7 @@
 					</Row>
 				</Header>
 				<div @click="full=false" v-if="full" style="text-align:right;height:15px;">
-					&nbsp;
-					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;margin-bottom: 5px;"></icon> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;margin-bottom: 5px;"></icon> 退出全屏 &nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
 				<Content :style="{padding: '0 4px 4px',position:'relative',minHeight: '91vh'}" >
 					<div class="layout-content-main">

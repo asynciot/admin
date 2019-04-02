@@ -4,7 +4,7 @@
 			Row(:gutter=30)
 				Col(span=7)| &nbsp;
 				Col(span=10)
-					Card(style="height:500px")
+					Card(style="height:540px")
 						Col(span=24)
 							Form(ref="form",:model="form",:rules="rules",:label-width="120")
 								Row(:gutter="5")
@@ -17,6 +17,8 @@
 										Form-item(label="故障原因" v-if="list.type == '故障'")|{{list.code}}
 										Form-item(label="基站定位")|{{list.cell_address}}
 										Form-item(label="安装地址")|{{list.install_addr}}
+										Form-item(label="预计完成时间")
+											DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="expect" style='' @on-change="check()")
 						Col(span=24)
 							Col(span=12 align="center")
 								Button(type="success",icon="plus",@click="order()")|确认接单
@@ -48,6 +50,7 @@
 					num: 300,
 					total: 0,
 				},
+				expect:'',
 				file:'',
 				filename:'',
 				upsuccess:false,
@@ -71,6 +74,15 @@
 				}
 				else {
 					this.faultcode=true;
+				}
+			},
+			check(){
+				if (Date.parse(this.expect)+86400000<Date.parse(new Date())){
+					this.$Notice.warning({
+						title: '最快也只能今天完成',
+						desc: '如果不确定就空着吧',
+						})
+					this.expect=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
 				}
 			},
 			async getData(){
@@ -105,7 +117,7 @@
 				else{}
 			},
 			async order(){
-				let res = await this.$api.order({order_id:this.list.id,mobile:this.mobile})
+				let res = await this.$api.order({order_id:this.list.id,mobile:this.mobile,expect_time:Date.parse(this.expect).toString()})
 				if (res.data.code == 0) {
 					this.$Notice.success({
 					title: '成功',
