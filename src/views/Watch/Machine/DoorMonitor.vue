@@ -206,7 +206,6 @@
 				}
 			}, 
 			websocketonopen() {
-				console.log("WebSocket连接成功");
 				this.loading='WebSocket连接成功，请等待数据'
 			},
 			websocketonerror(e) { //错误
@@ -243,7 +242,6 @@
 				this.loading="此次实时数据已结束"
 			},
 			websocketclosed(){
-				console.log("1")
 			},
 			//电梯数据展示
 			async person(){
@@ -258,37 +256,38 @@
 				let buffer = []
 				buffer = base64url.toBuffer(val.data);	//8位转流
 				console.log(buffer)
-				var _this = this
+				// var _this = this
 				this.count= 0
-				if (_this.t_start == '') _this.t_start = val.time
-				_this.t_end = _this.t_start+this.$route.params.duration*1000
+				if (this.t_start == '') this.t_start = val.time
+				this.t_end = this.t_start+this.$route.params.duration*1000
 // 				var inte = setInterval(function () {
 // 					if((_this.count+8) <= buffer.length){
-						_this.show.openIn = (buffer[_this.count+0]&0x80)>>7
-						_this.show.closeIn = (buffer[_this.count+0]&0x40)>>6						//获取关门信号
-						_this.show.openTo =	(buffer[_this.count+0]&0x20)>>5								//获取开到位输入信号
-						_this.show.closeTo = (buffer[_this.count+0]&0x10)>>4								//获取关到位输入信号
-						_this.show.openToOut = (buffer[_this.count+0]&0x02)>>1					//获取开到位输出信号
-						_this.show.closeToOut = buffer[_this.count+0]&0x01					//获取关到位输出信号				
-						_this.show.door	= (buffer[_this.count+1]&0x80)>>7									//正在开门信号
-						_this.show.open	= (buffer[_this.count+1]&0x40)>>6									//正在开门信号
-						_this.show.close =	(buffer[_this.count+1]&0x20)>>5						//正在关门信号
-						_this.show.openKeep	= (buffer[_this.count+1]&0x10)>>4						//开门到位维持信号
-						_this.show.closeKeep	= (buffer[_this.count+1]&0x08)>>3						//关门到位维持信号
-						_this.show.stop	= (buffer[_this.count+1]&0x04)>>2								//停止输出信号
-						_this.show.inHigh = (buffer[_this.count+1]&0x02)>>1						//输入电压过高
-						_this.show.inLow = 	buffer[_this.count+1]&0x01							//输入电压过低
-						_this.show.outHigh = (buffer[_this.count+2]&0x80)>>7						//输出过流
-						_this.show.motorHigh = (buffer[_this.count+2]&0x40)>>6				//电机过载
-						_this.show.flySafe = (buffer[_this.count+2]&0x20)>>5						//飞车保护
-						_this.show.closeStop = (buffer[_this.count+2]&0x10)>>4					//开关门受阻
-						_this.show.position	= ((buffer[_this.count+2]&0x0f)<<8)+(buffer[_this.count+3]&0xff)		//获取位置信号
-						_this.show.current = (((buffer[_this.count+4]&0xff)<<8)+(buffer[_this.count+5]&0xff))/1000		//获取电流信号
-						_this.show.speed = (((buffer[_this.count+6]&0xff)<<8)+(buffer[_this.count+7]&0xff))/1000
-						if(_this.show.speed>32.767){
-							_this.show.speed = _this.show.speed-65.535
-						}					
-						_this.getX()
+				this.show.openIn = (buffer[this.count+0]&0x80)>>7
+				this.show.closeIn = (buffer[this.count+0]&0x40)>>6						//获取关门信号
+				this.show.openTo =	(buffer[this.count+0]&0x20)>>5								//获取开到位输入信号
+				this.show.closeTo = (buffer[this.count+0]&0x10)>>4								//获取关到位输入信号
+				this.show.openToOut = (buffer[this.count+0]&0x02)>>1					//获取开到位输出信号
+				this.show.closeToOut = buffer[this.count+0]&0x01					//获取关到位输出信号				
+				this.show.door	= (buffer[this.count+1]&0x80)>>7									//正在开门信号
+				this.show.open	= (buffer[this.count+1]&0x40)>>6									//正在开门信号
+				this.show.close =	(buffer[this.count+1]&0x20)>>5						//正在关门信号
+				this.show.openKeep	= (buffer[this.count+1]&0x10)>>4						//开门到位维持信号
+				this.show.closeKeep	= (buffer[this.count+1]&0x08)>>3						//关门到位维持信号
+				this.show.stop	= (buffer[this.count+1]&0x04)>>2								//停止输出信号
+				this.show.inHigh = (buffer[this.count+1]&0x02)>>1						//输入电压过高
+				this.show.inLow = 	buffer[this.count+1]&0x01							//输入电压过低
+				this.show.outHigh = (buffer[this.count+2]&0x80)>>7						//输出过流
+				this.show.motorHigh = (buffer[this.count+2]&0x40)>>6				//电机过载
+				this.show.flySafe = (buffer[this.count+2]&0x20)>>5						//飞车保护
+				this.show.closeStop = (buffer[this.count+2]&0x10)>>4					//开关门受阻
+				this.show.position	= ((buffer[this.count+2]&0x0f)<<8)+(buffer[this.count+3]&0xff)		//获取位置信号
+				this.show.current = (((buffer[this.count+4]&0xff)<<8)+(buffer[this.count+5]&0xff))/1000		//获取电流信号
+				this.show.speed = (((buffer[this.count+6]&0xff)<<8)+(buffer[this.count+7]&0xff))/1000
+				if(this.show.speed>32.767){
+					this.show.speed = this.show.speed-65.535
+				}
+				console.log(this.show)
+				this.getX()
 // 						_this.count+=8
 // 					}
 // 				}, _this.query.interval);

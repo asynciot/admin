@@ -100,27 +100,14 @@
 				searchkey: '搜索类型',
 				loading: false,
 				columns: [
-					// 				type: 'selection',
-					// 				align: 'left',
-					// 				width: 35,
-					// 				},{
 					{
 						title: '设备名称',
-						align: 'left',
+						key: 'device_name',
 						width: 110,
-						render: (h, params) => {
+						
+						render: (h, params) =>{
 							var type = '';
 							var reg = '';
-							// 					var namecolor=params.row.tagcolor.split(';')
-							// 					var color=''
-							// 					if (namecolor[0] != null){
-							// 						if (namecolor[0] == 'green') color='#008B00'
-							// 						if (namecolor[0] == 'red') color='#EE0000'
-							// 						if (namecolor[0] == 'yellow') color='#FFFF00'
-							// 						if (namecolor[0] == 'blue') color='#0000EE'
-							// 						if (namecolor[0] == 'gray') color='#FF8C00'
-							// 						if (namecolor[0] == 'perple') color='#7D26CD'
-							// 					}
 							if (params.row.install_addr == null) {
 								type = 'ios-help';
 								reg = '设备没有输入安装地址;';
@@ -142,35 +129,61 @@
 									props: {
 										trigger: "hover",
 										placement: "right-start",
-										content: reg
+										content: reg,
 									},
 									'style': {
-										color: '#FF7F24'
+										color: '#FF7F24',
 									}
 								}, [
-									h('Icon', {
+									h('Button', {
 										props: {
-											type: type,
+											type: 'text',
+											size: "small",
+											display:"inline-block",
 										},
-									}),
-								]), params.row.device_name
+										on: {
+											click: () => {
+												this.$router.push({
+													name: 'deviceInfo',
+													params: {
+														id: params.row.id,
+														IMEI: params.row.IMEI,
+														type: params.row.device_type,
+													}
+												})
+											}
+										}
+									}, params.row.device_name),
+								]),
 							])
 						}
+						
 					},
 					{
 						title: 'IMEI(设备识别码)',
 						key: 'IMEI',
 						width: 138,
-						// 				render: (h, params) => {
-						// 					return h('div',[
-						// 						h('icon', {
-						// 							name:'ios-call-outline',
-						// 							props: {
-						// 								name: 'ios-call-outline',
-						// 							},															
-						// 						}),
-						// 					])
-						// 				}
+						render: (h, params) =>
+							h('div',[
+								h('Button', {
+									props: {
+										type: 'text',
+										size: "small",
+									},
+									on: {
+										click: () => {
+											this.$router.push({
+												name: 'deviceInfo',
+												params: {
+													id: params.row.id,
+													IMEI: params.row.IMEI,
+													type: params.row.device_type,
+												}
+											})
+										}
+									}
+								}, params.row.IMEI)
+							],)
 					},
 					{
 						title: 'IMSI(用户识别码)',

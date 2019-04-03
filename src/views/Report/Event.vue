@@ -44,7 +44,7 @@
 			this.NowWeekend = this.getWeek(-6)
 			this.$Notice.success({
 				title: '成功',
-				desc: '正在生产图表'
+				desc: '正在生成图表'
 			});
 			this.getLastData(this.LastWeek,this.LastWeekend)
 			this.getData(this.NowWeek,this.NowWeekend)

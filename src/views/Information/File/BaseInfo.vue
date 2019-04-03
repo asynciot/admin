@@ -286,7 +286,11 @@ export default {
 			},
 		async update(){
 			this.sent=true
-			this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)
+			if(this.options.maintenance_nexttime!=null){
+				this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)
+			}else{
+				this.list.maintenance_nexttime=null
+			}
 			this.list.maintenance_remind=this.options.maintenance_remind*86400000
 			
 			let res =await this.$api.setdevices(this.list)

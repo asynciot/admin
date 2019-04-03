@@ -134,17 +134,8 @@ div
 											})
 										}
 									}
-								}, params.row.device_name)],
-// 								[
-// 								h('span',{
-// 									props: {
-// 										class: 'fa fa-tag fa-2x',
-// 									},
-// 									style: {
-// 										color: 'red',
-// 									},
-// 								})]
-								)
+								}, params.row.device_name)
+							],)
 					},
 					{
 					title: 'IMEI(设备识别码)',
