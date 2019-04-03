@@ -117,7 +117,9 @@
 				else{}
 			},
 			async order(){
-				let res = await this.$api.order({order_id:this.list.id,mobile:this.mobile,expect_time:Date.parse(this.expect).toString()})
+				var time = ''
+				if (this.expect != '') {time =Date.parse(this.expect).toString()}
+				let res = await this.$api.order({order_id:this.list.id,mobile:this.mobile,expect_time:time})
 				if (res.data.code == 0) {
 					this.$Notice.success({
 					title: '成功',
