@@ -5,7 +5,7 @@
 			<div><Checkbox @on-change='showpanel("chat",chat)' v-model="chat">客户意见反馈</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("progress",progress)' v-model="progress">故障处理进程</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("chart",chart)' v-model="chart">业务图表</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div>
+			<!-- <div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div> -->
 			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">常见故障</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div>
 		</Drawer>
@@ -77,7 +77,7 @@
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'alList'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -130,7 +130,7 @@
 						<Col span='6' id="chatwidth">
 						  <!-- /.box -->
 						<!-- Chat box -->
-						<div class="box box-success" v-if="chat" >
+						<div class="box box-primary" v-if="chat" >
 							<div class="box-header">
 								<i class="fa fa-comments-o"></i>
 
@@ -139,7 +139,7 @@
 								<div class="box-tools pull-right" data-toggle="tooltip" title="">
 									<div class="btn-group" data-toggle="btn-toggle">
 										<div class="btn-group" style="margin-right: 5px;">
-											<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
+											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
 												<i class="fa fa-bars"></i></button>
 											<div class="dropdown-menu pull-right" role="menu">
 												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
@@ -149,16 +149,16 @@
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
 											</div>
 										</div>
-										<button type="button" class="btn btn-success btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
+										<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
 											<i class="fa fa-minus" v-if="chatbody"></i>
 											<i class="fa fa-plus" v-if="!chatbody"></i>
 										</button>
-										<button type="button" class="btn btn-success btn-sm" @click="chat=false"><i class="fa fa-times"></i>
+										<button type="button" class="btn btn-primary btn-sm" @click="chat=false"><i class="fa fa-times"></i>
 										</button>
 									</div>
 								</div>
 							</div>
-							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:321px">
+							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:309px">
 								<!-- chat item -->
 								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%" >
 								<div class="item" v-for="item in chatlist" >
@@ -201,22 +201,22 @@
 									<input class="form-control" placeholder="Type message...">
 
 									<div class="input-group-btn">
-										<button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
+										<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
 									</div>
 								</div> -->
 							</div>
 							<div class="box-footer clearfix" v-if="chatbody">
 								<form action="#" method="post">
 									<div class="input-group">
-										<Col span='20'><textarea type="text" name="message" style="height:38px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
+										<Col span='20'><textarea type="text" name="message" style="height:50px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
 										<Col span='4'>
 										<span class="input-group-btn">
-											<button type="button" class="btn btn-success btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1">回复</button>
-											<button type="button" class="btn btn-success btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1">留言</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" style="height:50px">回复</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" style="height:50px">留言</button>
 										</span>
 										</Col>
 									</div>
-								  </form>
+								</form>
 							</div>
 							<!-- /.chat -->
 						</div>
@@ -250,11 +250,11 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body" v-if="progressbody" style="height:380px">
-								<!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:98%" >
 								<ul class="todo-list">
 									<li v-for="item in todo" :style="'height:'+ ((86500/screenheight))+'px'">
 										<!-- todo text -->
-										<span class="text">项目：{{item.pro}}</span>
+										<span class="text">设备：{{item.pro}}</span>
 										<!-- Emphasis label -->
 										<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										<!-- General tools such as edit or delete-->
@@ -263,7 +263,7 @@
 											<i class="fa fa-trash-o"></i>
 										</div> -->
 										<div>
-											<Col span='8'>故障代码：{{item.description}}</Col>
+											<Col span='8'>故障原因：{{codelist[item.description]}}</Col>
 											<Col span='16'>安装地址：{{item.addr}}</Col>
 										</div>
 										<Col span='22'>
@@ -275,6 +275,7 @@
 										<Col span='2' style="text-align:right;color:#878787;">{{item.progress}}</Col>
 									</li>
 								</ul>
+								</Scroll>
 							</div>
 							<!-- /.box-body -->
 						</div>
@@ -286,7 +287,7 @@
 					<!-- /.Left col -->
 					<!-- right col (We are only adding the ID to make the widgets sortable)-->
 						<!-- solid sales graph -->
-						<div class="box box-info" v-if="chart">
+						<div class="box box-primary" v-if="chart">
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
@@ -294,7 +295,7 @@
 								
 								<div class="box-tools pull-right">
 									<div class="btn-group" style="margin-right: 5px;">
-										<button type="button" class="btn bg-teal btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
+										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
 											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
@@ -304,32 +305,19 @@
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
 										</div>
 									</div>
-									<button type="button" class="btn bg-teal btn-sm" @click="chartbody=!chartbody;areafault();">
+									<button type="button" class="btn btn-primary btn-sm" @click="chartbody=!chartbody;areafault();">
 										<i class="fa fa-minus" v-if="chartbody"></i>
 										<i class="fa fa-plus" v-if="!chartbody"></i>
 									</button>
-									<button type="button" class="btn bg-teal btn-sm" @click="chart=false"><i class="fa fa-times"></i>
+									<button type="button" class="btn btn-primary btn-sm" @click="chart=false"><i class="fa fa-times"></i>
 									</button>
 								</div>
 							</div>
 							<div class="box-body border-radius-none" v-if="chartbody" style="height:380px">
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
-										<div>
-											<Col span='12' style="font-size: large;font-weight: bold;color:#333333" >今年设备故障数量</Col>
-											<Col span='1'> <div style="height:20px;width:20px;background-color:#dcdcdc;" @click="fault=!fault;areafault()"></div></Col>
-											<Col span='4'> 
-											<div style="color:#888888" @click="fault=!fault;areafault()" v-if="!fault">新添故障设备</div>
-											<div style="color:#000000" @click="fault=!fault;areafault()" v-if="fault">新添故障设备</div>
-											</Col>
-											<Col span='1'> <div style="height:20px;width:20px;background-color:#3c8cbc;" @click="fix=!fix;areafault()"></div> </Col>
-											<Col span='4'> 
-											<div style="color:#888888" @click="fix=!fix;areafault()" v-if="!fix">修复设备数量</div>
-											<div style="color:#000000" @click="fix=!fix;areafault()" v-if="fix">修复设备数量</div>
-											</Col>
-										</div>
-										<div class="chart" style="width:95%">
-											<canvas id="areaChart" style="height:300px"></canvas>
+										<div class='' style="height:370px">
+										<compare></compare>
 										</div>
 										<div class="swiper-button-next"></div>
 									</swiper-slide>
@@ -353,18 +341,19 @@
 						</div>
 						<!-- /.box -->
 						</Col>
+					
 						<Col span='6' id="chartwidth2">
 						<!-- </section> -->
 						<!-- /.Left col -->
 						<!-- right col (We are only adding the ID to make the widgets sortable)-->
 							<!-- solid sales graph -->
-							<div class="box box-success" v-if="chart2">
+							<div class="box box-primary" v-if="chart2">
 								<div class="box-header">
 									<i class="fa fa-th"></i>
 									<h3 class="box-title">用户组成</h3>
 									<div class="box-tools pull-right">
 										<div class="btn-group" style="margin-right: 5px;">
-											<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
+											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
 												<i class="fa fa-bars"></i></button>
 											<div class="dropdown-menu pull-right" role="menu">
 												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
@@ -374,11 +363,11 @@
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',4);chartwidth()"></Card>
 											</div>
 										</div>
-										<button type="button" class="btn btn-success btn-sm" @click="chartbody2=!chartbody2;MemberCharts();">
+										<button type="button" class="btn btn-primary btn-sm" @click="chartbody2=!chartbody2;MemberCharts();">
 											<i class="fa fa-minus" v-if="chartbody2"></i>
 											<i class="fa fa-plus" v-if="!chartbody2"></i>
 										</button>
-										<button type="button" class="btn btn-success btn-sm" @click="chart2=false"><i class="fa fa-times"></i>
+										<button type="button" class="btn btn-primary btn-sm" @click="chart2=false"><i class="fa fa-times"></i>
 										</button>
 									</div>
 								</div>
@@ -391,14 +380,64 @@
 								</div>
 							</div>
 							</Col>
-							<Col span='12' id="chartwidth3">
-								<div class="box box-success" v-if="chart3">
+							
+							<Col span='6' id="emailwidth">
+							<!-- quick email widget -->
+							<div class="box box-primary" v-if="email">
+								<div class="box-header">
+									<i class="fa fa-envelope"></i>
+							
+									<h3 class="box-title">发送邮件</h3>
+									<!-- tools box -->
+									<div class="pull-right box-tools">
+										<div class="btn-group" style="margin-right: 5px;">
+											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('emailwidth')">
+												<i class="fa fa-bars"></i></button>
+											<div class="dropdown-menu pull-right" role="menu">
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',1)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',2)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',3)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',4)"></Card>
+											</div>
+										</div>
+										<button type="button" class="btn btn-primary btn-sm" @click="emailbody=!emailbody">
+											<i class="fa fa-minus" v-if="emailbody"></i>
+											<i class="fa fa-plus" v-if="!emailbody"></i>
+										</button>
+										<button type="button" class="btn btn-primary btn-sm" @click="email=false"><i class="fa fa-times"></i>
+										</button>
+									</div>
+									<!-- /. tools -->
+								</div>
+								<div class="box-body" style="height:321px" v-if="emailbody">
+									<form action="#" method="post">
+										<div class="form-group">
+											<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId">
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title">
+										</div>
+										<div>
+											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+										</div>
+									</form>
+								</div>
+								<div class="box-footer clearfix" v-if="emailbody">
+									<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">确定
+										<i class="fa fa-arrow-circle-right"></i></button>
+								</div>
+							</div>
+							</Col>
+							
+							<Col span='6' id="chartwidth3">
+								<div class="box box-primary" v-if="chart3">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
 										<h3 class="box-title">常见故障</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
-												<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
+												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
 													<i class="fa fa-bars"></i></button>
 												<div class="dropdown-menu pull-right" role="menu">
 													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
@@ -408,11 +447,11 @@
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',4);chartwidth()"></Card>
 												</div>
 											</div>
-											<button type="button" class="btn btn-success btn-sm" @click="chartbody3=!chartbody3;MemberCharts();">
+											<button type="button" class="btn btn-primary btn-sm" @click="chartbody3=!chartbody3;MemberCharts();">
 												<i class="fa fa-minus" v-if="chartbody3"></i>
 												<i class="fa fa-plus" v-if="!chartbody3"></i>
 											</button>
-											<button type="button" class="btn btn-success btn-sm" @click="chart3=false"><i class="fa fa-times"></i>
+											<button type="button" class="btn btn-primary btn-sm" @click="chart3=false"><i class="fa fa-times"></i>
 											</button>
 										</div>
 									</div>
@@ -428,13 +467,13 @@
 								</div>
 							</Col>
 							<Col span='12' id="chartwidth4">
-								<div class="box box-success" v-if="chart4">
+								<div class="box box-primary" v-if="chart4">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
 										<h3 class="box-title">活跃设备</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
-												<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
+												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
 													<i class="fa fa-bars"></i></button>
 												<div class="dropdown-menu pull-right" role="menu">
 													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
@@ -444,11 +483,11 @@
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',4);chartwidth()"></Card>
 												</div>
 											</div>
-											<button type="button" class="btn btn-success btn-sm" @click="chartbody4=!chartbody4;MemberCharts();">
+											<button type="button" class="btn btn-primary btn-sm" @click="chartbody4=!chartbody4;MemberCharts();">
 												<i class="fa fa-minus" v-if="chartbody4"></i>
 												<i class="fa fa-plus" v-if="!chartbody4"></i>
 											</button>
-											<button type="button" class="btn btn-success btn-sm" @click="chart4=false"><i class="fa fa-times"></i>
+											<button type="button" class="btn btn-primary btn-sm" @click="chart4=false"><i class="fa fa-times"></i>
 											</button>
 										</div>
 									</div>
@@ -464,63 +503,17 @@
 								</div>
 							</Col>
 						<!-- /.box -->
-						<Col span='6' id="emailwidth">
-						<!-- quick email widget -->
-						<div class="box box-info" v-if="email">
-							<div class="box-header">
-								<i class="fa fa-envelope"></i>
 						
-								<h3 class="box-title">发送邮件</h3>
-								<!-- tools box -->
-								<div class="pull-right box-tools">
-									<div class="btn-group" style="margin-right: 5px;">
-										<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('emailwidth')">
-											<i class="fa fa-bars"></i></button>
-										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',4)"></Card>
-										</div>
-									</div>
-									<button type="button" class="btn bg-teal btn-sm" @click="emailbody=!emailbody">
-										<i class="fa fa-minus" v-if="emailbody"></i>
-										<i class="fa fa-plus" v-if="!emailbody"></i>
-									</button>
-									<button type="button" class="btn bg-teal btn-sm" @click="email=false"><i class="fa fa-times"></i>
-									</button>
-								</div>
-								<!-- /. tools -->
-							</div>
-							<div class="box-body" style="height:321px" v-if="emailbody">
-								<form action="#" method="post">
-									<div class="form-group">
-										<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId">
-									</div>
-									<div class="form-group">
-										<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title">
-									</div>
-									<div>
-										<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-									</div>
-								</form>
-							</div>
-							<div class="box-footer clearfix" v-if="emailbody">
-								<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">确定
-									<i class="fa fa-arrow-circle-right"></i></button>
-							</div>
-						</div>
-						</Col>
 						</draggable>
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
 			</section>
-			<Col span='23'>&nbsp;</Col>
-			<Col span='1'>
-				<div>
-					<span style="cursor: pointer;color:blue" class="fa fa-eye fa-2x" @click="value1=true"></span>
+			<Col span='22'>&nbsp;</Col>
+			<Col span='2' style="vertical-align: middle;">
+				<div style="cursor: pointer;color:blue;font-size: larger;margin-left: 20px" @click="value1=true">
+					<span style="font-size: medium" class="fa fa-eye fa-2x"></span>
+						内容筛选
 				</div>
 			</Col>
 	</div>
@@ -531,6 +524,7 @@
 	import test1 from '@/views/Dashboard/Order'
 	import faultfreq from '@/views/Dashboard/faultfreq'
 	import activedoor from '@/views/Dashboard/activedoor'
+	import compare from '@/views/Dashboard/compare'
 	import echarts from 'echarts'
 	import {swiper,swiperSlide} from 'vue-awesome-swiper'
 	export default {
@@ -541,6 +535,7 @@
 			'test1':test1,
 			'faultfreq':faultfreq,
 			'activedoor':activedoor,
+			'compare':compare,
 			swiper,swiperSlide,
 		},
 		data() {
@@ -557,7 +552,7 @@
 				map: true,
 				chat: true,
 				chart: true,
-				chart2: true,
+				chart2: false,
 				chart3: true,
 				chart4: true,
 				email: true,
@@ -635,11 +630,18 @@
 				chatpage:0,
 				chatbottom:false,
 				reply:'请留下您的疑问和建议 ...',
+				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
+						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
+						'抱闸接触器故障','封星继电器故障','抱闸开关故障','运行中安全回路断开','运行中门锁断开',
+						'门锁短接故障','层站召唤通讯故障','轿厢通讯故障','并联通讯故障','开门故障',
+						'关门故障','开关门到位故障','平层信号异常','终端减速开关故障','下限位信号异常',
+						'上限位信号异常','打滑故障','电梯速度异常','电机反转故障','磁极位置学习故障',
+						'E30','停车速度检测','井道自学习故障','马达过热故障','制动力严重不足',
+						  '制动力不足警告',],
 			}
 		},
 		mounted(){
 			// this.shineword();
-			this.drawchart();
 			if (window.localStorage.getItem('mapwidth') != null) {this.widthblock3('mapwidth',window.localStorage.getItem('mapwidth'))}
 			if (window.localStorage.getItem('chatwidth') != null) {this.widthblock3('chatwidth',window.localStorage.getItem('chatwidth'))}
 			if (window.localStorage.getItem('chartwidth') != null) {this.widthblock3('chartwidth',window.localStorage.getItem('chartwidth'))}
@@ -671,6 +673,8 @@
 		methods: {
 			handleReachBottom(){
 				this.getchat()
+			},
+			handleReachBottom2(){
 			},
 			showpanel(val1,val2){
 				alert(val2)
@@ -801,7 +805,7 @@
 				if (res.data.code == 0){
 				this.onlinedevice =res.data.data.totalNumber
 				}
-				res = await this.$api.fault({
+				res = await this.$api.getRepair({
 					search_info: '',
 					page: 1,
 					num: 4,
@@ -819,15 +823,23 @@
 						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
 						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-						var t=Date.parse(new Date())-parseInt(res.data.data.list[i].createTime)
-						if(t>1000){res.data.data.list[i].createTime=parseInt(t/1000).toString()+" secs"}
-						if(t>60000){res.data.data.list[i].createTime=parseInt(t/60000).toString()+" mins"}
-						if(t>3600000){res.data.data.list[i].createTime=parseInt(t/3600000).toString()+" hours"}
-						if(t>86400000){res.data.data.list[i].createTime=parseInt(t/86400000).toString()+" days"}
+						var t=Date.parse(new Date())-parseInt(res.data.data.list[i].create_time)
+						if(t>1000){res.data.data.list[i].create_time=parseInt(t/1000).toString()+" secs"}
+						if(t>60000){res.data.data.list[i].create_time=parseInt(t/60000).toString()+" mins"}
+						if(t>3600000){res.data.data.list[i].create_time=parseInt(t/3600000).toString()+" hours"}
+						if(t>86400000){res.data.data.list[i].create_time=parseInt(t/86400000).toString()+" days"}
 					}
 					this.data = res.data.data.list
 					this.data.forEach(item=>{
-						this.todo.push({pro:item.device_name,description: 'E'+item.code.toString(16),time:item.createTime,progress:"50%",addr:item.install_addr})
+						var pro='50%'
+						var code=''
+						if (item.code != null) {code=item.code.toString(16)}
+						if (item.expect_time != null) {
+							pro=(Date.parse(new Date())-parseInt(item.create_time))/(parseInt(item.expect_time)-parseInt(item.create_time)+86400000)
+							if (pro>1) {pro = 0.8}
+							pro=(parseInt(100*pro)).toString()+'%'
+							}
+						this.todo.push({pro:item.device_name,description: code,time:item.create_time,progress:pro,addr:item.install_addr})
 					})
 				}
 			},
@@ -850,123 +862,6 @@
 					if (val2==3) {document.getElementById(val1).className='ivu-col ivu-col-span-18'}
 					if (val2==4) {document.getElementById(val1).className='ivu-col ivu-col-span-24'}
 					window.localStorage.setItem(val1,val2)
-			},
-			areafault(){
-				setTimeout(()=>{
-					var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-					// This will get the first returned node in the jQuery collection.
-					var areaChart       = new Chart(areaChartCanvas)
-					var datasets =[]
-					if (this.fault) {datasets.push(
-						{
-						label               : 'Electronics',
-						fillColor           : 'rgba(210, 214, 222, 1)',
-						strokeColor         : 'rgba(210, 214, 222, 1)',
-						pointColor          : 'rgba(210, 214, 222, 1)',
-						pointStrokeColor    : '#c1c7d1',
-						pointHighlightFill  : '#fff',
-						pointHighlightStroke: 'rgba(220,220,220,1)',
-						data                : this.chartorder,
-						}
-					)}
-					if (this.fix) {datasets.push(
-						{
-						label               : 'Digital Goods',
-						fillColor           : 'rgba(60,141,188,0.9)',
-						strokeColor         : 'rgba(60,141,188,0.8)',
-						pointColor          : '#3b8bba',
-						pointStrokeColor    : 'rgba(60,141,188,1)',
-						pointHighlightFill  : '#fff',
-						pointHighlightStroke: 'rgba(60,141,188,1)',
-						data                : this.chartrepair,
-						}
-					)}
-					var areaChartData = {
-					labels  : ['January', 'February', 'March', 'April', 'May', 'June'],
-					datasets
-					}
-					// console.log(areaChartData)
-					var areaChartOptions = {
-					//Boolean - If we should show the scale at all
-					showScale               : true,
-					//Boolean - Whether grid lines are shown across the chart
-					scaleShowGridLines      : true,
-					//String - Colour of the grid lines
-					scaleGridLineColor      : 'rgba(0,0,0,.05)',
-					//Number - Width of the grid lines
-					scaleGridLineWidth      : 1,
-					//Boolean - Whether to show horizontal lines (except X axis)
-					scaleShowHorizontalLines: true,
-					//Boolean - Whether to show vertical lines (except Y axis)
-					scaleShowVerticalLines  : true,
-					//Boolean - Whether the line is curved between points
-					bezierCurve             : true,
-					//Number - Tension of the bezier curve between points
-					bezierCurveTension      : 0.3,
-					//Boolean - Whether to show a dot for each point
-					pointDot                : true,
-					//Number - Radius of each point dot in pixels
-					pointDotRadius          : 4,
-					//Number - Pixel width of point dot stroke
-					pointDotStrokeWidth     : 1,
-					//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-					pointHitDetectionRadius : 20,
-					//Boolean - Whether to show a stroke for datasets
-					datasetStroke           : true,
-					//Number - Pixel width of dataset stroke
-					datasetStrokeWidth      : 2,
-					//Boolean - Whether to fill the dataset with a color
-					datasetFill             : true,
-					//String - A legend template
-					legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-					//Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-					maintainAspectRatio     : true,
-					//Boolean - whether to make the chart responsive to window resizing
-					responsive              : true
-					}
-					//Create the line chart
-					areaChart.Line(areaChartData, areaChartOptions)
-					},200)
-			},
-			async drawchart(){
-			    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-			    // This will get the first returned node in the jQuery collection.
-			    var areaChart       = new Chart(areaChartCanvas)
-				var rep=''
-				var ord=''
-				this.chartrepair=[]
-				this.chartorder=[]
-				var time=this.$format(new Date(), 'YYYY')
-				for (var i=0;i<6;i++){
-				rep = await this.$api.getRepair({
-					search_info: '',
-					page: 1,
-					num: 10,
-					isreg: "True",
-					state:'treated',
-					order_type:'',
-					result:'',
-					device_id:'',
-					finish_starttime:Date.parse(time+'-'+(i+1).toString()),
-					finish_endtime:Date.parse(time+'-'+(i+2).toString()),
-				})
-				this.chartrepair.push(rep.data.data.totalNumber)
-				}
-				for (var i=0;i<6;i++){
-				ord = await this.$api.fault({
-					search_info: '',
-					page: 1,
-					num: 10,
-					isreg: "True",
-					order_type:'',
-					result:'',
-					device_id:'',
-					starttime:Date.parse(time+'-'+(i+1).toString()),
-					endtime:Date.parse(time+'-'+(i+2).toString()),
-				})
-				this.chartorder.push(ord.data.data.totalNumber)
-				}
-			    this.areafault()
 			},
 			getWeek(n){
 				var now = new Date()

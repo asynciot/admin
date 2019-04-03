@@ -1,5 +1,5 @@
 <template lang="jade">
-	div.layout-content-main(style="padding:0")
+	div(style="padding:0")
 		div.ch(id="test1" style="height:360px;width:100%")
 </template>
 

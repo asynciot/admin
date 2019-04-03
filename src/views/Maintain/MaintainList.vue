@@ -130,9 +130,16 @@
 				{
 					title: '完成时间',
 					key: 'finish_time',
-					width:150,
+					width:175,
 					render: (h, params) => {
-						return h('p',this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss'))
+						var time=''
+						var color='#000'
+						if (params.row.expect_time != null){
+							time='预计 ' + this.$format(parseInt(params.row.expect_time), 'YYYY-MM-DD HH:mm:ss')
+							if (parseInt(params.row.expect_time)+86400000<Date.parse(new Date())){color='#f00'}
+							}
+						if (params.row.finish_time != null){time=this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss');color="#000"}
+						return h('div',{style:{color: color}},time)
 					}
 				},
 				{

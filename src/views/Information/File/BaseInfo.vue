@@ -26,8 +26,14 @@ div
 					Row(:gutter="30")
 						Col(span="12")|报告时间:
 							input(v-model="parameter.reporttime" style="border: 0" readonly)
-						Col(span="12")|信号强度:
-							input(v-model="parameter.rssi" style="border: 0" readonly)
+						Col(span="12")
+							div()|信号强度:&nbsp;&nbsp;
+								icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign==0")
+								icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign==1")
+								icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign==2")
+								icon(name="sign3",width="24",height="24",slot="prepend" v-if="sign==3")
+								icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign==4")
+								icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign==5")
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|最新事件ID:
 							input(v-model="parameter.waveid" style="border: 0" readonly)
@@ -43,8 +49,14 @@ div
 						Col(span="12")|累计运行时间(s):
 							input(v-model="parameter.uptime" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|信号强度:
-							input(v-model="parameter.rssi" style="border: 0" readonly)
+						Col(span="12")
+							div()|信号强度:&nbsp;&nbsp;
+								icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign==0")
+								icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign==1")
+								icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign==2")
+								icon(name="sign3",width="24",height="24",slot="prepend" v-if="sign==3")
+								icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign==4")
+								icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign==5")
 						Col(span="8")|最近故障楼层:
 							input(v-model="parameter.faultfloor" style="border: 0;width:50%" readonly)
 						Col(span="4")
@@ -122,10 +134,12 @@ div
 						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|绑定到已有电梯
 	el-dialog(title="历史故障", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
-		div(style="margin: 0 auto")
-			Page(show-elevator :total="total", :page-size="fault.num",:current="fault.page" @on-change="pageChange" show-total style="margin-left:60px;margin-top:10px" simple)
 		span(slot="footer" class="dialog-footer")
-			el-button(type="primary" @click="history = false")|确 定
+			div(style="height:40px")
+				Col(span='6')
+					Page(show-elevator :total="total", :page-size="fault.num",:current="fault.page" @on-change="pageChange" show-total style="margin-left:60px;margin-top:10px" simple)
+				Col(span='18')
+					el-button(type="primary" @click="history = false")|确 定
 </template>
 
 <script>
@@ -234,6 +248,7 @@ export default {
 			refreshNum: 0,
 			list: '',
 			data: '',
+			sign:'',
 			maintain:[],
 			loading: false,
 			username:window.localStorage.getItem('username'),
@@ -315,6 +330,21 @@ export default {
 			setTimeout(()=>{
 				this.showcolor()
 			}, 300)
+			if (this.list.rssi != ''){
+				if (this.list.rssi==0) {
+					this.sign=0
+				}else if(this.list.rssi<=2){
+					this.sign=1
+				}else if (this.list.rssi<=4) {
+					this.sign=2
+				}else if (this.list.rssi<=8) {
+					this.sign=3
+				}else if (this.list.rssi<=16) {
+					this.sign=4
+				}else if (this.list.rssi<=32) {
+					this.sign=5
+				}
+			}
 			let run =await this.$api.runtime({page:1,num:20,device_id:this.list.id})
 			if (this.list.device_type == 15) {
 				run.data.data.list.forEach(item=>{

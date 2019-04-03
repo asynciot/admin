@@ -1,5 +1,5 @@
 <template lang="jade">
-	div.layout-content-main(style="padding:0")
+	div(style="padding:0")
 		Col(span='10' style="font-size : large;font-weight: bold;color:#333333")|设备使用次数TOP5
 		Col(span='6')
 			DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="starttime" style='' @on-change="search()")
@@ -47,6 +47,7 @@
 			// setTimeout(() => {
 				this.getactivedoor();
 			// },500)
+			console.log(this.$router)
 		},
 		components: {
 			draggable,
@@ -88,6 +89,7 @@
 				let activedoor = this.$echarts.init(document.getElementById('activedoor'))
 				activedoor.resize()
 				activedoor.setOption({
+					// triggerEvent:false,
 					title: {
 							show:false,
 							text: '设备使用次数TOP5',
@@ -104,6 +106,7 @@
 								this.topdevice[3].device_name, 
 								this.topdevice[4].device_name, 
 						],
+						// triggerEvent:false,
 						splitLine: {
 	               			show: false, 
 		                    //  改变轴线颜色
@@ -137,6 +140,7 @@
 	                        color: ['white']
 	                        }                            
 	                    },
+						// triggerEvent:false,
 	                    //  改变x轴颜色
 	                    axisLine:{
 	                        barStyle:{
@@ -159,6 +163,7 @@
 									this.topdevice[3].counter,
 									this.topdevice[4].counter,
 							],
+							// triggerEvent:false,
 							type: 'bar',
 							color:'#FF7F00',
 							barWidth: 40,
@@ -174,9 +179,30 @@
 									},
 								}
 							}
-
 					}]
 				})
+				if(activedoor._$handlers.click){
+					activedoor._$handlers.click.length = 0;
+				}
+				var _this=this
+				activedoor.on('click', function (params) {
+					_this.$router.push({
+						name: 'eventreport',
+						params: {
+							device_name: params.name
+						}
+					})
+				})
+			},
+			go(){
+				alert(1)
+				this.$router.push({
+					name: 'order',
+					params: {
+						device_name: params.name
+					}
+				})
+
 			},
 		}
 	}
