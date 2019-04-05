@@ -10,6 +10,12 @@ div
 	div(v-if="div_show" id="serClick" style="margin-top:-30px")
 		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=5)
+				Col(span=2)
+					Select.smr(v-model="show.state" style="width:100%" placeholder="状态" @on-change="search()")
+						Option(key="1" label="全部" value='all')
+						Option(key="2" label="在线" value="online")
+						Option(key="3" label="离线" value="offline")
+						Option(key="4" label="长期离线" value="longoffline")
 				Col(span=4)
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=3)
@@ -101,6 +107,7 @@ div
 					num:10,
 					install_addr:'',
 					// follow:'yes',
+					state:'',
 				},
 				show:{
 					device_type: 'all',
@@ -412,35 +419,6 @@ div
 				}
 				}
 				this.search()
-			},
-			async serstate(){
-				if(this.show.state == 'all'){
-					this.query.state = ''
-				}else{
-					this.query.state = this.show.state
-				}
-				let res = await this.$api.devices(this.query)
-				this.list=res.data.data.list
-				this.devices = []
-				let i =0
-				await this.list.forEach(async (item) => {
-					this.selc.search_info = item.IMEI
-					let inx = await this.$api.reLadder(this.selc)
-					if(inx.data.data.list.length != 0){
-						if(inx.data.data.list[0].state == "online"){
-							inx.data.data.list[0].state = "在线"
-						}else if(inx.data.data.list[0].state == "offline"){
-							inx.data.data.list[0].state = "离线"
-						}else if(inx.data.data.list[0].state == "longoffline"){
-							inx.data.data.list[0].state = "长期离线"
-						}
-						this.devices[i] = inx.data.data.list[0]
-						i=i++
-					}
-				})
-				this.options.total = this.devices.length
-				this.addMark()
-				await this.centpoint1()
 			},
 		}
 	}

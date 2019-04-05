@@ -153,6 +153,7 @@
 									on: {
 										click: () => {
 											this.remLadder(params.row.id)
+											this.getList()
 										},
 									}
 								}, '删除'),
@@ -163,6 +164,7 @@
 				refreshNum: 0,
 				data: [],
 				query:{
+					state:"online",
 					page: 1,
 					num: 10,
 				},
@@ -195,6 +197,11 @@
 				this.getList()
 			},
 			async getList() {
+				if(this.show.state == 'all'){
+					this.query.state = ''
+				}else{
+					this.query.state = this.show.state
+				}
 				let res = await this.$api.reLadder(this.query)
 				this.list = res.data.data.list
 				this.total = res.data.data.totalNumber
