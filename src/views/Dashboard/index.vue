@@ -18,15 +18,12 @@
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
 						<div class="small-box bg-red">
-							<div class="inner" style="text-align:center;">
-								<h3>{{allevents}}</h3>
+							<div class="inner" style="text-align:center; padding:4px" >
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{allevents}}</div>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'">故障设备</p>
+							</div>
 
-								<p>故障设备</p>
-							</div>
-							<div class="icon">
-								<i class="ion ion-bag"></i>
-							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -35,15 +32,15 @@
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
 						<div class="small-box bg-aqua">
-							<div class="inner" style="text-align:center;">
-								<h3>{{0}}<sup style="font-size: 20px"></sup></h3>
+							<div class="inner" style="text-align:center; padding:4px">
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{0}}<sup style="font-size: 20px"></sup></div>
 
-								<p>可更新固件数</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'">可更新固件数</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'evolution'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'evolution'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -52,15 +49,15 @@
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
 						<div class="small-box bg-yellow">
-							<div class="inner" style="text-align:center;">
-								<h3>{{today}}</h3>
+							<div class="inner" style="text-align:center; padding:4px">
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{today}}</div>
 
-								<p>今日完成任务</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'">今日完成任务</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'maintainList'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'maintainList'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -69,15 +66,14 @@
 						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
 						<div class="small-box bg-green">
-							<div class="inner" style="text-align:center;">
-								<h3 v-if="shine">{{onlinedevice}}/{{alldevice}}</h3>
-								<h3 style="color:#FF2C00" v-if="!shine"></h3>
-								<p>在线设备数 {{parseInt(100*onlinedevice/alldevice)}}%</p>
+							<div class="inner" style="text-align:center; padding:4px">
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;' v-if="shine">{{onlinedevice}}/{{alldevice}}</div>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'">在线设备数 {{parseInt(100*onlinedevice/alldevice)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 						</draggable>
 					</div>
@@ -121,7 +117,7 @@
 								设备定位
 							  </h3>
 							</div>
-							<div style="height:380px;background:#f5f3f0;border: 0;" v-if="mapbody">
+							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/2.55+'px'" v-if="mapbody">
 								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
@@ -158,25 +154,25 @@
 									</div>
 								</div>
 							</div>
-							<div class="box-body chat" id="chat-box" v-if="chatbody" style="height:309px">
+							<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/2.55+'px'">
 								<!-- chat item -->
-								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%" >
+								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/2.55-60">
 								<div class="item" v-for="item in chatlist" >
 									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
 									<p class="message">
 										<a href="#" class="name">
 											<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
-											<div style="font-size: large;">{{item.username}}</div>
+											<div style="font-size: large;" :style="'font-size:'+setheight[0]/6+'px'">{{item.username}}</div>
 											<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
 										</a>
-										<div style="display: inline-block;width:95%">
-										<Col span='11'>&nbsp;</Col>
-										<Col span='4'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
-										<Col span='5'>
+										<div style="display: inline-block;width:95%;margin-top:5px">
+										<Col span='1'>&nbsp;</Col>
+										<Col span='7'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
+										<Col span='8'>
 											<Button type="text" @click="item.showlist=true" v-if="!item.showlist">共{{item.followlist.length}}条回复</Button>
 											<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
 										</Col>
-										<Col span='4'>
+										<Col span='8'>
 											<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id">回复本条</Button>
 											<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
 										</Col>
@@ -204,8 +200,19 @@
 										<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
 									</div>
 								</div> -->
+								<form action="#" method="post" style="margin-top:5px">
+									<div class="input-group">
+										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
+										<Col span='6'>
+										<span class="input-group-btn" style="width: 100%">
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">留言</button>
+										</span>
+										</Col>
+									</div>
+								</form>
 							</div>
-							<div class="box-footer clearfix" v-if="chatbody">
+		<!-- 					<div class="box-footer clearfix" v-if="chatbody">
 								<form action="#" method="post">
 									<div class="input-group">
 										<Col span='20'><textarea type="text" name="message" style="height:50px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
@@ -217,7 +224,7 @@
 										</Col>
 									</div>
 								</form>
-							</div>
+							</div> --> 
 							<!-- /.chat -->
 						</div>
 						</Col>
@@ -249,31 +256,28 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" v-if="progressbody" style="height:380px">
-								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:98%" >
-								<ul class="todo-list">
-									<li v-for="item in todo" :style="'height:'+ ((86500/screenheight))+'px'">
-										<!-- todo text -->
-										<span class="text">设备：{{item.pro}}</span>
-										<!-- Emphasis label -->
-										<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
-										<!-- General tools such as edit or delete-->
-<!-- 										<div class="tools">
-											<i class="fa fa-edit"></i>
-											<i class="fa fa-trash-o"></i>
-										</div> -->
-										<div>
-											<Col span='8'>故障原因：{{codelist[item.description]}}</Col>
-											<Col span='16'>安装地址：{{item.addr}}</Col>
+							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/2.55+'px'">
+								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/2.55-20">
+								<ul class="todo-list" style=" padding:3">
+									<div v-for="item in todo" :style="'font-size:'+screenheight/54+'px'" style="">
+										<div style=""> 
+											<span class="text">设备：{{item.pro}}</span>
+											<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										</div>
-										<Col span='22'>
-											<div class="progress horizontal active">
-												<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
+										<div>
+											<Col span='24'>故障原因：{{codelist[item.description]}}</Col>
+										</div>
+										<div>
+											<Col span='24'>安装地址：{{item.addr}}</Col>
+										</div>
+										<Col span='21'>
+											<div class="progress horizontal active" style="height:10px">
+												<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress" style="height:10px">
 												</div>
 											</div>
 										</Col>
-										<Col span='2' style="text-align:right;color:#878787;">{{item.progress}}</Col>
-									</li>
+										<Col span='3' style="text-align:right;color:#878787;">{{item.progress}}</Col>
+									</div>
 								</ul>
 								</Scroll>
 							</div>
@@ -313,7 +317,7 @@
 									</button>
 								</div>
 							</div>
-							<div class="box-body border-radius-none" v-if="chartbody" style="height:380px">
+							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
 										<div class='' style="height:370px">
@@ -424,7 +428,7 @@
 									</form>
 								</div>
 								<div class="box-footer clearfix" v-if="emailbody">
-									<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="!btn">确定
+									<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
 										<i class="fa fa-arrow-circle-right"></i></button>
 								</div>
 							</div>
@@ -540,7 +544,8 @@
 		},
 		data() {
 			return {
-				btn:true,
+				btn:false,
+				btn2:false,
 				value1:false,
 				faultdevice: 0,
 				size1: '#ffffff',
@@ -601,6 +606,7 @@
 				NowWeekend:'',
 				screenwidth:'',
 				screenheight:'',
+				setheight:['','','',''],
 				options: {
 					toId:'',
 					fromId:window.localStorage.getItem('id'),
@@ -661,6 +667,8 @@
 		created(){
 			this.screenwidth = document.documentElement.clientWidth;
 			this.screenheight = document.documentElement.clientHeight;
+			this.setheight[0]=this.screenheight/9.75 -3
+			this.setheight[1]=this.setheight[0]/2.4
 			this.getchat()
 			this.getinfo();
 			this.LastWeek = this.getWeek(7)
@@ -682,9 +690,9 @@
 				else {window.localStorage.setItem(val1,1)}
 			},
 			async sent(){
-				this.btn = false 
+				this.btn = true 
 				let res= await this.$api.sentmessage(this.options)
-				this.btn= true
+				this.btn= false
 				if (res.data.code == 0){
 					this.$Notice.success({
 						title: '成功',
@@ -699,9 +707,18 @@
 				}
 			},
 			async sentchat(){
-				this.btn = false 
-				let res= await this.$api.sentchat(this.chatoptions)
-				this.btn= true
+				var res
+				if (!/\S/.test(this.chatoptions.content)) {
+					this.$Notice.warning({
+						title: '提示',
+						desc: '内容不能为空'
+					});
+				}
+				else {
+					this.btn2= true
+					res= await this.$api.sentchat(this.chatoptions)
+					this.btn2= false
+				}
 				if (res.data.code == 0){
 					this.chatpage=0
 					this.chatlist=[]
@@ -710,6 +727,7 @@
 						title: '成功',
 						desc: '已发送消息'
 					});
+					this.chatoptions.content=''
 				}
 				else{
 					this.$Notice.error({
