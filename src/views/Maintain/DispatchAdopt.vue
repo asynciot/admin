@@ -71,12 +71,9 @@
 				this.upsuccess = true 
 			}
 		},
-		mounted(){
-			//document.getElementById('image').src=this.file
-		},
 		methods:{
 			code(){
-				if (this.form.type == '1'){
+				if (this.form.taype == '1'){
 					this.faultcode=false;
 				}
 				else {
@@ -153,5 +150,4 @@
 		color: #999;
 		display: inline-block;
 	}
-	
 </style>

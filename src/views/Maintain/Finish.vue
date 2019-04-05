@@ -27,7 +27,7 @@
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='before3')
 											img(id="before3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span=24 style="margin-top:0px")|处理后的照片:	
+									Col(span=24 style="margin-top:0px")|处理后的照片:
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='after1')
 											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
@@ -98,9 +98,6 @@
 			if(this.username=="demo"){
 				this.upsuccess = true 
 			}
-		},
-		mounted(){
-			//document.getElementById('image').src=this.file
 		},
 		methods:{
 			code(){
@@ -228,36 +225,33 @@
 			},
 			before3 (file) {
 				if (this.list.state != "treated"){
-				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-				if (file.size>2097000) {
-					this.$Notice.warning({
-						title: '警告',
-						desc: '不能上传2M以上的图片'
-					})
-				}
-				else {
-				this.beforefile3 = new File([file], 'before'+file.name,{type:"image/jpeg"});
-				let url = null;
-				if (window.createObjectURL!=undefined) { // basic
-					url = window.createObjectURL(this.beforefile3) ;
-				}else if (window.webkitURL!=undefined) { // webkit or chrome
-					url = window.webkitURL.createObjectURL(this.beforefile3) ;
-				}else if (window.URL!=undefined) { // mozilla(firefox)
-					url = window.URL.createObjectURL(this.beforefile3) ;
-				}
-				document.getElementById('before3').src=url;
-				return false;
-				}
-				}
-				else{
-					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
-					})
-				}
-				}
-				else{
+					var type = file.name.split('.')
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+						if (file.size>2097000) {
+							this.$Notice.warning({
+								title: '警告',
+								desc: '不能上传2M以上的图片'
+							})
+						}else {
+							this.beforefile3 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+							let url = null;
+							if (window.createObjectURL!=undefined) { // basic
+								url = window.createObjectURL(this.beforefile3) ;
+							}else if (window.webkitURL!=undefined) { // webkit or chrome
+								url = window.webkitURL.createObjectURL(this.beforefile3) ;
+							}else if (window.URL!=undefined) { // mozilla(firefox)
+								url = window.URL.createObjectURL(this.beforefile3) ;
+							}
+							document.getElementById('before3').src=url;
+							return false;
+						}
+					}else {
+						this.$Notice.warning({
+							title: '警告',
+							desc: '只能上传图片类型的文件'
+						})
+					}
+				}else {
 					this.$Notice.warning({
 						title: '抱歉',
 						desc: '暂不支持补传图片'
@@ -266,36 +260,33 @@
 			},
 			after1 (file) {
 				if (this.list.state != "treated"){
-				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-				if (file.size>2097000) {
-					this.$Notice.warning({
-						title: '警告',
-						desc: '不能上传2M以上的图片'
-					})
-				}
-				else {
-				this.afterfile1 = new File([file], 'after'+file.name,{type:"image/jpeg"});
-				let url = null;
-				if (window.createObjectURL!=undefined) { // basic
-					url = window.createObjectURL(this.afterfile1) ;
-				}else if (window.webkitURL!=undefined) { // webkit or chrome
-					url = window.webkitURL.createObjectURL(this.afterfile1) ;
-				}else if (window.URL!=undefined) { // mozilla(firefox)
-					url = window.URL.createObjectURL(this.afterfile1) ;
-				}
-				document.getElementById('after1').src=url;
-				return false;
-				}
-				}
-				else{
-					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
-					})
-				}
-				}
-				else{
+					var type = file.name.split('.')
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+						if (file.size>2097000) {
+							this.$Notice.warning({
+								title: '警告',
+								desc: '不能上传2M以上的图片'
+							})
+						}else {
+							this.afterfile1 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+							let url = null;
+							if (window.createObjectURL!=undefined) { // basic
+								url = window.createObjectURL(this.afterfile1) ;
+							}else if (window.webkitURL!=undefined) { // webkit or chrome
+								url = window.webkitURL.createObjectURL(this.afterfile1) ;
+							}else if (window.URL!=undefined) { // mozilla(firefox)
+								url = window.URL.createObjectURL(this.afterfile1) ;
+							}
+							document.getElementById('after1').src=url;
+							return false;
+						}
+					}else{
+						this.$Notice.warning({
+							title: '警告',
+							desc: '只能上传图片类型的文件'
+						})
+					}
+				}else{
 					this.$Notice.warning({
 						title: '抱歉',
 						desc: '暂不支持补传图片'
@@ -304,36 +295,33 @@
 			},
 			after2 (file) {
 				if (this.list.state != "treated"){
-				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-				if (file.size>2097000) {
-					this.$Notice.warning({
-						title: '警告',
-						desc: '不能上传2M以上的图片'
-					})
-				}
-				else {
-				this.afterfile2 = new File([file], 'after'+file.name,{type:"image/jpeg"});
-				let url = null;
-				if (window.createObjectURL!=undefined) { // basic
-					url = window.createObjectURL(this.afterfile2) ;
-				}else if (window.webkitURL!=undefined) { // webkit or chrome
-					url = window.webkitURL.createObjectURL(this.afterfile2) ;
-				}else if (window.URL!=undefined) { // mozilla(firefox)
-					url = window.URL.createObjectURL(this.afterfile2) ;
-				}
-				document.getElementById('after2').src=url;
-				return false;
-				}
-				}
-				else{
-					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
-					})
-				}
-				}
-				else{
+					var type = file.name.split('.')
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+						if (file.size>2097000) {
+							this.$Notice.warning({
+								title: '警告',
+								desc: '不能上传2M以上的图片'
+							})
+						}else {
+							this.afterfile2 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+							let url = null;
+							if (window.createObjectURL!=undefined) { // basic
+								url = window.createObjectURL(this.afterfile2) ;
+							}else if (window.webkitURL!=undefined) { // webkit or chrome
+								url = window.webkitURL.createObjectURL(this.afterfile2) ;
+							}else if (window.URL!=undefined) { // mozilla(firefox)
+								url = window.URL.createObjectURL(this.afterfile2) ;
+							}
+							document.getElementById('after2').src=url;
+							return false;
+						}
+					}else{
+						this.$Notice.warning({
+							title: '警告',
+							desc: '只能上传图片类型的文件'
+						})
+					}
+				}else{
 					this.$Notice.warning({
 						title: '抱歉',
 						desc: '暂不支持补传图片'
@@ -342,36 +330,33 @@
 			},
 			after3 (file) {
 				if (this.list.state != "treated"){
-				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-					if (file.size>2097000) {
+					var type = file.name.split('.')
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+						if (file.size>2097000) {
+							this.$Notice.warning({
+								title: '警告',
+								desc: '不能上传2M以上的图片'
+							})
+						}else {
+							this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
+							let url = null;
+							if (window.createObjectURL!=undefined) { // basic
+								url = window.createObjectURL(this.afterfile3) ;
+							}else if (window.webkitURL!=undefined) { // webkit or chrome
+								url = window.webkitURL.createObjectURL(this.afterfile3) ;
+							}else if (window.URL!=undefined) { // mozilla(firefox)
+								url = window.URL.createObjectURL(this.afterfile3) ;
+							}
+							document.getElementById('after3').src=url;
+							return false;
+						}
+					}else{
 						this.$Notice.warning({
 							title: '警告',
-							desc: '不能上传2M以上的图片'
+							desc: '只能上传图片类型的文件'
 						})
 					}
-					else {
-						this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
-						let url = null;
-						if (window.createObjectURL!=undefined) { // basic
-							url = window.createObjectURL(this.afterfile3) ;
-						}else if (window.webkitURL!=undefined) { // webkit or chrome
-							url = window.webkitURL.createObjectURL(this.afterfile3) ;
-						}else if (window.URL!=undefined) { // mozilla(firefox)
-							url = window.URL.createObjectURL(this.afterfile3) ;
-						}
-						document.getElementById('after3').src=url;
-						return false;
-					}
-				}
-				else{
-					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
-					})
-				}
-				}
-				else{
+				}else{
 					this.$Notice.warning({
 						title: '抱歉',
 						desc: '暂不支持补传图片'
@@ -416,7 +401,7 @@
 					title: '成功',
 					desc: '已提交，正在审核请等待！'
 				});
-				this.$router.back()
+				this.$router.back(-1)
 			}
 		}
 	}	

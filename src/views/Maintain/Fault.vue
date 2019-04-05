@@ -7,7 +7,7 @@ div.layout-content-main
 					Form-item(label="工单编号：")
 						Input(v-model="query.id",placeholder="请输入工单编号")
 				Col(span="6")
-					Form-item(label="电梯型号：",)
+					Form-item(label="电梯型号：")
 						Input(v-model="query.deviceid",placeholder="请输入电梯型号")
 				Col(span="6")
 					Button.mr-10(type="primary",icon="search",@click="options.page=1,search()")|搜索
@@ -21,7 +21,7 @@ div.layout-content-main
 	
 
 export default {
-	data() {	
+	data() {
 		return {
 			loading: true,
 			query: {
@@ -107,11 +107,11 @@ export default {
 											title: '警告!',
 											content: '<p>是否删除此项 ？</p>',
 											onOk: () => {
-												this.deleteRow(params)											
+												this.deleteRow(params)
 											},
 											onCancel: () => {
 											}
-										})	
+										})
 									}
 								}
 							}, '删除')
@@ -158,7 +158,7 @@ export default {
 			this.options.page = val
 			this.getList()
 		},
-		async deleteRow(params) {		
+		async deleteRow(params) {
 // 				let res = await this.$api.removeEvent({id:params.row.id})
 // 				this.$emit('on-custom-comp');
 // 				this.list[params].id = null;

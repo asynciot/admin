@@ -68,9 +68,6 @@
 		created(){
 			this.getData();
 		},
-		mounted(){
-			//document.getElementById('image').src=this.file
-		},
 		methods:{
 			code(){
 				if (this.form.type == '1'){
@@ -130,7 +127,6 @@
 					res.data.data.list[0].code=type
 					this.list = res.data.data.list[0]
 				}
-				else{}
 			},
 		}
 	}	

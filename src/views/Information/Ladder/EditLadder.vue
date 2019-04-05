@@ -63,7 +63,7 @@
 					isreg: "True",
 					state: 'online',
 					device_type:"240",
-					register: "registered",	
+					register: "registered",
 					install_addr:'',
 				},
 				options: {
