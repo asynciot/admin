@@ -25,19 +25,19 @@
 								Col(span=6 offset=3)
 									Button(type="primary" @click='cover(1)')|控制柜
 								Col(span=10)
-									Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI')
+									Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI' disabled)
 							Row.mt-1(:gutter=5)
 								Col(span=6 offset=3)
 									Button(type="primary"  @click='cover(2)')|门机
 								Col(span=10)
-									Input(type='text' v-model='ladder.door1' placeholder='门机IMEI')
+									Input(type='text' v-model='ladder.door1' placeholder='门机IMEI' disabled)
 							Row.mt-1(:gutter=5)
 								Col(span=6 offset=3)
 									Button(type="primary"  @click='cover(3)')|门机
 								Col(span=10)
-									Input(type='text' v-model='ladder.door2' placeholder='门机IMEI')
+									Input(type='text' v-model='ladder.door2' placeholder='门机IMEI' disabled)
 							Row.mt-1(:gutter=5 style="text-align:center")
-									Button(@click='NewLadder()' type='success')|完成
+									Button(@click='updateLadder()' type='success')|完成
 									Button.ml-5(@click="$router.back(-1)")|返回
 					Col(span="16")
 						Card()
@@ -113,6 +113,7 @@
 									},
 									on: {
 										click: () => {
+											this.ladder.id = params.row.id
 											this.ladder.name = params.row.name
 											this.ladder.install_addr = params.row.install_addr
 											this.ladder.ctrl = params.row.ctrl
@@ -135,11 +136,20 @@
 					register: "registered",	
 				},
 				ladder:{
+					id:0,
 					name:'',
 					ctrl:'',
 					door1:'',
 					door2:'',
 					install_addr:'',
+					type:'',
+				},
+				save:{
+					ladder_id:0,
+					name:'',
+					IMEI:'',
+					install_addr:'',
+					type:'',
 				},
 				coverladder:'',
 			}
@@ -157,10 +167,13 @@
 				const i =  this.$route.params.IMEI
 				if(item == 1){
 					this.coverladder = this.ladder.ctrl
+					this.ladder.type = item
 				}else if(item == 2){
 					this.coverladder = this.ladder.door1
+					this.ladder.type = item
 				}else if(item == 3){
 					this.coverladder = this.ladder.door2
+					this.ladder.type = item
 				}
 				this.$Modal.confirm({
 					title: '设备替换',
@@ -182,18 +195,23 @@
 				this.query.page = val
 				this.getList()
 			},
-			async NewLadder(){
-				let res = await this.$api.newLadder(this.ladder);
+			async updateLadder(){
+				this.save.ladder_id = this.ladder.id
+				this.save.IMEI = this.$route.params.IMEI
+				this.save.name = this.ladder.name
+				this.save.install_addr = this.ladder.install_addr
+				this.save.type = this.ladder.type
+				let res = await this.$api.updateLadder(this.save);
 				if (res.data.code == 0) {
 					this.$Notice.success({
 						title: '成功',
-						desc: '创建成功，可在电梯信息查看！'
+						desc: '替换成功，可在电梯信息查看！'
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
 					title: '失败',
-					desc: '创建失败'
+					desc: '替换失败'
 					});
 				}
 			},
