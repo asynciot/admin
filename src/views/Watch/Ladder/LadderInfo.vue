@@ -34,13 +34,13 @@
 										Col(span="12")
 											Form-item(label="门机:")
 												p()|{{data.door1}}
-										Col(span="12")		
+										Col(span="12")
 											Button.mb(type="primary" @click="godevice(2)" style="width:40%" ,:disabled="judge.door1")|详细信息
 									Row
 										Col(span="12")
 											Form-item(label="门机:")
 												p()|{{data.door2}}
-										Col(span="12")		
+										Col(span="12")
 											Button(type="primary" @click="godevice(3)" style="width:40%" disabled="judge.door2")|详细信息
 									Col(span="12")
 										Form-item(label="ip定位:")
@@ -195,7 +195,7 @@
 						if (str.indexOf(selectword)>=0)
 						this.menu.push(str)
 					}
-					str=this.list[i].device_name;		  	    	
+					str=this.list[i].device_name;
 					if (str != null){
 						if (str.indexOf(selectword)>=0){
 						this.menu.push(str)
@@ -245,7 +245,7 @@
 							title: '错误',
 							desc: '获取事件信息错误！'
 						})
-					}									
+					}
 				}else(
 					this.$Notice.error({
 						title: '错误',
@@ -256,20 +256,25 @@
 			},
 			async search() {
 				this.time=new Date(this.options.time)
-				if (this.keyword=="id") {this.options.id=this.search_info}
-				if (this.keyword=="length") {this.options["length"]=this.search_info}
-				if (this.keyword=="interval") {this.options.interval=this.search_info}			
-				if (this.options.search_info == "") {this.list=this.list2}
-				else {
+				if(this.keyword=="id"){
+					this.options.id=this.search_info
+				}else if(this.keyword=="length"){
+					this.options["length"]=this.search_info
+				}else if(this.keyword=="interval"){
+					this.options.interval=this.search_info
+				}
+				if(this.options.search_info == ""){
+					this.list=this.list2
+				}else{
 					this.options.starttime=formatDate(this.options.starttime,'yyyy-MM-dd')
 					this.options.endtime=formatDate(this.options.endtime,'yyyy-MM-dd')
-					if ((this.options.starttime>=this.options.endtime)&&(this.options.endtime !="")) {
+					if((this.options.starttime>=this.options.endtime)&&(this.options.endtime !="")){
 						this.options.endtime=formatDate(Date.parse(this.options.starttime)+86400000,'yyyy-MM-dd')
 						this.$Notice.warning({
 							title: '提示',
 							desc: '截至日期必须大于开始日期',
-							})
-						}	
+						})
+					}	
 					let res = await this.$api.event(this.options)
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
@@ -292,21 +297,23 @@
 				})
 			},
 			getlist(val){
-				if (val==null) {return null}
-				else {return val.split(';')}
+				if(val==null){
+					return null
+				}else{
+					return val.split(';')
+				}
 			},
 			async handleReachBottom () {
-				if ( this.list.length<this.total ) {
+				if( this.list.length<this.total){
 					var options2=this.options
 					options2.page=Math.ceil(this.list.length/9)+1
 					options2.num=9
 					let eve= await this.$api.event(options2)
-					for (var i=0;i<9;i++){
+					for(var i=0;i<9;i++){
 						this.list.push(eve.data.data.list[i])
 					}
 					this.list2=this.list
-				}
-				else {
+				}else{
 					let eve= await this.$api.event(options2)
 					this.$Notice.warning({
 						title: '提示',

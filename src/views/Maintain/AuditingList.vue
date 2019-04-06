@@ -141,8 +141,8 @@
 											}
 										}
 									}
-								}, e)
-							], )
+								},e)
+							],)
 						}
 					},
 					{
@@ -191,7 +191,7 @@
 											}
 										},
 									}
-								}, "查看"),
+								},"查看"),
 							])
 						}
 					}
@@ -211,14 +211,14 @@
 				}
 			},
 			async getData(){
-				if (this.show.type == "all") {
+				if(this.show.type == "all"){
 					this.options.type = ""
-				} else {
+				}else{
 					this.options.type = this.show.type
 				}
-				if (this.show.device_type == "all") {
+				if(this.show.device_type == "all"){
 					this.options.device_type = ""
-				} else {
+				}else{
 					this.options.device_type = this.show.device_type
 				}
 				let res = await this.$api.fault(this.options)
@@ -251,12 +251,12 @@
 			async getDipatch(){
 				if (this.show.type == "all") {
 					this.options.type = ""
-				} else {
+				}else{
 					this.options.type = this.show.type
 				}
-				if (this.show.device_type == "all") {
+				if(this.show.device_type == "all"){
 					this.options.device_type = ""
-				} else {
+				}else{
 					this.options.device_type = this.show.device_type
 				}
 				let res = await this.$api.getRepair(this.options)

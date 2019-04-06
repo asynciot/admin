@@ -328,7 +328,7 @@
 						window.$cookie.delete('id')
 						window.$cookie.delete('role')
 						window.localStorage.removeItem('id');
-						this.$router.replace({						
+						this.$router.replace({
 							name: 'login'
 						})
 						break;
@@ -343,7 +343,7 @@
 							name: 'newpassword'
 						})
 						break;
-					case 5:					
+					case 5:
 						let http = await this.$api.getcode()
 						window.location.href= http.data.qrcode.url
 				}

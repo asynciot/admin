@@ -26,25 +26,25 @@ div.layout-content-main
 
 <script>
 import {
-  api,
+	api,
 	ladderApi,
 	formatDate
 } from '@/utils'
 export default {
-  created() {
+	created() {
 		this.getVersion()
-  },
-  data() {
+	},
+	data() {
 		const type= {
-      15: '控制器',
-      240: '控制柜',
-    };
-    const netWork = {
-      3: '联通3G',
-      40: '移动4G',
-      41: '联通4G',
-    };
-    return {
+			15: '控制器',
+			240: '控制柜',
+		};
+		const netWork = {
+			3: '联通3G',
+			40: '移动4G',
+			41: '联通4G',
+		};
+		return {
 			versions: [],
 			version: '',
 			upsuccess: true,
@@ -80,14 +80,14 @@ export default {
 					return h('p',i)
 				}
 			},
-//      {
-//        title: '网络类型',
-//        key: 'networkType',
-//					width:100,
-//        render: (h, params) => {
-//          return h('p',netWork[params.row.networkType]||'-')
-//        }
-//      },
+	//      {
+	//        title: '网络类型',
+	//        key: 'networkType',
+	//					width:100,
+	//        render: (h, params) => {
+	//          return h('p',netWork[params.row.networkType]||'-')
+	//        }
+	//      },
 			{
 				title: '版本',
 				key: 'device_firmware',
@@ -119,7 +119,7 @@ export default {
 					}
 					return  h('Poptip',{
 						props: {
-							trigger:"hover",										
+							trigger:"hover",
 							placement:"top-start",
 							content:params.row.cell_address
 						},
@@ -144,43 +144,43 @@ export default {
 					}, '更新')
 				}
 			}],
-      data: [],
+			data: [],
 			menu:[],
 			file: null,
-      options: {
-        page: 1,
-        num: 10,
-        total: 1,
-		search_info: '',
-      }
-    }
-  },
-  methods: {
+			options: {
+				page: 1,
+				num: 10,
+				total: 1,
+				search_info: '',
+			}
+		}
+	},
+	methods: {
 		handleSearch1 () {
 			this.menu=[];
 			var str;
-				for (var i=0;i<this.data.length;i++){
-					str=this.data[i].IMEI;
-						if (str != null){
-							if (str.indexOf(this.options.search_info)>=0){
-							this.menu.push(str)
-							}
-						}
-					str=this.data[i].device_name;		  	    	
-						if (str != null){
-							if (str.indexOf(this.options.search_info)>=0){
-							this.menu.push(str)
-							}
-						} 
+			for (var i=0;i<this.data.length;i++){
+				str=this.data[i].IMEI;
+				if (str != null){
+					if (str.indexOf(this.options.search_info)>=0){
+					this.menu.push(str)
 					}
-			},
+				}
+				str=this.data[i].device_name;		  	    	
+				if (str != null){
+					if (str.indexOf(this.options.search_info)>=0){
+					this.menu.push(str)
+					}
+				} 
+			}
+		},
 		handleUpload (file) {
 			var type = file.name.split('.')
 			if (type[1] == 'bin'){
-			this.file = file;
-			this.filename = this.file.name;
-			this.upsuccess = false;
-			return false;
+				this.file = file;
+				this.filename = this.file.name;
+				this.upsuccess = false;
+				return false;
 			}
 			else{
 				this.$Notice.warning({
@@ -197,40 +197,39 @@ export default {
 			this.versions.forEach(item=>{
 				if(item==this.filename) {flag=1}
 			})
-				if (flag==1) {
-					this.upsuccess=true
-					this.$Notice.warning({
-						title: '成功',
-						desc: (this.filename+'已存在')
+			if (flag==1) {
+				this.upsuccess=true
+				this.$Notice.warning({
+					title: '成功',
+					desc: (this.filename+'已存在')
+				})
+				this.filename='已上传'+this.filename
+			}else {
+				let res = await this.$api.upload(formData)
+				if (res.data.code == 0){
+					this.versions=[]
+					let typ= await this.$api.gettype({type:'firmware',num:100,page:1})
+					typ.data.data.list.forEach(item=>{
+						this.versions.push(item.name)
 					})
-					this.filename='已上传'+this.filename
-					}
-				else {
-					let res = await this.$api.upload(formData)
-					if (res.data.code == 0){
-						this.versions=[]
-						let typ= await this.$api.gettype({type:'firmware',num:100,page:1})
-						typ.data.data.list.forEach(item=>{
-							this.versions.push(item.name)
-						})
 					this.upsuccess=true
 					this.$Notice.success({
 						title: '成功',
 						desc: ('成功上传'+this.filename)
 					})
 					this.filename='已上传'+this.filename
-					}
-					else{
-						this.$Notice.error({
-							title: '错误',
-							desc: '上传失败'
-						})
-					}
 				}
+				else{
+					this.$Notice.error({
+						title: '错误',
+						desc: '上传失败'
+					})
+				}
+			}
 		},
 		pageChange(val) {
-		  this.options.page = val
-		  this.getList()
+			this.options.page = val
+			this.getList()
 		},
 		async getVersion() {
 			this.versions=[]
@@ -241,10 +240,10 @@ export default {
 			this.getList()
 		},
 		async getList() {
-      this.loading = true
-      let res = await this.$api.devices(this.options)
-      this.loading = false
-      if (res.data.code === 0) {
+			this.loading = true
+			let res = await this.$api.devices(this.options)
+			this.loading = false
+			if(res.data.code === 0){
 				for (var i=0;i<res.data.data.list.length;i++){
 					if (res.data.data.list[i].device_firmware !=null) {
 						if(res.data.data.list[i].device_firmware.length>=6){
@@ -252,27 +251,29 @@ export default {
 						}
 					}
 				}
-        this.data = res.data.data.list
-				// this.data = [{device_name:'一号',IMEI:6346},{device_name:'二号',IMEI:61246},{device_name:'三号',IMEI:5891},{device_name:'四号',IMEI:345},]
-        this.options.total = res.data.data.totalNumber
-      } else {
-        this.$Notice.error({
-          title: '错误',
-          desc: '获取列表失败'
-        });
-      }
-    },
+				this.data = res.data.data.list
+				this.options.total = res.data.data.totalNumber
+			}else{
+				this.$Notice.error({
+				  title: '错误',
+				  desc: '获取列表失败'
+				});
+			}
+		},
 		selection(data) {
 			this.select=[]
-      data.forEach(item=>{
+			data.forEach(item=>{
 				this.select.push(item)
 			})
-    },
-		update(val) {			
+		},
+		update(val) {
 			var name = []
 			val.forEach(item=>{
-				if (item.device_name!=null){name.push(item.device_name); }
-				else {name.push(item.IMEI)}
+				if(item.device_name!=null){
+					name.push(item.device_name);
+				}else{
+					name.push(item.IMEI)
+				}
 			})
 			this.$Modal.confirm({
 				title: '请确认要升级的设备',
@@ -283,46 +284,50 @@ export default {
 				onCancel: () => {
 				}
 			})
-			},
-			async toupdate(val){
-				var res
-				var success=[]
-				var error =[]
-				for (var i=0;i<val.length;i++) {
-					res = await this.$api.updat({IMEI:val[i].IMEI,firmware:this.version})
-						if (res.data.code === 0) {
-							if (val[i].device_name!=null){success.push(val[i].device_name);}
-							else {success.push(val[i].IMEI)}							
-							}
-						else{
-							if (val[i].device_name!=null){error.push(val[i].device_name);}
-							else {error.push(val[i].IMEI)}
+		},
+		async toupdate(val){
+			var res
+			var success=[]
+			var error =[]
+			for (var i=0;i<val.length;i++) {
+				res = await this.$api.updat({IMEI:val[i].IMEI,firmware:this.version})
+					if(res.data.code === 0){
+						if(val[i].device_name!=null){
+							success.push(val[i].device_name);
+						}else{
+							success.push(val[i].IMEI)
+						}
+					}else{
+						if(val[i].device_name!=null){
+							error.push(val[i].device_name);
+						}else{
+							error.push(val[i].IMEI)
 						}
 					}
-					if (success.length == val.length) {
-						this.getList()
-						this.$Notice.success({
-							title: '成功',
-							desc: '成功升级'+success
-						});
-					} else {
-							if (error.length == val.length) {
-								this.$Notice.error({
-									title: '错误',
-									desc: '升级失败'
-								});
-							}
-							else{
-								this.getList()
-								this.$Notice.warning({
-									title: '警告',
-									desc: '成功升级'+success+'；但是'+error+'升级失败'
-								});
-							}							
-						}
 			}
-		},
-
+			if(success.length == val.length){
+				this.getList()
+				this.$Notice.success({
+					title: '成功',
+					desc: '成功升级'+success
+				});
+			}else{
+				if (error.length == val.length) {
+					this.$Notice.error({
+						title: '错误',
+						desc: '升级失败'
+					});
+				}
+				else{
+					this.getList()
+					this.$Notice.warning({
+						title: '警告',
+						desc: '成功升级'+success+'；但是'+error+'升级失败'
+					});
+				}							
+			}
+		}
+	},
 }
 </script>
 

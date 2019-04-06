@@ -157,7 +157,7 @@
 					total: 0,
 					isreg: "True",
 					model:'login',
-					register: "registered",	
+					register: "registered",
 				},
 				ladder:{
 					name:'',

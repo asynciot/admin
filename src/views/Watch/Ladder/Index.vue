@@ -137,7 +137,7 @@ div
 					page: 1,
 					num: 10,
 					total: 0,
-					register: "registered",				
+					register: "registered",
 				},
 				selc:{
 					search_info: '',
@@ -164,7 +164,7 @@ div
 					}
 				}
 				for (var i=0;i<this.devices.length;i++){
-					str=this.devices[i].device_name;		  	    	
+					str=this.devices[i].device_name;
 					if ((str != null)&&(this.query.search_info != null)){
 						if (str.indexOf(this.query.search_info)>=0)
 							this.menu.push(str)
@@ -182,7 +182,7 @@ div
 				map.enableScrollWheelZoom();
 				map.addControl(new BMap.NavigationControl({
 					anchor: BMAP_ANCHOR_TOP_RIGHT,
-					enableGeolocation: true, 
+					enableGeolocation: true,
 				}));
 				map.addEventListener('tilesloaded', () => {
 					this.eventHandler();
@@ -210,7 +210,7 @@ div
 			async getList() {
 				let res = await this.$api.reLadder(this.query)
 				this.devices=res.data.data.list
-				this.options.total = res.data.data.totalNumber		
+				this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
 						item.state = "在线"
@@ -261,28 +261,23 @@ div
 				this.map.clearOverlays();
 				this.markerClusterer.removeMarkers(this.markers)
 				this.markers = []
-				console.log(this.devices)
 				this.devices.forEach(item => {
-					console.log(item)
 					if (item.cellocation_id != null){
-						console.log(1)
 						const point = new BMap.Point(item.cell_lon, item.cell_lat);
 						let marker = null;
-						if (item.state  == "在线") {
+						if(item.state == "在线"){
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: greenMark
 							});
-						}
-						if (item.state == "离线") {
+						}else if(item.state == "离线"){
 							labelStyle.color = 'red';
 							labelStyle.borderColor = 'red';
 							marker = new BMap.Marker(point, {
 								icon: redMark
 							});
-						}
-						if (item.state  == '长期离线') {
+						}else if(item.state == '长期离线'){
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
@@ -325,8 +320,9 @@ div
 						title: '警告',
 						desc: '该设备没有记录地址',
 					})
+				}else{
+					this.map.panTo(new BMap.Point(vd, val))
 				}
-				else {this.map.panTo(new BMap.Point(vd, val))}
 			},
 			angleChange(){
 				if(document.getElementById("1").className == "fa fa-angle-up fa-3x"){
@@ -335,7 +331,7 @@ div
 				}else{
 					document.getElementById("1").className = "fa fa-angle-up fa-3x"
 					this.div_show = true
-				}						
+				}
 			},
 			async centpoint() {
 				let res = await this.$api.reLadder(this.query)
@@ -366,28 +362,6 @@ div
 						maxlon = item.cell_lon
 					}
 				})
-				cenlat = (minlat+maxlat)/2			
-				cenlon = (minlon+maxlon)/2
-			},
-			centpoint1() {
-				var minlat = 500;
-				var minlon = 500;
-				var maxlat = -500;
-				var maxlon = -500;
-				this.devices.forEach(item => {
-					if(item.cell_lat<=minlat){
-						minlat = item.cell_lat
-					}
-					if(item.cell_lon<=minlon){
-						minlon = item.cell_lon
-					}
-					if(item.cell_lat>=maxlat){
-						maxlat = item.cell_lat
-					}
-					if(item.cell_lon>=maxlon){
-						maxlon = item.cell_lon
-					}
-				})
 				cenlat = (minlat+maxlat)/2
 				cenlon = (minlon+maxlon)/2
 			},
@@ -401,22 +375,21 @@ div
 			},
 			async checkcolor(c) {
 				this.color[c]=!this.color[c]
-				if (this.color[c]) {
+				if(this.color[c]){
 					document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
 					document.getElementById(this.col[c]).style.marginTop = "4px"
-				}
-				else {
+				}else{
 					document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
 					document.getElementById(this.col[c]).style.marginTop = "4px"
 				}
 				this.query.tagcolor=''
-				for (var i=0;i<6;i++) {
-				if (this.color[i]) {
-					if (this.query.tagcolor!='') {
-						this.query.tagcolor=this.query.tagcolor+';'
+				for(var i=0;i<6;i++){
+					if(this.color[i]){
+						if(this.query.tagcolor!=''){
+							this.query.tagcolor=this.query.tagcolor+';'
 						}
-					this.query.tagcolor=this.query.tagcolor+this.col[i]
-				}
+						this.query.tagcolor=this.query.tagcolor+this.col[i]
+					}
 				}
 				this.search()
 			},
