@@ -15,7 +15,7 @@
 				<!-- Small boxes (Stat box) -->
 				<div class="row" style="padding:0">
 					<div class="col-lg-3 col-xs-10">
-						<draggable :options="{animation: 60,group:'count'}">
+
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center; padding:4px" >
@@ -25,16 +25,13 @@
 
 							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
-						</draggable>
 					</div>
 					<!-- ./col -->
 					<div class="col-lg-3 col-xs-6">
-						<draggable :options="{animation: 60,group:'count'}">
 						<!-- small box -->
 						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center; padding:4px">
 								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{0}}<sup style="font-size: 20px"></sup></div>
-
 								<p :style="'font-size:'+setheight[0]/6.5+'px'">可更新固件数</p>
 							</div>
 							<div class="icon">
@@ -42,11 +39,11 @@
 							</div>
 							<a href="#" class="small-box-footer" @click="$router.push({name:'evolution'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
-						</draggable>
+
 					</div>
 					<!-- ./col -->
 					<div class="col-lg-3 col-xs-6">
-						<draggable :options="{animation: 60,group:'count'}">
+
 						<!-- small box -->
 						<div class="small-box bg-yellow">
 							<div class="inner" style="text-align:center; padding:4px">
@@ -59,11 +56,11 @@
 							</div>
 							<a href="#" class="small-box-footer" @click="$router.push({name:'maintainList'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
-						</draggable>
+
 					</div>
 					<!-- ./col -->
 					<div class="col-lg-3 col-xs-6">
-						<draggable :options="{animation: 60,group:'count'}">
+
 						<!-- small box -->
 						<div class="small-box bg-green">
 							<div class="inner" style="text-align:center; padding:4px">
@@ -75,7 +72,7 @@
 							</div>
 							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
-						</draggable>
+
 					</div>
 					<!-- ./col -->
 				</div>
@@ -202,7 +199,7 @@
 								</div> -->
 								<form action="#" method="post" style="margin-top:5px">
 									<div class="input-group">
-										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
+										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
 										<Col span='6'>
 										<span class="input-group-btn" style="width: 100%">
 											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
@@ -320,7 +317,7 @@
 							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
-										<div class='' style="height:370px">
+										<div class='' :style="'height:'+screenheight/2.7+'px'">
 										<compare></compare>
 										</div>
 										<div class="swiper-button-next"></div>
@@ -334,7 +331,7 @@
 									</swiper-slide> -->
 									<swiper-slide>
 										<div class="swiper-button-prev"></div>
-										<div class='' style="height:370px">
+										<div class='' :style="'height:'+screenheight/2.7+'px'">
 											<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
 											<test1></test1>
 										</div>
@@ -414,22 +411,20 @@
 									</div>
 									<!-- /. tools -->
 								</div>
-								<div class="box-body" style="height:321px" v-if="emailbody">
+								<div class="box-body" v-if="emailbody" :style="'height:'+screenheight/2.55+'px'">
 									<form action="#" method="post">
 										<div class="form-group">
-											<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId">
+											<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
 										</div>
 										<div class="form-group">
-											<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title">
+											<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
 										</div>
 										<div>
-											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/6+'px;font-size:'+screenheight/50+'px'"></textarea>
 										</div>
+										<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
+											<i class="fa fa-arrow-circle-right"></i></button>
 									</form>
-								</div>
-								<div class="box-footer clearfix" v-if="emailbody">
-									<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
-										<i class="fa fa-arrow-circle-right"></i></button>
 								</div>
 							</div>
 							</Col>
@@ -459,10 +454,10 @@
 											</button>
 										</div>
 									</div>
-									<div class="box-body border-radius-none" v-if="chartbody3" style="height:380px">
+									<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/2.55+'px'">
 										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
 											<swiper-slide>
-												<div class='' style="height:370px">
+												<div class='' :style="'height:'+screenheight/2.7+'px'">
 												<faultfreq></faultfreq>
 												</div>
 											</swiper-slide>
@@ -495,10 +490,10 @@
 											</button>
 										</div>
 									</div>
-									<div class="box-body border-radius-none" v-if="chartbody4" style="height:380px">
+									<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/2.55+'px'">
 										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
 											<swiper-slide>
-												<div class='' style="height:370px">
+												<div class='' :style="'height:'+screenheight/2.7+'px'">
 												<activedoor></activedoor>
 												</div>
 											</swiper-slide>
@@ -516,7 +511,7 @@
 			<Col span='22'>&nbsp;</Col>
 			<Col span='2' style="vertical-align: middle;">
 				<div style="cursor: pointer;color:blue;font-size: larger;margin-left: 20px" @click="value1=true">
-					<span style="font-size: medium" class="fa fa-eye fa-2x"></span>
+					<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
 						内容筛选
 				</div>
 			</Col>

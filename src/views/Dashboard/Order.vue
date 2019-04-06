@@ -1,6 +1,6 @@
 <template lang="jade">
 	div(style="padding:0")
-		div.ch(id="test1" style="height:360px;width:100%")
+		div.ch(id="test1" style="width:100%", :style="'height:'+screenheight/2.7+'px'")
 </template>
 
 <script>
@@ -34,6 +34,7 @@
 			};
 		},
 		created(){
+			this.screenheight = document.documentElement.clientHeight;
 			this.LastWeek = this.getWeek(7)
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)

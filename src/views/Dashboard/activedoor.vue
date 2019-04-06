@@ -7,7 +7,7 @@
 			div(style="margin-top:5px")|→
 		Col(span='6')
 			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
-		div.ch(id="activedoor" style="height:335px;width:100%")
+		div.ch(id="activedoor" style="width:100%",:style="'height:'+screenheight/2.8+'px'")
 </template>
 
 <script>
@@ -44,6 +44,7 @@
 			};
 		},
 		created(){
+			this.screenheight = document.documentElement.clientHeight;
 			// setTimeout(() => {
 				this.getactivedoor();
 			// },500)

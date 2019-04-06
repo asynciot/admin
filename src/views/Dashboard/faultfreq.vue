@@ -6,7 +6,7 @@
 		Col(span='1' align='center')|→
 		Col(span='6')
 			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
-		div.ch(id="freq" style="height:310px;width:100%")
+		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight/3+'px'")
 </template>
 
 <script>
@@ -52,6 +52,7 @@
 			};
 		},
 		created(){
+			this.screenheight = document.documentElement.clientHeight;
 			// setTimeout(() => {
 				this.getfaultfreq();
 			// },500)

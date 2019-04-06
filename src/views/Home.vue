@@ -88,9 +88,7 @@
 						</div> -->
 					</Row>
 				</Header>
-				<div @click="full=false" v-if="full" style="text-align:right;height:15px;">
-					<icon name="quit" width="10" height="10" slot="prepend" style="cursor: pointer;margin-bottom: 5px;"></icon> 退出全屏 &nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
+				
 				<Content :style="{padding: '0 4px 4px',position:'relative',minHeight: '91vh'}" >
 					<div class="layout-content-main">
 						<transition name="fade">
@@ -98,6 +96,16 @@
 						</transition>
 					</div>
 				</Content>
+				<div @click="full=false" v-if='full' style="height:15px;" @mouseover="show(1)">
+					<Col span='22'>
+						<div @mouseout="show(2)">&nbsp;</div>
+					</Col>
+					<Col span='2' v-if='quit' @mouseout="show(2)" style="cursor: pointer;">
+						<div @mouseout="show(2)">
+							<icon name="quit" width="10" height="10" slot="prepend" style="margin-bottom: 5px;"></icon> 退出全屏
+						</div>
+					</Col>
+				</div>
 			</Layout>
 		</Layout>
 	</div>
@@ -118,6 +126,7 @@
 			};
 			return {
 				full:false,
+				quit:false,
 				tagsList: [],
 				isCollapsed: false,
 				modal: false,
@@ -297,6 +306,10 @@
 				this.$router.push({
 					name:'index'
 				})
+			},
+			show(val){
+				if (val == 1){this.quit=true}
+				if (val == 2){this.quit=false}
 			},
 			async logout(index) {
 				this.modalType = parseInt(index)
