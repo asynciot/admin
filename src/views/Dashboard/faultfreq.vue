@@ -1,12 +1,12 @@
 <template lang="jade">
 	div(style="padding:0")
-		Col(span='10' style="font-size : large;font-weight: bold;color:#333333")|控制柜常见故障TOP5
+		Col(span='10' style="font-size : large;font-weight: bold;color:#333333")|设备常见故障TOP5
 		Col(span='6')
 			DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="starttime" style='' @on-change="search()")
 		Col(span='1' align='center')|→
 		Col(span='6')
 			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
-		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight/3+'px'")
+		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight/1.3+'px'")
 </template>
 
 <script>

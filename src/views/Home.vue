@@ -102,7 +102,7 @@
 					</Col>
 					<Col span='2' v-if='quit' @mouseout="show(2)" style="cursor: pointer;">
 						<div @mouseout="show(2)">
-							<icon name="quit" width="10" height="10" slot="prepend" style="margin-bottom: 5px;"></icon> 退出全屏
+							<icon name="quit" width="10" height="10" slot="prepend" ></icon> 退出全屏
 						</div>
 					</Col>
 				</div>

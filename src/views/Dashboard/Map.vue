@@ -109,7 +109,7 @@ div()
 				const deviceWidth = document.documentElement.clientWidth
 				const deviceHeight = document.documentElement.clientHeight
 				// mapsize.style.width = '100%'
-				mapsize.style.height = (Number(deviceHeight)/2.55-20) + 'px'
+				mapsize.style.height = (Number(deviceHeight)/1.15) + 'px'
 				// mapsize.style.height ='380px'
 			},
 			async handleSearch1 () {

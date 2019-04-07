@@ -7,6 +7,7 @@
 			<div><Checkbox @on-change='showpanel("chart",chart)' v-model="chart">业务图表</Checkbox></div>
 			<!-- <div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div> -->
 			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">常见故障</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart4",chart4)' v-model="chart4">活跃设备</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div>
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
@@ -82,9 +83,8 @@
 					<!-- Left col -->
 					<!-- <section class="col-lg-5 connectedSortable"> -->
 					
-
-					<draggable :options="{animation: 60,group:'panel'}">
-						<!-- Map box --> <Col span='12' id="mapwidth">
+				<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
+						<!-- Map box --> <swiper-slide> <Col span='24' id="mapwidth">
 						<div class="box box-primary" v-if="map">
 							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
@@ -114,118 +114,14 @@
 								设备定位
 							  </h3>
 							</div>
-							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/2.55+'px'" v-if="mapbody">
+							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/1.15+'px'" v-if="mapbody">
 								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
 						</div>
 						</Col>
-						<Col span='6' id="chatwidth">
-						  <!-- /.box -->
-						<!-- Chat box -->
-						<div class="box box-primary" v-if="chat" >
-							<div class="box-header">
-								<i class="fa fa-comments-o"></i>
-
-								<h3 class="box-title">客户意见反馈</h3>
-
-								<div class="box-tools pull-right" data-toggle="tooltip" title="">
-									<div class="btn-group" data-toggle="btn-toggle">
-										<div class="btn-group" style="margin-right: 5px;">
-											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
-												<i class="fa fa-bars"></i></button>
-											<div class="dropdown-menu pull-right" role="menu">
-												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
-											</div>
-										</div>
-										<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
-											<i class="fa fa-minus" v-if="chatbody"></i>
-											<i class="fa fa-plus" v-if="!chatbody"></i>
-										</button>
-										<button type="button" class="btn btn-primary btn-sm" @click="chat=false"><i class="fa fa-times"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-							<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/2.55+'px'">
-								<!-- chat item -->
-								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/2.55-60">
-								<div class="item" v-for="item in chatlist" >
-									<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
-									<p class="message">
-										<a href="#" class="name">
-											<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
-											<div style="font-size: large;" :style="'font-size:'+setheight[0]/6+'px'">{{item.username}}</div>
-											<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
-										</a>
-										<div style="display: inline-block;width:95%;margin-top:5px">
-										<Col span='1'>&nbsp;</Col>
-										<Col span='7'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
-										<Col span='8'>
-											<Button type="text" @click="item.showlist=true" v-if="!item.showlist">共{{item.followlist.length}}条回复</Button>
-											<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
-										</Col>
-										<Col span='8'>
-											<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id">回复本条</Button>
-											<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
-										</Col>
-										</div>
-									</p>
-									<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
-										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.fromId}}</h4>
-										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">:{{follow.content}}</h4>
-										<div>
-											<Col span='18'>&nbsp;</Col>
-											<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.createTime}}</Col>
-										</div>
-									</div>
-<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
-										<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word; ">宋工:建议减小关门低速1、低速2。</h4>
-									</div> -->
-									<!-- /.attachment -->
-								</div>
-								</Scroll>
-								<!-- /.item -->
-<!-- 								<div class="input-group">
-									<input class="form-control" placeholder="Type message...">
-
-									<div class="input-group-btn">
-										<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-									</div>
-								</div> -->
-								<form action="#" method="post" style="margin-top:5px">
-									<div class="input-group">
-										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
-										<Col span='6'>
-										<span class="input-group-btn" style="width: 100%">
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">留言</button>
-										</span>
-										</Col>
-									</div>
-								</form>
-							</div>
-		<!-- 					<div class="box-footer clearfix" v-if="chatbody">
-								<form action="#" method="post">
-									<div class="input-group">
-										<Col span='20'><textarea type="text" name="message" style="height:50px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
-										<Col span='4'>
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" style="height:50px">回复</button>
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" style="height:50px">留言</button>
-										</span>
-										</Col>
-									</div>
-								</form>
-							</div> --> 
-							<!-- /.chat -->
-						</div>
-						</Col>
-						<Col span='6' id="progresswidth">
+						</swiper-slide>
+						<swiper-slide> <Col span='12' id="progresswidth">
 						<!-- /.box (chat box) -->
 
 						<!-- TO DO List -->
@@ -253,8 +149,8 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/2.55+'px'">
-								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/2.55-20">
+							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/1.15+'px'">
+								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.15-20">
 								<ul class="todo-list" style=" padding:3">
 									<div v-for="item in todo" :style="'font-size:'+screenheight/54+'px'" style="">
 										<div style=""> 
@@ -262,17 +158,17 @@
 											<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										</div>
 										<div>
-											<Col span='24'>故障原因：{{codelist[item.description]}}</Col>
+											<Col span='24'>故障原因：{{codelist[item.description]}}</Col> 
 										</div>
 										<div>
-											<Col span='24'>安装地址：{{item.addr}}</Col>
+											<Col span='24'>安装地址：{{item.addr}}</Col> 
 										</div>
 										<Col span='21'>
 											<div class="progress horizontal active" style="height:10px">
 												<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress" style="height:10px">
 												</div>
 											</div>
-										</Col>
+										</Col> 
 										<Col span='3' style="text-align:right;color:#878787;">{{item.progress}}</Col>
 									</div>
 								</ul>
@@ -282,7 +178,6 @@
 						</div>
 						<!-- /.box -->
 						</Col>
-						
 						<Col span='12' id="chartwidth">
 					<!-- </section> -->
 					<!-- /.Left col -->
@@ -314,13 +209,12 @@
 									</button>
 								</div>
 							</div>
-							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
+							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/1.15+'px'">
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
-										<div class='' :style="'height:'+screenheight/2.7+'px'">
+										<div class='' :style="'height:'+screenheight/1.2+'px'">
 										<compare></compare>
 										</div>
-										<div class="swiper-button-next"></div>
 									</swiper-slide>
 									<!-- <swiper-slide>
 										<div class="swiper-button-prev"></div>
@@ -330,8 +224,7 @@
 										<div class="swiper-button-next"></div>
 									</swiper-slide> -->
 									<swiper-slide>
-										<div class="swiper-button-prev"></div>
-										<div class='' :style="'height:'+screenheight/2.7+'px'">
+										<div class='' :style="'height:'+screenheight/1.2+'px'">
 											<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
 											<test1></test1>
 										</div>
@@ -341,13 +234,9 @@
 
 						</div>
 						<!-- /.box -->
-						</Col>
-					
-						<Col span='6' id="chartwidth2">
-						<!-- </section> -->
-						<!-- /.Left col -->
-						<!-- right col (We are only adding the ID to make the widgets sortable)-->
-							<!-- solid sales graph -->
+						</Col> </swiper-slide>
+						
+<!-- 						<Col span='6' id="chartwidth2">
 							<div class="box box-primary" v-if="chart2">
 								<div class="box-header">
 									<i class="fa fa-th"></i>
@@ -373,16 +262,104 @@
 									</div>
 								</div>
 								<div class="box-body border-radius-none" v-if="chartbody2" style="height:380px">
-									<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
-										<swiper-slide>
-												<div id="test5" style="height:300px;width:100%"> </div>
-										</swiper-slide>
-									</swiper>
+									<div id="test5" style="height:300px;width:100%"> </div>
 								</div>
 							</div>
-							</Col>
+							</Col> -->
 							
-							<Col span='6' id="emailwidth">
+							<swiper-slide>
+													<Col span='12' id="chatwidth">
+													  <!-- /.box -->
+													<!-- Chat box -->
+													<div class="box box-primary" v-if="chat" >
+														<div class="box-header">
+															<i class="fa fa-comments-o"></i>
+							
+															<h3 class="box-title">客户意见反馈</h3>
+							
+															<div class="box-tools pull-right" data-toggle="tooltip" title="">
+																<div class="btn-group" data-toggle="btn-toggle">
+																	<div class="btn-group" style="margin-right: 5px;">
+																		<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
+																			<i class="fa fa-bars"></i></button>
+																		<div class="dropdown-menu pull-right" role="menu">
+																			<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
+																		</div>
+																	</div>
+																	<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
+																		<i class="fa fa-minus" v-if="chatbody"></i>
+																		<i class="fa fa-plus" v-if="!chatbody"></i>
+																	</button>
+																	<button type="button" class="btn btn-primary btn-sm" @click="chat=false"><i class="fa fa-times"></i>
+																	</button>
+																</div>
+															</div>
+														</div>
+														<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/1.15+'px'">
+															<!-- chat item -->
+															<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/1.15-60">
+															<div class="item" v-for="item in chatlist" >
+																<img src="../../assets/img/user4-128x128.jpg" alt="user image" class="online">
+																<p class="message">
+																	<a href="#" class="name">
+																		<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
+																		<div style="font-size: large;" :style="'font-size:'+setheight[0]/6+'px'">{{item.username}}</div>
+																		<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
+																	</a>
+																	<div style="display: inline-block;width:95%;margin-top:5px">
+																	<Col span='1'>&nbsp;</Col>
+																	<Col span='7'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
+																	<Col span='8'>
+																		<Button type="text" @click="item.showlist=true" v-if="!item.showlist">共{{item.followlist.length}}条回复</Button>
+																		<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
+																	</Col>
+																	<Col span='8'>
+																		<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id">回复本条</Button>
+																		<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
+																	</Col>
+																	</div>
+																</p>
+																<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
+																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.fromId}}</h4>
+																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">:{{follow.content}}</h4>
+																	<div>
+																		<Col span='18'>&nbsp;</Col>
+																		<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.createTime}}</Col>
+																	</div>
+																</div>
+							<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
+																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word; ">宋工:建议减小关门低速1、低速2。</h4>
+																</div> -->
+																<!-- /.attachment -->
+															</div>
+															</Scroll>
+															<!-- /.item -->
+							<!-- 								<div class="input-group">
+																<input class="form-control" placeholder="Type message...">
+							
+																<div class="input-group-btn">
+																	<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+																</div>
+															</div> -->
+															<form action="#" method="post" style="margin-top:5px">
+																<div class="input-group">
+																	<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
+																	<Col span='6'>
+																	<span class="input-group-btn" style="width: 100%">
+																		<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
+																		<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">留言</button>
+																	</span>
+																	</Col>
+																</div>
+															</form>
+														</div>
+													</div>
+													</Col> 
+							<Col span='12' id="emailwidth">
 							<!-- quick email widget -->
 							<div class="box box-primary" v-if="email">
 								<div class="box-header">
@@ -411,7 +388,7 @@
 									</div>
 									<!-- /. tools -->
 								</div>
-								<div class="box-body" v-if="emailbody" :style="'height:'+screenheight/2.55+'px'">
+								<div class="box-body" v-if="emailbody" :style="'height:'+screenheight/1.15+'px'">
 									<form action="#" method="post">
 										<div class="form-group">
 											<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
@@ -420,7 +397,7 @@
 											<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
 										</div>
 										<div>
-											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/6+'px;font-size:'+screenheight/50+'px'"></textarea>
+											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/2+'px;font-size:'+screenheight/50+'px'"></textarea>
 										</div>
 										<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
 											<i class="fa fa-arrow-circle-right"></i></button>
@@ -429,7 +406,9 @@
 							</div>
 							</Col>
 							
-							<Col span='6' id="chartwidth3">
+							</swiper-slide>
+							<swiper-slide> 
+							<Col span='12' id="chartwidth3">
 								<div class="box box-primary" v-if="chart3">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
@@ -454,17 +433,13 @@
 											</button>
 										</div>
 									</div>
-									<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/2.55+'px'">
-										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
-											<swiper-slide>
-												<div class='' :style="'height:'+screenheight/2.7+'px'">
-												<faultfreq></faultfreq>
-												</div>
-											</swiper-slide>
-										</swiper>
+									<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/1.15+'px'">
+											<div class='' :style="'height:'+screenheight/1.2+'px'">
+											<faultfreq></faultfreq>
+											</div>
 									</div>
 								</div>
-							</Col>
+							</Col> 
 							<Col span='12' id="chartwidth4">
 								<div class="box box-primary" v-if="chart4">
 									<div class="box-header">
@@ -490,26 +465,22 @@
 											</button>
 										</div>
 									</div>
-									<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/2.55+'px'">
-										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
-											<swiper-slide>
-												<div class='' :style="'height:'+screenheight/2.7+'px'">
-												<activedoor></activedoor>
-												</div>
-											</swiper-slide>
-										</swiper>
+									<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/1.15+'px'">
+										<div class='' :style="'height:'+screenheight/1.2+'px'">
+											<activedoor></activedoor>
+										</div>
 									</div>
 								</div>
-							</Col>
+							</Col> </swiper-slide>
 						<!-- /.box -->
-						
-						</draggable>
+
+						</swiper>
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
 			</section>
-			<Col span='22'>&nbsp;</Col>
-			<Col span='2' style="vertical-align: middle;">
+				<Col span='22'>&nbsp;</Col>
+				<Col span='2' style="vertical-align: middle;">
 				<div style="cursor: pointer;color:blue;font-size: larger;margin-left: 20px" @click="value1=true">
 					<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
 						内容筛选
@@ -573,21 +544,23 @@
 				todo:[],
 				chatlist:[],
 				swiperOption:{
+					freeMode:true,
 					autoplay:true,
-					delay:20000,
+					disableOnInteraction: false,
+					delay: 1000,
 					notNextTick:true,
 					direction:'horizontal',
 					grabCursor:true,
 					setWrapperSize:true,
 					autoHerght:true,
 					slidesPerView: 1,
-					mousewheel:true,
+					mousewheel:false,
 					mousewheelControl:true,
 					height:window.innerHeight,
 					resistanceRatio:0,
 					observeParents:true,
 					observer:true,//修改swiper自己或子元素时，自动初始化swiper
-					allowTouchMove: false,
+					allowTouchMove: true,
 					navigation: {
 						prevEl: '.swiper-button-prev',
 						nextEl: '.swiper-button-next',
@@ -629,6 +602,7 @@
 				alldevice: 0,
 				onlinedevice:0,
 				chatpage:0,
+				progresspage:0,
 				chatbottom:false,
 				reply:'请留下您的疑问和建议 ...',
 				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
@@ -655,6 +629,7 @@
 			if (window.localStorage.getItem('chart') == 1) {this.chart=false}
 			if (window.localStorage.getItem('chart2') == 1) {this.chart2=false}
 			if (window.localStorage.getItem('chart3') == 1) {this.chart3=false}
+			if (window.localStorage.getItem('chart4') == 1) {this.chart4=false}
 			if (window.localStorage.getItem('progress') == 1) {this.progress=false}
 			if (window.localStorage.getItem('email') == 1) {this.email=false}
 			this.chartwidth();
@@ -664,8 +639,9 @@
 			this.screenheight = document.documentElement.clientHeight;
 			this.setheight[0]=this.screenheight/9.75 -3
 			this.setheight[1]=this.setheight[0]/2.4
-			this.getchat()
+			this.getchat();
 			this.getinfo();
+			this.getprogress();
 			this.LastWeek = this.getWeek(7)
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)
@@ -678,9 +654,9 @@
 				this.getchat()
 			},
 			handleReachBottom2(){
+				this.getprogress()
 			},
 			showpanel(val1,val2){
-				alert(val2)
 				if (val2) {window.localStorage.setItem(val1,0)}
 				else {window.localStorage.setItem(val1,1)}
 			},
@@ -778,6 +754,60 @@
 					this.shineword()
 				}, 1000)
 			},
+			async getprogress(){
+				this.progresspage++
+				var ech
+				let res = await this.$api.getRepair({
+					search_info: '',
+					page: this.progresspage,
+					num: 5,
+					isreg: "True",
+					state:'',
+					order_type:'',
+					result:'',
+					device_id:'',
+					user_id:window.localStorage.getItem('id')
+				})
+				if (res.data.code === 0) {
+					if (res.data.data.list.length == 0) {
+						this.$Notice.warning({
+							title: '提示',
+							desc: '已经到底了'
+						});
+					}
+					for (var i=0;i<res.data.data.list.length;i++) {
+						ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
+						res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+						res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
+						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
+						var t=Date.parse(new Date())-parseInt(res.data.data.list[i].create_time)
+						if(t>1000){res.data.data.list[i].create_time=parseInt(t/1000).toString()+" secs"}
+						if(t>60000){res.data.data.list[i].create_time=parseInt(t/60000).toString()+" mins"}
+						if(t>3600000){res.data.data.list[i].create_time=parseInt(t/3600000).toString()+" hours"}
+						if(t>86400000){res.data.data.list[i].create_time=parseInt(t/86400000).toString()+" days"}
+					}
+					this.data = res.data.data.list
+					this.data.forEach(item=>{
+						var pro='50%'
+						var code=''
+						if (item.code != null) {code=item.code.toString(16)}
+						if (item.expect_time != null) {
+							pro=(Date.parse(new Date())-parseInt(item.create_time))/(parseInt(item.expect_time)-parseInt(item.create_time)+86400000)
+							if (pro>1) {pro = 0.8}
+							pro=(parseInt(100*pro)).toString()+'%'
+							}
+						this.todo.push({pro:item.device_name,description: code,time:item.create_time,progress:pro,addr:item.install_addr})
+					})
+				}
+				else {
+					this.$Notice.error({
+						title: '错误',
+						desc: '获取故障处理进程失败！'
+					})
+				}
+			},
 			async getinfo(){
 				var res
 				var ech
@@ -818,43 +848,7 @@
 				if (res.data.code == 0){
 				this.onlinedevice =res.data.data.totalNumber
 				}
-				res = await this.$api.getRepair({
-					search_info: '',
-					page: 1,
-					num: 4,
-					isreg: "True",
-					state:'',
-					order_type:'',
-					result:'',
-					device_id:'',
-				})
-				if (res.data.code === 0) {
-					for (var i=0;i<res.data.data.list.length;i++) {
-						ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
-						res.data.data.list[i].device_name = ech.data.data.list[0].device_name
-						res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
-						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
-						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
-						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-						var t=Date.parse(new Date())-parseInt(res.data.data.list[i].create_time)
-						if(t>1000){res.data.data.list[i].create_time=parseInt(t/1000).toString()+" secs"}
-						if(t>60000){res.data.data.list[i].create_time=parseInt(t/60000).toString()+" mins"}
-						if(t>3600000){res.data.data.list[i].create_time=parseInt(t/3600000).toString()+" hours"}
-						if(t>86400000){res.data.data.list[i].create_time=parseInt(t/86400000).toString()+" days"}
-					}
-					this.data = res.data.data.list
-					this.data.forEach(item=>{
-						var pro='50%'
-						var code=''
-						if (item.code != null) {code=item.code.toString(16)}
-						if (item.expect_time != null) {
-							pro=(Date.parse(new Date())-parseInt(item.create_time))/(parseInt(item.expect_time)-parseInt(item.create_time)+86400000)
-							if (pro>1) {pro = 0.8}
-							pro=(parseInt(100*pro)).toString()+'%'
-							}
-						this.todo.push({pro:item.device_name,description: code,time:item.create_time,progress:pro,addr:item.install_addr})
-					})
-				}
+				
 			},
 			widthblock1(val){
 				var width=document.getElementById(val).className
