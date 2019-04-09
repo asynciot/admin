@@ -335,7 +335,7 @@
 							this.sign[3]=true
 						}else if (this.data.rssi<=16) {
 							this.sign[4]=true
-						}else if (this.data.rssi<=32) {
+						}else {
 							this.sign[5]=true
 						}
 					}

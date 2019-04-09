@@ -312,7 +312,7 @@
 																	</a>
 																	<div style="display: inline-block;width:95%;margin-top:5px">
 																	<Col span='1'>&nbsp;</Col>
-																	<Col span='7'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createTime}}</Col>
+																	<Col span='7'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.createtime}}</Col>
 																	<Col span='8'>
 																		<Button type="text" @click="item.showlist=true" v-if="!item.showlist">共{{item.followlist.length}}条回复</Button>
 																		<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
@@ -324,11 +324,11 @@
 																	</div>
 																</p>
 																<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
-																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.fromId}}</h4>
+																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.username}}</h4>
 																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">:{{follow.content}}</h4>
 																	<div>
 																		<Col span='18'>&nbsp;</Col>
-																		<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.createTime}}</Col>
+																		<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.createtime}}</Col>
 																	</div>
 																</div>
 							<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
@@ -582,7 +582,7 @@
 					content:'',
 					info:'',
 					type:0,
-					// createTime:'123',
+					// createtime:'123',
 					isSettled:false,
 				},
 				chatoptions: {
@@ -710,31 +710,35 @@
 			async getchat(){
 				this.chatpage++
 				let cht = await this.$api.chat({num:5,page:this.chatpage,follow:-1})
-				if (cht.data.code == 0){
-					if (cht.data.data.list.length == 0) {
+				console.log(cht.body)
+				if (cht.body.code == 0){
+					if (cht.body.list.length == 0) {
 						this.$Notice.warning({
 							title: '提示',
 							desc: '已经到底了'
 						});
 					}
-					for(var i=0;i<cht.data.data.list.length;i++){
+					alert(1)
+					for(var i=0;i<cht.body.list.length;i++){
 						var followlist=[]
-						let ech = await this.$api.chat({num:100,page:1,follow:cht.data.data.list[i].id})
-						if (ech.data.code == 0){
-							followlist=ech.data.data.list
+						let ech = await this.$api.chat({num:100,page:1,follow:cht.body.list[i].id})
+						if (ech.body.code == 0){
+							followlist=ech.body.list
 							for(var j=0;j<followlist.length;j++){
-								var t=Date.parse(new Date())-followlist[j].createTime
-								if(t<86400000){followlist[j].createTime=this.$format(followlist[j].createTime,'HH:mm')}
-								else if(t<31536000000){followlist[j].createTime=this.$format(followlist[j].createTime,'MM-DD')}
-								else {followlist[j].createTime=this.$format(followlist[j].createTime,'yyyy-MM-DD')}
+								var t=Date.parse(new Date())-followlist[j].createtime
+								if(t<86400000){followlist[j].createtime=this.$format(followlist[j].createtime,'HH:mm')}
+								else if(t<31536000000){followlist[j].createtime=this.$format(followlist[j].createtime,'MM-DD')}
+								else {followlist[j].createtime=this.$format(followlist[j].createtime,'yyyy-MM-DD')}
 							}
 						}
-						var t=Date.parse(new Date())-cht.data.data.list[i].createTime
-						if(t<86400000){cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'HH:mm')}
-						else if(t<31536000000){cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'MM-DD')}
-						else {cht.data.data.list[i].createTime=this.$format(cht.data.data.list[i].createTime,'yyyy-MM-DD')}
-						this.chatlist.push({id:cht.data.data.list[i].id,username:cht.data.data.list[i].fromId,content:cht.data.data.list[i].content,createTime:cht.data.data.list[i].createTime,followlist:followlist,showlist:false})
+						
+						var t=Date.parse(new Date())-cht.body.list[i].createtime
+						if(t<86400000){cht.body.list[i].createtime=this.$format(cht.body.list[i].createtime,'HH:mm')}
+						else if(t<31536000000){cht.body.list[i].createtime=this.$format(cht.body.list[i].createtime,'MM-DD')}
+						else {cht.body.list[i].createtime=this.$format(cht.body.list[i].createtime,'yyyy-MM-DD')}
+						this.chatlist.push({id:cht.body.list[i].id,username:cht.body.list[i].username,content:cht.body.list[i].content,createtime:cht.body.list[i].createtime,followlist:followlist,showlist:false})
 					}
+					alert()
 				}
 				else {
 					this.$Notice.error({
