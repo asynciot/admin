@@ -8,6 +8,7 @@
 						<Option key="1" label="全部" value="all"></Option>
 						<Option key="2" label="搁置" value="reprieve"></Option>
 						<Option key="3" label="处理中" value="untreated"></Option>
+						<Option key="3" label="审核中" value="examined"></Option>
 						<Option key="4" label="已结束" value="treated"></Option>
 					</Select>
 				</Col>
@@ -48,6 +49,8 @@
 				col:['green','red','yellow','blue','gray','black'],
 				menu:[],
 				data:[],
+				data2:[],
+				counter:0,
 				show:{
 					state:'untreated',
 					order_type:'all',
@@ -231,29 +234,45 @@
 				}else{
 					this.options.order_type = this.show.order_type
 				}
+				this.counter=0
 				let res = await this.$api.getRepair(this.options)
-				this.loading = false
+				this.data2 = res.data.data.list
+				this.options.total = res.data.data.totalNumber
 				if (res.data.code === 0) {
 					for (var i=0;i<res.data.data.list.length;i++) {
-						let ech = await this.$api.devices({
-							device_id:res.data.data.list[i].device_id,
-							num:10,
-							page:1,
-						})
-						res.data.data.list[i].device_name = ech.data.data.list[0].device_name
-						res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
-						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
-						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
-						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
+						this.getname(i)
 					}
-					this.data = res.data.data.list
-					this.options.total = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
 						title: '错误',
 						desc: '获取列表失败'
 					});
 				}
+			},
+			async getname(val) {
+					var ech = await this.$api.devices({
+					device_id: this.data2[val].device_id,
+					num: 1,
+					page: 1
+				})
+				if (ech.data.data.list.length == 1) {
+					this.data2[val].device_name = ech.data.data.list[0].device_name
+					this.data2[val].IMEI = ech.data.data.list[0].IMEI
+					this.data2[val].cell_address = ech.data.data.list[0].cell_address
+					this.data2[val].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data.list[0].ip_city
+					this.data2[val].install_addr = ech.data.data.list[0].install_addr
+				}
+				this.counter++
+				if (this.counter == this.data2.length) {
+					this.loading = false
+					this.data=this.data2
+					}
+// 				ech = await this.$api.runtime({
+// 					page: 1,
+// 					num: 20,
+// 					type: 8195,
+// 					device_id: this.data[val].device_id
+// 				})
 			},
 			pageChange(val) {
 				this.options.page = val

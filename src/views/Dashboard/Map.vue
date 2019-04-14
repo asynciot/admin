@@ -292,6 +292,9 @@ div()
 						this.markers.push(marker)
 					}
 				})
+				// this.map.panTo(new BMap.Point(29.71174431,105.67720032))
+				var point = new BMap.Point(106.27720032,29.41174431)
+				this.map.panTo(point)
 				this.markerClusterer.addMarkers(this.markers)
 			},
 			showtag1(data) {

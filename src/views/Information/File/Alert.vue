@@ -165,11 +165,13 @@
 						this.$router.back(-1)
 					}
 					else{
-						this.$Notice.error({
-							title: '失败',
-							desc: '发送失败'
-						});
-						this.$router.back(-1)
+						if (res.data.code != 605){
+							this.$Notice.error({
+								title: '失败',
+								desc: '发送失败'
+							});
+							this.$router.back(-1)
+						}
 					}
 				}
 			}

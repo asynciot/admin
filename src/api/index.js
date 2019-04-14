@@ -183,6 +183,9 @@ export default {
 	faultfreq:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Order',key2:'Faultfreq'}, data))
 	},
+	progress:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Order',key2:'Progress'}, data))
+	},
 	//ladder
 	newLadder:(data)=> {
 		return DeviceApi.save({key1:'Ladder'}, data)

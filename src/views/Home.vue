@@ -9,7 +9,7 @@
 					<template>
 						<div class="user-panel">
 							<Col span="8" >
-								<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
+								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 							</Col>
 							<Col span="16" style="color: #fff;padding-top: 10px;">
 								<p>{{username}}</p>
@@ -56,7 +56,7 @@
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
 								<Button type="primary" long class="w-button">
 									<Col span="5">
-										<img src="../assets/user2-160x160.jpg" class="img-circle" alt="User Image">
+										<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 									</Col>
 									<Col span="19">
 										<p style="color: white;width: 100%;">{{username}}</p>
@@ -79,7 +79,7 @@
 			<!-- 			<div style="background:#000; color:#FFF';" v-if="showTags">
 							<ul>
 								<li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.path)}" :key="index">
-									<router-link :to="item.path" class="tags-li-title">
+									<router-link :to="1item.path" class="tags-li-title">
 										{{item.title}}
 									</router-link>
 									<span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
@@ -128,6 +128,7 @@
 				full:false,
 				quit:false,
 				tagsList: [],
+				portrait:'../../static/admin.jpg',
 				isCollapsed: false,
 				modal: false,
 				modalType: 0,
@@ -412,6 +413,14 @@
 					name:'inform'
 				})
 			},
+			async getportrait(){
+				let res = await this.$api.people({id:window.localStorage.getItem('id'),num:1,page:1})
+				if (0 === res.data.code) {
+					if (res.data.data.list[0].portrait != null) {
+						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
+						}
+				}
+			},
         },
         watch:{
 //             $route(newValue, oldValue){
@@ -420,6 +429,7 @@
         },
         created(){
             // this.setTags(this.$route);
+			this.getportrait()
         }
 	}
 </script>

@@ -77,6 +77,8 @@
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
 				menu: [],
 				data: [],
+				data2:[],
+				counter:0,
 				show: {
 					state: 'untreated',
 					type: 'all',
@@ -279,38 +281,45 @@
 					this.options.islast = ''
 				}
 				this.loading = true
+				this.counter = 0
 				let res = await this.$api.fault(this.options)
-				this.loading = false
 				if (res.data.code === 0) {
-					for (var i = 0; i < res.data.data.list.length; i++) {
-						var ech = await this.$api.devices({
-							device_id: res.data.data.list[i].device_id,
-							num: 10,
-							page: 1
-						})
-						if (ech.data.data.list.length == 1) {
-							res.data.data.list[i].device_name = ech.data.data.list[0].device_name
-							res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
-							res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
-							res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data
-								.list[0].ip_city
-							res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
-						}
-						ech = await this.$api.runtime({
-							page: 1,
-							num: 20,
-							type: 8195,
-							device_id: res.data.data.list[i].device_id
-						})
-					}
-					this.data = res.data.data.list
+					this.data2 = res.data.data.list
 					this.options.total = res.data.data.totalNumber
+					for (var i = 0; i < res.data.data.list.length; i++) {
+						this.getname(i)
+					}
 				} else {
 					this.$Notice.error({
 						title: '错误',
 						desc: '获取列表失败'
 					});
 				}
+			},
+			async getname(val) {
+					var ech = await this.$api.devices({
+					device_id: this.data2[val].device_id,
+					num: 1,
+					page: 1
+				})
+				if (ech.data.data.list.length == 1) {
+					this.data2[val].device_name = ech.data.data.list[0].device_name
+					this.data2[val].IMEI = ech.data.data.list[0].IMEI
+					this.data2[val].cell_address = ech.data.data.list[0].cell_address
+					this.data2[val].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data.list[0].ip_city
+					this.data2[val].install_addr = ech.data.data.list[0].install_addr
+				}
+				this.counter++
+				if (this.counter == this.data2.length) {
+					this.loading = false
+					this.data=this.data2
+					}
+// 				ech = await this.$api.runtime({
+// 					page: 1,
+// 					num: 20,
+// 					type: 8195,
+// 					device_id: this.data[val].device_id
+// 				})
 			},
 			pageChange(val) {
 				this.options.page = val
