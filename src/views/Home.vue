@@ -419,6 +419,12 @@
 					if (res.data.data.list[0].portrait != null) {
 						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
 						}
+					if (res.data.data.list[0].nicname != null) {
+						this.info.nicname=res.data.data.list[0].nicname
+						}
+					else {
+						this.info.nicname=res.data.data.list[0].username
+					}
 				}
 			},
         },
