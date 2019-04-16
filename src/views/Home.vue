@@ -12,7 +12,7 @@
 								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 							</Col>
 							<Col span="16" style="color: #fff;padding-top: 10px;">
-								<p>{{username}}</p>
+								<p>{{info.nicname}}</p>
 							</Col>
 						</div>
 					</template>
@@ -59,7 +59,7 @@
 										<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 									</Col>
 									<Col span="19">
-										<p style="color: white;width: 100%;">{{username}}</p>
+										<p style="color: white;width: 100%;">{{info.nicname}}</p>
 									</Col>
 								</Button>
 								<Dropdown-menu slot="list">

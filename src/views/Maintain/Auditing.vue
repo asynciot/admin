@@ -42,22 +42,14 @@
 					type:'1',
 				},
 				faultcode:false,
-				ps:'因零件未到位，请求搁置3日后维修。',
+				ps:'',
 				list:[],
 				query:{
 					username:window.localStorage.getItem('username'),
 					name:'',
 				},
-				ladList:[],
-				ladder:{
-					name:'',
-					page: 1,
-					num: 300,
-					total: 0,
-				},
 				file:'',
 				filename:'',
-				upsuccess:false,
 			}
 		},
 		computed: {
