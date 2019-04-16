@@ -16,7 +16,6 @@
 				<!-- Small boxes (Stat box) -->
 				<div class="row" style="padding:0">
 					<div class="col-lg-3 col-xs-10">
-
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center; padding:4px" >
@@ -83,7 +82,7 @@
 					<!-- Left col -->
 					<!-- <section class="col-lg-5 connectedSortable"> -->
 					
-				<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper" @mouseenter.native="$refs.mySwiper.options.autoplay=false;stop()" @mouseleave.native="$refs.mySwiper.options.autoplay=autoplay;stop()">
+				<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper" @mouseenter.native="$refs.mySwiper.options.autoplay=false;" @mouseleave.native="$refs.mySwiper.options.autoplay=autoplay;">
 						<swiper-slide> 
 						<!-- <div class="swiper-button-prev" ></div> -->
 						<Col span='12' id="mapwidth" style="padding:5px">
@@ -164,23 +163,26 @@
 										<div>
 											<Col span='24'>安装地址：{{item.addr}}</Col> 
 										</div>
-										<Col span='12' style="margin-bottom: 10px;">状态：{{item.state}}</Col>
-										<Col span='12' style="margin-bottom: 10px;">
-											<Col span='18'>
-												<div class="progress horizontal active" style="" v-if="item.progress =='80%'">
+										<Col span='3' style="margin-bottom: 10px;">处理进度：</Col>
+										<Col span='21' style="margin-bottom: 10px;">
+											<Col span='20' @mouseenter.native="barword=item.num;" @mouseleave.native="barword='';">
+												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="item.progress =='80%'" >
+													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%;color:#ffffff"> {{item.state}} </div>
 													<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
 													</div>
 												</div>
-												<div class="progress horizontal active" style="" v-if="item.progress =='40%'">
+												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="item.progress =='40%'">
+													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%"> {{item.state}} </div>
 													<div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
 													</div>
 												</div>
-												<div class="progress horizontal active" style="" v-if="item.progress =='10%'">
+												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="(item.progress =='10%')||(item.progress =='0%')">
+													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%"> {{item.state}} </div>
 													<div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
 													</div>
 												</div>
 											</Col> 
-											<Col span='6' style="text-align:center;color:#878787;">{{item.progress}}</Col>
+											<Col span='4' style="text-align:center;color:#878787;">{{item.progress}}</Col>
 										</Col>
 									</div>
 								</ul>
@@ -460,6 +462,7 @@
 				btn2:false,
 				value1:false,
 				faultdevice: 0,
+				barword:'',
 				size1: '#ffffff',
 				size2: '#ffffff',
 				size3: '#ffffff',
@@ -542,8 +545,8 @@
 					observer:true,//修改swiper自己或子元素时，自动初始化swiper
 					allowTouchMove: true,
 					navigation: {
-						prevEl: '.swiper-button-prev',
-						nextEl: '.swiper-button-next',
+						prevEl: '',
+						nextEl: '',
 					},
 				},
 				data:[],
@@ -634,7 +637,7 @@
 		methods: {
 			stop(){
 				// console.log(this.$refs.mySwiper.options.autoplay)
-				console.log(document.getElementById('swiperBox').options)
+				alert(1)
 			},
 			handleReachBottom(){
 				this.getchat()
@@ -761,42 +764,10 @@
 							desc: '已经到底了'
 						});
 					}
-					for (var i=0;i<res.data.list.length;i++) {
-						ech = await this.$api.devices({device_id:res.data.list[i].device_id,num:10,page:1})
-						if (ech.data.data.list.length == 1) {
-						res.data.list[i].device_name = ech.data.data.list[0].device_name
-						res.data.list[i].IMEI = ech.data.data.list[0].IMEI
-						res.data.list[i].install_addr = ech.data.data.list[0].install_addr
-						res.data.list[i].cell_address = ech.data.data.list[0].cell_address
-						res.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-						var t=Date.parse(new Date())-parseInt(res.data.list[i].create_time)
-						var e=''
-						if(t>1000){res.data.list[i].create_time=parseInt(t/1000).toString()+" secs"}
-						if(t>60000){res.data.list[i].create_time=parseInt(t/60000).toString()+" mins"}
-						if(t>3600000){res.data.list[i].create_time=parseInt(t/3600000).toString()+" hours"}
-						if(t>86400000){res.data.list[i].create_time=parseInt(t/86400000).toString()+" days"}
-						}
-					}
 					this.data = res.data.list
-					this.data.forEach(item=>{
-						var pro='0%'
-						var code='0'
-						var state='等待接单'
-						var e='未填写'
-						if (item.code != null) {code=item.code.toString(16)}
-						if (item.state == 'examined') {pro='80%';state='等待验收'}
-						if (item.state == 'untreated') {pro='40%';state='处理中'}
-						if (item.state2 == 'examined') {pro='0%';state='批准工单中'}
-						if (item.state2 == 'untreated') {pro='10%';state='等待接单'}
-// 						if (item.expect_time != null) {
-// 							e=this.$format(parseInt(item.expect_time),'YYYY-MM-DD')
-// 							pro=(Date.parse(new Date())-parseInt(item.create_time))/(parseInt(item.expect_time)-parseInt(item.create_time)+86400000)
-// 							if (pro>1) {pro = '(已超时)'}
-// 							else {pro=(parseInt(100*pro)).toString()+'%'}
-// 							}
-
-						this.todo.push({pro:item.device_name,description: code,time:item.create_time,progress:pro,addr:item.install_addr,expect:e,state:state})
-					})
+					for (var i=0;i<res.data.list.length;i++) {
+						this.getname(i)
+					}
 				}
 				else {
 					this.$Notice.error({
@@ -804,6 +775,32 @@
 						desc: '获取故障处理进程失败！'
 					})
 				}
+			},
+			async getname(val){
+					var ech = await this.$api.devices({device_id:this.data[val].device_id,num:10,page:1})
+					if (ech.data.data.list.length == 1) {
+					if (ech.data.data.list[0].device_name != null){this.data[val].device_name = ech.data.data.list[0].device_name}
+					if (ech.data.data.list[0].IMEI != null){this.data[val].IMEI = ech.data.data.list[0].IMEI}
+					if (ech.data.data.list[0].install_addr != null){this.data[val].install_addr = ech.data.data.list[0].install_addr}
+					if (ech.data.data.list[0].cell_address != null){this.data[val].cell_address = ech.data.data.list[0].cell_address}
+					if (ech.data.data.list[0].ip_country != null){this.data[val].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city}
+					var t=Date.parse(new Date())-parseInt(this.data[val].create_time)
+					var e=''
+					if(t>1000){this.data[val].create_time=parseInt(t/1000).toString()+" secs"}
+					if(t>60000){this.data[val].create_time=parseInt(t/60000).toString()+" mins"}
+					if(t>3600000){this.data[val].create_time=parseInt(t/3600000).toString()+" hours"}
+					if(t>86400000){this.data[val].create_time=parseInt(t/86400000).toString()+" days"}
+					}
+					var pro='0%'
+					var code='0'
+					var state='等待接单'
+					var e='未填写'
+					if (this.data[val].code != null) {code=this.data[val].code.toString(16)}
+					if (this.data[val].state == 'examined') {pro='80%';state='等待验收'}
+					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
+					if (this.data[val].state2 == 'examined') {pro='0%';state='批准工单中'}
+					if (this.data[val].state2 == 'untreated') {pro='10%';state='等待接单'}
+					this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,state:state,num:10*this.progresspage + val})
 			},
 			async getinfo(){
 				var res
