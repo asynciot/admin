@@ -12,7 +12,7 @@
 								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 							</Col>
 							<Col span="16" style="color: #fff;padding-top: 10px;">
-								<p>{{info.nicname}}</p>
+								<p>{{info.nickname}}</p>
 							</Col>
 						</div>
 					</template>
@@ -59,7 +59,7 @@
 										<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 									</Col>
 									<Col span="19">
-										<p style="color: white;width: 100%;">{{info.nicname}}</p>
+										<p style="color: white;width: 100%;">{{info.nickname}}</p>
 									</Col>
 								</Button>
 								<Dropdown-menu slot="list">
@@ -134,7 +134,7 @@
 				modalType: 0,
 				username:window.localStorage.getItem('username'),
 				info: {
-					nicname: '',
+					nickname: '',
 					phone: ''
 				},
 				password: {
@@ -419,11 +419,11 @@
 					if (res.data.data.list[0].portrait != null) {
 						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
 						}
-					if (res.data.data.list[0].nicname != null) {
-						this.info.nicname=res.data.data.list[0].nicname
+					if (res.data.data.list[0].nickname != null) {
+						this.info.nickname=res.data.data.list[0].nickname
 						}
 					else {
-						this.info.nicname=res.data.data.list[0].username
+						this.info.nickname=res.data.data.list[0].username
 					}
 				}
 			},
