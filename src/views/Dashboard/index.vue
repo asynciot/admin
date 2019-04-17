@@ -158,7 +158,8 @@
 											<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										</Col>
 										<div>
-											<Col span='24'>故障代码：E{{item.description}}{{codelist[item.description]}}</Col> 
+											<Col span='24' v-if="item.type=='240'">故障代码：E{{item.description}}{{codelist[item.description]}}</Col>
+											<Col span='24' v-if="item.type=='15'">故障代码：E{{item.description}}{{codelist2[parseInt(Math.log2(item.description))]}}</Col>
 										</div>
 										<div>
 											<Col span='24'>安装地址：{{item.addr}}</Col> 
@@ -598,6 +599,7 @@
 						'上限位信号异常','打滑故障','电梯速度异常','电机反转故障','磁极位置学习故障',
 						'E30','停车速度检测','井道自学习故障','马达过热故障','制动力严重不足',
 						  '制动力不足警告',],
+				codelist2:['输入电压过低','输入电压过高','','','开关门受阻','飞车保护','电机过载','输出过流'],
 			}
 		},
 		mounted(){
@@ -650,7 +652,7 @@
 				else {window.localStorage.setItem(val1,1)}
 			},
 			async sent(){
-				this.btn = true 
+				this.btn = true
 				let res= await this.$api.sentmessage(this.options)
 				this.btn= false
 				if (res.data.code == 0){
@@ -699,7 +701,6 @@
 			async getchat(){
 				this.chatpage++
 				let cht = await this.$api.chat({num:10,page:this.chatpage,follow:-1})
-				console.log(cht.body)
 				if (cht.body.code == 0){
 					if (cht.body.list.length == 0) {
 						this.chatpage--
@@ -718,8 +719,10 @@
 								if(t<86400000){followlist[j].create_time=this.$format(followlist[j].create_time,'HH:mm')}
 								else if(t<31536000000){followlist[j].create_time=this.$format(followlist[j].create_time,'MM-DD')}
 								else {followlist[j].create_time=this.$format(followlist[j].create_time,'YYYY-MM-DD')}
+								if (followlist[j].nicname != null) {followlist[j].username = followlist[j].nicname}
 							}
 						}
+						if (cht.body.list[i].nicname != null) {cht.body.list[i].username = cht.body.list[i].nicname}
 						var portrait="src='../../../static/admin.jpg'"
 						if (cht.body.list[i].portrait != null) {portrait='http://server.asynciot.com/getfile?filePath='+cht.body.list[i].portrait}
 						var t=Date.parse(new Date())-cht.body.list[i].create_time
@@ -795,12 +798,14 @@
 					var code='0'
 					var state='等待接单'
 					var e='未填写'
-					if (this.data[val].code != null) {code=this.data[val].code.toString(16)}
+					if (this.data[val].code != null) {
+						code=this.data[val].code.toString(16)
+						}
 					if (this.data[val].state == 'examined') {pro='80%';state='等待验收'}
 					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
 					if (this.data[val].state2 == 'examined') {pro='0%';state='批准工单中'}
 					if (this.data[val].state2 == 'untreated') {pro='10%';state='等待接单'}
-					this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,state:state,num:10*this.progresspage + val})
+					this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,type:ech.data.data.list[0].device_type,state:state,num:10*this.progresspage + val})
 			},
 			async getinfo(){
 				var res
