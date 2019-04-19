@@ -7,7 +7,8 @@
 						<Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
 							<Option key="1" label="全部" value="all"></Option>
 							<Option key="2" label="未接单" value="untreated"></Option>
-							<Option key="3" label="已接单" value="treated"></Option>
+							<Option key="3" label="已接单" value="treating"></Option>
+							<Option key="4" label="已完成" value="treated"></Option>
 						</Select>
 					</Col>
 					<Col span='3'>

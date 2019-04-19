@@ -32,6 +32,9 @@ export default {
 	chat:(data) => {
 		return CommonApi.query(Object.assign({key1:'chat'}, data))
 	},
+	delchat: (data) => {
+		return CommonApi.remove(Object.assign({key1:'chat'}, data))
+	},
 	sentchat:(data) => {
 		return CommonApi.save({key1:'chat'}, data)
 	},

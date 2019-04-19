@@ -150,7 +150,14 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/1.15+'px'">
-								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.15-20">
+								<RadioGroup v-model="prostate" @on-change="getprogress(1)">
+								<Radio label="5"><span>全部</span></Radio>
+								<Radio label="1"><span>批准工单中</span></Radio>
+								<Radio label="2"><span>等待接单</span></Radio>
+								<Radio label="3"><span>处理中</span></Radio>
+								<Radio label="4"><span>等待签字确认</span></Radio>
+								</RadioGroup>
+								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.15-38">
 								<ul class="todo-list" style=" padding:3">
 									<div v-for="item in todo" :style="'font-size:'+screenheight/54+'px'" style="">
 										<Col span='24'> 
@@ -372,12 +379,13 @@
 																	</a>
 																	<div style="display: inline-block;width:95%;margin-top:5px">
 																	<Col span='1'>&nbsp;</Col>
-																	<Col span='7'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.create_time}}</Col>
-																	<Col span='8'>
+																	<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.create_time}}</Col>
+																	<Col span='3'><Button type="text" @click="recall(item.id)" v-if="item.from_id">撤回</Button>&nbsp;</Col>
+																	<Col span='7'>
 																		<Button type="text" @click="item.showlist=true" v-if="!item.showlist" style="outline: none;">共{{item.followlist.length}}条回复</Button>
 																		<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
 																	</Col>
-																	<Col span='8'>
+																	<Col span='7'>
 																		<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id" style="outline: none;">回复本条</Button>
 																		<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
 																	</Col>
@@ -385,10 +393,11 @@
 																</p>
 																<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
 																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.username}}</h4>
-																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">:{{follow.content}}</h4>
+																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">{{follow.content}}</h4>
 																	<div>
-																		<Col span='18'>&nbsp;</Col>
-																		<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.create_time}}</Col>
+																		<Col span='15'>&nbsp;</Col>
+																		<Col span='4'><Button type="text" @click="recall(follow.id)" v-if="follow.from_id">撤回</Button>&nbsp;</Col>
+																		<Col span='5'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.create_time}}</Col>
 																	</div>
 																</div>
 							<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
@@ -492,6 +501,7 @@
 // 						{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'3 hours',progress:"70%"},
 // 				],
 				todo:[],
+				todo2:['','','','',''],
 				chatlist:[],
 				autoplay:{
 					delay: 20000,
@@ -577,6 +587,7 @@
 					type:0,
 					follow: -1,
 				},
+				prostate:'5',
 				chartrepair:[],
 				chartorder:[],
 				usernum: 0,
@@ -628,7 +639,7 @@
 			this.setheight[1]=this.setheight[0]/2.4
 			this.getchat();
 			this.getinfo();
-			this.getprogress();
+			this.getprogress(0);
 			this.LastWeek = this.getWeek(7)
 			this.LastWeekend = this.getWeek(1)
 			this.NowWeek = this.getWeek(0)
@@ -638,14 +649,13 @@
 		},
 		methods: {
 			stop(){
-				// console.log(this.$refs.mySwiper.options.autoplay)
-				alert(1)
+				// alert(typeof(this.prostate))
 			},
 			handleReachBottom(){
 				this.getchat()
 			},
 			handleReachBottom2(){
-				this.getprogress()
+				this.getprogress(0)
 			},
 			showpanel(val1,val2){
 				if (val2) {window.localStorage.setItem(val1,0)}
@@ -665,6 +675,18 @@
 					this.$Notice.error({
 						title: '错误',
 						desc: '发送失败'
+					});
+				}
+			},
+			async recall(val){
+				let res = await this.$api.delchat({id:val})
+				if (res.data.code == 0){
+					this.chatpage=0
+					this.chatlist=[]
+					this.getchat()
+					this.$Notice.success({
+						title: '成功',
+						desc: '已撤回消息'
 					});
 				}
 			},
@@ -719,17 +741,23 @@
 								if(t<86400000){followlist[j].create_time=this.$format(followlist[j].create_time,'HH:mm')}
 								else if(t<31536000000){followlist[j].create_time=this.$format(followlist[j].create_time,'MM-DD')}
 								else {followlist[j].create_time=this.$format(followlist[j].create_time,'YYYY-MM-DD')}
-								if (followlist[j].nicname != null) {followlist[j].username = followlist[j].nicname}
+								if (followlist[j].nickname != null) {followlist[j].username = followlist[j].nickname}
+								if (followlist[j].from_id == window.localStorage.getItem('id')) {followlist[j].from_id=true}
+								else {followlist[j].from_id=false}
 							}
 						}
-						if (cht.body.list[i].nicname != null) {cht.body.list[i].username = cht.body.list[i].nicname}
+						if (cht.body.list[i].nickname != null) {
+							cht.body.list[i].username = cht.body.list[i].nickname
+							}
 						var portrait="src='../../../static/admin.jpg'"
 						if (cht.body.list[i].portrait != null) {portrait='http://server.asynciot.com/getfile?filePath='+cht.body.list[i].portrait}
 						var t=Date.parse(new Date())-cht.body.list[i].create_time
 						if(t<86400000){cht.body.list[i].create_time=this.$format(cht.body.list[i].create_time,'HH:mm')}
 						else if(t<31536000000){cht.body.list[i].create_time=this.$format(cht.body.list[i].create_time,'MM-DD')}
 						else {cht.body.list[i].create_time=this.$format(cht.body.list[i].create_time,'YYYY-MM-DD')}
-						this.chatlist.push({id:cht.body.list[i].id,username:cht.body.list[i].username,content:cht.body.list[i].content,create_time:cht.body.list[i].create_time,followlist:followlist,showlist:false,portrait:portrait})
+						if (cht.body.list[i].from_id == window.localStorage.getItem('id')) {cht.body.list[i].from_id=true}
+						else {cht.body.list[i].from_id=false}
+						this.chatlist.push({id:cht.body.list[i].id,username:cht.body.list[i].username,content:cht.body.list[i].content,create_time:cht.body.list[i].create_time,followlist:followlist,showlist:false,portrait:portrait,from_id:cht.body.list[i].from_id})
 					}
 				}
 				else {
@@ -750,12 +778,13 @@
 					this.shineword()
 				}, 1000)
 			},
-			async getprogress(){
+			async getprogress(val){
+				if (val == 1) {this.todo=[];this.progresspage=0}
 				this.progresspage++
-				var ech
 				let res = await this.$api.progress({
 					page: this.progresspage,
 					num: 10,
+					state: this.prostate,
 					// user_id:window.localStorage.getItem('id')
 				})
 				
@@ -780,7 +809,7 @@
 				}
 			},
 			async getname(val){
-					var ech = await this.$api.devices({device_id:this.data[val].device_id,num:10,page:1})
+					let ech = await this.$api.devices({device_id:this.data[val].device_id,num:10,page:1})
 					if (ech.data.data.list.length == 1) {
 					if (ech.data.data.list[0].device_name != null){this.data[val].device_name = ech.data.data.list[0].device_name}
 					if (ech.data.data.list[0].IMEI != null){this.data[val].IMEI = ech.data.data.list[0].IMEI}
@@ -801,10 +830,10 @@
 					if (this.data[val].code != null) {
 						code=this.data[val].code.toString(16)
 						}
-					if (this.data[val].state == 'examined') {pro='80%';state='等待验收'}
-					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
 					if (this.data[val].state2 == 'examined') {pro='0%';state='批准工单中'}
 					if (this.data[val].state2 == 'untreated') {pro='10%';state='等待接单'}
+					if (this.data[val].state == 'examined') {pro='80%';state='等待签字确认'}
+					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
 					this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,type:ech.data.data.list[0].device_type,state:state,num:10*this.progresspage + val})
 			},
 			async getinfo(){
