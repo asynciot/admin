@@ -151,11 +151,12 @@
 							<!-- /.box-header -->
 							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/1.15+'px'">
 								<RadioGroup v-model="prostate" @on-change="getprogress(1)">
-								<Radio label="5"><span>全部</span></Radio>
+								<Radio label="6"><span>全部</span></Radio>
 								<Radio label="1"><span>批准工单中</span></Radio>
 								<Radio label="2"><span>等待接单</span></Radio>
 								<Radio label="3"><span>处理中</span></Radio>
 								<Radio label="4"><span>等待签字确认</span></Radio>
+								<Radio label="5"><span>存入档案</span></Radio>
 								</RadioGroup>
 								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.15-38">
 								<ul class="todo-list" style=" padding:3">
@@ -174,6 +175,11 @@
 										<Col span='3' style="margin-bottom: 10px;">处理进度：</Col>
 										<Col span='21' style="margin-bottom: 10px;">
 											<Col span='20' @mouseenter.native="barword=item.num;" @mouseleave.native="barword='';">
+												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="item.progress =='100%'" >
+													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%;color:#ffffff"> {{item.state}} </div>
+													<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
+													</div>
+												</div>
 												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="item.progress =='80%'" >
 													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%;color:#ffffff"> {{item.state}} </div>
 													<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+item.progress">
@@ -436,14 +442,14 @@
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
-			</section>
 				<Col span='22'>&nbsp;</Col>
 				<Col span='2' style="vertical-align: middle;">
-				<div style="cursor: pointer;color:blue;font-size: larger;margin-left: 20px" @click="value1=true">
-					<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
-						内容筛选
-				</div>
-			</Col>
+					<div style="cursor: pointer;color:blue;font-size: larger;" @click="value1=true">
+						<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
+							内容筛选
+					</div>
+				</Col>
+				</section>
 	</div>
 </template>
 <script>
@@ -587,7 +593,7 @@
 					type:0,
 					follow: -1,
 				},
-				prostate:'5',
+				prostate:'6',
 				chartrepair:[],
 				chartorder:[],
 				usernum: 0,
@@ -834,6 +840,7 @@
 					if (this.data[val].state2 == 'untreated') {pro='10%';state='等待接单'}
 					if (this.data[val].state == 'examined') {pro='80%';state='等待签字确认'}
 					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
+					if (this.data[val].state2 == 'treated') {pro='100%';state='存入档案'}
 					this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,type:ech.data.data.list[0].device_type,state:state,num:10*this.progresspage + val})
 			},
 			async getinfo(){
