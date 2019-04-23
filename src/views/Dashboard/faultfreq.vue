@@ -6,7 +6,7 @@
 		Col(span='1' align='center')|→
 		Col(span='6')
 			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
-		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight/1.3+'px'")
+		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight/1.4+'px'")
 </template>
 
 <script>
@@ -108,6 +108,7 @@
 					legend: {
 						bottom: 10,
 						left: 'center',
+						fontsize: '25px',
 						data: [this.codelist[parseInt(this.topcode[0].code.toString(16))], 
 								this.codelist[parseInt(this.topcode[1].code.toString(16))], 
 								this.codelist[parseInt(this.topcode[2].code.toString(16))], 
@@ -115,10 +116,13 @@
 								this.codelist[parseInt(this.topcode[4].code.toString(16))],
 								'其它'
 						],
+						textStyle: {
+							fontSize: 20
+						}
 					},
 					series : [{
 						type: 'pie',
-						radius : '60%',
+						radius : '65%',
 						center: ['50%', '40%'],
 						selectedMode: 'single',
 						data:[

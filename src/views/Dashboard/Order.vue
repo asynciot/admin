@@ -119,12 +119,22 @@
 						trigger: 'axis'
 					},
 					legend: {
-						data: ['本周故障数量', '上周故障数量']
+						data: ['本周故障数量', '上周故障数量'],
+						 textStyle: {
+						//                             color: '#333333',
+						                            fontSize:16
+						                        },
 					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+						data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+						axisLabel: {
+		                        textStyle: {
+		//                             color: '#333333',
+		                            fontSize:20
+		                        },
+		                    },
 					},
 					yAxis: {
 						type: 'value',

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;">
-		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
+		<Drawer title="显示内容" :closable="false" v-model="value1" width="10" id="drawer">
 			<div><Checkbox @on-change='showpanel("map",map)' v-model="map">设备定位</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("chat",chat)' v-model="chat">客户意见反馈</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("progress",progress)' v-model="progress">故障处理进程</Checkbox></div>
@@ -8,11 +8,11 @@
 			<!-- <div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div> -->
 			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">常见故障</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("chart4",chart4)' v-model="chart4">活跃设备</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div>
+			<!-- <div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div> -->
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
-			<section class="content">
+			<section class="content" style="padding-bottom: 0;">
 				<!-- Small boxes (Stat box) -->
 				<div class="row" style="padding:0">
 					<div class="col-lg-3 col-xs-10">
@@ -85,22 +85,22 @@
 				<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper" @mouseenter.native="$refs.mySwiper.options.autoplay=false;" @mouseleave.native="$refs.mySwiper.options.autoplay=autoplay;">
 						<swiper-slide> 
 						<!-- <div class="swiper-button-prev" ></div> -->
-						<Col span='12' id="mapwidth" style="padding:5px">
+						<Col span='12' id="mapwidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
 						<div class="box box-primary" v-if="map">
 							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
-							  <div class="pull-right box-tools">
-								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="map=!map;showpanel('map',map)"><i class="fa fa-times"></i>
-								  </button>
+								<div class="pull-right box-tools">
+									<button type="button" class="btn btn-primary btn-sm pull-right" @click="map=!map;showpanel('map',map)"><i class="fa fa-times"></i>
+									</button>
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('mapwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
 											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',4)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',4)"></Card>
 										</div>
 									</div>
 
@@ -115,15 +115,14 @@
 								设备定位
 							  </h3>
 							</div>
-							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/1.15+'px'" v-if="mapbody">
+							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/1.14+'px'" v-if="mapbody">
 								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
 						</div>
 						</Col>
-						<Col span='12' id="progresswidth" style="padding:5px">
+						<Col span='12' id="progresswidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
 						<!-- /.box (chat box) -->
-
 						<!-- TO DO List -->
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
@@ -135,10 +134,10 @@
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
 											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',4)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',4)"></Card>
 										</div>
 									</div>
 									<button type="button" class="btn btn-primary btn-sm pull-right" @click="progress=!progress"><i class="fa fa-times"></i>
@@ -149,16 +148,16 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/1.15+'px'">
+							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/1.14+'px'">
 								<RadioGroup v-model="prostate" @on-change="getprogress(1)">
 								<Radio label="6"><span>全部</span></Radio>
-								<Radio label="1"><span>批准工单中</span></Radio>
 								<Radio label="2"><span>等待接单</span></Radio>
+								<Radio label="1"><span>批准工单中</span></Radio>
 								<Radio label="3"><span>处理中</span></Radio>
 								<Radio label="4"><span>等待签字确认</span></Radio>
 								<Radio label="5"><span>存入档案</span></Radio>
 								</RadioGroup>
-								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.15-38">
+								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.14-38">
 								<ul class="todo-list" style=" padding:3">
 									<div v-for="item in todo" :style="'font-size:'+screenheight/54+'px'" style="">
 										<Col span='24'> 
@@ -206,15 +205,15 @@
 						</div>
 						<!-- /.box -->
 						</Col>
-						<div class="swiper-button-next" @mouseover="next=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-							<div @mouseout="next=false"><icon name="next" width="35" height="35" slot="prepend" v-if="next"></icon></div>
+						<div class="swiper-button-next" @mouseenter="next=true" style="outline: none;background: url(../../assets/svg/123.svg)">
+							<div @mouseleave="next=false"><icon name="next" width="35" height="35" slot="prepend" v-if="next"></icon></div>
 						</div>
 						</swiper-slide>
 						<swiper-slide>
-							<div class="swiper-button-prev" @mouseover="prev=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-								<div @mouseout="prev=false"><icon name="prev" width="35" height="35" slot="prepend" v-if="prev"></icon></div>
+							<div class="swiper-button-prev" @mouseenter="prev=true" style="outline: none;background: url(../../assets/svg/123.svg)">
+								<div @mouseleave="prev=false"><icon name="prev" width="35" height="35" slot="prepend" v-if="prev"></icon></div>
 							</div>
-								<Col span='12' id="chartwidth4" style="padding:5px">
+								<Col span='12' id="chartwidth4" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
 									<div class="box box-primary" v-if="chart4">
 										<div class="box-header">
 											<i class="fa fa-th"></i>
@@ -225,10 +224,10 @@
 														<i class="fa fa-bars"></i></button>
 													<div class="dropdown-menu pull-right" role="menu">
 														<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',1);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',2);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',3);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',4);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',1);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',2);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',3);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',4);chartwidth()"></Card>
 													</div>
 												</div>
 												<button type="button" class="btn btn-primary btn-sm" @click="chartbody4=!chartbody4;MemberCharts();">
@@ -239,14 +238,14 @@
 												</button>
 											</div>
 										</div>
-										<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/1.15+'px'">
+										<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/1.14+'px'">
 											<div class='' :style="'height:'+screenheight/1.2+'px'">
 												<activedoor></activedoor>
 											</div>
 										</div>
 									</div>
 								</Col> 
-								<Col span='12' id="chartwidth3" style="padding:5px">
+								<Col span='12' id="chartwidth3" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
 									<div class="box box-primary" v-if="chart3">
 										<div class="box-header">
 											<i class="fa fa-th"></i>
@@ -257,10 +256,10 @@
 														<i class="fa fa-bars"></i></button>
 													<div class="dropdown-menu pull-right" role="menu">
 														<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',1);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',2);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',3);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',4);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',1);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',2);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',3);chartwidth()"></Card>
+														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',4);chartwidth()"></Card>
 													</div>
 												</div>
 												<button type="button" class="btn btn-primary btn-sm" @click="chartbody3=!chartbody3;MemberCharts();">
@@ -271,22 +270,22 @@
 												</button>
 											</div>
 										</div>
-										<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/1.15+'px'">
+										<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/1.14+'px'">
 												<div class='' :style="'height:'+screenheight/1.2+'px'">
 												<faultfreq></faultfreq>
 												</div>
 										</div>
 									</div>
 								</Col>
-								<div class="swiper-button-next" @mouseover="next=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-									<div @mouseout="next=false"><icon name="next" width="35" height="35" slot="prepend" v-if="next"></icon></div>
+								<div class="swiper-button-next" @mouseenter="next=true" style="outline: none;background: url(../../assets/svg/123.svg)">
+									<div @mouseleave="next=false"><icon name="next" width="35" height="35" slot="prepend" v-if="next"></icon></div>
 								</div>
 							</swiper-slide>
 							<swiper-slide> 
-							<div class="swiper-button-prev" @mouseover="prev=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-								<div @mouseout="prev=false"><icon name="prev" width="35" height="35" slot="prepend" v-if="prev"></icon></div>
+							<div class="swiper-button-prev" @mouseenter="prev=true" style="outline: none;background: url(../../assets/svg/123.svg)">
+								<div @mouseleave="prev=false"><icon name="prev" width="35" height="35" slot="prepend" v-if="prev"></icon></div>
 							</div>
-							<Col span='12' id="chartwidth" style="padding:5px">
+							<Col span='12' id="chartwidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
 										<!-- </section> -->
 										<!-- /.Left col -->
 										<!-- right col (We are only adding the ID to make the widgets sortable)-->
@@ -303,10 +302,10 @@
 																<i class="fa fa-bars"></i></button>
 															<div class="dropdown-menu pull-right" role="menu">
 																<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',1);chartwidth()"></Card>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',2);chartwidth()"></Card>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',3);chartwidth()"></Card>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
+																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',1);chartwidth()"></Card>
+																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',2);chartwidth()"></Card>
+																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',3);chartwidth()"></Card>
+																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
 															</div>
 														</div>
 														<button type="button" class="btn btn-primary btn-sm" @click="chartbody=!chartbody;areafault();">
@@ -317,7 +316,7 @@
 														</button>
 													</div>
 												</div>
-												<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/1.15+'px'">
+												<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/1.14+'px'">
 													<swiper id="swiperBox2" v-bind:options="swiperOption2" ref="mySwiper2">
 														<swiper-slide>
 															<div class='' :style="'height:'+screenheight/1.2+'px'">
@@ -342,14 +341,13 @@
 											</div>
 											<!-- /.box -->
 											</Col>
-													<Col span='12' id="chatwidth" style="padding:5px">
+													<Col span='12' id="chatwidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
 
 													<div class="box box-primary" v-if="chat" >
 														<div class="box-header">
 															<i class="fa fa-comments-o"></i>
 							
-															<h3 class="box-title">客户意见反馈</h3>
-							
+															<h3 class="box-title">客户意见反馈</h3>							
 															<div class="box-tools pull-right" data-toggle="tooltip" title="">
 																<div class="btn-group" data-toggle="btn-toggle">
 																	<div class="btn-group" style="margin-right: 5px;">
@@ -357,10 +355,10 @@
 																			<i class="fa fa-bars"></i></button>
 																		<div class="dropdown-menu pull-right" role="menu">
 																			<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
+																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
 																		</div>
 																	</div>
 																	<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
@@ -372,9 +370,9 @@
 																</div>
 															</div>
 														</div>
-														<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/1.15+'px'">
+														<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/1.14+'px'">
 															<!-- chat item -->
-															<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/1.15-60">
+															<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/1.14-60">
 															<div class="item" v-for="item in chatlist" >
 																<img :src="item.portrait" alt="user image" class="online" onerror="src='../../../static/admin.jpg'">
 																<p class="message">
@@ -442,13 +440,13 @@
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
-				<Col span='22'>&nbsp;</Col>
+<!-- 				<Col span='22'>&nbsp;</Col>
 				<Col span='2' style="vertical-align: middle;">
 					<div style="cursor: pointer;color:blue;font-size: larger;" @click="value1=true">
 						<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
 							内容筛选
 					</div>
-				</Col>
+				</Col> -->
 				</section>
 	</div>
 </template>
@@ -637,6 +635,12 @@
 			if (window.localStorage.getItem('progress') == 1) {this.progress=false}
 			if (window.localStorage.getItem('email') == 1) {this.email=false}
 			this.chartwidth();
+			var _this=this
+			$(document).keydown(function(event){
+			　　　　if(event.ctrlKey && event.keyCode === 32){
+						_this.value1=true
+			　　　　}
+			　　});
 		},
 		created(){
 			this.screenwidth = document.documentElement.clientWidth;
@@ -789,7 +793,7 @@
 				this.progresspage++
 				let res = await this.$api.progress({
 					page: this.progresspage,
-					num: 10,
+					num: 8,
 					state: this.prostate,
 					// user_id:window.localStorage.getItem('id')
 				})
@@ -836,8 +840,8 @@
 					if (this.data[val].code != null) {
 						code=this.data[val].code.toString(16)
 						}
-					if (this.data[val].state2 == 'examined') {pro='0%';state='批准工单中'}
-					if (this.data[val].state2 == 'untreated') {pro='10%';state='等待接单'}
+					if (this.data[val].state2 == 'examined') {pro='10%';state='批准工单中'}
+					if (this.data[val].state2 == 'untreated') {pro='0%';state='等待接单'}
 					if (this.data[val].state == 'examined') {pro='80%';state='等待签字确认'}
 					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
 					if (this.data[val].state2 == 'treated') {pro='100%';state='存入档案'}

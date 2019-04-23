@@ -1,6 +1,6 @@
 <template >
 	<div class="layout">
-		<Layout class="test"  :style="{minHeight: '100vh'}">
+		<Layout class="test"  :style="{minHeight: '100vh',width: screenwidth+'px'}" style="">
 			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
 					<div style="width: 100%;height: 64px;background: #367fa9;">
@@ -71,7 +71,7 @@
 							</Dropdown>
 						</Col>
 						<Col span="1" style="">
-							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;" size="small" @click="full=true">
+							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;" size="small" @click="fullscreen()">
 								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;全屏</div>
 							</Button>
 						</Col>
@@ -96,7 +96,7 @@
 						</transition>
 					</div>
 				</Content>
-				<div @click="full=false" v-if='full' style="height:15px;" @mouseover="show(1)">
+				<div @click="quitfull()" v-if='full' style="height:15px;" @mouseover="show(1)">
 					<Col span='22'>
 						<div @mouseout="show(2)">&nbsp;</div>
 					</Col>
@@ -170,6 +170,7 @@
 					0: '管理员',
 				},
 				count: null,
+				screenwidth:'',
 				active: this.$route.path.split('/')[1],
 				menu: [
 					{
@@ -303,6 +304,32 @@
 		},
 		
 		methods: {
+			fullscreen(){
+				this.full=true
+				var el = document.documentElement;
+				var rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;      
+                if(typeof rfs != "undefined" && rfs) {
+                    rfs.call(el);
+                };
+			},
+			quitfull(){
+				this.full=false
+				if (document.exitFullscreen) {  
+					document.exitFullscreen();  
+				}  
+				else if (document.mozCancelFullScreen) {  
+					document.mozCancelFullScreen();  
+				}  
+				else if (document.webkitCancelFullScreen) {  
+					document.webkitCancelFullScreen();  
+				}  
+				else if (document.msExitFullscreen) {  
+					document.msExitFullscreen();  
+				} 
+				if(typeof cfs != "undefined" && cfs) {
+					cfs.call(el);
+				}
+			},
 			gethome(){
 				this.$router.push({
 					name:'index'
@@ -435,6 +462,7 @@
         },
         created(){
             // this.setTags(this.$route);
+			this.screenwidth=document.documentElement.clientWidth*1
 			this.getportrait()
         }
 	}
