@@ -40,14 +40,16 @@
 		nodes.push({
 			id: item.id,
 			pId: item.pId,
-			title: item.label
+			title: item.label,
+			value: item.vaule,
 		})
 		if(item.sub){
 			item.sub.forEach(sub => {
 				child.push({
 					id: sub.id,
 					pId: sub.pId,
-					title: sub.label
+					title: sub.label,
+					value: item.vaule,
 				})
 			})
 		}
@@ -76,6 +78,7 @@
 								id:res.id,
 								pId:res.pId,
 								title:res.title,
+								value: item.vaule,
 							})
 						}
 					})

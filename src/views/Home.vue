@@ -197,24 +197,26 @@
 // 							label:'告警订阅',
 // 						},
 						]
-					},{
-						name: 'report',
-						icon: 'fa fa-newspaper-o',
-						label: '报表分析',
-						sub:[
+					},
+// 					{
+// 						name: 'report',
+// 						icon: 'fa fa-newspaper-o',
+// 						label: '报表分析',
+// 						sub:[
+// // 							{
+// // 								name: 'report',
+// // 								label: '报表分析',
+// // 							},
 // 							{
-// 								name: 'report',
-// 								label: '报表分析',
+// 								name: 'eventreport',
+// 								label: '事件报表分析',
 // 							},
-							{
-								name: 'eventreport',
-								label: '事件报表分析',
-							},
-							{
-								name: 'orderreport',
-								label: '故障报表分析',
-							},]
-					},{
+// 							{
+// 								name: 'orderreport',
+// 								label: '故障报表分析',
+// 							},]
+// 					},
+					{
 						name: 'maintain',
 						icon: 'fa fa-cogs',
 						label: '工作流',
