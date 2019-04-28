@@ -45,24 +45,24 @@ export default {
 		return CommonApi.query(Object.assign({key1:'wechat',key2:'getqrcode'}, data))
 	},
 	//account
-  register:(data)=>{
-  	return AccountApi.save({key1:'register'},data)
-  },
-  retrieve:(data)=>{
-	return AccountApi.save({key1:'retrieve'},data)
-  },
+	register:(data)=>{
+		return AccountApi.save({key1:'register'},data)
+	},
+	retrieve:(data)=>{
+		return AccountApi.save({key1:'retrieve'},data)
+	},
 	update:(data)=>{
-    return AccountApi.update(data)
-  },
+		return AccountApi.update(data)
+	},
 	user:(data)=>{
 		return AccountApi.query(Object.assign(data))
 	},
-  login:(data)=>{
-    return AccountApi.save({key1:'login'},data)
-  },
+	login:(data)=>{
+		return AccountApi.save({key1:'login'},data)
+	},
 	logout:(data)=>{
-    return AccountApi.save({key1:'logout'},data)
-  },
+		return AccountApi.save({key1:'logout'},data)
+	},
 	password:(data)=>{
 		return AccountApi.save({key1:'password'},data)
 	},
@@ -80,6 +80,24 @@ export default {
 	},
 	portrait:(data)=>{
 		return AccountApi.save({key1:'portrait'},data)
+	},
+	newMenu:(data)=>{
+		return CommonApi.save({key1:'addMenu'},data)
+	},
+	getMenu:(data)=>{
+		return CommonApi.query(Object.assign({key1:'Menu'},data))
+	},
+	newFunction:(data)=>{
+		return CommonApi.save({key1:'addFunction'},data)
+	},
+	getFunction:(data)=>{
+		return CommonApi.query(Object.assign({key1:'Function'},data))
+	},
+	newRole:(data)=>{
+		return CommonApi.save({key1:'addRole'},data)
+	},
+	getRole:(data)=>{
+		return CommonApi.query(Object.assign({key1:'Role'},data))
 	},
 	//Device
 	alert: (data) => {

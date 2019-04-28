@@ -218,8 +218,8 @@
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-					title: '失败',
-					desc: '创建失败'
+						title: '失败',
+						desc: '创建失败'
 					});
 				}
 			},
