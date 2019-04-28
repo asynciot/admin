@@ -1,6 +1,6 @@
 <template lang="jade">
 	div(style="padding:0")
-		div.ch(id="test1" style="width:100%", :style="'height:'+screenheight/1.2+'px'")
+		div.ch(id="test1" style="width:100%", :style="'height:'+screenheight/2.6+'px'")
 </template>
 
 <script>

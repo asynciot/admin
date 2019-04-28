@@ -242,14 +242,19 @@ export default {
 		async getList() {
 			this.loading = true
 			let res = await this.$api.devices(this.options)
+			let test = await this.$api.devicess(this.options)
 			this.loading = false
 			if(res.data.code === 0){
 				for (var i=0;i<res.data.data.list.length;i++){
 					if (res.data.data.list[i].device_firmware !=null) {
-						if(res.data.data.list[i].device_firmware.length>=6){
-							res.data.data.list[i].device_firmware=res.data.data.list[i].device_firmware.substring(0,6)
-						}
+						var sub=''
+					for (var j=0;j<res.data.data.list[i].device_firmware.length;j++){
+						if (res.data.data.list[i].device_firmware.substring(j,j+1).charCodeAt()>1)
+						sub=sub+res.data.data.list[i].device_firmware.substring(j,j+1)
 					}
+					res.data.data.list[i].device_firmware=sub
+					}
+					
 				}
 				this.data = res.data.data.list
 				this.options.total = res.data.data.totalNumber

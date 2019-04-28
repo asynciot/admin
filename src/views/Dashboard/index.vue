@@ -1,21 +1,21 @@
 <template>
-	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;">
-		<Drawer title="显示内容" :closable="false" v-model="value1" width="10" id="drawer">
+	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;" id="lay">
+		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
 			<div><Checkbox @on-change='showpanel("map",map)' v-model="map">设备定位</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("chat",chat)' v-model="chat">客户意见反馈</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("progress",progress)' v-model="progress">故障处理进程</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("chart",chart)' v-model="chart">业务图表</Checkbox></div>
 			<!-- <div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div> -->
 			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">常见故障</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("chart4",chart4)' v-model="chart4">活跃设备</Checkbox></div>
-			<!-- <div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div> -->
+			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div>
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
-			<section class="content" style="padding-bottom: 0;">
+			<section class="content">
 				<!-- Small boxes (Stat box) -->
-				<div class="row" style="padding:0">
-					<div class="col-lg-3 col-xs-10">
+				<div class="row" style="">
+					<div class="ivu-col ivu-col-span-6" id='title1' style="padding-left:10px;padding-right:10px">
+
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center; padding:4px" >
@@ -27,7 +27,7 @@
 						</div>
 					</div>
 					<!-- ./col -->
-					<div class="col-lg-3 col-xs-6">
+					<div class="ivu-col ivu-col-span-6" id='title2' style="padding-left:10px;padding-right:10px">
 						<!-- small box -->
 						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center; padding:4px">
@@ -42,7 +42,7 @@
 
 					</div>
 					<!-- ./col -->
-					<div class="col-lg-3 col-xs-6">
+					<div class="ivu-col ivu-col-span-6" id='title3' style="padding-left:10px;padding-right:10px">
 
 						<!-- small box -->
 						<div class="small-box bg-yellow">
@@ -59,7 +59,7 @@
 
 					</div>
 					<!-- ./col -->
-					<div class="col-lg-3 col-xs-6">
+					<div class="ivu-col ivu-col-span-6" id='title4' style="padding-left:10px;padding-right:10px">
 
 						<!-- small box -->
 						<div class="small-box bg-green">
@@ -82,25 +82,24 @@
 					<!-- Left col -->
 					<!-- <section class="col-lg-5 connectedSortable"> -->
 					
-				<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper" @mouseenter.native="$refs.mySwiper.options.autoplay=false;" @mouseleave.native="$refs.mySwiper.options.autoplay=autoplay;">
-						<swiper-slide> 
-						<!-- <div class="swiper-button-prev" ></div> -->
-						<Col span='12' id="mapwidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
+
+					<draggable :options="{animation: 60,group:'panel'}">
+						<!-- Map box --> <Col span='12' id="mapwidth">
 						<div class="box box-primary" v-if="map">
 							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
-								<div class="pull-right box-tools">
-									<button type="button" class="btn btn-primary btn-sm pull-right" @click="map=!map;showpanel('map',map)"><i class="fa fa-times"></i>
-									</button>
+							  <div class="pull-right box-tools">
+								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="map=!map;showpanel('map',map)"><i class="fa fa-times"></i>
+								  </button>
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('mapwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
 											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',4)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',4)"></Card>
 										</div>
 									</div>
 
@@ -115,14 +114,122 @@
 								设备定位
 							  </h3>
 							</div>
-							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/1.14+'px'" v-if="mapbody">
+							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/2.55+'px'" v-if="mapbody">
 								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
 							<!-- /.box-body-->
 						</div>
 						</Col>
-						<Col span='12' id="progresswidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
+						<Col span='6' id="chatwidth">
+						  <!-- /.box -->
+						<!-- Chat box -->
+						<div class="box box-primary" v-if="chat" >
+							<div class="box-header">
+								<i class="fa fa-comments-o"></i>
+
+								<h3 class="box-title">客户意见反馈</h3>
+
+								<div class="box-tools pull-right" data-toggle="tooltip" title="">
+									<div class="btn-group" data-toggle="btn-toggle">
+										<div class="btn-group" style="margin-right: 5px;">
+											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
+												<i class="fa fa-bars"></i></button>
+											<div class="dropdown-menu pull-right" role="menu">
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
+											</div>
+										</div>
+										<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
+											<i class="fa fa-minus" v-if="chatbody"></i>
+											<i class="fa fa-plus" v-if="!chatbody"></i>
+										</button>
+										<button type="button" class="btn btn-primary btn-sm" @click="chat=false"><i class="fa fa-times"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/2.55+'px'">
+								<!-- chat item -->
+								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/2.55-60">
+									<div class="item" v-for="item in chatlist" >
+										<img :src="item.portrait" alt="user image" class="online" onerror="src='../../../static/admin.jpg'">
+										<p class="message">
+											<a href="#" class="name">
+												<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
+												<div style="font-size: large;" :style="'font-size:'+setheight[0]/6+'px'">{{item.username}}</div>
+												<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
+											</a>
+											<div style="display: inline-block;width:95%;margin-top:5px">
+											<Col span='1'>&nbsp;</Col>
+											<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.create_time}}</Col>
+											<Col span='3'><Button type="text" @click="recall(item.id)" v-if="item.from_id">撤回</Button>&nbsp;</Col>
+											<Col span='7'>
+												<Button type="text" @click="item.showlist=true" v-if="!item.showlist" style="outline: none;">共{{item.followlist.length}}条回复</Button>
+												<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
+											</Col>
+											<Col span='7'>
+												<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id" style="outline: none;">回复本条</Button>
+												<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
+											</Col>
+											</div>
+										</p>
+										<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
+											<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.username}}</h4>
+											<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">{{follow.content}}</h4>
+											<div>
+												<Col span='15'>&nbsp;</Col>
+												<Col span='4'><Button type="text" @click="recall(follow.id)" v-if="follow.from_id">撤回</Button>&nbsp;</Col>
+												<Col span='5'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.create_time}}</Col>
+											</div>
+										</div>
+	<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
+											<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word; ">宋工:建议减小关门低速1、低速2。</h4>
+										</div> -->
+										<!-- /.attachment -->
+									</div>
+								</Scroll>
+								<!-- /.item -->
+<!-- 								<div class="input-group">
+									<input class="form-control" placeholder="Type message...">
+
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+									</div>
+								</div> -->
+								<form action="#" method="post" style="margin-top:5px">
+									<div class="input-group">
+										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
+										<Col span='6'>
+										<span class="input-group-btn" style="width: 100%">
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">留言</button>
+										</span>
+										</Col>
+									</div>
+								</form>
+							</div>
+		<!-- 					<div class="box-footer clearfix" v-if="chatbody">
+								<form action="#" method="post">
+									<div class="input-group">
+										<Col span='20'><textarea type="text" name="message" style="height:50px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
+										<Col span='4'>
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" style="height:50px">回复</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" style="height:50px">留言</button>
+										</span>
+										</Col>
+									</div>
+								</form>
+							</div> --> 
+							<!-- /.chat -->
+						</div>
+						</Col>
+						<Col span='6' id="progresswidth">
 						<!-- /.box (chat box) -->
+
 						<!-- TO DO List -->
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
@@ -134,10 +241,10 @@
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
 											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',1)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',2)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',3)"></Card>
-											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',4)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',4)"></Card>
 										</div>
 									</div>
 									<button type="button" class="btn btn-primary btn-sm pull-right" @click="progress=!progress"><i class="fa fa-times"></i>
@@ -148,16 +255,24 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/1.14+'px'">
-								<RadioGroup v-model="prostate" @on-change="getprogress(1)">
-								<Radio label="6"><span>全部</span></Radio>
+							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/2.55+'px'">
+<!-- 								<RadioGroup v-model="prostate" @on-change="getprogress(1)">
+								<Radio label="6"><span style="font-size:8px">全部</span></Radio>
 								<Radio label="2"><span>等待接单</span></Radio>
 								<Radio label="1"><span>批准工单中</span></Radio>
 								<Radio label="3"><span>处理中</span></Radio>
 								<Radio label="4"><span>等待签字确认</span></Radio>
 								<Radio label="5"><span>存入档案</span></Radio>
-								</RadioGroup>
-								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/1.14-38">
+								</RadioGroup> -->
+								<Select class="smr" v-model="prostate" style="width:100%;" placeholder="进度" @on-change="getprogress(1)">
+									<Option key="6" label="全部" value="6"></Option>
+									<Option key="1" label="等待接单" value="1"></Option>
+									<Option key="2" label="批准工单中" value="2"></Option>
+									<Option key="3" label="处理中" value="3"></Option>
+									<Option key="4" label="等待签字确认" value="4"></Option>
+									<Option key="5" label="存入档案" value="5"></Option>
+								</Select>
+								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/2.55-55">
 								<ul class="todo-list" style=" padding:3">
 									<div v-for="item in todo" :style="'font-size:'+screenheight/54+'px'" style="">
 										<Col span='24'> 
@@ -171,8 +286,8 @@
 										<div>
 											<Col span='24'>安装地址：{{item.addr}}</Col> 
 										</div>
-										<Col span='3' style="margin-bottom: 10px;">处理进度：</Col>
-										<Col span='21' style="margin-bottom: 10px;">
+										<Col span='3' style="margin-bottom: 10px;display: inline-block;" :style="'min-width:'+screenwidth/18+'px;'">处理进度：</Col>
+										<Col span='21' style="margin-bottom: 10px;display: inline-block;" :style="">
 											<Col span='20' @mouseenter.native="barword=item.num;" @mouseleave.native="barword='';">
 												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="item.progress =='100%'" >
 													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%;color:#ffffff"> {{item.state}} </div>
@@ -205,249 +320,239 @@
 						</div>
 						<!-- /.box -->
 						</Col>
-						<div class="swiper-button-next" @mouseenter="next=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-							<div @mouseleave="next=false"><icon name="next" width="35" height="35" slot="prepend" v-if="next"></icon></div>
-						</div>
-						</swiper-slide>
-						<swiper-slide>
-							<div class="swiper-button-prev" @mouseenter="prev=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-								<div @mouseleave="prev=false"><icon name="prev" width="35" height="35" slot="prepend" v-if="prev"></icon></div>
-							</div>
-								<Col span='12' id="chartwidth4" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
-									<div class="box box-primary" v-if="chart4">
-										<div class="box-header">
-											<i class="fa fa-th"></i>
-											<h3 class="box-title">活跃设备</h3>
-											<div class="box-tools pull-right">
-												<div class="btn-group" style="margin-right: 5px;">
-													<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
-														<i class="fa fa-bars"></i></button>
-													<div class="dropdown-menu pull-right" role="menu">
-														<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',1);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',2);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',3);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',4);chartwidth()"></Card>
-													</div>
-												</div>
-												<button type="button" class="btn btn-primary btn-sm" @click="chartbody4=!chartbody4;MemberCharts();">
-													<i class="fa fa-minus" v-if="chartbody4"></i>
-													<i class="fa fa-plus" v-if="!chartbody4"></i>
-												</button>
-												<button type="button" class="btn btn-primary btn-sm" @click="chart4=false"><i class="fa fa-times"></i>
-												</button>
-											</div>
-										</div>
-										<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/1.14+'px'">
-											<div class='' :style="'height:'+screenheight/1.2+'px'">
-												<activedoor></activedoor>
-											</div>
+						
+						<Col span='12' id="chartwidth">
+					<!-- </section> -->
+					<!-- /.Left col -->
+					<!-- right col (We are only adding the ID to make the widgets sortable)-->
+						<!-- solid sales graph -->
+						<div class="box box-primary" v-if="chart">
+							<div class="box-header">
+								<i class="fa fa-th"></i>
+
+								<h3 class="box-title">业务图表</h3>
+								
+								<div class="box-tools pull-right">
+									<div class="btn-group" style="margin-right: 5px;">
+										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
+											<i class="fa fa-bars"></i></button>
+										<div class="dropdown-menu pull-right" role="menu">
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',1);chartwidth()"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',2);chartwidth()"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',3);chartwidth()"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
 										</div>
 									</div>
-								</Col> 
-								<Col span='12' id="chartwidth3" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
-									<div class="box box-primary" v-if="chart3">
-										<div class="box-header">
-											<i class="fa fa-th"></i>
-											<h3 class="box-title">常见故障</h3>
-											<div class="box-tools pull-right">
-												<div class="btn-group" style="margin-right: 5px;">
-													<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
-														<i class="fa fa-bars"></i></button>
-													<div class="dropdown-menu pull-right" role="menu">
-														<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',1);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',2);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',3);chartwidth()"></Card>
-														<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',4);chartwidth()"></Card>
-													</div>
-												</div>
-												<button type="button" class="btn btn-primary btn-sm" @click="chartbody3=!chartbody3;MemberCharts();">
-													<i class="fa fa-minus" v-if="chartbody3"></i>
-													<i class="fa fa-plus" v-if="!chartbody3"></i>
-												</button>
-												<button type="button" class="btn btn-primary btn-sm" @click="chart3=false"><i class="fa fa-times"></i>
-												</button>
+									<button type="button" class="btn btn-primary btn-sm" @click="chartbody=!chartbody;areafault();">
+										<i class="fa fa-minus" v-if="chartbody"></i>
+										<i class="fa fa-plus" v-if="!chartbody"></i>
+									</button>
+									<button type="button" class="btn btn-primary btn-sm" @click="chart=false"><i class="fa fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
+								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
+									<swiper-slide>
+										<div class='' :style="'height:'+screenheight/2.7+'px'">
+										<compare></compare>
+										</div>
+										<div class="swiper-button-next"></div>
+									</swiper-slide>
+									<!-- <swiper-slide>
+										<div class="swiper-button-prev"></div>
+										<div class='' style="height:370px">
+											<freq></freq>
+										</div>
+										<div class="swiper-button-next"></div>
+									</swiper-slide> -->
+									<swiper-slide>
+										<div class="swiper-button-prev"></div>
+										<div class='' :style="'height:'+screenheight/2.7+'px'">
+											<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
+											<test1></test1>
+										</div>
+									</swiper-slide>
+								</swiper>
+							</div>
+
+						</div>
+						<!-- /.box -->
+						</Col>
+					
+						<Col span='6' id="chartwidth2">
+						<!-- </section> -->
+						<!-- /.Left col -->
+						<!-- right col (We are only adding the ID to make the widgets sortable)-->
+							<!-- solid sales graph -->
+							<div class="box box-primary" v-if="chart2">
+								<div class="box-header">
+									<i class="fa fa-th"></i>
+									<h3 class="box-title">用户组成</h3>
+									<div class="box-tools pull-right">
+										<div class="btn-group" style="margin-right: 5px;">
+											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
+												<i class="fa fa-bars"></i></button>
+											<div class="dropdown-menu pull-right" role="menu">
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',1);chartwidth()"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',2);chartwidth()"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',3);chartwidth()"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',4);chartwidth()"></Card>
 											</div>
 										</div>
-										<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/1.14+'px'">
-												<div class='' :style="'height:'+screenheight/1.2+'px'">
+										<button type="button" class="btn btn-primary btn-sm" @click="chartbody2=!chartbody2;MemberCharts();">
+											<i class="fa fa-minus" v-if="chartbody2"></i>
+											<i class="fa fa-plus" v-if="!chartbody2"></i>
+										</button>
+										<button type="button" class="btn btn-primary btn-sm" @click="chart2=false"><i class="fa fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="box-body border-radius-none" v-if="chartbody2" style="height:380px">
+									<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
+										<swiper-slide>
+												<div id="test5" style="height:300px;width:100%"> </div>
+										</swiper-slide>
+									</swiper>
+								</div>
+							</div>
+							</Col>
+							
+							<Col span='6' id="emailwidth">
+							<!-- quick email widget -->
+							<div class="box box-primary" v-if="email">
+								<div class="box-header">
+									<i class="fa fa-envelope"></i>
+							
+									<h3 class="box-title">发送邮件</h3>
+									<!-- tools box -->
+									<div class="pull-right box-tools">
+										<div class="btn-group" style="margin-right: 5px;">
+											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('emailwidth')">
+												<i class="fa fa-bars"></i></button>
+											<div class="dropdown-menu pull-right" role="menu">
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',1)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',2)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',3)"></Card>
+												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',4)"></Card>
+											</div>
+										</div>
+										<button type="button" class="btn btn-primary btn-sm" @click="emailbody=!emailbody">
+											<i class="fa fa-minus" v-if="emailbody"></i>
+											<i class="fa fa-plus" v-if="!emailbody"></i>
+										</button>
+										<button type="button" class="btn btn-primary btn-sm" @click="email=false"><i class="fa fa-times"></i>
+										</button>
+									</div>
+									<!-- /. tools -->
+								</div>
+								<div class="box-body" v-if="emailbody" :style="'height:'+screenheight/2.55+'px'">
+									<form action="#" method="post">
+										<div class="form-group">
+											<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
+										</div>
+										<div>
+											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/6+'px;font-size:'+screenheight/50+'px'"></textarea>
+										</div>
+										<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
+											<i class="fa fa-arrow-circle-right"></i></button>
+									</form>
+								</div>
+							</div>
+							</Col>
+							
+							<Col span='6' id="chartwidth3">
+								<div class="box box-primary" v-if="chart3">
+									<div class="box-header">
+										<i class="fa fa-th"></i>
+										<h3 class="box-title">常见故障</h3>
+										<div class="box-tools pull-right">
+											<div class="btn-group" style="margin-right: 5px;">
+												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
+													<i class="fa fa-bars"></i></button>
+												<div class="dropdown-menu pull-right" role="menu">
+													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',1);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',2);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',3);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',4);chartwidth()"></Card>
+												</div>
+											</div>
+											<button type="button" class="btn btn-primary btn-sm" @click="chartbody3=!chartbody3;MemberCharts();">
+												<i class="fa fa-minus" v-if="chartbody3"></i>
+												<i class="fa fa-plus" v-if="!chartbody3"></i>
+											</button>
+											<button type="button" class="btn btn-primary btn-sm" @click="chart3=false"><i class="fa fa-times"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/2.55+'px'">
+										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
+											<swiper-slide>
+												<div class='' :style="'height:'+screenheight/2.7+'px'">
 												<faultfreq></faultfreq>
 												</div>
-										</div>
+											</swiper-slide>
+										</swiper>
 									</div>
-								</Col>
-								<div class="swiper-button-next" @mouseenter="next=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-									<div @mouseleave="next=false"><icon name="next" width="35" height="35" slot="prepend" v-if="next"></icon></div>
 								</div>
-							</swiper-slide>
-							<swiper-slide> 
-							<div class="swiper-button-prev" @mouseenter="prev=true" style="outline: none;background: url(../../assets/svg/123.svg)">
-								<div @mouseleave="prev=false"><icon name="prev" width="35" height="35" slot="prepend" v-if="prev"></icon></div>
-							</div>
-							<Col span='12' id="chartwidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
-										<!-- </section> -->
-										<!-- /.Left col -->
-										<!-- right col (We are only adding the ID to make the widgets sortable)-->
-											<!-- solid sales graph -->
-											<div class="box box-primary" v-if="chart">
-												<div class="box-header">
-													<i class="fa fa-th"></i>
-							
-													<h3 class="box-title">业务图表</h3>
-													
-													<div class="box-tools pull-right">
-														<div class="btn-group" style="margin-right: 5px;">
-															<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
-																<i class="fa fa-bars"></i></button>
-															<div class="dropdown-menu pull-right" role="menu">
-																<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',1);chartwidth()"></Card>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',2);chartwidth()"></Card>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',3);chartwidth()"></Card>
-																<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',4);chartwidth()"></Card>
-															</div>
-														</div>
-														<button type="button" class="btn btn-primary btn-sm" @click="chartbody=!chartbody;areafault();">
-															<i class="fa fa-minus" v-if="chartbody"></i>
-															<i class="fa fa-plus" v-if="!chartbody"></i>
-														</button>
-														<button type="button" class="btn btn-primary btn-sm" @click="chart=false"><i class="fa fa-times"></i>
-														</button>
-													</div>
-												</div>
-												<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/1.14+'px'">
-													<swiper id="swiperBox2" v-bind:options="swiperOption2" ref="mySwiper2">
-														<swiper-slide>
-															<div class='' :style="'height:'+screenheight/1.2+'px'">
-															<compare></compare>
-															</div>
-														</swiper-slide>
-														<!-- <swiper-slide>
-															<div class="swiper-button-prev"></div>
-															<div class='' style="height:370px">
-																<freq></freq>
-															</div>
-															<div class="swiper-button-next"></div>
-														</swiper-slide> -->
-														<swiper-slide>
-															<div class='' :style="'height:'+screenheight/1.2+'px'">
-																<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
-																<test1></test1>
-															</div>
-														</swiper-slide>
-													</swiper>
+							</Col>
+							<Col span='12' id="chartwidth4">
+								<div class="box box-primary" v-if="chart4">
+									<div class="box-header">
+										<i class="fa fa-th"></i>
+										<h3 class="box-title">活跃设备</h3>
+										<div class="box-tools pull-right">
+											<div class="btn-group" style="margin-right: 5px;">
+												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
+													<i class="fa fa-bars"></i></button>
+												<div class="dropdown-menu pull-right" role="menu">
+													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',1);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',2);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',3);chartwidth()"></Card>
+													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',4);chartwidth()"></Card>
 												</div>
 											</div>
-											<!-- /.box -->
-											</Col>
-													<Col span='12' id="chatwidth" style="padding:15px;padding-top: 0;padding-bottom: 0;" :style="'height:'+(screenheight+50)/1.14+'px'">
-
-													<div class="box box-primary" v-if="chat" >
-														<div class="box-header">
-															<i class="fa fa-comments-o"></i>
-							
-															<h3 class="box-title">客户意见反馈</h3>							
-															<div class="box-tools pull-right" data-toggle="tooltip" title="">
-																<div class="btn-group" data-toggle="btn-toggle">
-																	<div class="btn-group" style="margin-right: 5px;">
-																		<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
-																			<i class="fa fa-bars"></i></button>
-																		<div class="dropdown-menu pull-right" role="menu">
-																			<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseenter.native="widthblock2(1)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseenter.native="widthblock2(2)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseenter.native="widthblock2(3)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
-																			<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseenter.native="widthblock2(4)" @mouseleave.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
-																		</div>
-																	</div>
-																	<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
-																		<i class="fa fa-minus" v-if="chatbody"></i>
-																		<i class="fa fa-plus" v-if="!chatbody"></i>
-																	</button>
-																	<button type="button" class="btn btn-primary btn-sm" @click="chat=false"><i class="fa fa-times"></i>
-																	</button>
-																</div>
-															</div>
-														</div>
-														<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/1.14+'px'">
-															<!-- chat item -->
-															<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/1.14-60">
-															<div class="item" v-for="item in chatlist" >
-																<img :src="item.portrait" alt="user image" class="online" onerror="src='../../../static/admin.jpg'">
-																<p class="message">
-																	<a href="#" class="name">
-																		<!-- <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15 &nbsp;&nbsp;</small> -->
-																		<div style="font-size: large;" :style="'font-size:'+setheight[0]/6+'px'">{{item.username}}</div>
-																		<div style="white-space:normal;word-break:break-all;word-wrap:break-word;width:97%;color:#444444;">{{item.content}}</div>
-																	</a>
-																	<div style="display: inline-block;width:95%;margin-top:5px">
-																	<Col span='1'>&nbsp;</Col>
-																	<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.create_time}}</Col>
-																	<Col span='3'><Button type="text" @click="recall(item.id)" v-if="item.from_id">撤回</Button>&nbsp;</Col>
-																	<Col span='7'>
-																		<Button type="text" @click="item.showlist=true" v-if="!item.showlist" style="outline: none;">共{{item.followlist.length}}条回复</Button>
-																		<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
-																	</Col>
-																	<Col span='7'>
-																		<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id" style="outline: none;">回复本条</Button>
-																		<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
-																	</Col>
-																	</div>
-																</p>
-																<div class="attachment" v-for="follow in item.followlist" v-if="item.showlist">
-																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;color:#2d8cf0;display: inline-block;">{{follow.username}}</h4>
-																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">{{follow.content}}</h4>
-																	<div>
-																		<Col span='15'>&nbsp;</Col>
-																		<Col span='4'><Button type="text" @click="recall(follow.id)" v-if="follow.from_id">撤回</Button>&nbsp;</Col>
-																		<Col span='5'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.create_time}}</Col>
-																	</div>
-																</div>
-							<!-- 									<div class="attachment" v-if="(!item.showlist)&&(item.followlist.length>0)">
-																	<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word; ">宋工:建议减小关门低速1、低速2。</h4>
-																</div> -->
-																<!-- /.attachment -->
-															</div>
-															</Scroll>
-															<!-- /.item -->
-							<!-- 								<div class="input-group">
-																<input class="form-control" placeholder="Type message...">
-							
-																<div class="input-group-btn">
-																	<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-																</div>
-															</div> -->
-															<form action="#" method="post" style="margin-top:5px">
-																<div class="input-group">
-																	<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
-																	<Col span='6'>
-																	<span class="input-group-btn" style="width: 100%">
-																		<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
-																		<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">留言</button>
-																	</span>
-																	</Col>
-																</div>
-															</form>
-														</div>
-													</div>
-													</Col>
-<!-- 							<div class="swiper-button-next"></div> -->
-							</swiper-slide>
+											<button type="button" class="btn btn-primary btn-sm" @click="chartbody4=!chartbody4;MemberCharts();">
+												<i class="fa fa-minus" v-if="chartbody4"></i>
+												<i class="fa fa-plus" v-if="!chartbody4"></i>
+											</button>
+											<button type="button" class="btn btn-primary btn-sm" @click="chart4=false"><i class="fa fa-times"></i>
+											</button>
+										</div>
+									</div>
+									<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/2.55+'px'">
+										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
+											<swiper-slide>
+												<div class='' :style="'height:'+screenheight/2.7+'px'">
+												<activedoor></activedoor>
+												</div>
+											</swiper-slide>
+										</swiper>
+									</div>
+								</div>
+							</Col>
 						<!-- /.box -->
-
-						</swiper>
+						
+						</draggable>
 					<!-- right col -->
 				</Row>
 				<!-- /.row (main row) -->
-<!-- 				<Col span='22'>&nbsp;</Col>
-				<Col span='2' style="vertical-align: middle;">
-					<div style="cursor: pointer;color:blue;font-size: larger;" @click="value1=true">
-						<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
-							内容筛选
-					</div>
-				</Col> -->
-				</section>
+			</section>
+			<Col span='22'>&nbsp;</Col>
+			<Col span='2' style="vertical-align: middle;">
+				<div style="cursor: pointer;color:blue;font-size: larger;margin-left: 20px" @click="value1=true">
+					<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
+						内容筛选
+				</div>
+			</Col>
 	</div>
 </template>
 <script>
@@ -476,7 +581,6 @@
 				btn2:false,
 				value1:false,
 				faultdevice: 0,
-				barword:'',
 				size1: '#ffffff',
 				size2: '#ffffff',
 				size3: '#ffffff',
@@ -500,52 +604,16 @@
 				emailbody: true,
 				progressbody: true,
 				shine:true,
+				barword:'',
 // 				todo:[{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'2 mins',progress:"40%"},
 // 						{pro:"上海科技大学",description:"电梯在使用时光幕异常。经排查，光幕接收信号异常。预计后天购买光幕，恢复电梯正常使用。",time:'54 mins',progress:"60%"},
 // 						{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'3 hours',progress:"70%"},
 // 				],
 				todo:[],
-				todo2:['','','','',''],
 				chatlist:[],
-				autoplay:{
-					delay: 20000,
-					stopOnLastSlide: false,
-					disableOnInteraction: true,
-				},
 				swiperOption:{
-					// freeMode:true,
-					autoplay:{
-						delay: 20000,
-						stopOnLastSlide: false,
-						disableOnInteraction: true,
-					},
-// 					loop: true,
-// 					loopAdditionalSlides: 2,
-					disableOnInteraction: false,
-					notNextTick:true,
-					direction:'horizontal',
-					grabCursor:true,
-					setWrapperSize:true,
-					autoHerght:true,
-					slidesPerView: 1,
-					mousewheel:false,
-					mousewheelControl:true,
-					height:window.innerHeight,
-					resistanceRatio:0,
-					observeParents:true,
-					observer:true,//修改swiper自己或子元素时，自动初始化swiper
-					allowTouchMove: false,
-					hideOnClick: true,
-					navigation: {
-						prevEl: '.swiper-button-prev',
-						nextEl: '.swiper-button-next',
-					},
-				},
-				swiperOption2:{
-					// freeMode:true,
-// 					loop: true,
-// 					loopAdditionalSlides: 2,
-					disableOnInteraction: false,
+					autoplay:true,
+					delay:20000,
 					notNextTick:true,
 					direction:'horizontal',
 					grabCursor:true,
@@ -558,10 +626,10 @@
 					resistanceRatio:0,
 					observeParents:true,
 					observer:true,//修改swiper自己或子元素时，自动初始化swiper
-					allowTouchMove: true,
+					allowTouchMove: false,
 					navigation: {
-						prevEl: '',
-						nextEl: '',
+						prevEl: '.swiper-button-prev',
+						nextEl: '.swiper-button-next',
 					},
 				},
 				data:[],
@@ -580,18 +648,17 @@
 					content:'',
 					info:'',
 					type:0,
-					// createtime:'123',
+					// createTime:'123',
 					isSettled:false,
 				},
 				chatoptions: {
-					fromId:window.localStorage.getItem('id'),
+					fromId:window.localStorage.getItem('username'),
 					title:'1',
 					content:'',
 					info:'1',
 					type:0,
 					follow: -1,
 				},
-				prostate:'6',
 				chartrepair:[],
 				chartorder:[],
 				usernum: 0,
@@ -602,9 +669,8 @@
 				onlinedevice:0,
 				chatpage:0,
 				progresspage:0,
+				prostate:'6',
 				chatbottom:false,
-				next:false,
-				prev:false,
 				reply:'请留下您的疑问和建议 ...',
 				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
 						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
@@ -619,60 +685,125 @@
 		},
 		mounted(){
 			// this.shineword();
-// 			if (window.localStorage.getItem('mapwidth') != null) {this.widthblock3('mapwidth',window.localStorage.getItem('mapwidth'))}
-// 			if (window.localStorage.getItem('chatwidth') != null) {this.widthblock3('chatwidth',window.localStorage.getItem('chatwidth'))}
-// 			if (window.localStorage.getItem('chartwidth') != null) {this.widthblock3('chartwidth',window.localStorage.getItem('chartwidth'))}
-// 			if (window.localStorage.getItem('chartwidth2') != null) {this.widthblock3('chartwidth2',window.localStorage.getItem('chartwidth2'))}
-// 			if (window.localStorage.getItem('chartwidth3') != null) {this.widthblock3('chartwidth3',window.localStorage.getItem('chartwidth3'))}
-// 			if (window.localStorage.getItem('progresswidth') != null) {this.widthblock3('progresswidth',window.localStorage.getItem('progresswidth'))}
-// 			if (window.localStorage.getItem('emailwidth') != null) {this.widthblock3('emailwidth',window.localStorage.getItem('emailwidth'))}
+			if (window.localStorage.getItem('mapwidth') != null) {this.widthblock3('mapwidth',window.localStorage.getItem('mapwidth'))}
+			if (window.localStorage.getItem('chatwidth') != null) {this.widthblock3('chatwidth',window.localStorage.getItem('chatwidth'))}
+			if (window.localStorage.getItem('chartwidth') != null) {this.widthblock3('chartwidth',window.localStorage.getItem('chartwidth'))}
+			if (window.localStorage.getItem('chartwidth2') != null) {this.widthblock3('chartwidth2',window.localStorage.getItem('chartwidth2'))}
+			if (window.localStorage.getItem('chartwidth3') != null) {this.widthblock3('chartwidth3',window.localStorage.getItem('chartwidth3'))}
+			if (window.localStorage.getItem('progresswidth') != null) {this.widthblock3('progresswidth',window.localStorage.getItem('progresswidth'))}
+			if (window.localStorage.getItem('emailwidth') != null) {this.widthblock3('emailwidth',window.localStorage.getItem('emailwidth'))}
 			if (window.localStorage.getItem('map') == 1) {this.map=false}
 			if (window.localStorage.getItem('chat') == 1) {this.chat=false}
 			if (window.localStorage.getItem('chart') == 1) {this.chart=false}
 			if (window.localStorage.getItem('chart2') == 1) {this.chart2=false}
 			if (window.localStorage.getItem('chart3') == 1) {this.chart3=false}
-			if (window.localStorage.getItem('chart4') == 1) {this.chart4=false}
 			if (window.localStorage.getItem('progress') == 1) {this.progress=false}
 			if (window.localStorage.getItem('email') == 1) {this.email=false}
 			this.chartwidth();
+		},
+		created(){
+			this.screenwidth = document.documentElement.clientWidth-200;
+			this.screenheight = document.documentElement.clientHeight;
+			this.setheight[0]=this.screenheight/9.75 -3
+			this.setheight[1]=this.setheight[0]/2.4
+			this.getchat();
+			this.getinfo();
+			this.getprogress();
+			this.LastWeek = this.getWeek(7)
+			this.LastWeekend = this.getWeek(1)
+			this.NowWeek = this.getWeek(0)
+			this.NowWeekend = this.getWeek(-6)
 			var _this=this
 			$(document).keydown(function(event){
 			　　　　if(event.ctrlKey && event.keyCode === 32){
 						_this.value1=true
 			　　　　}
 			　　});
-		},
-		created(){
-			this.screenwidth = document.documentElement.clientWidth;
-			this.screenheight = document.documentElement.clientHeight;
-			this.setheight[0]=this.screenheight/9.75 -3
-			this.setheight[1]=this.setheight[0]/2.4
-			this.getchat();
-			this.getinfo();
-			this.getprogress(0);
-			this.LastWeek = this.getWeek(7)
-			this.LastWeekend = this.getWeek(1)
-			this.NowWeek = this.getWeek(0)
-			this.NowWeekend = this.getWeek(-6)
-// 				this.DeviceCharts();
-// 				this.MemberCharts();
+			$(window).resize(function(){
+				_this.selfadaption()
+				if ((_this.screenheight < document.documentElement.clientHeight)){
+					_this.screenheight = document.documentElement.clientHeight;
+					_this.$router.push(0)
+				}
+			});
+	function disabledMouseWheel() {  
+	  if (document.addEventListener) {
+		document.addEventListener('DOMMouseScroll', scrollFunc, false);  
+	  }//W3C  
+	  window.onmousewheel = document.onmousewheel = scrollFunc;//IE/Opera/Chrome  
+	}
+	function MouseWheel() {  
+	  if (document.removeEventListener) {  
+		document.removeEventListener('DOMMouseScroll', scrollFunc, false);  
+	  }//W3C  
+	  window.onmousewheel = document.onmousewheel = null;//IE/Opera/Chrome  
+	}  
+	function scrollFunc(evt) {  
+	  evt = evt || window.event;  
+		if(evt.preventDefault) {  
+		// Firefox  
+		  evt.preventDefault();  
+		  evt.stopPropagation();  
+		} else {  
+		  // IE  
+		  evt.cancelBubble=true;  
+		  evt.returnValue = false;  
+	  }  
+	  return false;  
+	}  
+	// window.onload=disabledMouseWheel; 
+	// window.onload=MouseWheel;
+// 	setTimeout(() => {
+// 		window.onload=MouseWheel;
+// 		alert(1)
+// 	},5000)
 		},
 		methods: {
-			stop(){
-				// alert(typeof(this.prostate))
+			selfadaption(val1){
+				var val1=['mapwidth','chatwidth','chartwidth','chartwidth2','chartwidth3','chartwidth4','progresswidth','emailwidth']
+				for (var i=0;i<val1.length;i++){
+					var val2=window.localStorage.getItem(val1[i])
+					var width=document.documentElement.clientWidth
+					if (width<1000) {
+						val2=val2*2
+						if (width<700) {val2=val2*2}
+					}
+					if (val2>4) {val2=4}
+					if (val2==1) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-6'}
+					if (val2==2) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-12'}
+					if (val2==3) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-18'}
+					if (val2==4) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-24'}
+				}
+				if (width<700) {
+					for (var i=0;i<4;i++){
+						document.getElementById('title'+(i+1).toString()).className="ivu-col ivu-col-span-24"
+					}
+				}   else {
+						if (width<1000){
+							for (var i=0;i<4;i++){
+								document.getElementById('title'+(i+1).toString()).className="ivu-col ivu-col-span-12"
+							}
+						}
+						else {
+							for (var i=0;i<4;i++){
+								document.getElementById('title'+(i+1).toString()).className="ivu-col ivu-col-span-6"
+							}
+						}
+					}
 			},
 			handleReachBottom(){
 				this.getchat()
 			},
 			handleReachBottom2(){
-				this.getprogress(0)
+				this.getprogress()
 			},
 			showpanel(val1,val2){
+				alert(val2)
 				if (val2) {window.localStorage.setItem(val1,0)}
 				else {window.localStorage.setItem(val1,1)}
 			},
 			async sent(){
-				this.btn = true
+				this.btn = true 
 				let res= await this.$api.sentmessage(this.options)
 				this.btn= false
 				if (res.data.code == 0){
@@ -808,6 +939,7 @@
 					}
 					this.data = res.data.list
 					for (var i=0;i<res.data.list.length;i++) {
+						
 						this.getname(i)
 					}
 				}
@@ -819,33 +951,33 @@
 				}
 			},
 			async getname(val){
-					let ech = await this.$api.devices({device_id:this.data[val].device_id,num:10,page:1})
-					if (ech.data.data.list.length == 1) {
-					if (ech.data.data.list[0].device_name != null){this.data[val].device_name = ech.data.data.list[0].device_name}
-					if (ech.data.data.list[0].IMEI != null){this.data[val].IMEI = ech.data.data.list[0].IMEI}
-					if (ech.data.data.list[0].install_addr != null){this.data[val].install_addr = ech.data.data.list[0].install_addr}
-					if (ech.data.data.list[0].cell_address != null){this.data[val].cell_address = ech.data.data.list[0].cell_address}
-					if (ech.data.data.list[0].ip_country != null){this.data[val].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city}
-					var t=Date.parse(new Date())-parseInt(this.data[val].create_time)
-					var e=''
-					if(t>1000){this.data[val].create_time=parseInt(t/1000).toString()+" secs"}
-					if(t>60000){this.data[val].create_time=parseInt(t/60000).toString()+" mins"}
-					if(t>3600000){this.data[val].create_time=parseInt(t/3600000).toString()+" hours"}
-					if(t>86400000){this.data[val].create_time=parseInt(t/86400000).toString()+" days"}
+				let ech = await this.$api.devices({device_id:this.data[val].device_id,num:10,page:1})
+				if (ech.data.data.list.length == 1) {
+				if (ech.data.data.list[0].device_name != null){this.data[val].device_name = ech.data.data.list[0].device_name}
+				if (ech.data.data.list[0].IMEI != null){this.data[val].IMEI = ech.data.data.list[0].IMEI}
+				if (ech.data.data.list[0].install_addr != null){this.data[val].install_addr = ech.data.data.list[0].install_addr}
+				if (ech.data.data.list[0].cell_address != null){this.data[val].cell_address = ech.data.data.list[0].cell_address}
+				if (ech.data.data.list[0].ip_country != null){this.data[val].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city}
+				var t=Date.parse(new Date())-parseInt(this.data[val].create_time)
+				var e=''
+				if(t>1000){this.data[val].create_time=parseInt(t/1000).toString()+" secs"}
+				if(t>60000){this.data[val].create_time=parseInt(t/60000).toString()+" mins"}
+				if(t>3600000){this.data[val].create_time=parseInt(t/3600000).toString()+" hours"}
+				if(t>86400000){this.data[val].create_time=parseInt(t/86400000).toString()+" days"}
+				}
+				var pro='0%'
+				var code='0'
+				var state='等待接单'
+				var e='未填写'
+				if (this.data[val].code != null) {
+					code=this.data[val].code.toString(16)
 					}
-					var pro='0%'
-					var code='0'
-					var state='等待接单'
-					var e='未填写'
-					if (this.data[val].code != null) {
-						code=this.data[val].code.toString(16)
-						}
-					if (this.data[val].state2 == 'examined') {pro='10%';state='批准工单中'}
-					if (this.data[val].state2 == 'untreated') {pro='0%';state='等待接单'}
-					if (this.data[val].state == 'examined') {pro='80%';state='等待签字确认'}
-					if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
-					if (this.data[val].state2 == 'treated') {pro='100%';state='存入档案'}
-					this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,type:ech.data.data.list[0].device_type,state:state,num:10*this.progresspage + val})
+				if (this.data[val].state2 == 'examined') {pro='10%';state='批准工单中'}
+				if (this.data[val].state2 == 'untreated') {pro='0%';state='等待接单'}
+				if (this.data[val].state == 'examined') {pro='80%';state='等待签字确认'}
+				if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
+				if (this.data[val].state2 == 'treated') {pro='100%';state='存入档案'}
+				this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,type:ech.data.data.list[0].device_type,state:state,num:10*this.progresspage + val})
 			},
 			async getinfo(){
 				var res
@@ -887,27 +1019,26 @@
 				if (res.data.code == 0){
 				this.onlinedevice =res.data.data.totalNumber
 				}
-				
 			},
 			widthblock1(val){
 				var width=document.getElementById(val).className
-					if (width=='ivu-col ivu-col-span-6') {this.size1='#008b00';this.size2='#ffffff';this.size3='#ffffff';this.size4='#ffffff'}
-					if (width=='ivu-col ivu-col-span-12') {this.size1='#008b00';this.size2='#008b00';this.size3='#ffffff';this.size4='#ffffff'}
-					if (width=='ivu-col ivu-col-span-18') {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#ffffff'}
-					if (width=='ivu-col ivu-col-span-24') {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#008b00'}
+				if (width=='ivu-col ivu-col-span-6') {this.size1='#008b00';this.size2='#ffffff';this.size3='#ffffff';this.size4='#ffffff'}
+				if (width=='ivu-col ivu-col-span-12') {this.size1='#008b00';this.size2='#008b00';this.size3='#ffffff';this.size4='#ffffff'}
+				if (width=='ivu-col ivu-col-span-18') {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#ffffff'}
+				if (width=='ivu-col ivu-col-span-24') {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#008b00'}
 			},
 			widthblock2(val){
-					if (val==1) {this.size1='#008b00';this.size2='#ffffff';this.size3='#ffffff';this.size4='#ffffff'}
-					if (val==2) {this.size1='#008b00';this.size2='#008b00';this.size3='#ffffff';this.size4='#ffffff'}
-					if (val==3) {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#ffffff'}
-					if (val==4) {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#008b00'}
+				if (val==1) {this.size1='#008b00';this.size2='#ffffff';this.size3='#ffffff';this.size4='#ffffff'}
+				if (val==2) {this.size1='#008b00';this.size2='#008b00';this.size3='#ffffff';this.size4='#ffffff'}
+				if (val==3) {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#ffffff'}
+				if (val==4) {this.size1='#008b00';this.size2='#008b00';this.size3='#008b00';this.size4='#008b00'}
 			},
 			widthblock3(val1,val2){
-					if (val2==1) {document.getElementById(val1).className='ivu-col ivu-col-span-6'}
-					if (val2==2) {document.getElementById(val1).className='ivu-col ivu-col-span-12'}
-					if (val2==3) {document.getElementById(val1).className='ivu-col ivu-col-span-18'}
-					if (val2==4) {document.getElementById(val1).className='ivu-col ivu-col-span-24'}
-					window.localStorage.setItem(val1,val2)
+				if (val2==1) {document.getElementById(val1).className='ivu-col ivu-col-span-6'}
+				if (val2==2) {document.getElementById(val1).className='ivu-col ivu-col-span-12'}
+				if (val2==3) {document.getElementById(val1).className='ivu-col ivu-col-span-18'}
+				if (val2==4) {document.getElementById(val1).className='ivu-col ivu-col-span-24'}
+				window.localStorage.setItem(val1,val2)
 			},
 			getWeek(n){
 				var now = new Date()
