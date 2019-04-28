@@ -88,6 +88,9 @@ export default {
 	devices: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Device',key2:'ReadMore'}, data))
 	},
+	devicess: (data) => {
+		return DeviceApi.query(Object.assign({key1:'Device'}, data))
+	},
 	devicecount: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Device',key2:'ReadCount'}, data))
 	},

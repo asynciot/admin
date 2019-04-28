@@ -1,6 +1,6 @@
 <template >
 	<div class="layout">
-		<Layout class="test"  :style="{minHeight: '100vh',width: screenwidth+'px'}" style="">
+		<Layout class="test"  :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
 			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
 					<div style="width: 100%;height: 64px;background: #367fa9;">
@@ -456,6 +456,12 @@
 					}
 				}
 			},
+			selfadaption(val1){
+				var val2=4
+				var width=document.documentElement.clientWidth
+				if (document.getElementById(val1).className=='ivu-col ivu-col-span-6'){val2=1}
+				alert(document.getElementById('mapwidth').className)
+			},
         },
         watch:{
 //             $route(newValue, oldValue){
@@ -466,7 +472,19 @@
             // this.setTags(this.$route);
 			this.screenwidth=document.documentElement.clientWidth*1
 			this.getportrait()
-        }
+        },
+		mounted(){
+			var _this=this
+			window.onresize = function(){
+// 				this.screenwidth = document.documentElement.clientWidth;
+// 				this.screenheight = document.documentElement.clientHeight;
+// 				this.setheight[0]=this.screenheight/9.75 -3
+// 				this.setheight[1]=this.setheight[0]/2.4
+				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
+				// console.log(document.getElementById('layout').style.width)
+				_this.selfadaption()
+			}
+		},
 	}
 </script>
 

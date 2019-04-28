@@ -7,7 +7,7 @@
 			div(style="margin-top:5px")|→
 		Col(span='6')
 			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
-		div.ch(id="activedoor" style="width:100%",:style="'height:'+screenheight/1.3+'px'")
+		div.ch(id="activedoor" style="width:100%",:style="'height:'+screenheight+'px'")
 </template>
 
 <script>
@@ -44,11 +44,10 @@
 			};
 		},
 		created(){
-			this.screenheight = document.documentElement.clientHeight;
+			this.screenheight = document.documentElement.clientHeight/2.6-32;
 			// setTimeout(() => {
 				this.getactivedoor();
 			// },500)
-			console.log(this.$router)
 		},
 		components: {
 			draggable,

@@ -14,7 +14,7 @@
 			</Col>
 		</div>
 		<div class="chart" style="width:95%">
-			<canvas id="areaChart" :style="'height:'+screenheight/1.3+'px'"></canvas>
+			<canvas id="areaChart" :style="'height:'+screenheight/2.9+'px'"></canvas>
 		</div>
 	</div>
 </template>

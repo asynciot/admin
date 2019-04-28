@@ -6,7 +6,7 @@
 		Col(span='1' align='center')|→
 		Col(span='6')
 			DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='' @on-change="search()")
-		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight/1.4+'px'")
+		div.ch(id="freq" style="width:100%",:style="'height:'+screenheight+'px'")
 </template>
 
 <script>
@@ -52,7 +52,7 @@
 			};
 		},
 		created(){
-			this.screenheight = document.documentElement.clientHeight;
+			this.screenheight = document.documentElement.clientHeight/2.6-32;
 			// setTimeout(() => {
 				this.getfaultfreq();
 			// },500)
@@ -117,7 +117,7 @@
 								'其它'
 						],
 						textStyle: {
-							fontSize: 20
+							fontSize: 12
 						}
 					},
 					series : [{

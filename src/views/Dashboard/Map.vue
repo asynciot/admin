@@ -95,21 +95,30 @@ div()
 					num: 10,
 					total: 0,
 					register: "registered",				
-				}
+				},
+				screenheight:'',
 			}
 		},
 		mounted() {			
 			this.initMap()
 			this.getList()
 			this.setsize()
+			_this=this
+			$(window).resize(function(){
+				if ((_this.screenheight < document.documentElement.clientHeight)){
+					_this.screenheight = document.documentElement.clientHeight;
+					document.getElementById('mapsize').style.height = (Number(_this.screenheight)/2.55) + 'px'
+					console.log(document.getElementById('mapsize').style.height)
+				}
+			});
 		},
 		methods: {
 			setsize(){
 				const mapsize = document.getElementById('mapsize')
 				const deviceWidth = document.documentElement.clientWidth
-				const deviceHeight = document.documentElement.clientHeight
+				this.screenheight = document.documentElement.clientHeight
 				// mapsize.style.width = '100%'
-				mapsize.style.height = (Number(deviceHeight)/1.14) + 'px'
+				mapsize.style.height = (Number(this.screenheight)/2.55) + 'px'
 				// mapsize.style.height ='380px'
 			},
 			async handleSearch1 () {

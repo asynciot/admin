@@ -20,9 +20,9 @@ div.account
 								Button(type="primary",long,@click="goRegister")|注册
 							Col(span=12)
 								Button(type="primary",long,@click="login('form')",:loading="loading")|登录
-							Col(span=16)
+							Col(span=14)
 								Button(type="text" style="",@click="reset")|忘记密码？
-							Col(span=8)
+							Col(span=10)
 								checkbox(v-model="rem" @click="rem=!rem")|记住密码
 </template>
 
