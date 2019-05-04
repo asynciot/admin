@@ -14,6 +14,7 @@ div.account
 					Form-item(prop="password")
 						Input(type="password",v-model="form.password",placeholder="密码",@on-keyup.enter="login('form')")
 							span(class="fa fa-lock" ,size="20",slot="prepend")
+							<!-- div(class="code" @click="refreshCode") s-identify(:identifyCode="identifyCode") -->
 					Form-item
 						Row(:gutter="20")
 							Col(span=12)
@@ -33,12 +34,28 @@ import {
 	formatDate
 } from '@/utils'
 import router from '../router/index'
+import SIdentify from './veri'
 export default {
+	components: {
+		's-identify': SIdentify,
+	},
   data() {
+// 	const validateOldPassCheck = () => {
+// 		if (this.vericode === '') {
+// 			callback(new Error('请填写验证码'));
+// 		} else if (this.vericode !== this.identifyCode) {
+// 			callback(new Error('验证码错误'));
+// 		} else {
+// 			callback();
+// 		}
+// 	};
     return {
-			ladderApi: ladderApi,
+	  ladderApi: ladderApi,
       loading: false,
-			rem: false,
+	  rem: false,
+	  vericode:'',
+	  identifyCodes: "1234567890",
+      identifyCode: "",
       form: {
         username: '',
         password: '',
@@ -67,7 +84,18 @@ export default {
             message: '密码长度不能小于6位',
             trigger: 'blur'
           }
-        ]
+        ],
+		veri: [{
+		    required: true,
+		    message: '请填写验证码',
+		    trigger: 'blur'
+		  },
+// 		  {
+// 		    validator: validateOldPassCheck,
+// 		    required: true,
+// 		    trigger: 'blur'
+// 		  }
+		]
       }
     }
   },
@@ -82,6 +110,10 @@ export default {
 		  var p=window.localStorage.getItem('p')
 		  if (p != null) {this.form.password=p}
 		  }
+  },
+  mounted() {
+    this.identifyCode = "";
+    this.makeCode(this.identifyCodes, 4);
   },
   methods: {
     async login(name) {
@@ -128,6 +160,24 @@ export default {
 				name: 'reset'
 			})
 		},
+		
+		
+	randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
+    }
+
+		
 	}
 }
 </script>
