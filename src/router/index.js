@@ -95,6 +95,7 @@ const NewPassword = resolve => require(['@/views/System/NewPassword'], resolve)
 const Authority = resolve => require(['@/views/System/Authority/Index'], resolve)
 const AddRole = resolve => require(['@/views/System/Authority/AddRole'], resolve)
 const EditRole = resolve => require(['@/views/System/Authority/EditRole'], resolve)
+const Confer = resolve => require(['@/views/System/Authority/Confer'], resolve)
 
 Vue.use(Router)
 export default new Router({
@@ -691,6 +692,13 @@ export default new Router({
 						name: '角色管理'
 					},
 					component: EditRole,
+				},{
+					path: '/system/confer',
+					name: 'confer',
+					meta: {
+						name: '角色分配'
+					},
+					component: Confer,
 				}
 			],
 		},

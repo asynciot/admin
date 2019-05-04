@@ -55,7 +55,7 @@ export default {
 		return AccountApi.update(data)
 	},
 	user:(data)=>{
-		return AccountApi.query(Object.assign(data))
+		return AccountApi.query(Object.assign({},data))
 	},
 	login:(data)=>{
 		return AccountApi.save({key1:'login'},data)
@@ -82,22 +82,25 @@ export default {
 		return AccountApi.save({key1:'portrait'},data)
 	},
 	newMenu:(data)=>{
-		return CommonApi.save({key1:'addMenu'},data)
+		return AccountApi.save({key1:'addMenu'},data)
 	},
 	getMenu:(data)=>{
-		return CommonApi.query(Object.assign({key1:'Menu'},data))
+		return AccountApi.query(Object.assign({key1:'Menu'},data))
 	},
 	newFunction:(data)=>{
-		return CommonApi.save({key1:'addFunction'},data)
+		return AccountApi.save({key1:'addFunction'},data)
 	},
 	getFunction:(data)=>{
-		return CommonApi.query(Object.assign({key1:'Function'},data))
+		return AccountApi.query(Object.assign({key1:'Function'},data))
 	},
 	newRole:(data)=>{
-		return CommonApi.save({key1:'addRole'},data)
+		return AccountApi.save({key1:'addRole'},data)
 	},
 	getRole:(data)=>{
-		return CommonApi.query(Object.assign({key1:'Role'},data))
+		return AccountApi.query(Object.assign({key1:'Role'},data))
+	},
+	confer:(data)=>{
+		return AccountApi.save({key1:'Confer'},data)
 	},
 	//Device
 	alert: (data) => {
