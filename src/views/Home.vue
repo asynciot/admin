@@ -17,13 +17,13 @@
 						</div>
 					</template>
 					<template v-for="item in menu" v-if="!item.sub" >
-						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}">
+						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}" v-if="item.key">
 							<i :key="item.name" :class="item.icon" size="16" ></i>
 							{{isCollapsed?'':item.label}}
 						</MenuItem >
 					</template>
 					<template v-else>
-						<Submenu :name="item.name">
+						<Submenu :name="item.name" v-if="item.key">
 							<template slot="title" >
 								<i :key="item.name" :class="item.icon" size="16"></i>
 								<Badge v-if="item.count" :count="item.count" class-name="badge-sub-alone" :dot="true">
@@ -31,7 +31,7 @@
 								</Badge>
 								<i v-else>{{isCollapsed?'':item.label}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="((sub.label!='用户管理')||(username=='admin'))&&((sub.label!='权限管理')||(username=='admin'))">
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="((sub.label!='用户管理')||(username=='admin'))&&((sub.label!='权限管理')||(username=='admin'))&&(sub.key)">
 								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{sub.label}}</Badge>
 							</Menu-item>
 						</Submenu>
@@ -43,14 +43,6 @@
 					<Row>
 						<Col span="20">
 							&nbsp;
-<!-- 							<Col span="22">
-								<Badge dot style="float: right;margin-top: 25px;"></Badge>
-								<span class="fa fa-bell-o" style="color:white;float: right;padding-top: 25px;" />
-							</Col>
-							<Col span="1">
-								<Badge dot style="float: right;margin-top: 25px;"></Badge>
-								<span class="fa fa-envelope-o" v-on:click="emil" style="color:white;float: right;padding-top: 25px;cursor: pointer;" />
-							</Col> -->
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
@@ -181,22 +173,21 @@
 						name: 'dashboard',
 						icon: 'fa fa-dashboard',
 						label: 'Dashboard',
+						key:true,
 					},{
 						name: 'menu',
 						icon: 'fa fa-map-o',
 						label: '运行监控',
+						key:true,
 						sub:[{
 							name:'map',
 							label:'运行状态',
+							key:true,
 						},{
 							name:'laddermap',
 							label:'电梯状态',
-						},
-// 						{
-// 							name:'alertTake',
-// 							label:'告警订阅',
-// 						},
-						]
+							key:true,
+						},]
 					},
 // 					{
 // 						name: 'report',
@@ -220,16 +211,20 @@
 						name: 'maintain',
 						icon: 'fa fa-cogs',
 						label: '工作流',
+						key:true,
 						sub: [{
 								name: 'auditinglist',
 								label: '审核列表',
+								key:true,
 							},{
 								name: 'maintain',
 								label: '工单列表',
+								key:true,
 							},
 							{
 								name: 'maintainList',
 								label: '维保信息',
+								key:true,
 							},
 // 							{
 // 								name: 'upList',
@@ -244,15 +239,19 @@
 						name: 'event',
 						icon: 'fa fa-list-alt',
 						label: '基础信息维护',
+						key:true,
 						sub: [{
 							name: 'alList',
 							label: '设备信息',
+							key:true,
 						},{
 							name:'evolution',
 							label:'固件更新',
+							key:true,
 						},{
 							name:'ladder',
 							label:'电梯信息',
+							key:true,
 						},
 // 						{
 // 							name:'elevator',
@@ -267,29 +266,37 @@
 						name: 'system',
 						icon: 'fa fa-address-card-o',
 						label: '系统管理',
+						key:true,
 						sub:[{
 							name: 'userManage',
 							label: '用户管理',
+							key:true,
 						},{
 							name: 'inform',
 							label: '通知记录',
+							key:true,
 						},{
 							name: 'instructions',
 							label: '说明文档',
+							key:true,
 						},{
 							name: 'authority',
 							label: '权限管理',
+							key:true,
 						}]
 					},{
 						name: 'setting',
 						icon: 'fa fa-cog',
 						label: '出厂设置',
+						key:true,
 						sub:[{
 							name:'print',
-							label:'打印二维码'
+							label:'打印二维码',
+							key:true,
 						}]
 					},
-				]
+				],
+				menus:{},
 			}
 		},
 		computed: {
@@ -299,13 +306,70 @@
 					this.isCollapsed ? 'collapsed-menu' : ''
 				]
 			},
-// 			showTags() {
-//                 return this.tagsList.length > 0;
-// 				return false;
-//             }
 		},
-		
+        watch:{
+//             $route(newValue, oldValue){
+//                 this.setTags(newValue);
+//             }
+        },
+        created(){
+			this.screenwidth=document.documentElement.clientWidth*1
+			this.getportrait()
+			this.getMenu()
+        },
+		mounted(){
+			window.onresize = () => {
+				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
+				this.selfadaption()
+			}
+		},
 		methods: {
+			getMenu(){
+				console.log(window.localStorage.getItem("role"))
+				if(this.menus.dashboard==false){
+					this.menu[0].key = false
+				}
+				if(this.menus.menu==false){
+					this.menu[1].key = false
+				}
+				if(this.menus.map==false){
+					this.menu[1].sub[0].key = false
+				}
+				if(this.menus.laddermap==false){
+					this.menu[1].sub[1].key = false
+				}
+				if(this.menus.auditinglist==false){
+					this.menu[2].sub[0].key = false
+				}
+				if(this.menus.maintain==false){
+					this.menu[2].sub[1].key = false
+				}
+				if(this.menus.maintainlist == false){
+					this.menu[2].sub[2].key = false
+				}
+				if(this.menus.allist == false){
+					this.menu[3].sub[0].key = false
+				}
+				if(this.menus.evolution == false){
+					this.menu[3].sub[1].key = false
+				}
+				if(this.menus.ladder == false){
+					this.menu[3].sub[2].key = false
+				}
+				if(this.menus.user_manage == false){
+					this.menu[4].sub[0].key = false
+				}
+				if(this.menus.inform == false){
+					this.menu[4].sub[1].key = false
+				}
+				if(this.menus.authority == false){
+					this.menu[4].sub[3].key = false
+				}
+				if(this.menus.print == false){
+					this.menu[5].key = false
+					this.menu[5].sub[0].key = false
+				}
+			},
 			fullscreen(){
 				this.full=true
 				var el = document.documentElement;
@@ -379,10 +443,11 @@
 				}
 			},
 			go(name) {
-				if (typeof name === 'string')
+				if (typeof name === 'string'){
 					this.$router.push({
 						name: name
 					});
+				}
 			},
 			goHome() {
 				this.$router.push({
@@ -392,45 +457,6 @@
 			isActive(path) {
                 return path === this.$route.fullPath;
             },
-//             // 关闭单个标签
-//             closeTags(index) {
-//                 const delItem = this.tagsList.splice(index, 1)[0];
-//                 const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
-//                 if (item) {
-//                     delItem.path === this.$route.fullPath && this.$router.push(item.path);
-//                 }else{
-//                     this.$router.push('/home');
-//                 }
-//             },
-//             // 关闭全部标签
-//             closeAll(){
-//                 this.tagsList = [];
-//                 this.$router.push('/home');
-//             },
-//             // 关闭其他标签
-//             closeOther(){
-//                 const curItem = this.tagsList.filter(item => {
-//                     return item.path === this.$route.fullPath;
-//                 })
-//                 this.tagsList = curItem;
-//             },
-            // 设置标签
-//             setTags(route){
-//                 const isExist = this.tagsList.some(item => {
-//                     return item.path === route.fullPath;
-//                 })
-//                 if(!isExist){
-//                     if(this.tagsList.length >= 8){
-//                         this.tagsList.shift();
-//                     }
-//                     this.tagsList.push({
-//                         title: route.meta.name,
-//                         path: route.fullPath,
-//                         name: route.matched[1].components.default.name
-//                     })
-//                 }
-//                 bus.$emit('tags', this.tagsList);
-//             },
             handleTags(command){
                 command === 'other' ? this.closeOther() : this.closeAll();
             },
@@ -463,28 +489,6 @@
 				alert(document.getElementById('mapwidth').className)
 			},
         },
-        watch:{
-//             $route(newValue, oldValue){
-//                 this.setTags(newValue);
-//             }
-        },
-        created(){
-            // this.setTags(this.$route);
-			this.screenwidth=document.documentElement.clientWidth*1
-			this.getportrait()
-        },
-		mounted(){
-			var _this=this
-			window.onresize = function(){
-// 				this.screenwidth = document.documentElement.clientWidth;
-// 				this.screenheight = document.documentElement.clientHeight;
-// 				this.setheight[0]=this.screenheight/9.75 -3
-// 				this.setheight[1]=this.setheight[0]/2.4
-				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
-				// console.log(document.getElementById('layout').style.width)
-				_this.selfadaption()
-			}
-		},
 	}
 </script>
 

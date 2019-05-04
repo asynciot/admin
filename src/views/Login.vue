@@ -28,74 +28,79 @@ div.account
 
 <script>
 import {
-  api,
+	api,
 	ladderApi,
 	formatDate
 } from '@/utils'
 import router from '../router/index'
 export default {
-  data() {
-    return {
+	data() {
+		return {
 			ladderApi: ladderApi,
-      loading: false,
+			loading: false,
 			rem: false,
-      form: {
-        username: '',
-        password: '',
-			},
-      rules: {
-        username: [{
-            required: true,
-            message: '请填写用户名',
-            trigger: 'blur'
-          },
-          {
-            type: 'string',
-            min: 4,
-            message: '用户名长度不能小于6位',
-            trigger: 'blur'
-          }
-        ],
-        password: [{
-            required: true,
-            message: '请填写密码',
-            trigger: 'blur'
-          },
-          {
-            type: 'string',
-            min: 3,
-            message: '密码长度不能小于6位',
-            trigger: 'blur'
-          }
-        ]
-      }
-    }
-  },
-  created(){
-	  var rem=window.localStorage.getItem('rem')
-	  var u=window.localStorage.getItem('u')
-	  if (u != null) {this.form.username=u}
-	  if (rem == 'true') {
-		  this.rem=true
-		  var u=window.localStorage.getItem('u')
-		  if (u != null) {this.form.username=u}
-		  var p=window.localStorage.getItem('p')
-		  if (p != null) {this.form.password=p}
-		  }
-  },
-  methods: {
-    async login(name) {
-      this.loading = true;
-      this.$refs[name].validate(async (valid) => {
-        if (valid) {
+			form: {
+				username: '',
+				password: '',
+				},
+			rules: {
+				username: [{
+					required: true,
+					message: '请填写用户名',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 4,
+					message: '用户名长度不能小于6位',
+					trigger: 'blur'
+				}],
+				password: [{
+					required: true,
+					message: '请填写密码',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 3,
+					message: '密码长度不能小于6位',
+					trigger: 'blur'
+				}]
+			}
+		}
+	},
+	created(){
+		var rem=window.localStorage.getItem('rem')
+		var u=window.localStorage.getItem('u')
+		if (u != null) {
+			this.form.username=u
+		}
+		if (rem == 'true') {
+			this.rem=true
+			var u=window.localStorage.getItem('u')
+			if (u != null) {
+				this.form.username=u
+			}
+			var p=window.localStorage.getItem('p')
+			if (p != null) {
+				this.form.password=p
+			}
+		}
+	},
+	methods: {
+		async login(name) {
+			this.loading = true;
+			this.$refs[name].validate(async (valid) => {
+				if (valid) {
 					let res = await this.$api.login(this.form)
-          if (!res.data.code) {
-            this.loading = false;
+					if (!res.data.code) {
+						this.loading = false;
 						window.localStorage.setItem('username',res.data.account.username)
 						window.localStorage.setItem('id',res.data.account.id)
 						window.localStorage.setItem('rem',this.rem)
 						window.localStorage.setItem('u',this.form.username)
 						window.localStorage.setItem('mobile',res.data.account.mobile)
+						window.localStorage.setItem('role',res.data.account.role)
 						if (this.rem) {
 							window.localStorage.setItem('p',this.form.password)
 						}
@@ -108,16 +113,16 @@ export default {
 								})
 							}
 						})
-          } else {
-            this.loading = false;
-            this.$Message.error('登录失败!');
-          }
-        } else {
-          this.loading = false;
-          this.$Message.error('请完善登录信息!');
-        }
-      })
-    },
+					} else {
+						this.loading = false;
+						this.$Message.error('登录失败!');
+					}
+				}else {
+					this.loading = false;
+					this.$Message.error('请完善登录信息!');
+				}
+			})
+		},
 		goRegister(){
 			this.$router.push({
 				name: 'register'
@@ -133,50 +138,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.bg{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background: url('../assets/page.jpg') center center no-repeat;
-		background-size: 100% auto;
-		filter: blur(5px);
-  }
-	.item{
-		padding-top: 10%;
+.bg{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: url('../assets/page.jpg') center center no-repeat;
+	background-size: 100% auto;
+	filter: blur(5px);
+}
+.item{
+	padding-top: 10%;
+}
+.text{
+	width: 100%;
+	height: 100%;
+	padding-bottom: 10%;
+	position:relative;
+}
+.img1{
+	padding-left: 20%;
+}
+.account {
+	position: absolute;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	background: url('../assets/page.jpg') center center no-repeat;
+	background-size: 100% auto;
+	.account-title {
+		color: #606266;
+		font-size: 30px;
+		line-height: 100px;
+		height: 100px;
 	}
-	.text{
-		width: 100%;
-		height: 100%;
-		padding-bottom: 10%;
-		position:relative;
+	.account-form {
+		display: block;
+		width: 350px;
+		margin-left: -80px;
 	}
-	.img1{
-		padding-left: 20%;
+	.register-form {
+		width: 270px;
+		display: block;
 	}
-	.account {
-    position: absolute;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: url('../assets/page.jpg') center center no-repeat;
-    background-size: 100% auto;
-		.account-title {
-			color: #606266;
-			font-size: 30px;
-			line-height: 100px;
-			height: 100px;
-		}
-		.account-form {
-			display: block;
-			width: 350px;
-			margin-left: -80px;
-		}
-		.register-form {
-			width: 270px;
-			display: block;
-		}
-	}
+}
 </style>
