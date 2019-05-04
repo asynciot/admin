@@ -311,6 +311,7 @@
 				if(this.menuList.print == true){
 					this.menu[5].sub[0].key = true
 				}
+				
 			},
 			getMenus(){
 				let nodes = []
