@@ -251,7 +251,6 @@ div()
 				}
 			},
 			async addMark() {
-				console.log(this.map)
 				this.map.clearOverlays();
 				this.markerClusterer.removeMarkers(this.markers)
 				this.markers = []

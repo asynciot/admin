@@ -78,7 +78,7 @@
 				</div>
 				<!-- /.row -->
 				<!-- Main row -->
-				<Row gutter="20">
+				<Row :gutter=20>
 					<!-- Left col -->
 					<!-- <section class="col-lg-5 connectedSortable"> -->
 					

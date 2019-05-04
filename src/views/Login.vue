@@ -109,7 +109,6 @@ export default {
 						window.localStorage.setItem('rem',this.rem)
 						window.localStorage.setItem('u',this.form.username)
 						window.localStorage.setItem('mobile',res.data.account.mobile)
-						window.localStorage.setItem('role',res.data.account.role)
 						if (this.rem) {
 							window.localStorage.setItem('p',this.form.password)
 						}

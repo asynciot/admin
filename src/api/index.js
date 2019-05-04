@@ -55,7 +55,7 @@ export default {
 		return AccountApi.update(data)
 	},
 	user:(data)=>{
-		return AccountApi.query(Object.assign(data))
+		return AccountApi.query(Object.assign({},data))
 	},
 	login:(data)=>{
 		return AccountApi.save({key1:'login'},data)

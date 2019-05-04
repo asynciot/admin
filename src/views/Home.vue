@@ -325,7 +325,6 @@
 		},
 		methods: {
 			getMenu(){
-				console.log(window.localStorage.getItem("role"))
 				if(this.menus.dashboard==false){
 					this.menu[0].key = false
 				}
@@ -471,6 +470,8 @@
 			async getportrait(){
 				let res = await this.$api.people({id:window.localStorage.getItem('id'),num:1,page:1})
 				if (0 === res.data.code) {
+					window.localStorage.setItem('role',user.data.data.list[0].role)
+					console.log(window.localStorage.getItem("role"))
 					if (res.data.data.list[0].portrait != null) {
 						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
 						}
