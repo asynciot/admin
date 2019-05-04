@@ -84,11 +84,9 @@ export default {
 								on: {
 									click: () => {
 										this.$router.push({
-											name: 'writeInform',
+											name: 'confer',
 											params: {
-												id: params.row.id,
-												username: params.row.username,
-												title: '',
+												userId: params.row.id,
 											}
 										})
 									}
