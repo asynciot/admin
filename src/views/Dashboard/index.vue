@@ -124,30 +124,33 @@
 						  <!-- /.box -->
 						<!-- Chat box -->
 						<div class="box box-primary" v-if="chat" >
-							<div class="box-header">
-								<i class="fa fa-comments-o"></i>
-								<h3 class="box-title" v-if="text[1]">客户意见反馈</h3>
-								<div class="box-tools pull-right" data-toggle="tooltip" title="">
-									<div class="btn-group" data-toggle="btn-toggle">
-										<div class="btn-group" style="margin-right: 5px;">
-											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
-												<i class="fa fa-bars"></i></button>
-											<div class="dropdown-menu pull-right" role="menu">
-												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
-												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
-											</div>
+							<div class="box-header" style="margin:0">
+							  <!-- tools box -->
+							  <div class="pull-right box-tools">
+								  <button type="button" class="btn btn-primary btn-sm pull-right" @click="chat=!chat;showpanel('chat',chat)"><i class="fa fa-times"></i>
+								  </button>
+									<div class="btn-group" style="margin-right: 5px;">
+										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
+											<i class="fa fa-bars"></i></button>
+										<div class="dropdown-menu pull-right" role="menu">
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
+											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size4" @mouseover.native="widthblock2(4)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',4)"></Card>
 										</div>
-										<button type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" @click="chatbody=!chatbody">
-											<i class="fa fa-minus" v-if="chatbody"></i>
-											<i class="fa fa-plus" v-if="!chatbody"></i>
-										</button>
-										<button type="button" class="btn btn-primary btn-sm" @click="chat=false"><i class="fa fa-times"></i>
-										</button>
 									</div>
-								</div>
+							
+								<button type="button" class="btn btn-primary btn-sm pull-right" title="Collapse" style="margin-right: 5px;" @click="chatbody=!chatbody">
+								  <i class="fa fa-minus" v-if="chatbody"></i> <i class="fa fa-plus" v-if="!chatbody"></i>
+								</button>
+							  </div>
+							  <!-- /. tools -->
+							
+							  <i class="fa fa-map-marker"></i>
+							  <h3 class="box-title" v-if="text1">
+								客户意见反馈
+							  </h3>
 							</div>
 							<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/2.55+'px'">
 								<!-- chat item -->
@@ -232,7 +235,7 @@
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
 								<i class="ion ion-clipboard"></i>
-								<h3 class="box-title" v-if="text[2]">故障电梯处理进程</h3>
+								<h3 class="box-title" v-if="text2">故障电梯处理进程</h3>
 								<div class="pull-right box-tools">
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('progresswidth')">
@@ -328,7 +331,7 @@
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
-								<h3 class="box-title" v-if="text[3]">业务图表</h3>
+								<h3 class="box-title" v-if="text3">业务图表</h3>
 								
 								<div class="box-tools pull-right">
 									<div class="btn-group" style="margin-right: 5px;">
@@ -387,7 +390,7 @@
 							<div class="box box-primary" v-if="chart2">
 								<div class="box-header">
 									<i class="fa fa-th"></i>
-									<h3 class="box-title" v-if="text[4]">用户组成</h3>
+									<h3 class="box-title" v-if="text4">用户组成</h3>
 									<div class="box-tools pull-right">
 										<div class="btn-group" style="margin-right: 5px;">
 											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
@@ -424,7 +427,7 @@
 								<div class="box-header">
 									<i class="fa fa-envelope"></i>
 							
-									<h3 class="box-title" v-if="text[5]">发送邮件</h3>
+									<h3 class="box-title" v-if="text5">发送邮件</h3>
 									<!-- tools box -->
 									<div class="pull-right box-tools">
 										<div class="btn-group" style="margin-right: 5px;">
@@ -469,7 +472,7 @@
 								<div class="box box-primary" v-if="chart3">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
-										<h3 class="box-title" v-if="text[6]">常见故障</h3>
+										<h3 class="box-title" v-if="text6">常见故障</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
@@ -505,7 +508,7 @@
 								<div class="box box-primary" v-if="chart4">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
-										<h3 class="box-title" v-if="text[7]">活跃设备</h3>
+										<h3 class="box-title" v-if="text7">活跃设备</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
@@ -576,6 +579,13 @@
 		data() {
 			return {
 				text0:true,
+				text1:true,
+				text2:true,
+				text3:true,
+				text4:true,
+				text5:true,
+				text6:true,
+				text7:true,
 				btn:false,
 				btn2:false,
 				value1:false,
@@ -609,7 +619,6 @@
 // 						{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'3 hours',progress:"70%"},
 // 				],
 				todo:[],
-				text:[true,true,true,true,true,true,true,true],
 				chatlist:[],
 				swiperOption:{
 					autoplay:true,
@@ -775,13 +784,25 @@
 						if (width<700) {val2=val2*2}
 					}
 					if (val2>4) {val2=4}
-					if (val2*width<2000) {
-						this.text[i]=false
+					if (val2*width<1200) {
 						if (i==0) {this.text0=false}
+						if (i==1) {this.text1=false}
+						if (i==2) {this.text2=false}
+						if (i==3) {this.text3=false}
+						if (i==4) {this.text4=false}
+						if (i==5) {this.text5=false}
+						if (i==6) {this.text6=false}
+						if (i==7) {this.text7=false}
 						}
 					else {
-						this.text[i]=true
 						if (i==0) {this.text0=true}
+						if (i==1) {this.text1=true}
+						if (i==2) {this.text2=true}
+						if (i==3) {this.text3=true}
+						if (i==4) {this.text4=true}
+						if (i==5) {this.text5=true}
+						if (i==6) {this.text6=true}
+						if (i==7) {this.text7=true}
 						}
 					if (val2==1) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-6'}
 					if (val2==2) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-12'}
