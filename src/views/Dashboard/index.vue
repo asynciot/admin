@@ -784,7 +784,7 @@
 						if (width<700) {val2=val2*2}
 					}
 					if (val2>4) {val2=4}
-					if (val2*width<1200) {
+					if (val2*(width-200)<1200) {
 						if (i==0) {this.text0=false}
 						if (i==1) {this.text1=false}
 						if (i==2) {this.text2=false}
