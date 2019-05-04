@@ -97,10 +97,10 @@
 				let freq = this.$echarts.init(document.getElementById('freq'))
 				freq.resize()
 				freq.setOption({
-					title: {
-						subtext: '发生次数',
-						left: 'center',
-					},
+// 					title: {
+// 						subtext: '发生次数',
+// 						left: 'center',
+// 					},
 					tooltip: {
 						trigger: 'item',
 						formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -122,7 +122,7 @@
 					},
 					series : [{
 						type: 'pie',
-						radius : '65%',
+						radius : '55%',
 						center: ['50%', '40%'],
 						selectedMode: 'single',
 						data:[

@@ -103,14 +103,6 @@ div()
 			this.initMap()
 			this.getList()
 			this.setsize()
-			_this=this
-			$(window).resize(function(){
-				if ((_this.screenheight < document.documentElement.clientHeight)){
-					_this.screenheight = document.documentElement.clientHeight;
-					document.getElementById('mapsize').style.height = (Number(_this.screenheight)/2.55) + 'px'
-					console.log(document.getElementById('mapsize').style.height)
-				}
-			});
 		},
 		methods: {
 			setsize(){

@@ -14,6 +14,7 @@ div.account
 					Form-item(prop="password")
 						Input(type="password",v-model="form.password",placeholder="密码",@on-keyup.enter="login('form')")
 							span(class="fa fa-lock" ,size="20",slot="prepend")
+							<!-- div(class="code" @click="refreshCode") s-identify(:identifyCode="identifyCode") -->
 					Form-item
 						Row(:gutter="20")
 							Col(span=12)
@@ -33,6 +34,7 @@ import {
 	formatDate
 } from '@/utils'
 import router from '../router/index'
+import SIdentify from './veri'
 export default {
 	data() {
 		return {
@@ -87,6 +89,13 @@ export default {
 			}
 		}
 	},
+	components: {
+		's-identify': SIdentify,
+	},
+	mounted() {
+	  this.identifyCode = "";
+	  this.makeCode(this.identifyCodes, 4);
+	},
 	methods: {
 		async login(name) {
 			this.loading = true;
@@ -132,6 +141,18 @@ export default {
 			this.$router.push({
 				name: 'reset'
 			})
+		},
+		randomNum(min, max) {
+			return Math.floor(Math.random() * (max - min) + min);
+		},
+		refreshCode() {
+			this.identifyCode = "";
+			this.makeCode(this.identifyCodes, 4);
+		},
+		makeCode(o, l) {
+			for (let i = 0; i < l; i++) {
+				this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
+			}
 		},
 	}
 }

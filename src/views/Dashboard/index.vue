@@ -84,7 +84,7 @@
 					
 
 					<draggable :options="{animation: 60,group:'panel'}">
-						<!-- Map box --> <Col span='12' id="mapwidth">
+						<Col span='12' id="mapwidth">
 						<div class="box box-primary" v-if="map">
 							<div class="box-header" style="margin:0">
 							  <!-- tools box -->
@@ -110,7 +110,7 @@
 							  <!-- /. tools -->
 
 							  <i class="fa fa-map-marker"></i>
-							  <h3 class="box-title">
+							  <h3 class="box-title" v-if="text0">
 								设备定位
 							  </h3>
 							</div>
@@ -126,9 +126,7 @@
 						<div class="box box-primary" v-if="chat" >
 							<div class="box-header">
 								<i class="fa fa-comments-o"></i>
-
-								<h3 class="box-title">客户意见反馈</h3>
-
+								<h3 class="box-title" v-if="text[1]">客户意见反馈</h3>
 								<div class="box-tools pull-right" data-toggle="tooltip" title="">
 									<div class="btn-group" data-toggle="btn-toggle">
 										<div class="btn-group" style="margin-right: 5px;">
@@ -234,7 +232,7 @@
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
 								<i class="ion ion-clipboard"></i>
-								<h3 class="box-title">故障电梯处理进程</h3>
+								<h3 class="box-title" v-if="text[2]">故障电梯处理进程</h3>
 								<div class="pull-right box-tools">
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('progresswidth')">
@@ -330,7 +328,7 @@
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
-								<h3 class="box-title">业务图表</h3>
+								<h3 class="box-title" v-if="text[3]">业务图表</h3>
 								
 								<div class="box-tools pull-right">
 									<div class="btn-group" style="margin-right: 5px;">
@@ -389,7 +387,7 @@
 							<div class="box box-primary" v-if="chart2">
 								<div class="box-header">
 									<i class="fa fa-th"></i>
-									<h3 class="box-title">用户组成</h3>
+									<h3 class="box-title" v-if="text[4]">用户组成</h3>
 									<div class="box-tools pull-right">
 										<div class="btn-group" style="margin-right: 5px;">
 											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
@@ -426,7 +424,7 @@
 								<div class="box-header">
 									<i class="fa fa-envelope"></i>
 							
-									<h3 class="box-title">发送邮件</h3>
+									<h3 class="box-title" v-if="text[5]">发送邮件</h3>
 									<!-- tools box -->
 									<div class="pull-right box-tools">
 										<div class="btn-group" style="margin-right: 5px;">
@@ -471,7 +469,7 @@
 								<div class="box box-primary" v-if="chart3">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
-										<h3 class="box-title">常见故障</h3>
+										<h3 class="box-title" v-if="text[6]">常见故障</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
@@ -507,7 +505,7 @@
 								<div class="box box-primary" v-if="chart4">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
-										<h3 class="box-title">活跃设备</h3>
+										<h3 class="box-title" v-if="text[7]">活跃设备</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
@@ -577,6 +575,7 @@
 		},
 		data() {
 			return {
+				text0:true,
 				btn:false,
 				btn2:false,
 				value1:false,
@@ -610,6 +609,7 @@
 // 						{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'3 hours',progress:"70%"},
 // 				],
 				todo:[],
+				text:[true,true,true,true,true,true,true,true],
 				chatlist:[],
 				swiperOption:{
 					autoplay:true,
@@ -723,6 +723,12 @@
 				_this.selfadaption()
 				if ((_this.screenheight < document.documentElement.clientHeight)){
 					_this.screenheight = document.documentElement.clientHeight;
+					document.getElementById('mapsize').style.height = (Number(_this.screenheight)/2.55) + 'px'
+					document.getElementById('test1').style.height = (Number(_this.screenheight)/2.6) + 'px'
+					document.getElementById('freq').style.height = (Number(_this.screenheight)/2.6-32) + 'px'
+					document.getElementById('activedoor').style.height = (Number(_this.screenheight)/2.6-32) + 'px'
+					document.getElementById('areaChart').style.height = (Number(_this.screenheight)/2.9) + 'px'
+
 					_this.$router.push(0)
 				}
 			});
@@ -759,8 +765,8 @@
 // 	},5000)
 		},
 		methods: {
-			selfadaption(val1){
-				var val1=['mapwidth','chatwidth','chartwidth','chartwidth2','chartwidth3','chartwidth4','progresswidth','emailwidth']
+			selfadaption(){
+				var val1=['mapwidth','chatwidth','progresswidth','chartwidth','chartwidth2','emailwidth','chartwidth3','chartwidth4']
 				for (var i=0;i<val1.length;i++){
 					var val2=window.localStorage.getItem(val1[i])
 					var width=document.documentElement.clientWidth
@@ -769,6 +775,14 @@
 						if (width<700) {val2=val2*2}
 					}
 					if (val2>4) {val2=4}
+					if (val2*width<2000) {
+						this.text[i]=false
+						if (i==0) {this.text0=false}
+						}
+					else {
+						this.text[i]=true
+						if (i==0) {this.text0=true}
+						}
 					if (val2==1) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-6'}
 					if (val2==2) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-12'}
 					if (val2==3) {document.getElementById(val1[i]).className='ivu-col ivu-col-span-18'}
