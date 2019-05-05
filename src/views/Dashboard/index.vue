@@ -147,7 +147,7 @@
 							  </div>
 							  <!-- /. tools -->
 							
-							  <i class="fa fa-map-marker"></i>
+							  <i class="fa fa-comments-o"></i>
 							  <h3 class="box-title" v-if="text1">
 								客户意见反馈
 							  </h3>
@@ -230,11 +230,10 @@
 						</Col>
 						<Col span='6' id="progresswidth">
 						<!-- /.box (chat box) -->
-
 						<!-- TO DO List -->
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
-								<i class="ion ion-clipboard"></i>
+								<i class="fa fa-hourglass-2"></i>
 								<h3 class="box-title" v-if="text2">故障电梯处理进程</h3>
 								<div class="pull-right box-tools">
 									<div class="btn-group" style="margin-right: 5px;">
