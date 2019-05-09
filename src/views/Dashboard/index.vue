@@ -19,8 +19,8 @@
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center; padding:4px" >
-								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{allevents}}</div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'">故障设备</p>
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;' id="font11">{{allevents}}</div>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font21">故障设备</p>
 							</div>
 
 							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
@@ -31,8 +31,8 @@
 						<!-- small box -->
 						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center; padding:4px">
-								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{0}}<sup style="font-size: 20px"></sup></div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'">可更新固件数</p>
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font12" style='font-weight: bold;'>{{0}}<sup style="font-size: 20px"></sup></div>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font22">可更新固件数</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
@@ -47,9 +47,8 @@
 						<!-- small box -->
 						<div class="small-box bg-yellow">
 							<div class="inner" style="text-align:center; padding:4px">
-								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;'>{{today}}</div>
-
-								<p :style="'font-size:'+setheight[0]/6.5+'px'">今日完成任务</p>
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font13" style='font-weight: bold;'>{{today}}</div>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font23">今日完成任务</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
@@ -64,8 +63,8 @@
 						<!-- small box -->
 						<div class="small-box bg-green">
 							<div class="inner" style="text-align:center; padding:4px">
-								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;' v-if="shine">{{onlinedevice}}/{{alldevice}}</div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'">在线设备数 {{parseInt(100*onlinedevice/alldevice)}}%</p>
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font14" style='font-weight: bold;' v-if="shine">{{onlinedevice}}/{{alldevice}}</div>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font24">在线设备数 {{parseInt(100*onlinedevice/alldevice)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
@@ -114,9 +113,11 @@
 								设备定位
 							  </h3>
 							</div>
+							<transition name="bounce">
 							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/2.55+'px'" v-if="mapbody">
 								<Map style="margin-top:0px;margin:0"></Map>
 							</div>
+							</transition>
 							<!-- /.box-body-->
 						</div>
 						</Col>
@@ -147,11 +148,12 @@
 							  </div>
 							  <!-- /. tools -->
 							
-							  <i class="fa fa-map-marker"></i>
+							  <i class="fa fa-comments-o"></i>
 							  <h3 class="box-title" v-if="text1">
 								客户意见反馈
 							  </h3>
 							</div>
+							<transition name="bounce">
 							<div class="box-body chat" id="chat-box" v-if="chatbody" :style="'height:'+screenheight/2.55+'px'">
 								<!-- chat item -->
 								<Scroll :on-reach-bottom='handleReachBottom' :distance-to-edge="0" style="margin-top: 5px;width:103%;" :height="screenheight/2.55-60">
@@ -212,29 +214,15 @@
 									</div>
 								</form>
 							</div>
-		<!-- 					<div class="box-footer clearfix" v-if="chatbody">
-								<form action="#" method="post">
-									<div class="input-group">
-										<Col span='20'><textarea type="text" name="message" style="height:50px" :placeholder="reply" class="form-control" v-model="chatoptions.content"></textarea></Col>
-										<Col span='4'>
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" style="height:50px">回复</button>
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" style="height:50px">留言</button>
-										</span>
-										</Col>
-									</div>
-								</form>
-							</div> --> 
-							<!-- /.chat -->
+							</transition>
 						</div>
 						</Col>
 						<Col span='6' id="progresswidth">
 						<!-- /.box (chat box) -->
-
 						<!-- TO DO List -->
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
-								<i class="ion ion-clipboard"></i>
+								<i class="fa fa-hourglass-2"></i>
 								<h3 class="box-title" v-if="text2">故障电梯处理进程</h3>
 								<div class="pull-right box-tools">
 									<div class="btn-group" style="margin-right: 5px;">
@@ -256,15 +244,8 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
+							<transition name="bounce">
 							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/2.55+'px'">
-<!-- 								<RadioGroup v-model="prostate" @on-change="getprogress(1)">
-								<Radio label="6"><span style="font-size:8px">全部</span></Radio>
-								<Radio label="2"><span>等待接单</span></Radio>
-								<Radio label="1"><span>批准工单中</span></Radio>
-								<Radio label="3"><span>处理中</span></Radio>
-								<Radio label="4"><span>等待签字确认</span></Radio>
-								<Radio label="5"><span>存入档案</span></Radio>
-								</RadioGroup> -->
 								<Select class="smr" v-model="prostate" style="width:100%;" placeholder="进度" @on-change="getprogress(1)">
 									<Option key="6" label="全部" value="6"></Option>
 									<Option key="1" label="等待接单" value="1"></Option>
@@ -317,6 +298,7 @@
 								</ul>
 								</Scroll>
 							</div>
+							</transition>
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->
@@ -353,6 +335,7 @@
 									</button>
 								</div>
 							</div>
+							<transition name="bounce">
 							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
 								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
 									<swiper-slide>
@@ -377,7 +360,7 @@
 									</swiper-slide>
 								</swiper>
 							</div>
-
+							</transition>
 						</div>
 						<!-- /.box -->
 						</Col>
@@ -411,13 +394,11 @@
 										</button>
 									</div>
 								</div>
+								<transition name="bounce">
 								<div class="box-body border-radius-none" v-if="chartbody2" style="height:380px">
-									<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
-										<swiper-slide>
-												<div id="test5" style="height:300px;width:100%"> </div>
-										</swiper-slide>
-									</swiper>
+
 								</div>
+								</transition>
 							</div>
 							</Col>
 							
@@ -450,6 +431,7 @@
 									</div>
 									<!-- /. tools -->
 								</div>
+								<transition name="bounce">
 								<div class="box-body" v-if="emailbody" :style="'height:'+screenheight/2.55+'px'">
 									<form action="#" method="post">
 										<div class="form-group">
@@ -465,6 +447,7 @@
 											<i class="fa fa-arrow-circle-right"></i></button>
 									</form>
 								</div>
+								</transition>
 							</div>
 							</Col>
 							
@@ -493,6 +476,7 @@
 											</button>
 										</div>
 									</div>
+									<transition name="bounce">
 									<div class="box-body border-radius-none" v-if="chartbody3" :style="'height:'+screenheight/2.55+'px'">
 										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
 											<swiper-slide>
@@ -502,6 +486,7 @@
 											</swiper-slide>
 										</swiper>
 									</div>
+									</transition>
 								</div>
 							</Col>
 							<Col span='12' id="chartwidth4">
@@ -529,6 +514,7 @@
 											</button>
 										</div>
 									</div>
+									<transition name="bounce">
 									<div class="box-body border-radius-none" v-if="chartbody4" :style="'height:'+screenheight/2.55+'px'">
 										<swiper id="swiperBox2" v-bind:options="swiperOption" ref="mySwiper">
 											<swiper-slide>
@@ -538,6 +524,7 @@
 											</swiper-slide>
 										</swiper>
 									</div>
+									</transition>
 								</div>
 							</Col>
 						<!-- /.box -->
@@ -614,10 +601,6 @@
 				progressbody: true,
 				shine:true,
 				barword:'',
-// 				todo:[{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'2 mins',progress:"40%"},
-// 						{pro:"上海科技大学",description:"电梯在使用时光幕异常。经排查，光幕接收信号异常。预计后天购买光幕，恢复电梯正常使用。",time:'54 mins',progress:"60%"},
-// 						{pro:"江南一号",description:"电梯通信异常，经排查开关电源盒损坏。预计明天购买开关电源盒，恢复电梯正常使用。",time:'3 hours',progress:"70%"},
-// 				],
 				todo:[],
 				chatlist:[],
 				swiperOption:{
@@ -708,7 +691,7 @@
 			if (window.localStorage.getItem('chart3') == 1) {this.chart3=false}
 			if (window.localStorage.getItem('progress') == 1) {this.progress=false}
 			if (window.localStorage.getItem('email') == 1) {this.email=false}
-			this.chartwidth();
+			
 		},
 		created(){
 			this.screenwidth = document.documentElement.clientWidth-200;
@@ -730,16 +713,6 @@
 			　　});
 			$(window).resize(function(){
 				_this.selfadaption()
-				if ((_this.screenheight < document.documentElement.clientHeight)){
-					_this.screenheight = document.documentElement.clientHeight;
-					document.getElementById('mapsize').style.height = (Number(_this.screenheight)/2.55) + 'px'
-					document.getElementById('test1').style.height = (Number(_this.screenheight)/2.6) + 'px'
-					document.getElementById('freq').style.height = (Number(_this.screenheight)/2.6-32) + 'px'
-					document.getElementById('activedoor').style.height = (Number(_this.screenheight)/2.6-32) + 'px'
-					document.getElementById('areaChart').style.height = (Number(_this.screenheight)/2.9) + 'px'
-
-					_this.$router.push(0)
-				}
 			});
 	function disabledMouseWheel() {  
 	  if (document.addEventListener) {
@@ -825,6 +798,17 @@
 							}
 						}
 					}
+				if ((this.screenheight < document.documentElement.clientHeight)){
+					this.screenheight = document.documentElement.clientHeight;
+				}
+				document.getElementById('mapsize').style.height = (Number(this.screenheight)/2.55) + 'px'
+				document.getElementById('test1').style.height = (Number(this.screenheight)/2.6) + 'px'
+				document.getElementById('freq').style.height = (Number(this.screenheight)/2.6-32) + 'px'
+				document.getElementById('activedoor').style.height = (Number(this.screenheight)/2.6-32) + 'px'
+				document.getElementById('areaChart').style.height = (Number(this.screenheight-200)/2.6) + 'px'
+				// document.getElementById('font11').style.font-size = (Number(this.setheight[0])/2.3) + 'px'
+				console.log(document.getElementById('font11').style.FontSize)
+				this.$router.push(0)	
 			},
 			handleReachBottom(){
 				this.getchat()
@@ -942,11 +926,6 @@
 						desc: '获取通知失败！'
 					})
 				}
-			},
-			chartwidth(){
-				setTimeout(() => {
-					this.MemberCharts();
-				},200)
 			},
 			shineword(){
 				setTimeout(()=>{
@@ -1223,47 +1202,6 @@
 					}]
 				})
 			},
-			MemberCharts() {
-				setTimeout(()=>{
-				let test1 = this.$echarts.init(document.getElementById('test5'))
-				test1.resize()
-				test1.setOption({
-					title: {
-						text: '用户比例',
-						subtext: '数量',
-						left: 'center',
-					},
-					tooltip: {
-						trigger: 'item',
-						formatter: "{a} <br/>{b} : {c} ({d}%)"
-					},
-					legend: {
-						bottom: 10,
-						left: 'center',
-						data: ['游客', '普通用户','管理员','组长']
-					},
-					series : [{
-						type: 'pie',
-						radius : '65%',
-						center: ['50%', '50%'],
-						selectedMode: 'single',
-						data:[
-							{value:148, name: '游客'},
-							{value:235, name: '普通用户'},
-							{value:5, name: '管理员'},
-							{value:44, name: '组长'},
-						],
-						itemStyle: {
-							emphasis: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-							}
-						}
-					}]
-				})
-				},200)
-			},
 		}
 	}
 	
@@ -1271,5 +1209,37 @@
 <style lang="scss" scoped>
 	.wrapper{
 		background-color: #5A6268;
+	}
+	.slide-fade-enter-active {
+		transition: all .3s ease;
+	}
+
+	/*这里使用了贝塞尔曲线*/
+	.slide-fade-leave-active {
+		transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+
+	/*slide-fade-leave-to 用于低于 2.1.8 版本的 Vue*/
+	/*translateX 转化为 x 轴的值*/
+	.slide-fade-enter, .slide-fade-leave-to {
+		transition: translateX(10px);
+		opacity: 0;
+	}
+	.bounce-enter-active {
+	  animation: bounce-in .5s;
+	}
+	.bounce-leave-active {
+	  animation: bounce-in .5s reverse;
+	}
+	@keyframes bounce-in {
+	  0% {
+		transform: scale(0);
+	  }
+	  50% {
+		transform: scale(1.5);
+	  }
+	  100% {
+		transform: scale(1);
+	  }
 	}
 </style>

@@ -283,7 +283,7 @@ div()
 						var steelContent ='设备id:'+item.device_id+'<div></div>设备名称:'+item.device_name+'<div></div>基站地址:'+item.cell_address
 						var steelOpts = {
 							width : 150,     //信息窗口宽度
-							height: 110,     //信息窗口高度
+							height: 130,     //信息窗口高度
 							title : "<b>设备信息</b>" , //信息窗口标题
 							enableMessage:true	//设置允许信息窗发送短息
 						};

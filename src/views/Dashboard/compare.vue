@@ -1,20 +1,20 @@
 <template >
 	<div class="" style="padding:0">
 		<div>
-			<Col span='12' style="font-size: large;font-weight: bold;color:#333333" >今年设备故障数量</Col>
-			<Col span='1'> <div style="height:20px;width:20px;background-color:#dcdcdc;" @click="fault=!fault;areafault()"></div></Col>
-			<Col span='4'> 
-			<div style="color:#888888" @click="fault=!fault;areafault()" v-if="!fault">新添故障设备</div>
-			<div style="color:#000000" @click="fault=!fault;areafault()" v-if="fault">新添故障设备</div>
+			<Col span='11' style="font-size: large;font-weight: bold;color:#333333"  class="pull-right">今年设备故障数量</Col>
+			<Col span='6' style=" float:right; margin-left:5px"> 
+			<div style="height:15px;width:15px;background-color:#dcdcdc;display: inline-block;" @click="fault=!fault;areafault()"></div>
+			<div style="color:#888888;display: inline-block;" @click="fault=!fault;areafault()" v-if="!fault">新添故障设备</div>
+			<div style="color:#000000;display: inline-block;" @click="fault=!fault;areafault()" v-if="fault">新添故障设备</div>
 			</Col>
-			<Col span='1'> <div style="height:20px;width:20px;background-color:#3c8cbc;" @click="fix=!fix;areafault()"></div> </Col>
-			<Col span='4'> 
-			<div style="color:#888888" @click="fix=!fix;areafault()" v-if="!fix">修复设备数量</div>
-			<div style="color:#000000" @click="fix=!fix;areafault()" v-if="fix">修复设备数量</div>
+			<Col span='6' style=" float:right; ">
+			<div style="height:15px;width:15px;background-color:#3c8cbc;display: inline-block;" @click="fix=!fix;areafault()"></div>
+			<div style="color:#888888;display: inline-block;" @click="fix=!fix;areafault()" v-if="!fix">修复设备数量</div>
+			<div style="color:#000000;display: inline-block;" @click="fix=!fix;areafault()" v-if="fix">修复设备数量</div>
 			</Col>
 		</div>
 		<div class="chart" style="width:95%">
-			<canvas id="areaChart" :style="'height:'+screenheight/2.9+'px'"></canvas>
+			<canvas id="areaChart" :style="'height:'+screenheight/2.6+'px'"></canvas>
 		</div>
 	</div>
 </template>
@@ -54,7 +54,7 @@
 			};
 		},
 		created(){
-			this.screenheight = document.documentElement.clientHeight;
+			this.screenheight = document.documentElement.clientHeight-200;
 			this.drawchart()
 		},
 		components: {
@@ -174,7 +174,7 @@
 					//String - A legend template
 					legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
 					//Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-					maintainAspectRatio     : true,
+					maintainAspectRatio     : false,
 					//Boolean - whether to make the chart responsive to window resizing
 					responsive              : true
 					}
