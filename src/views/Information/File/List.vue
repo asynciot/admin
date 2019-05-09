@@ -104,7 +104,7 @@
 						title: '设备名称',
 						key: 'device_name',
 						width: 110,
-						
+						align: 'center',
 						render: (h, params) =>{
 							var type = '';
 							var reg = '';
@@ -162,7 +162,8 @@
 					{
 						title: 'IMEI(设备识别码)',
 						key: 'IMEI',
-						width: 138,
+						width: 148,
+						align: 'center',
 						render: (h, params) =>
 							h('div',[
 								h('Button', {
@@ -188,12 +189,12 @@
 					{
 						title: 'IMSI(用户识别码)',
 						key: 'device_IMSI',
-						width: 138,
+						width: 148,
 					},
 					{
 						title: '设备类型',
 						key: 'device_type',
-						width: 85,
+						width: 90,
 						render: (h, params) => {
 							var type = "-"
 							if (params.row.device_type == '240') type = '控制柜'
@@ -203,7 +204,7 @@
 					},
 					{
 						title: 'IP定位',
-						width: 110,
+						width: 120,
 						render: (h, params) => {
 							return h('div', params.row.ip_country + params.row.ip_region + params.row.ip_city)
 						}
@@ -244,7 +245,7 @@
 					//              },
 					{
 						title: '操作',
-						width: 265,
+						width: 280,
 						render: (h, params) => {
 							var follow = "关注设备"
 							this.follow.forEach(item => {

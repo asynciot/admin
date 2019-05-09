@@ -5,7 +5,7 @@ div.layout-content-main
 			Col.padding(span=8)
 				Card.card
 					p.clearfix(slot="title")|基础信息
-					Form.status(:model="show",label-position="left",:label-width="75")
+					Form.status(:model="show",label-position="left",:label-width="80")
 						Row(:gutter="16")
 							Col(span="10")
 								Form-item(label="门坐标：")
@@ -378,6 +378,7 @@ div.layout-content-main
 					let buffer = []
 					if (true) {
 						buffer = base64url.toBuffer(res.data);	//8位转流
+						console.log(buffer)
 					}
 					for(var i=0 ; i<this.nums ; i++){
 						this.show.openIn = this.event.openIn[i] = (buffer[i*8]&0x80)>>7						//获取开门信号

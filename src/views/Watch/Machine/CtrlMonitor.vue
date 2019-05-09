@@ -2,7 +2,7 @@
 	div.layout-content-main
 		div.form.mb-10.form-detail
 			Card
-				Form.status(:model="show",label-position="left",:label-width="75")
+				Form.status(:model="show",label-position="left",:label-width="80")
 					Row(:gutter="16")
 						Col(span="4")
 							Form-item(label="创建人：")
@@ -22,7 +22,7 @@
 				Col.padding(span="8")
 					Card.card
 						p.clearfix(slot="title")|基础信息
-						Form.status(:model="show",label-position="left",:label-width="75")
+						Form.status(:model="show",label-position="left",:label-width="80")
 							Row(:gutter="16")
 								Col(span="12")
 									Form-item(label="运行状态：",:label-width="90")

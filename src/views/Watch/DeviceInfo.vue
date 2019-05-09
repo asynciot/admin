@@ -161,7 +161,7 @@
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
 								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
-					card.card(align='center',v-if='data.device_type == 15')
+					card.card(align='center',v-if='data.device_type == 15' style="height: 505px")
 						Row
 							Col(span=24 style="font-size:20px;text-align:left;")|事件记录
 							div( style="height: 35px;")
@@ -178,7 +178,7 @@
 								Col(span=6)
 									DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='width: 100%;' @on-change="search()")
 							div(style='font-size: large;margin-top:40px;', v-if='total==0')| 这台设备没有事件记录
-							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px")
+							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px" , :height="380")
 								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
 									Row
 										Col(span=22)|  事件序号： {{item.id}}
@@ -606,9 +606,6 @@
 		flex-flow: row;
 		justify-content: center;
 		align-items: center;
-	}
-	.ivu-scroll-container{
-		height:311px !important;
 	}
 	.iv{
 		display: inline-block;

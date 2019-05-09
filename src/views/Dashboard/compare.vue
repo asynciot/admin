@@ -14,7 +14,7 @@
 			</Col>
 		</div>
 		<div class="chart" style="width:95%">
-			<canvas id="areaChart" :style="'height:'+screenheight/2.9+'px'"></canvas>
+			<canvas id="areaChart" :style="'height:'+screenheight/2.6+'px'"></canvas>
 		</div>
 	</div>
 </template>
@@ -54,7 +54,7 @@
 			};
 		},
 		created(){
-			this.screenheight = document.documentElement.clientHeight;
+			this.screenheight = document.documentElement.clientHeight-200;
 			this.drawchart()
 		},
 		components: {
@@ -174,7 +174,7 @@
 					//String - A legend template
 					legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
 					//Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-					maintainAspectRatio     : true,
+					maintainAspectRatio     : false,
 					//Boolean - whether to make the chart responsive to window resizing
 					responsive              : true
 					}

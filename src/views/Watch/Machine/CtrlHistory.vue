@@ -5,7 +5,7 @@
 				Col.padding(span="8")
 					Card.card
 						p.clearfix(slot="title")|基础信息
-						Form.status(:model="show",label-position="left",:label-width="75")
+						Form.status(:model="show",label-position="left",:label-width="80")
 							Row(:gutter="16")
 								Col(span="12")
 									Form-item(label="运行信号：")
