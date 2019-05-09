@@ -1,6 +1,6 @@
-<template >
+<template>
 	<div class="layout">
-		<Layout class="test"  :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
+		<Layout class="test" :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
 			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
 					<div style="width: 100%;height: 64px;background: #367fa9;">
@@ -286,6 +286,8 @@
 					},
 				],
 				menus:{},
+				roles:0,
+				role_id:0,
 			}
 		},
 		computed: {
@@ -302,68 +304,82 @@
 				this.selfadaption()
 			}
 		},
+		async beforeCreate(){
+			this.role_id=window.localStorage.getItem('id')
+			const val = await this.$api.people({id:this.role_id,num:1,page:1})
+			this.roles = val.data.data.list[0].role
+			const res = await this.$api.getMenu({
+				page:1,
+				num:1,
+				id:this.roles,
+			})
+			window.localStorage.setItem("role",this.roles)
+			if(res.data.code == 0){
+				this.menus = res.data.data.list[0]
+			}
+			if(this.menus.dashboard==false){
+				this.menu[0].key = false
+			}
+			if(this.menus.menu==false){
+				this.menu[1].key = false
+			}
+			if(this.menus.map==false){
+				this.menu[1].sub[0].key = false
+			}
+			if(this.menus.laddermap==false){
+				this.menu[1].sub[1].key = false
+			}
+			if(this.menus.auditinglist==false){
+				this.menu[2].sub[0].key = false
+			}
+			if(this.menus.maintain==false){
+				this.menu[2].sub[1].key = false
+			}
+			if(this.menus.maintainlist == false){
+				this.menu[2].sub[2].key = false
+			}
+			if(this.menus.maintainlist== false&&this.menus.auditinglist==false&&this.menus.maintain==false){
+				this.menu[2].key = false
+			}
+			if(this.menus.allist == false){
+				this.menu[3].sub[0].key = false
+			}
+			if(this.menus.evolution == false){
+				this.menu[3].sub[1].key = false
+			}
+			if(this.menus.ladder == false){
+				this.menu[3].sub[2].key = false
+			}
+			if(this.menus.user_manage == false){
+				this.menu[4].sub[0].key = false
+			}
+			if(this.menus.inform == false){
+				this.menu[4].sub[1].key = false
+			}
+			if(this.menus.authority == false){
+				this.menu[4].sub[3].key = false
+			}
+			if(this.menus.print == false){
+				this.menu[5].key = false
+				this.menu[5].sub[0].key = false
+			}
+			this.$forceUpdate()
+			console.log("1")
+		},
 		created(){
 			this.screenwidth=document.documentElement.clientWidth*1
 			this.getportrait()
-			this.getMenu()
 		},
 		methods: {
-			async getMenu(){
-				const res = await this.$api.getMenu({
+			async getFunction(){
+				const res = await this.$api.getFunction({
 					page:1,
 					num:1,
 					id:window.localStorage.getItem("role"),
 				})
-				if(res.data.code == 0){
-					this.menus = res.data.data.list[0]
-				}
-				console.log(this.menus)
-				if(this.menus.dashboard==false){
-					this.menu[0].key = false
-				}
-				if(this.menus.menu==false){
-					this.menu[1].key = false
-				}
-				if(this.menus.map==false){
-					this.menu[1].sub[0].key = false
-				}
-				if(this.menus.laddermap==false){
-					this.menu[1].sub[1].key = false
-				}
-				if(this.menus.auditinglist==false){
-					this.menu[2].sub[0].key = false
-				}
-				if(this.menus.maintain==false){
-					this.menu[2].sub[1].key = false
-				}
-				if(this.menus.maintainlist == false){
-					this.menu[2].sub[2].key = false
-				}
-				if(this.menus.maintainlist== false&&this.menus.auditinglist==false&&this.menus.maintain==false){
-					this.menu[2].key = false
-				}
-				if(this.menus.allist == false){
-					this.menu[3].sub[0].key = false
-				}
-				if(this.menus.evolution == false){
-					this.menu[3].sub[1].key = false
-				}
-				if(this.menus.ladder == false){
-					this.menu[3].sub[2].key = false
-				}
-				if(this.menus.user_manage == false){
-					this.menu[4].sub[0].key = false
-				}
-				if(this.menus.inform == false){
-					this.menu[4].sub[1].key = false
-				}
-				if(this.menus.authority == false){
-					this.menu[4].sub[3].key = false
-				}
-				if(this.menus.print == false){
-					this.menu[5].key = false
-					this.menu[5].sub[0].key = false
-				}
+			},
+			async getMenu(){
+				
 			},
 			fullscreen(){
 				this.full=true
@@ -465,23 +481,21 @@
 			async getportrait(){
 				let res = await this.$api.people({id:window.localStorage.getItem('id'),num:1,page:1})
 				if (0 === res.data.code) {
-					window.localStorage.setItem("role",res.data.data.list[0].role)
 					if (res.data.data.list[0].portrait != null) {
 						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
 						}
 					if (res.data.data.list[0].nickname != null) {
 						this.info.nickname=res.data.data.list[0].nickname
-						}
-					else {
+					}else {
 						this.info.nickname=res.data.data.list[0].username
 					}
 				}
 			},
 			selfadaption(val1){
 				var val2=4
-				var width=document.documentElement.clientWidth
-				if (document.getElementById(val1).className=='ivu-col ivu-col-span-6'){val2=1}
-				alert(document.getElementById('mapwidth').className)
+				if (document.getElementById(val1).className=='ivu-col ivu-col-span-6'){
+					val2=1
+				}
 			},
 		},
 	}
