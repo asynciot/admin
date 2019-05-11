@@ -30,6 +30,15 @@ import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import vueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
+ const  i18n = new VueI18n({
+     locale: 'zh',          //默认语言
+     message: {
+         'zh': require('./lang/zh'),
+         'en': require('./lang/en')
+     }
+ })
 
 Vue.use(vueAwesomeSwiper);
 Vue.component('icon', Icon);
