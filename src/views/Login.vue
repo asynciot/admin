@@ -104,7 +104,7 @@ export default {
 			this.form.username=u
 		}
 		if (rem == 'true') {
-			this.rem=tru e
+			this.rem=true
 			var u=window.localStorage.getItem('u')
 			if (u != null) {
 				this.form.username=u
