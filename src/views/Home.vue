@@ -19,7 +19,7 @@
 					<template v-for="item in menu" v-if="!item.sub" >
 						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}" v-if="item.key">
 							<i :key="item.name" :class="item.icon" size="16" ></i>
-							{{isCollapsed?'':item.label}}
+							{{$t(isCollapsed?'':item.label)}}
 						</MenuItem >
 					</template>
 					<template v-else>
@@ -41,8 +41,24 @@
 			<Layout>
 				<Header  class="m-header" v-if="!full">
 					<Row>
-						<Col span="20">
+						<Col span="17">
 							&nbsp;
+						</Col>
+						<Col span="3">
+							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
+								<Button type="primary" long class="w-button">
+									<Col span="5">
+										language:
+									</Col>
+									<Col span="19">
+										<p style="color: white;width: 100%;">{{$t("lang")}}</p>
+									</Col>
+								</Button>
+								<Dropdown-menu slot="list">
+									<Dropdown-item :name="1">中文</Dropdown-item>
+									<Dropdown-item :name="2">English</Dropdown-item>
+								</Dropdown-menu>
+							</Dropdown>
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
@@ -92,6 +108,8 @@
 </template>
 
 <script>
+	import bus from './bus';
+	import Vue from "vue";
 	export default {
 		data() {
 			const validateOldPassCheck = (rule, value, callback) => {
@@ -253,6 +271,9 @@
 					}]
 				},],
 				menus:{},
+				roles:0,
+				role_id:0,
+				lang:'',
 			}
 		},
 		computed: {
@@ -266,6 +287,47 @@
 		mounted(){
 			window.onresize = () =>{
 				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
+			}
+		},
+		async beforeCreate(){
+			this.role_id=window.localStorage.getItem('id')
+			const val = await this.$api.people({id:this.role_id,num:1,page:1})
+			this.roles = val.data.data.list[0].role
+			const res = await this.$api.getMenu({
+				page:1,
+				num:1,
+				id:this.roles,
+			})
+			window.localStorage.setItem("role",this.roles)
+			if(res.data.code == 0){
+				this.menus = res.data.data.list[0]
+			}
+			if(this.menus.dashboard==false){
+				this.menu[0].key = false
+			}
+			if(this.menus.menu==false){
+				this.menu[1].key = false
+			}
+			if(this.menus.map==false){
+				this.menu[1].sub[0].key = false
+			}
+			if(this.menus.laddermap==false){
+				this.menu[1].sub[1].key = false
+			}
+			if(this.menus.auditinglist==false){
+				this.menu[2].sub[0].key = false
+			}
+			if(this.menus.maintain==false){
+				this.menu[2].sub[1].key = false
+			}
+			if(this.menus.maintainlist == false){
+				this.menu[2].sub[2].key = false
+			}
+			if(this.menus.maintainlist== false&&this.menus.auditinglist==false&&this.menus.maintain==false){
+				this.menu[2].key = false
+			}
+			if(this.menus.allist == false){
+				this.menu[3].sub[0].key = false
 			}
 		},
 		created(){
@@ -372,6 +434,20 @@
 			show(val){
 				if (val == 1){this.quit=true}
 				if (val == 2){this.quit=false}
+			},
+			async changelang(index) {
+				this.modalType = parseInt(index)
+				switch (parseInt(index)) {
+					case 1:
+						this.$i18n.locale = 'zh-CN';
+						localStorage.setItem('language',this.$i18n.locale)
+						// Vue.config.lang = 'zh-CN'
+						break;
+					case 2:
+						this.$i18n.locale = 'en-US';
+						localStorage.setItem('language',this.$i18n.locale)
+						// Vue.config.lang = 'en-US'
+				}
 			},
 			async logout(index) {
 				this.modalType = parseInt(index)
