@@ -8,8 +8,8 @@
 						<Option key="1" label="全部" value="all"></Option>
 						<Option key="2" label="搁置" value="reprieve"></Option>
 						<Option key="3" label="处理中" value="untreated"></Option>
-						<Option key="3" label="审核中" value="examined"></Option>
-						<Option key="4" label="已结束" value="treated"></Option>
+						<Option key="4" label="审核中" value="examined"></Option>
+						<Option key="5" label="已结束" value="treated"></Option>
 					</Select>
 				</Col>
 				<Col span='3'>

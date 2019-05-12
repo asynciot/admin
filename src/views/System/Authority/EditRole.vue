@@ -16,7 +16,7 @@
 								div.form-group
 									Card
 										p(slot="title")|菜单名称
-										Tree(ref="tree" ,v-bind:data='menus' show-checkbox)
+										Tree(ref="tree" ,:data='menus' show-checkbox)
 						Col(span="16")
 							Card()
 								p(slot="title")|可执行功能
@@ -43,7 +43,10 @@
 									Checkbox(v-model="show.print")|打印二维码
 				div.box-footer
 					div.col-sm-offset-2
-						Button(@click='submit()', type='success')|添加
+						Button(@click='submit()', type='success' v-if="uprole != true" disabled="false")|编辑
+						Button(@click='submit()', type='success' v-else)|编辑
+						Button.ml-5(@click='delRoles()', type='error' v-if="delrole != true" disabled="false")|删除
+						Button.ml-5(@click='delRoles()', type='error' v-else)|删除
 						Button.ml-5(@click="$router.back(-1)")|返回
 </template>
 
@@ -51,144 +54,138 @@
 	export default {
 		data () {
 			return {
-				menu:[
-					{
-						id: 0,
-						pId: 0,
-						label: 'Dashboard',
+				menu:[{
+					id: 0,
+					pId: 0,
+					label: 'Dashboard',
+					key:false,
+					val:0,
+				},{
+					id: 1,
+					pId: 0,
+					label: '运行监控',
+					key:false,
+					val:1,
+					sub: [{
+						id: 11,
+						pId: 1,
+						label: '运行状态',
 						key:false,
-						val:0,
-					},{
-						id: 1,
-						pId: 0,
-						label: '运行监控',
-						key:false,
-						val:1,
-						sub: [
-							{
-								id: 11,
-								pId: 1,
-								label: '运行状态',
-								key:false,
-								val:2,
-							}, {
-								id: 12,
-								pId: 1,
-								label: '电梯状态',
-								key:false,
-								val:3,
-							}, 
-				// 			{
-				// 				id: 13,
-				// 				pId: 1,
-				// 				label: '更新状态',
-				// 				val:2,
-				// 			},
-							]
+						val:2,
 					}, {
-						id: 2,
-						pId: 0,
-						label: '工作流',
+						id: 12,
+						pId: 1,
+						label: '电梯状态',
 						key:false,
-						val:4,
-						sub: [
-							{
-								id: 21,
-								pId: 2,
-								label: '审核列表',
-								key:false,
-								val:5,
-							}, {
-								id: 22,
-								pId: 2,
-								label: '工单列表',
-								key:false,
-								val:6,
-							},
-							{
-								id: 23,
-								pId: 2,
-								label: '维保信息',
-								key:false,
-								val:7,
-							}],
-					}, {
-						id: 3,
-						pId: 0,
-						label: '基础信息维护',
-						key:false,
-						val:8,
-						sub: [
-							{
-								id: 31,
-								pId: 3,
-								label: '设备信息',
-								key:false,
-								val:9,
-							},{
-								id: 32,
-								pId: 3,
-								label: '固件更新',
-								key:false,
-								val:10,
-							},{
-								id: 33,
-								pId: 3,
-								label: '电梯信息',
-								key:false,
-								val:11,
-							}],
-					}, {
-						id: 4,
-						pId: 0,
-						label: '系统管理',
-						key:false,
-						val:12,
-						sub: [
-							{
-								id: 41,
-								pId: 4,
-								label: '用户管理',
-								key:false,
-								val:13,
-							}, {
-								id: 42,
-								pId: 4,
-								label: '通知记录',
-								key:false,
-								val:14,
-							}, {
-								id: 43,
-								pId: 4,
-								label: '说明文档',
-								key:true,
-								val:15,
-							}, {
-								id: 44,
-								pId: 4,
-								label: '权限管理',
-								key:false,
-								val:16,
-							}]
-					}, {
-						id: 5,
-						pId: 0,
-						label: '出厂设置',
-						key:false,
-						val:17,
-						sub: [
-							{
-								id: 51,
-								pId: 5,
-								label: '打印二维码',
-								key:false,
-								val:18,
-							}]
+						val:3,
 					}, 
-				],
+		// 			{
+		// 				id: 13,
+		// 				pId: 1,
+		// 				label: '更新状态',
+		// 				val:2,
+		// 			},
+					]
+				}, {
+					id: 2,
+					pId: 0,
+					label: '工作流',
+					key:false,
+					val:4,
+					sub: [{
+						id: 21,
+						pId: 2,
+						label: '审核列表',
+						key:false,
+						val:5,
+					}, {
+						id: 22,
+						pId: 2,
+						label: '工单列表',
+						key:false,
+						val:6,
+					},
+					{
+						id: 23,
+						pId: 2,
+						label: '维保信息',
+						key:false,
+						val:7,
+					}],
+				}, {
+					id: 3,
+					pId: 0,
+					label: '基础信息维护',
+					key:false,
+					val:8,
+					sub: [{
+						id: 31,
+						pId: 3,
+						label: '设备信息',
+						key:false,
+						val:9,
+					},{
+						id: 32,
+						pId: 3,
+						label: '固件更新',
+						key:false,
+						val:10,
+					},{
+						id: 33,
+						pId: 3,
+						label: '电梯信息',
+						key:false,
+						val:11,
+					}],
+				}, {
+					id: 4,
+					pId: 0,
+					label: '系统管理',
+					key:false,
+					val:12,
+					sub: [{
+						id: 41,
+						pId: 4,
+						label: '用户管理',
+						key:false,
+						val:13,
+					}, {
+						id: 42,
+						pId: 4,
+						label: '通知记录',
+						key:false,
+						val:14,
+					}, {
+						id: 43,
+						pId: 4,
+						label: '说明文档',
+						key:true,
+						val:15,
+					}, {
+						id: 44,
+						pId: 4,
+						label: '权限管理',
+						key:false,
+						val:16,
+					}]
+				}, {
+					id: 5,
+					pId: 0,
+					label: '出厂设置',
+					key:false,
+					val:17,
+					sub: [{
+						id: 51,
+						pId: 5,
+						label: '打印二维码',
+						key:false,
+						val:18,
+					}]
+				}],
 				menus:[],
 				list:{
-					name:"",
+					id:this.$route.params.id,
+					name:'',
 					dashboard:0,
 					menu:0,
 					map:0,
@@ -231,6 +228,7 @@
 					print:0,
 				},
 				fun:{
+					id:this.$route.params.id,
 					name:'',
 					monitor:0,
 					memory:0,
@@ -261,6 +259,8 @@
 				roleList:{},
 				menuList:{},
 				functionList:{},
+				delrole:this.global.functions.rem_roles,
+				uprole:this.global.functions.update_roles,
 			}
 		},
 		created() {
@@ -396,7 +396,8 @@
 				})
 			},
 			async submit(){
-				this.fun.name = this.list.name
+				this.fun.name = this.roleList.name
+				this.list.name = this.roleList.name
 				const fun = this.show
 				const menus = this.$refs.tree.getCheckedNodes()
 				menus.forEach((item)=>{
@@ -408,31 +409,31 @@
 						this.list.map = 1
 					}else if(item.val==3){
 						this.list.laddermap = 1
-					}else if(item.val==4){
+					}else if(item.val==6){
 						this.list.maintain = 1
 					}else if(item.val==5){
 						this.list.auditinglist = 1
-					}else if(item.val==6){
-						this.list.maintainlist = 1
 					}else if(item.val==7){
-						this.list.event = 1
+						this.list.maintainlist = 1
 					}else if(item.val==8){
-						this.list.allist = 1
+						this.list.event = 1
 					}else if(item.val==9){
-						this.list.evolution = 1
+						this.list.allist = 1
 					}else if(item.val==10){
-						this.list.ladder = 1
+						this.list.evolution = 1
 					}else if(item.val==11){
-						this.list.sys = 1
+						this.list.ladder = 1
 					}else if(item.val==12){
-						this.list.user_manage = 1
+						this.list.sys = 1
 					}else if(item.val==13){
-						this.list.inform = 1
+						this.list.user_manage = 1
 					}else if(item.val==14){
-						this.list.authority = 1
-					}else if(item.val==15){
-						this.list.setting = 1
+						this.list.inform = 1
 					}else if(item.val==16){
+						this.list.authority = 1
+					}else if(item.val==17){
+						this.list.setting = 1
+					}else if(item.val==18){
 						this.list.print = 1
 					}
 				})
@@ -496,30 +497,27 @@
 				if(fun.print==true){
 					this.fun.print=1
 				}
-				const res = await this.$api.newMenu(this.list)
+				const res = await this.$api.updateMenu(this.list)
 				if(res.data.code==0){
-					const rep = await this.$api.newFunction(this.fun)
+					const rep = await this.$api.updateFunction(this.fun)
 					if(rep.data.code==0){
 						this.$Notice.success({
 							title: '成功',
-							desc: '创建角色成功！'
+							desc: '编辑角色成功！'
 						});
 						this.$router.back(-1)
 					}else{
 						this.$Notice.error({
 							title: '失败',
-							desc: '创建失败！'
+							desc: '编辑失败！'
 						});
 					}
 				}else{
 					this.$Notice.error({
 						title: '失败',
-						desc: '创建失败！'
+						desc: '编辑失败！'
 					});
 				}
-// 				if(res.data.data.code == 0){
-// 					this.$router.back(-1)
-// 				}
 			},
 			async getRole(){
 				const res = await this.$api.getRole(this.options)
@@ -544,6 +542,23 @@
 					this.checkedMenu()
 					this.getMenus()
 					// this.menus[0].checked = true
+				}
+			},
+			async delRoles(){
+				const res = await this.$api.delRole({
+					id:this.options.id,
+				})
+				if(res.data.code==0){
+					this.$Notice.success({
+						title: '成功',
+						desc: '删除角色成功！'
+					});
+					this.$router.back(-1)
+				}else{
+					this.$Notice.error({
+						title: '失败',
+						desc: '删除失败！'
+					});
 				}
 			},
 		}

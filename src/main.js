@@ -41,6 +41,18 @@ import app_en from './language/en-US.json';
 // import cn from "./lang/zh";
 // import us from "./lang/en";
 Vue.use(VueI18n);
+import global from './global'
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
+ const  i18n = new VueI18n({
+     locale: 'zh',          //默认语言
+     message: {
+         'zh': require('./lang/zh'),
+         'en': require('./lang/en')
+     }
+ })
+
+Vue.prototype.global = global
 Vue.use(vueAwesomeSwiper);
 Vue.component('icon', Icon);
 Vue.use(vuescroll);

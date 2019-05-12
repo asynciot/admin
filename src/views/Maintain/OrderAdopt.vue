@@ -5,7 +5,7 @@
 				Col(span=10)
 					Card(style="height:500px")
 						Col(span=24)
-							Form(ref="form",:model="form",:rules="rules",:label-width="120")
+							Form(ref="form",:model="form",:label-width="120")
 								Row(:gutter="5")
 									Col(span="20",offset="2")
 										Form-item(label="设备名称:")|{{list.device_name}}
@@ -21,13 +21,14 @@
 					Card()
 						Row
 							Col(span=24)
-								Form(ref="form",:model="form",:rules="rules",:label-width="120" style="height:200px")
+								Form(ref="form",:model="form",:label-width="120" style="height:200px")
 									Row(:gutter="5")
 										Col(span="20",offset="2")
 											Form-item(label="详细说明:")|{{ps}}
 							Col(span=24)
 								Col(span=12 align="center")
-									Button(type="success",icon="plus",@click="adopt" ,:disabled='upsuccess')|同意
+									Button(type="success",icon="plus",@click="adopt" v-if="auditing != true" ,:disabled="false")|同意
+									Button(type="success",icon="plus",@click="adopt" v-else)|同意
 								Col(span=12 align='center')
 									Button(icon="close",@click="$router.back(-1)")|取消
 </template>
@@ -42,7 +43,7 @@
 					type:'1',
 				},
 				faultcode:false,
-				ps:'因零件未到位，请求搁置3日后维修。',
+				ps:'',
 				list:[],
 				query:{
 					username:window.localStorage.getItem('username'),
@@ -57,7 +58,7 @@
 				},
 				file:'',
 				filename:'',
-				upsuccess:false,
+				auditing:this.global.functions.work_audt,
 			}
 		},
 		computed: {
@@ -67,12 +68,6 @@
 		},
 		created(){
 			this.getData();
-			if(this.username=="demo"){
-				this.upsuccess = true 
-			}
-		},
-		mounted(){
-			//document.getElementById('image').src=this.file
 		},
 		methods:{
 			code(){

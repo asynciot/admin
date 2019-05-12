@@ -31,7 +31,7 @@
 								</Badge>
 								<i v-else>{{isCollapsed?'':item.label}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="((sub.key)&&(sub.label!='用户管理')||(username=='admin'))&&((sub.label!='权限管理')||(username=='admin'))">
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="sub.key">
 								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{sub.label}}</Badge>
 							</Menu-item>
 						</Submenu>
@@ -169,96 +169,65 @@
 				count: null,
 				screenwidth:'',
 				active: this.$route.path.split('/')[1],
-				menu: [
-					{
-// 						name: 'index',
-// 						icon: 'fa fa-cube',
-// 						label: '系统首页',
-// 					},{
-						name: 'dashboard',
-						icon: 'fa fa-dashboard',
-						label: 'Dashboard',
-						key:true,
+				menu: [{
+					name: 'dashboard',
+					icon: 'fa fa-dashboard',
+					label: 'Dashboard',
+					key:false,
+				},{
+					name: 'menu',
+					icon: 'fa fa-map-o',
+					label: '运行监控',
+					key:false,
+					sub:[{
+						name:'map',
+						label:'运行状态',
+						key:false,
 					},{
-						name: 'menu',
-						icon: 'fa fa-map-o',
-						label: '运行监控',
-						key:true,
-						sub:[{
-							name:'map',
-							label:'运行状态',
-							key:true,
-						},{
-							name:'laddermap',
-							label:'电梯状态',
-							key:true,
-						},
-						]
+						name:'laddermap',
+						label:'电梯状态',
+						key:false,
 					},
-// 					{
-// 						name: 'report',
-// 						icon: 'fa fa-newspaper-o',
-// 						label: '报表分析',
-// 						sub:[
-// // 							{
-// // 								name: 'report',
-// // 								label: '报表分析',
-// // 							},
-// 							{
-// 								name: 'eventreport',
-// 								label: '事件报表分析',
-// 							},
-// 							{
-// 								name: 'orderreport',
-// 								label: '故障报表分析',
-// 							},]
-// 					},
-					{
-						name: 'maintain',
-						icon: 'fa fa-cogs',
-						label: '工作流',
-						key:true,
-						sub: [{
-							name: 'auditinglist',
-							label: '审核列表',
-							key:true,
-						},{
-							name: 'maintain',
-							label: '工单列表',
-							key:true,
-						},
-						{
-							name: 'maintainList',
-							label: '维保信息',
-							key:true,
-						},
-// 							{
-// 								name: 'upList',
-// 								label: '保养信息',
-// 							},
-// 							{
-// 								name: 'faultRank',
-// 								label: '故障等级',
-// 							}
-						],
+					]
+				},
+				{
+					name: 'maintain',
+					icon: 'fa fa-cogs',
+					label: '工作流',
+					key:false,
+					sub: [{
+						name: 'auditinglist',
+						label: '审核列表',
+						key:false,
 					},{
-						name: 'event',
-						icon: 'fa fa-list-alt',
-						label: '基础信息维护',
-						key:true,
-						sub: [{
-							name: 'alList',
-							label: '设备信息',
-							key:true,
-						},{
-							name:'evolution',
-							label:'固件更新',
-							key:true,
-						},{
-							name:'ladder',
-							label:'电梯信息',
-							key:true,
-						},
+						name: 'maintain',
+						label: '工单列表',
+						key:false,
+					},
+					{
+						name: 'maintainList',
+						label: '维保信息',
+						key:false,
+					},
+					],
+				},{
+					name: 'event',
+					icon: 'fa fa-list-alt',
+					label: '基础信息维护',
+					key:false,
+					sub: [{
+						name: 'alList',
+						label: '设备信息',
+						key:false,
+					},{
+						name:'evolution',
+						label:'固件更新',
+						key:false,
+					},{
+						name:'ladder',
+						label:'电梯信息',
+						key:false,
+					},
 // 						{
 // 							name:'elevator',
 // 							label:'电梯组',
@@ -267,41 +236,40 @@
 // 							name: 'maintainCompany',
 // 							label: '维保单位信息',
 // 						},
-						],
+					],
+				},{
+					name: 'system',
+					icon: 'fa fa-address-card-o',
+					label: '系统管理',
+					key:true,
+					sub:[{
+						name: 'userManage',
+						label: '用户管理',
+						key:false,
 					},{
-						name: 'system',
-						icon: 'fa fa-address-card-o',
-						label: '系统管理',
-						key:true,
-						sub:[{
-							name: 'userManage',
-							label: '用户管理',
-							key:true,
-						},{
-							name: 'inform',
-							label: '通知记录',
-							key:true,
-						},{
-							name: 'instructions',
-							label: '说明文档',
-							key:true,
-						},{
-							name: 'authority',
-							label: '权限管理',
-							key:true,
-						}]
+						name: 'inform',
+						label: '通知记录',
+						key:false,
 					},{
-						name: 'setting',
-						icon: 'fa fa-cog',
-						label: '出厂设置',
+						name: 'instructions',
+						label: '说明文档',
 						key:true,
-						sub:[{
-							name:'print',
-							key:true,
-							label:'打印二维码'
-						}]
-					},
-				],
+					},{
+						name: 'authority',
+						label: '权限管理',
+						key:false,
+					}]
+				},{
+					name: 'setting',
+					icon: 'fa fa-cog',
+					label: '出厂设置',
+					key:false,
+					sub:[{
+						name:'print',
+						key:false,
+						label:'打印二维码'
+					}]
+				},],
 				menus:{},
 				roles:0,
 				role_id:0,
@@ -361,42 +329,76 @@
 			if(this.menus.allist == false){
 				this.menu[3].sub[0].key = false
 			}
-			if(this.menus.evolution == false){
-				this.menu[3].sub[1].key = false
-			}
-			if(this.menus.ladder == false){
-				this.menu[3].sub[2].key = false
-			}
-			if(this.menus.user_manage == false){
-				this.menu[4].sub[0].key = false
-			}
-			if(this.menus.inform == false){
-				this.menu[4].sub[1].key = false
-			}
-			if(this.menus.authority == false){
-				this.menu[4].sub[3].key = false
-			}
-			if(this.menus.print == false){
-				this.menu[5].key = false
-				this.menu[5].sub[0].key = false
-			}
-			this.$forceUpdate()
-			console.log("1")
 		},
 		created(){
+			this.getMenu()
 			this.screenwidth=document.documentElement.clientWidth*1
 			this.getportrait()
+			this.getFunction()
 		},
 		methods: {
+			getMenu(){
+				this.menus = JSON.parse(window.localStorage.getItem('menu'))
+				if(this.menus.dashboard == true){
+					this.menu[0].key = true
+				}
+				if(this.menus.menu == true){
+					this.menu[1].key = true
+				}
+				if(this.menus.map == true){
+					this.menu[1].sub[0].key = true
+				}
+				if(this.menus.laddermap == true){
+					this.menu[1].sub[1].key = true
+				}
+				if(this.menus.auditinglist== true){
+					this.menu[2].sub[0].key = true
+				}
+				if(this.menus.maintain== true){
+					this.menu[2].sub[1].key = true
+				}
+				if(this.menus.maintainlist == true){
+					this.menu[2].sub[2].key = true
+				}
+				if(this.menus.maintainlist == true||this.menus.auditinglist == true||this.menus.maintain == true){
+					this.menu[2].key = true
+				}
+				if(this.menus.allist == true||this.menus.evolution == true||this.menus.ladder == true){
+					this.menu[3].key = true
+				}
+				if(this.menus.allist == true){
+					this.menu[3].sub[0].key = true
+				}
+				if(this.menus.evolution == true){
+					this.menu[3].sub[1].key = true
+				}
+				if(this.menus.ladder == true){
+					this.menu[3].sub[2].key = true
+				}
+				if(this.menus.user_manage == true){
+					this.menu[4].sub[0].key = true
+				}
+				if(this.menus.inform == true){
+					this.menu[4].sub[1].key = true
+				}
+				if(this.menus.authority == true){
+					this.menu[4].sub[3].key = true
+				}
+				if(this.menus.print == true){
+					this.menu[5].key = true
+					this.menu[5].sub[0].key = true
+				}
+				this.$forceUpdate()
+			},
 			async getFunction(){
 				const res = await this.$api.getFunction({
 					page:1,
 					num:1,
-					id:window.localStorage.getItem("role"),
+					id:this.global.roles,
 				})
-			},
-			async getMenu(){
-				
+				if(res.data.code == 0){
+					this.global.functions = res.data.data.list[0]
+				}
 			},
 			fullscreen(){
 				this.full=true
@@ -464,6 +466,7 @@
 						window.$cookie.delete('id')
 						window.$cookie.delete('role')
 						window.localStorage.removeItem('id');
+						window.localStorage.removeItem('menu');
 						this.$router.replace({
 							name: 'login'
 						})

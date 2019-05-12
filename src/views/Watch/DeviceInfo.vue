@@ -69,7 +69,8 @@
 												Option(key="4" label="1000" value='1000')
 												Option(key="5" label="2000" value='2000')
 									Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
-										Button(type="success" @click="monitor('1')" style="width:100%")|状态监控
+										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|状态监控
+										Button(type="success" @click="monitor('1')" v-else style="width:100%")|状态监控
 				Col(span=12)
 					card.card(align='left' style='height: 505px',v-if='data.device_type == 240')
 						Col(span="24" style="height: 35px;font-size:20px")|内存调试
@@ -160,7 +161,8 @@
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[7]' readonly)
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
-								Button(type="success" @click="monitor('2')" style="width:25%")|内存监控
+								Button(type="success" @click="monitor('2')" v-if="memory != true" disabled="false" style="width:25%")|内存监控
+								Button(type="success" @click="monitor('2')" v-else style="width:25%")|内存监控
 					card.card(align='center',v-if='data.device_type == 15' style="height: 505px")
 						Row
 							Col(span=24 style="font-size:20px;text-align:left;")|事件记录
@@ -243,11 +245,12 @@
 				columns: [{
 					title: ' ',
 					key: 'device_name'
-				},
-				{
+				},{
 					title: ' ',
 					key: 'IMEI',
 				}],
+				monitors:this.global.functions.monitor,
+				memory:this.global.functions.memory,
 			}
 		},
 		created() {

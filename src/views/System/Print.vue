@@ -47,7 +47,7 @@
 				url: '',
 				id: '',
 				dataUrl: '',
-				username:window.localStorage.getItem('username'),
+				print:this.global.functions.print,
 				query: {
 					search_info: '',
 					page: 1,
@@ -127,7 +127,7 @@
 								props: {
 									type: 'primary',
 									size: "small",
-									disabled:this.username=="demo",
+									disabled:this.print != true,
 								},
 								on: {
 									click: () => {

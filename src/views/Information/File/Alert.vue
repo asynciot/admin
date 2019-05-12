@@ -30,7 +30,8 @@
 											Input(style="width:50px" maxlength="2" readonly)
 						Col(span=24)
 							Col(span=12 align="center")
-								Button(type="success",icon="plus",@click="sentalert()")|创建工单
+								Button(type="success",icon="plus",@click="sentalert()" v-if="up != true" disabled="false")|创建工单
+								Button(type="success",icon="plus",@click="sentalert()" v-else)|创建工单
 							Col(span=12 align='center')
 								Button(icon="close",@click="$router.back(-1)")|取消
 </template>
@@ -81,18 +82,10 @@
 					num: 300,
 					total: 0,
 				},
-				id:'',
 				file:'',
 				filename:'',
-				upsuccess:false,
-// 				rules: {
-// 					door: [{
-// 						required: true,
-// 						message: '请填写正确的故障代码',
-// 						trigger: 'blur',
-// 						pattern:/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
-// 					}],
-// 				}
+				up:this.global.functions.work_up,
+				
 			}
 		},
 		computed: {
@@ -103,16 +96,12 @@
 		created(){
 			this.getData();
 		},
-		mounted(){
-			//document.getElementById('image').src=this.file
-		},
 		methods:{
 			async getData(){
 				let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
 				if (0 === res.data.code) {
-				this.list = res.data.data.list[0]
+					this.list = res.data.data.list[0]
 				}
-				else{}
 			},
 			async sentalert(){
 				var type=''

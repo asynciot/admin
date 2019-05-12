@@ -23,6 +23,7 @@ export default {
 	data() {
 		return {
 			loading: true,
+			rmUser:this.global.functions.rem_user,
 			options: {
 				username: '',
 				mobile: '',
@@ -93,7 +94,8 @@ export default {
 							h('Button', {
 								props: {
 									type: 'error',
-									size: 'small'
+									size: 'small',
+									disabled:this.rmUser!=true,
 								},			
 								on: {
 									click: () => {
@@ -150,16 +152,8 @@ export default {
 			this.loading = false
 			if (0 === res.data.code) {
 				this.list = res.data.data.list
-				// this.options.total = res.data.data.totalNumber
 			}
 		},
-		adduser(){
-			this.$router.push({
-				name: 'usermanageDetail',
-				params: {
-				}
-			})
-		}
 	}
 }
 </script>
