@@ -30,24 +30,29 @@ import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import vueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+// import language from "./language"; //国际化语言包
 import VueI18n from 'vue-i18n'
-Vue.use(VueI18n)
- const  i18n = new VueI18n({
-     locale: 'zh',          //默认语言
-     message: {
-         'zh': require('./lang/zh'),
-         'en': require('./lang/en')
-     }
- })
-
+import en from 'iview/dist/locale/en-US';
+import zh from 'iview/dist/locale/zh-CN';
+import app_zh from './language/zh-CN.json'
+import app_en from './language/en-US.json';
+// import zh from "iview/src/locale/lang/zh-CN";
+// import en from "iview/src/locale/lang/en-US";
+// import cn from "./lang/zh";
+// import us from "./lang/en";
+Vue.use(VueI18n);
 Vue.use(vueAwesomeSwiper);
 Vue.component('icon', Icon);
 Vue.use(vuescroll);
 Vue.use(ElementUI, { size: 'small' });
-Vue.use(VueResource); 
-Vue.http.options.emulateJSON = true; 
+Vue.use(VueResource);
+Vue.http.options.emulateJSON = true;
 Vue.config.productionTip = false
 Vue.use(iView).use(VueCookie);
+Vue.use(iView,{
+	i18n: (key, value) => i18n.t(key, value)
+});
+
 window.$cookie = VueCookie
 window._ = _
 window.moment = moment;
@@ -65,9 +70,23 @@ router.beforeEach((to, from, next) => {
 	}
 })
 /* eslint-disable no-new */
+Vue.locale = () => {};
+const i18n = new VueI18n({
+  locale: localStorage.getItem("language") || 'zh-CN',    // 语言标识
+  messages: {
+    'zh-CN': Object.assign(zh,app_zh),   // 中文语言包
+    'en-US': Object.assign(en,app_en)    // 英文语言包
+  },
+})
+
+// Vue.config.lang = 'zh-CN';
+// Vue.locale('zh-CN', Object.assign(zh,app_zh));
+// Vue.locale('en-US', Object.assign(en,app_en));
+
 new Vue({
   el: '#app',
   router,
+  i18n,
   template: '<App/>',
   components: { App }
 })

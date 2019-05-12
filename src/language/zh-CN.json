@@ -1,0 +1,12 @@
+{
+    "lang" : "中文",
+	"register" : "注册",
+	"login" : "登录",
+	"forget_password?" : "忘记密码？",
+	"remember" : "记住密码",
+	"NBSL" : "宁波申菱 管理系统",
+    "refresh" : "刷新",
+    "array": [
+        1,2,3,4
+    ]
+}

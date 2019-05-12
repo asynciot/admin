@@ -19,7 +19,7 @@
 					<template v-for="item in menu" v-if="!item.sub" >
 						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}" v-if="item.key">
 							<i :key="item.name" :class="item.icon" size="16" ></i>
-							{{isCollapsed?'':item.label}}
+							{{$t(isCollapsed?'':item.label)}}
 						</MenuItem >
 					</template>
 					<template v-else>
@@ -41,8 +41,24 @@
 			<Layout>
 				<Header  class="m-header" v-if="!full">
 					<Row>
-						<Col span="20">
+						<Col span="17">
 							&nbsp;
+						</Col>
+						<Col span="3">
+							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
+								<Button type="primary" long class="w-button">
+									<Col span="5">
+										language:
+									</Col>
+									<Col span="19">
+										<p style="color: white;width: 100%;">{{$t("lang")}}</p>
+									</Col>
+								</Button>
+								<Dropdown-menu slot="list">
+									<Dropdown-item :name="1">中文</Dropdown-item>
+									<Dropdown-item :name="2">English</Dropdown-item>
+								</Dropdown-menu>
+							</Dropdown>
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
@@ -93,6 +109,7 @@
 
 <script>
 	import bus from './bus';
+	import Vue from "vue";
 	export default {
 		data() {
 			const validateOldPassCheck = (rule, value, callback) => {
@@ -288,6 +305,7 @@
 				menus:{},
 				roles:0,
 				role_id:0,
+				lang:'',
 			}
 		},
 		computed: {
@@ -301,7 +319,6 @@
 		mounted(){
 			window.onresize = () =>{
 				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
-				this.selfadaption()
 			}
 		},
 		async beforeCreate(){
@@ -416,6 +433,20 @@
 				if (val == 1){this.quit=true}
 				if (val == 2){this.quit=false}
 			},
+			async changelang(index) {
+				this.modalType = parseInt(index)
+				switch (parseInt(index)) {
+					case 1:
+						this.$i18n.locale = 'zh-CN';
+						localStorage.setItem('language',this.$i18n.locale)
+						// Vue.config.lang = 'zh-CN'
+						break;
+					case 2:
+						this.$i18n.locale = 'en-US';
+						localStorage.setItem('language',this.$i18n.locale)
+						// Vue.config.lang = 'en-US'
+				}
+			},
 			async logout(index) {
 				this.modalType = parseInt(index)
 				switch (parseInt(index)) {
@@ -489,12 +520,6 @@
 					}else {
 						this.info.nickname=res.data.data.list[0].username
 					}
-				}
-			},
-			selfadaption(val1){
-				var val2=4
-				if (document.getElementById(val1).className=='ivu-col ivu-col-span-6'){
-					val2=1
 				}
 			},
 		},

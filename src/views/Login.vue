@@ -4,7 +4,7 @@ div.account
 	Row(:gutter=50 style="padding-bottom:15%")
 		Col(span=12)
 			img.img1(src="../assets/logo-menu.png" align="center")
-			h3.account-title|宁波申菱 管理系统
+			h3.account-title(style="text-align:center")|{{$t("NBSL")}}
 		Col(span=12 style="padding-top:5%")
 			div()
 				Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
@@ -18,13 +18,13 @@ div.account
 					Form-item
 						Row(:gutter="20")
 							Col(span=12)
-								Button(type="primary",long,@click="goRegister")|注册
+								Button(type="primary",long,@click="goRegister")|{{$t("register")}}
 							Col(span=12)
-								Button(type="primary",long,@click="login('form')",:loading="loading")|登录
-							Col(span=14)
-								Button(type="text" style="",@click="reset")|忘记密码？
-							Col(span=10)
-								checkbox(v-model="rem" @click="rem=!rem")|记住密码
+								Button(type="primary",long,@click="login('form')",:loading="loading")|{{$t("login")}}
+							Col(span=12)
+								div(style="cursor: pointer;text-align:center" @click="reset")|{{$t("forget_password?")}}
+							Col(span=12 align="center")
+								checkbox(v-model="rem" @click="rem=!rem")|{{$t("remember")}}
 </template>
 
 <script>
