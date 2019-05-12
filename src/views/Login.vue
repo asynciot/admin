@@ -39,7 +39,7 @@ export default {
 	components: {
 		's-identify': SIdentify,
 	},
-  data() {
+	data() {
 // 	const validateOldPassCheck = () => {
 // 		if (this.vericode === '') {
 // 			callback(new Error('请填写验证码'));
@@ -49,115 +49,119 @@ export default {
 // 			callback();
 // 		}
 // 	};
-    return {
-	  ladderApi: ladderApi,
-      loading: false,
-	  rem: false,
-	  vericode:'',
-	  identifyCodes: "1234567890",
-      identifyCode: "",
-		form: {
-			username: '',
-			password: '',
-		},
-      rules: {
-        username: [{
-            required: true,
-            message: '请填写用户名',
-            trigger: 'blur'
-          },
-          {
-            type: 'string',
-            min: 4,
-            message: '用户名长度不能小于6位',
-            trigger: 'blur'
-          }
-        ],
-        password: [{
-            required: true,
-            message: '请填写密码',
-            trigger: 'blur'
-          },
-          {
-            type: 'string',
-            min: 3,
-            message: '密码长度不能小于6位',
-            trigger: 'blur'
-          }
-        ],
-		veri: [{
-		    required: true,
-		    message: '请填写验证码',
-		    trigger: 'blur'
-		  },
-// 		  {
-// 		    validator: validateOldPassCheck,
-// 		    required: true,
-// 		    trigger: 'blur'
-// 		  }
-		]
-      }
-    }
-  },
-  created(){
-	  var rem=window.localStorage.getItem('rem')
-	  var u=window.localStorage.getItem('u')
-	  if (u != null) {this.form.username=u}
-	  if (rem == 'true') {
-		  this.rem=true
-		  var u=window.localStorage.getItem('u')
-		  if (u != null) {this.form.username=u}
-		  var p=window.localStorage.getItem('p')
-		  if (p != null) {this.form.password=p}
-		  }
-  },
-  mounted() {
-    this.identifyCode = "";
-    this.makeCode(this.identifyCodes, 4);
-  },
-  methods: {
-    async login(name) {
-      this.loading = true;
-      this.$refs[name].validate(async (valid) => {
-        if (valid) {
-			let res = await this.$api.login(this.form)
-			if (!res.data.code) {
-				this.loading = false;
-				window.localStorage.setItem('username',res.data.account.username)
-				window.localStorage.setItem('id',res.data.account.id)
-				window.localStorage.setItem('rem',this.rem)
-				window.localStorage.setItem('u',this.form.username)
-				window.localStorage.setItem('mobile',res.data.account.mobile)
-				if (this.rem) {
-					window.localStorage.setItem('p',this.form.password)
-				}
-				const val = await this.$api.people({id:res.data.account.id,num:1,page:1})
-				const itm = await this.$api.getMenu({
-					page:1,
-					num:1,
-					id:val.data.data.list[0].role,
-				})
-				const obj = JSON.stringify(itm.data.data.list[0])
-				window.localStorage.setItem('menu',obj)
-				this.$Message.success({
-					content: '登录成功，正在跳转!',
-					duration: 0.5,
-					onClose: () => {
-						this.$router.push({
-							name: 'dashboard',
+		return {
+			ladderApi: ladderApi,
+			loading: false,
+			rem: false,
+			vericode:'',
+			identifyCodes: "1234567890",
+			identifyCode: "",
+			form: {
+				username: '',
+				password: '',
+			},
+			rules: {
+				username: [{
+					required: true,
+					message: '请填写用户名',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 4,
+					message: '用户名长度不能小于6位',
+					trigger: 'blur'
+				}],
+				password: [{
+					required: true,
+					message: '请填写密码',
+					trigger: 'blur'
+				},
+				{
+					type: 'string',
+					min: 3,
+					message: '密码长度不能小于6位',
+					trigger: 'blur'
+				}],
+				veri: [{
+					required: true,
+					message: '请填写验证码',
+					trigger: 'blur'
+				},
+	// 		  {
+	// 		    validator: validateOldPassCheck,
+	// 		    required: true,
+	// 		    trigger: 'blur'
+	// 		  }
+				]
+			}
+		}
+	},
+	created(){
+		var rem=window.localStorage.getItem('rem')
+		var u=window.localStorage.getItem('u')
+		if (u != null) {
+			this.form.username=u
+		}
+		if (rem == 'true') {
+			this.rem=tru e
+			var u=window.localStorage.getItem('u')
+			if (u != null) {
+				this.form.username=u
+			}
+			var p=window.localStorage.getItem('p')
+			if (p != null) {
+			  this.form.password=p
+			}
+		}
+	},
+	mounted() {
+		this.identifyCode = "";
+		this.makeCode(this.identifyCodes, 4);
+	},
+	methods: {
+		async login(name) {
+			this.loading = true;
+			this.$refs[name].validate(async (valid) => {
+				if (valid) {
+					let res = await this.$api.login(this.form)
+					if (!res.data.code) {
+						this.loading = false;
+						window.localStorage.setItem('username',res.data.account.username)
+						window.localStorage.setItem('id',res.data.account.id)
+						window.localStorage.setItem('rem',this.rem)
+						window.localStorage.setItem('u',this.form.username)
+						window.localStorage.setItem('mobile',res.data.account.mobile)
+						if (this.rem) {
+							window.localStorage.setItem('p',this.form.password)
+						}
+						const val = await this.$api.people({id:res.data.account.id,num:1,page:1})
+						const itm = await this.$api.getMenu({
+							page:1,
+							num:1,
+							id:val.data.data.list[0].role,
 						})
+						const obj = JSON.stringify(itm.data.data.list[0])
+						window.localStorage.setItem('menu',obj)
+						this.$Message.success({
+							content: '登录成功，正在跳转!',
+							duration: 0.5,
+							onClose: () => {
+								this.$router.push({
+									name: 'dashboard',
+								})
+							}
+						})
+					} else {
+						this.loading = false;
+						this.$Message.error('登录失败!');
 					}
-				})
-          } else {
-            this.loading = false;
-            this.$Message.error('登录失败!');
-          }
-        } else {
-          this.loading = false;
-          this.$Message.error('请完善登录信息!');
-        }
-      })
-    },
+				} else {
+					this.loading = false;
+					this.$Message.error('请完善登录信息!');
+				}
+			})
+		},
 		goRegister(){
 			this.$router.push({
 				name: 'register'
@@ -168,24 +172,20 @@ export default {
 				name: 'reset'
 			})
 		},
-		
-		
-	randomNum(min, max) {
-      return Math.floor(Math.random() * (max - min) + min);
-    },
-    refreshCode() {
-      this.identifyCode = "";
-      this.makeCode(this.identifyCodes, 4);
-    },
-    makeCode(o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
-      }
-    }
-
-		
+		randomNum(min, max) {
+		  return Math.floor(Math.random() * (max - min) + min);
+		},
+		refreshCode() {
+		  this.identifyCode = "";
+		  this.makeCode(this.identifyCodes, 4);
+		},
+		makeCode(o, l) {
+		  for (let i = 0; i < l; i++) {
+			this.identifyCode += this.identifyCodes[
+			  this.randomNum(0, this.identifyCodes.length)
+			];
+		  }
+		}
 	}
 }
 </script>
@@ -198,7 +198,7 @@ export default {
 		background: url('../assets/page.jpg') center center no-repeat;
 		background-size: 100% auto;
 		filter: blur(5px);
-  }
+	}
 	.item{
 		padding-top: 10%;
 	}
@@ -212,15 +212,15 @@ export default {
 		padding-left: 20%;
 	}
 	.account {
-    position: absolute;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: url('../assets/page.jpg') center center no-repeat;
-    background-size: 100% auto;
+		position: absolute;
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		background: url('../assets/page.jpg') center center no-repeat;
+		background-size: 100% auto;
 		.account-title {
 			color: #606266;
 			font-size: 30px;
