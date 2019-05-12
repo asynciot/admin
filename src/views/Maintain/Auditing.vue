@@ -27,7 +27,8 @@
 											Form-item(label="详细说明:")|{{ps}}
 							Col(span=24)
 								Col(span=12 align="center")
-									Button(type="success",icon="plus",@click="adopt")|同意
+									Button(type="success",icon="plus",@click="adopt" v-if="auditing != true" disabled="false")|同意
+									Button(type="success",icon="plus",@click="adopt" v-else)|同意
 								Col(span=12 align='center')
 									Button(icon="close",@click="$router.back(-1)")|取消
 </template>
@@ -50,6 +51,7 @@
 				},
 				file:'',
 				filename:'',
+				auditing:false,
 			}
 		},
 		computed: {

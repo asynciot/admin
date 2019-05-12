@@ -196,31 +196,31 @@
 						this.list.map = 1
 					}else if(item.val==3){
 						this.list.laddermap = 1
-					}else if(item.val==4){
+					}else if(item.val==6){
 						this.list.maintain = 1
 					}else if(item.val==5){
 						this.list.auditinglist = 1
-					}else if(item.val==6){
-						this.list.maintainlist = 1
 					}else if(item.val==7){
-						this.list.event = 1
+						this.list.maintainlist = 1
 					}else if(item.val==8){
-						this.list.allist = 1
+						this.list.event = 1
 					}else if(item.val==9){
-						this.list.evolution = 1
+						this.list.allist = 1
 					}else if(item.val==10){
-						this.list.ladder = 1
+						this.list.evolution = 1
 					}else if(item.val==11){
-						this.list.sys = 1
+						this.list.ladder = 1
 					}else if(item.val==12){
-						this.list.user_manage = 1
+						this.list.sys = 1
 					}else if(item.val==13){
-						this.list.inform = 1
+						this.list.user_manage = 1
 					}else if(item.val==14){
-						this.list.authority = 1
-					}else if(item.val==15){
-						this.list.setting = 1
+						this.list.inform = 1
 					}else if(item.val==16){
+						this.list.authority = 1
+					}else if(item.val==17){
+						this.list.setting = 1
+					}else if(item.val==18){
 						this.list.print = 1
 					}
 				})

@@ -30,7 +30,9 @@ import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import vueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import global from './global'
 
+Vue.prototype.global = global
 Vue.use(vueAwesomeSwiper);
 Vue.component('icon', Icon);
 Vue.use(vuescroll);

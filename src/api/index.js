@@ -79,17 +79,25 @@ export default {
 	portrait:(data)=>{
 		return AccountApi.save({key1:'portrait'},data)
 	},
+	
+	//role
 	newMenu:(data)=>{
 		return AccountApi.save({key1:'addMenu'},data)
 	},
 	getMenu:(data)=>{
 		return AccountApi.query(Object.assign({key1:'Menu'},data))
 	},
+	updateMenu:(data) => {
+		return AccountApi.update({key1:'Menu',key2:'update'}, data)
+	},
 	newFunction:(data)=>{
 		return AccountApi.save({key1:'addFunction'},data)
 	},
 	getFunction:(data)=>{
 		return AccountApi.query(Object.assign({key1:'Function'},data))
+	},
+	updateFunction:(data) => {
+		return AccountApi.update({key1:'Function',key2:'update'}, data)
 	},
 	newRole:(data)=>{
 		return AccountApi.save({key1:'addRole'},data)
@@ -99,6 +107,9 @@ export default {
 	},
 	confer:(data)=>{
 		return AccountApi.save({key1:'Confer'},data)
+	},
+	delRole: (data) => {
+		return AccountApi.remove(Object.assign({key1:'delete'},data))
 	},
 	//Device
 	alert: (data) => {

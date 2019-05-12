@@ -40,14 +40,15 @@
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))" ,:disabled='upsuccess')|完成工单
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(sent))" disabled)|完成工单
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch!= true))" disabled='false')|完成工单
+								Button(type="success",@click="finish('finish')" v-else)|完成工单
 							Col(span=6 align="center")
-								Button(type="primary",@click="examine()",:disabled='upsuccess')|请求搁置
+								Button(type="primary",@click="examine()",v-if="dispatch != true" disabled='false')|请求搁置
+								Button(type="primary",@click="examine()",v-else)|请求搁置
 							Col(span=6 align="center")
 								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))" ,:disabled='upsuccess')|转办
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(sent))" disabled)|转办
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch != true))" disabled='false')|转办
+								Button(type="warning",@click="finish('transfer')" v-else)|转办
 							Col(span=6 align='center')
 								Button(@click="$router.back(-1)")|取消
 </template>
@@ -84,8 +85,8 @@
 				},
 				file:'',
 				filename:'',
-				upsuccess:false,
 				ps:'',
+				dispatch:this.global.functions.work_dispatch,
 			}
 		},
 		computed: {
@@ -95,9 +96,6 @@
 		},
 		created(){
 			this.getData();
-			if(this.username=="demo"){
-				this.upsuccess = true 
-			}
 		},
 		methods:{
 			code(){

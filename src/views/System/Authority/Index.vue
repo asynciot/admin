@@ -11,7 +11,9 @@ div.layout-content-main
 							Option(key="3" label="普通用户" value="all")
 							Option(key="4" label="超级管理员" value="all")
 					Col(span="17")
-						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goRole()")|添加角色
+						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="newRole()" v-if="newRoles!=true" disabled="false")|添加角色
+						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="newRole()" v-else)|添加角色
+						Button.mr-10(type="primary",:loading="loading",@click="goRole()")|角色管理
 					Col(span="5")
 						Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")
 						Input(v-model="options.username",placeholder="请输入搜索内容" style="width:75%;")
@@ -35,6 +37,8 @@ export default {
 				num: 10,
 				total: 0
 			},
+			newRoles:this.global.functions.new_roles,
+			roles:this.global.functions.assign_roles,
 			column: [
 				{
 					title: '用户名称',
@@ -76,7 +80,8 @@ export default {
 							h('Button', {
 								props: {
 									type: 'primary',
-									size: 'small'
+									size: 'small',
+									disabled:this.roles != true,
 								},
 								style: {
 									marginRight: '5px'
@@ -126,6 +131,11 @@ export default {
 			}
 		},
 		goRole(){
+			this.$router.push({
+				name: 'role',
+			})
+		},
+		newRole(){
 			this.$router.push({
 				name: 'addrole',
 			})

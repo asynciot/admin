@@ -56,10 +56,10 @@ export default {
 	  vericode:'',
 	  identifyCodes: "1234567890",
       identifyCode: "",
-      form: {
-        username: '',
-        password: '',
-			},
+		form: {
+			username: '',
+			password: '',
+		},
       rules: {
         username: [{
             required: true,
@@ -120,26 +120,34 @@ export default {
       this.loading = true;
       this.$refs[name].validate(async (valid) => {
         if (valid) {
-					let res = await this.$api.login(this.form)
-          if (!res.data.code) {
-            this.loading = false;
-						window.localStorage.setItem('username',res.data.account.username)
-						window.localStorage.setItem('id',res.data.account.id)
-						window.localStorage.setItem('rem',this.rem)
-						window.localStorage.setItem('u',this.form.username)
-						window.localStorage.setItem('mobile',res.data.account.mobile)
-						if (this.rem) {
-							window.localStorage.setItem('p',this.form.password)
-						}
-						this.$Message.success({
-							content: '登录成功，正在跳转!',
-							duration: 0.5,
-							onClose: () => {
-								this.$router.push({
-									name: 'dashboard',
-								})
-							}
+			let res = await this.$api.login(this.form)
+			if (!res.data.code) {
+				this.loading = false;
+				window.localStorage.setItem('username',res.data.account.username)
+				window.localStorage.setItem('id',res.data.account.id)
+				window.localStorage.setItem('rem',this.rem)
+				window.localStorage.setItem('u',this.form.username)
+				window.localStorage.setItem('mobile',res.data.account.mobile)
+				if (this.rem) {
+					window.localStorage.setItem('p',this.form.password)
+				}
+				const val = await this.$api.people({id:res.data.account.id,num:1,page:1})
+				const itm = await this.$api.getMenu({
+					page:1,
+					num:1,
+					id:val.data.data.list[0].role,
+				})
+				const obj = JSON.stringify(itm.data.data.list[0])
+				window.localStorage.setItem('menu',obj)
+				this.$Message.success({
+					content: '登录成功，正在跳转!',
+					duration: 0.5,
+					onClose: () => {
+						this.$router.push({
+							name: 'dashboard',
 						})
+					}
+				})
           } else {
             this.loading = false;
             this.$Message.error('登录失败!');

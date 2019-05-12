@@ -123,13 +123,15 @@ div
 						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 100%")|注册中
 				Col(span=24)
 					Col(span=12)
-						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='!sent' ,:disabled='upsuccess')|提交信息
-						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='sent' disabled)|提交信息
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='(!sent)&&(updevices!=true)' disabled='false')|提交信息
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-else)|提交信息
 					Col(span=11)
-						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|信息重置
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" v-if='(!sent)&&(rmdevices!=true)' disabled='false')|信息重置
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" v-else)|信息重置
 				Col(span=24)
 					Col(span=12)
-						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%")|新建电梯
+						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-if='(addladder!=true)' disabled='false')|新建电梯
+						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-else)|新建电梯
 					Col(span=12)
 						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|绑定到已有电梯
 	el-dialog(title="历史故障", :visible.sync="history" width="50%")
@@ -166,7 +168,7 @@ export default {
 					title: '工单编号',
 					key: 'order_id',
 					width:90,
-					render: (h, params) =>
+					render: (h, params) => {
 						h('div',[
 							h('Button', {
 								props: {
@@ -188,7 +190,8 @@ export default {
 									}
 								}
 							}, params.row.order_id)],
-							)
+						)
+					}
 				},{
 					title: '维保人员电话',
 					key: 'phone',
@@ -251,8 +254,9 @@ export default {
 			sign:'',
 			maintain:[],
 			loading: false,
-			username:window.localStorage.getItem('username'),
-			upsuccess:false,
+			updevices:this.global.functions.update_devices,
+			rmdevices:this.global.functions.rem_devices,
+			addladder:this.global.functions.new_ladder,
 			columns: [
 			{
 				title: '设备类型',
@@ -270,7 +274,6 @@ export default {
 			this.upsuccess = true 
 		}
 	},
-
 	methods: {
 		pageChange(val) {
 			this.fault.page = val
@@ -280,25 +283,24 @@ export default {
 			this.fault.device_id=this.list.device_id
 			let res = await this.$api.getRepair(this.fault)
 			var length=res.data.data.list.length
-			var ech
-				if (res.data.code === 0) {
-					for (var i=0;i<length;i++) {
-						ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1}),
-						res.data.data.list[i].device_name = ech.data.data.list[0].device_name
-						res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
-						res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
-						res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
-						res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-					}
-					this.data = res.data.data.list
-					this.total = res.data.data.totalNumber
-				} else {
-					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
-					});
+			if (res.data.code === 0) {
+				for (var i=0;i<length;i++) {
+					const ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1})
+					res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+					res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+					res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
+					res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
+					res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
 				}
-			},
+				this.data = res.data.data.list
+				this.total = res.data.data.totalNumber
+			} else {
+				this.$Notice.error({
+					title: '错误',
+					desc: '获取列表失败'
+				});
+			}
+		},
 		async update(){
 			this.sent=true
 			if(this.options.maintenance_nexttime!=null){
@@ -353,8 +355,9 @@ export default {
 						time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
 						if(time == 0){
 							this.parameter.reporttime=''
+						}else {
+							this.parameter.reporttime=new Date(time*1000+1262275200000)
 						}
-						else {this.parameter.reporttime=new Date(time*1000+1262275200000)}
 						this.parameter.rssi=buffer[4]
 						this.parameter.wavenumber=buffer[14]*256+buffer[15]
 						this.parameter.waveid=buffer[16]*256+buffer[17]
@@ -363,19 +366,24 @@ export default {
 			}
 			if (this.list.device_type == 240) {
 				run.data.data.list.forEach(item=>{
-					if (item.type == 8192) {
+					if(item.type == 8192) {
 						buffer = base64url.toBuffer(item.data)
 						time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
-						if (time == 0) {this.parameter.reporttime=''} 
-						else {this.parameter.reporttime=new Date(time*1000+1262275200000)}
+						if(time == 0){
+							this.parameter.reporttime=''
+						}else {
+							this.parameter.reporttime=new Date(time*1000+1262275200000)
+						}
 						time=buffer[20]*16777216+buffer[21]*65536+buffer[22]*256+buffer[23]
-						if (time == 0) {this.parameter.faulttime=''} 
-						else {this.parameter.faulttime=new Date(time*1000+1262275200000)}
+						if(time == 0) {
+							this.parameter.faulttime=''
+						}else {
+							this.parameter.faulttime=new Date(time*1000+1262275200000)
+						}
 						this.parameter.rssi=buffer[4]
 						this.parameter.runcount=buffer[10]*16777216+buffer[11]*65536+buffer[12]*256+buffer[13]
 						this.parameter.uptime=buffer[14]*16777216+buffer[15]*65536+buffer[16]*256+buffer[17]
 						this.parameter.faultfloor=buffer[19]
-
 					}
 				})
 			}
@@ -393,7 +401,7 @@ export default {
 					if (getcolor[i]==this.col[j]) {
 						this.color[j]=true
 						document.getElementById(this.col[j]).className="fa fa-bookmark fa-2x"
-						}
+					}
 				}
 			}
 		},
@@ -401,8 +409,7 @@ export default {
 			this.color[c]=!this.color[c]
 			if (this.color[c]) {
 				document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
-			}
-			else {
+			}else {
 				document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
 			}
 			this.list.tagcolor=''
@@ -410,14 +417,10 @@ export default {
 				if (this.color[i]) {
 					if (this.list.tagcolor!='') {
 						this.list.tagcolor=this.list.tagcolor+';'
-						}
+					}
 					this.list.tagcolor=this.list.tagcolor+this.col[i]
 				}
 			}
-			// let res = await this.$api.setdevices(this.list)
-		},
-		getlist(val){
-			return val.split(';')
 		},
 		newladder(){
 			this.$Modal.confirm({
@@ -449,7 +452,6 @@ export default {
 					})
 				},
 				onCancel: () => {
-					
 				}
 			})
 		},
@@ -473,7 +475,7 @@ export default {
 				},
 				onCancel: () => {
 				}
-			})	
+			})
 		},
 		clearr() {
 			this.$Modal.confirm({
@@ -525,7 +527,7 @@ export default {
 					title: '成功',
 					desc: '开始注册！稍后在运维界面显示该设备'
 				});
-			} else {
+			}else {
 				let ress=await this.$api.setdevices
 				({id: this.list.id,IMEI: this.list.IMEI,isreg: True})
 				if (ress.data.code === 0){
@@ -533,12 +535,12 @@ export default {
 						title: '成功',
 						desc: '注册异常，但已将该设备标为注册'
 					});
-				} else {
-						this.list.commond = "ok"
-						this.$Notice.error({
-							title: '错误',
-							desc: '注册失败'
-						});
+				}else {
+					this.list.commond = "ok"
+					this.$Notice.error({
+						title: '错误',
+						desc: '注册失败'
+					});
 				}
 			}
 		},
@@ -550,7 +552,7 @@ export default {
 					desc: '开始清除'
 				});
 				this.list.commond = "contract"
-			}  else {
+			}else {
 				this.list.commond = "ok"
 				this.$Notice.error({
 					title: '错误',
@@ -566,7 +568,7 @@ export default {
 					desc: '开始清除'
 				});
 				this.list.commond = "contract"
-			}  else {
+			}else {
 				let ress=await this.$api.setdevices({id: this.list.id,IMEI: this.list.IMEI,IMSI: this.list.IMSI,isreg: False})
 				if (ress.data.code === 0){
 					this.list.commond = "contract"
@@ -574,7 +576,7 @@ export default {
 						title: '成功',
 						desc: '清除异常，但已将该设备标为未注册'
 					});
-				} else {
+				}else {
 						this.list.commond = "ok"
 						this.$Notice.error({
 							title: '错误',
@@ -602,7 +604,7 @@ export default {
 					desc: '已经删除此设备'
 				});
 				this.$router.back(-1)
-			} else {
+			}else {
 					this.$Notice.error({
 						title: '错误',
 						desc: '删除失败'

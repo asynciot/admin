@@ -70,7 +70,6 @@
 	export default {
 		data() {
 			return {
-				username:window.localStorage.getItem('username'),
 				ctrl: false,
 				door: false,
 				last: true,
@@ -80,6 +79,7 @@
 				data: [],
 				data2:[],
 				counter:0,
+				orders:this.global.functions.work_order,
 				show: {
 					state: 'untreated',
 					type: 'all',
@@ -222,14 +222,13 @@
 									props: {
 										type: 'primary',
 										size: "small",
-										disabled: (params.row.state != 'untreated' ||this.username == "demo"),
+										disabled: ((params.row.state != 'untreated')||(this.orders != true)),
 									},
 									style: {
 										marginRight: '10px',
 									},
 									on: {
 										click: () => {
-											// this.order(params.row)
 											this.$router.push({
 												name: 'order',
 												params: {
