@@ -17,22 +17,22 @@
 						</div>
 					</template>
 					<template v-for="item in menu" v-if="!item.sub" >
-						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}" v-if="item.key">
-							<i :key="item.name" :class="item.icon" size="16" ></i>
-							{{$t(isCollapsed?'':item.label)}}
+						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}" v-if="item.key" style="font-size:13px">
+							<i :key="item.name" :class="item.icon" size="16" style="margin-left: -15px;"></i>
+							{{$t(isCollapsed?'':item.label.toString())}}
 						</MenuItem >
 					</template>
 					<template v-else>
-						<Submenu :name="item.name" v-if="item.key">
+						<Submenu :name="item.name" v-if="item.key" style="font-size:13px">
 							<template slot="title" >
-								<i :key="item.name" :class="item.icon" size="16"></i>
+								<i :key="item.name" :class="item.icon" size="16" style="margin-left: -15px;"></i>
 								<Badge v-if="item.count" :count="item.count" class-name="badge-sub-alone" :dot="true">
-									{{isCollapsed?'':item.label}}
+									{{$t(isCollapsed?'':item.label.toString())}}
 								</Badge>
-								<i v-else>{{isCollapsed?'':item.label}}</i>
+								<i v-else>{{$t(isCollapsed?'':item.label.toString())}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="sub.key">
-								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{sub.label}}</Badge>
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="sub.key" style="margin-left:-7px;font-size:13px">
+								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{$t(sub.label.toString())}}</Badge>
 							</Menu-item>
 						</Submenu>
 					</template>
@@ -71,16 +71,16 @@
 									</Col>
 								</Button>
 								<Dropdown-menu slot="list">
-									<Dropdown-item :name="4">个人信息</Dropdown-item>
-									<Dropdown-item :name="6">修改密码</Dropdown-item>
-									<Dropdown-item :name="5">微信关注</Dropdown-item>
-									<Dropdown-item :name="3">退出</Dropdown-item>
+									<Dropdown-item :name="4">{{$t("Personal Information")}}</Dropdown-item>
+									<Dropdown-item :name="6">{{$t("Change Password")}}</Dropdown-item>
+									<Dropdown-item :name="5">{{$t("WeChat Follow")}}</Dropdown-item>
+									<Dropdown-item :name="3">{{$t("Logout")}}</Dropdown-item>
 								</Dropdown-menu>
 							</Dropdown>
 						</Col>
 						<Col span="1" style="">
 							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;" size="small" @click="fullscreen()">
-								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;全屏</div>
+								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;{{$t("fullscreen")}}</div>
 							</Button>
 						</Col>
 					</Row>
@@ -98,7 +98,7 @@
 					</Col>
 					<Col span='2' v-if='quit' @mouseout="show(2)" style="cursor: pointer;">
 						<div @mouseout="show(2)">
-							<icon name="quit" width="10" height="10" slot="prepend" ></icon> 退出全屏
+							<icon name="quit" width="10" height="10" slot="prepend" ></icon> {{$t("quit")}}
 						</div>
 					</Col>
 				</div>
@@ -177,15 +177,15 @@
 				},{
 					name: 'menu',
 					icon: 'fa fa-map-o',
-					label: '运行监控',
+					label: 'Operation Monitor',
 					key:false,
 					sub:[{
 						name:'map',
-						label:'运行状态',
+						label:'Operation State',
 						key:false,
 					},{
 						name:'laddermap',
-						label:'电梯状态',
+						label:'Devices State',
 						key:false,
 					},
 					]
@@ -193,35 +193,35 @@
 				{
 					name: 'maintain',
 					icon: 'fa fa-cogs',
-					label: '工作流',
+					label: 'Work Flow',
 					key:false,
 					sub: [{
 						name: 'auditinglist',
-						label: '审核列表',
+						label: 'Examine List',
 						key:false,
 					},{
 						name: 'maintain',
-						label: '工单列表',
+						label: 'Order List',
 						key:false,
 					},
 					{
 						name: 'maintainList',
-						label: '维保信息',
+						label: 'Dispatch List',
 						key:false,
 					},
 					],
 				},{
 					name: 'event',
 					icon: 'fa fa-list-alt',
-					label: '基础信息维护',
+					label: 'Basic Information',
 					key:false,
 					sub: [{
 						name: 'alList',
-						label: '设备信息',
+						label: 'Devices Information',
 						key:false,
 					},{
 						name:'evolution',
-						label:'固件更新',
+						label:'Firmware Update',
 						key:false,
 					},{
 						name:'ladder',
@@ -240,34 +240,34 @@
 				},{
 					name: 'system',
 					icon: 'fa fa-address-card-o',
-					label: '系统管理',
+					label: 'System',
 					key:true,
 					sub:[{
 						name: 'userManage',
-						label: '用户管理',
+						label: 'User Management',
 						key:false,
 					},{
 						name: 'inform',
-						label: '通知记录',
+						label: 'Notification Record',
 						key:false,
 					},{
 						name: 'instructions',
-						label: '说明文档',
+						label: 'Instructions',
 						key:true,
 					},{
 						name: 'authority',
-						label: '权限管理',
+						label: 'Permission Assignment',
 						key:false,
 					}]
 				},{
 					name: 'setting',
 					icon: 'fa fa-cog',
-					label: '出厂设置',
+					label: 'Default Setting',
 					key:false,
 					sub:[{
 						name:'print',
 						key:false,
-						label:'打印二维码'
+						label:'Print QR Code'
 					}]
 				},],
 				menus:{},
@@ -335,6 +335,8 @@
 			this.screenwidth=document.documentElement.clientWidth*1
 			this.getportrait()
 			this.getFunction()
+			var _this=this
+
 		},
 		methods: {
 			getMenu(){
@@ -624,7 +626,6 @@
 	.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
 		// color: #39f;
 	}
-
 	.submenu {
 		padding: 8px 24px;
 	}

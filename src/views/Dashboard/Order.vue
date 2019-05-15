@@ -112,14 +112,14 @@
 				test1.resize()
 				test1.setOption({
 					title: {
-						text: '故障数量对比',
-						subtext: '次数'
+						text: this.$t('fault trend'),
+						subtext: this.$t('times')
 					},
 					tooltip: {
 						trigger: 'axis'
 					},
 					legend: {
-						data: ['本周故障数量', '上周故障数量'],
+						data: [ this.$t('this week') , this.$t('last week')],
 						 textStyle: {
 						//                             color: '#333333',
 						                            fontSize:16
@@ -128,7 +128,7 @@
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+						data: [this.$t('Mon'), this.$t('Tue'), this.$t('Wed'), this.$t('Thu'), this.$t('Fri'), this.$t('Sat'), this.$t('Sun')],
 						axisLabel: {
 		                        textStyle: {
 		//                             color: '#333333',
@@ -140,14 +140,14 @@
 						type: 'value',
 					},
 					series: [{
-						name: '本周故障数量',
+						name: this.$t('this week'),
 						type: 'line',
 						data: [this.list.monday, this.list.thursday, this.list.wensday,this.list.thursday,
 						this.list.friday,this.list.saturday,this.list.sunday,],
 						markPoint: {
 							data: [
-								{type: 'max', name: '最大值'},
-								{type: 'min', name: '最小值'}
+								{type: 'max', name: this.$t('max')},
+								{type: 'min', name: this.$t('min')}
 							]
 						},
 						itemStyle : {
@@ -160,14 +160,14 @@
 						},
 					},
 					{
-						name: '上周故障数量',
+						name: this.$t('last week'),
 						type: 'line',
 						data: [this.Lastlist.monday, this.Lastlist.tuesday, this.Lastlist.wensday, this.Lastlist.thursday,
 						this.Lastlist.friday, this.Lastlist.saturday, this.Lastlist.sunday],
 						markPoint: {
 							data: [
-								{type: 'max', name: '最大值'},
-								{type: 'min', name: '最小值'}
+								{type: 'max', name: this.$t('max')},
+								{type: 'min', name: this.$t('min')}
 							]
 						},
 						itemStyle : {

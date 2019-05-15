@@ -1,13 +1,14 @@
 <template>
 	<div class="wrapper layout-content-main" style="background:#f5f3f0;padding:0;overflow-y: scroll;" id="lay">
-		<Drawer title="显示内容" :closable="false" v-model="value1" width="10">
-			<div><Checkbox @on-change='showpanel("map",map)' v-model="map">设备定位</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("chat",chat)' v-model="chat">客户意见反馈</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("progress",progress)' v-model="progress">故障处理进程</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("chart",chart)' v-model="chart">业务图表</Checkbox></div>
+		<Drawer :title="$t('Content Selection')" :closable="false" v-model="value1" width="10">
+			<div><Checkbox @on-change='showpanel("map",map)' v-model="map">{{$t("Devices Location")}}</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chat",chat)' v-model="chat">{{$t("Feedback")}}</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("progress",progress)' v-model="progress">{{$t("Treating Progress")}}</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart",chart)' v-model="chart">{{$t("Achievement Chart")}}</Checkbox></div>
 			<!-- <div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div> -->
-			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">常见故障</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">发送邮件</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">{{$t("Common Faults")}}</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("chart4",chart4)' v-model="chart4">{{$t("Active Devices")}}</Checkbox></div>
+			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">{{$t("Notice")}}</Checkbox></div>
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
@@ -20,7 +21,7 @@
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center; padding:4px" >
 								<div :style="'font-size:'+setheight[0]/2.3+'px'" style='font-weight: bold;' id="font11">{{allevents}}</div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font21">故障设备</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font21">{{$t("Fault Devices")}}</p>
 							</div>
 
 							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
@@ -32,7 +33,7 @@
 						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center; padding:4px">
 								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font12" style='font-weight: bold;'>{{0}}<sup style="font-size: 20px"></sup></div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font22">可更新固件数</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font22">{{$t("Updateable Firmware")}}</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
@@ -48,7 +49,7 @@
 						<div class="small-box bg-yellow">
 							<div class="inner" style="text-align:center; padding:4px">
 								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font13" style='font-weight: bold;'>{{today}}</div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font23">今日完成任务</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font23">{{$t("Tasks Completed Today")}}</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
@@ -64,7 +65,7 @@
 						<div class="small-box bg-green">
 							<div class="inner" style="text-align:center; padding:4px">
 								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font14" style='font-weight: bold;' v-if="shine">{{onlinedevice}}/{{alldevice}}</div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font24">在线设备数 {{parseInt(100*onlinedevice/alldevice)}}%</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font24">{{$t("Tasks Completed Today")}} {{parseInt(100*onlinedevice/alldevice)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
@@ -94,7 +95,7 @@
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('mapwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',1)"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',2)"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('mapwidth')" @click.native="widthblock3('mapwidth',3)"></Card>
@@ -110,7 +111,7 @@
 
 							  <i class="fa fa-map-marker"></i>
 							  <h3 class="box-title" v-if="text0">
-								设备定位
+								{{$t("Devices Location")}}
 							  </h3>
 							</div>
 							<transition name="bounce">
@@ -134,7 +135,7 @@
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chatwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',1)"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',2)"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chatwidth')" @click.native="widthblock3('chatwidth',3)"></Card>
@@ -150,7 +151,7 @@
 							
 							  <i class="fa fa-comments-o"></i>
 							  <h3 class="box-title" v-if="text1">
-								客户意见反馈
+								{{$t("Feedback")}}
 							  </h3>
 							</div>
 							<transition name="bounce">
@@ -167,15 +168,15 @@
 											</a>
 											<div style="display: inline-block;width:95%;margin-top:5px">
 											<Col span='1'>&nbsp;</Col>
-											<Col span='6'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.create_time}}</Col>
-											<Col span='3'><Button type="text" @click="recall(item.id)" v-if="item.from_id">撤回</Button>&nbsp;</Col>
+											<Col span='5'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{item.create_time}}</Col>
+											<Col span='4'><Button type="text" @click="recall(item.id)" v-if="item.from_id">{{$t("withdraw")}}</Button>&nbsp;</Col>
 											<Col span='7'>
-												<Button type="text" @click="item.showlist=true" v-if="!item.showlist" style="outline: none;">共{{item.followlist.length}}条回复</Button>
-												<Button type="text" @click="item.showlist=false" v-if="item.showlist">隐藏回复</Button>
+												<Button type="text" @click="item.showlist=true" v-if="!item.showlist" style="outline: none;">{{item.followlist.length}}{{$t("replies")}}</Button>
+												<Button type="text" @click="item.showlist=false" v-if="item.showlist">{{$t("hidden reply")}}</Button>
 											</Col>
 											<Col span='7'>
-												<Button type="text" @click="reply='回复'+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id" style="outline: none;">回复本条</Button>
-												<Button type="text" @click="reply='请留下您的疑问和建议 ...';chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">新加留言</Button>
+												<Button type="text" @click="reply=$t('respond ')+item.username+':';chatoptions.follow=item.id;chatoptions.content=''" v-if="chatoptions.follow!=item.id" style="outline: none;">{{$t("respond here")}}</Button>
+												<Button type="text" @click="reply=$t('Please leave your questions and suggestions');chatoptions.follow=-1;chatoptions.content=''" v-if="chatoptions.follow==item.id" style="color:#FF2C00">{{$t("new message")}}</Button>
 											</Col>
 											</div>
 										</p>
@@ -184,7 +185,7 @@
 											<h4 style="white-space:normal;word-break:break-all;word-wrap:break-word;display: inline-block;">{{follow.content}}</h4>
 											<div>
 												<Col span='15'>&nbsp;</Col>
-												<Col span='4'><Button type="text" @click="recall(follow.id)" v-if="follow.from_id">撤回</Button>&nbsp;</Col>
+												<Col span='4'><Button type="text" @click="recall(follow.id)" v-if="follow.from_id">{{$t("withdraw")}}</Button>&nbsp;</Col>
 												<Col span='5'><i class="fa fa-clock-o" style='margin-top: 10px;'></i>&nbsp;{{follow.create_time}}</Col>
 											</div>
 										</div>
@@ -207,8 +208,8 @@
 										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
 										<Col span='6'>
 										<span class="input-group-btn" style="width: 100%">
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">回复</button>
-											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">留言</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">{{$t("respond")}}</button>
+											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow==-1" :disabled="btn2" style="height:40px;width:100%">{{$t("message")}}</button>
 										</span>
 										</Col>
 									</div>
@@ -223,13 +224,13 @@
 						<div class="box box-primary" v-if="progress" >
 							<div class="box-header">
 								<i class="fa fa-hourglass-2"></i>
-								<h3 class="box-title" v-if="text2">故障电梯处理进程</h3>
+								<h3 class="box-title" v-if="text2">{{$t("Treating Progress")}}</h3>
 								<div class="pull-right box-tools">
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('progresswidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',1)"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',2)"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('progresswidth')" @click.native="widthblock3('progresswidth',3)"></Card>
@@ -246,30 +247,30 @@
 							<!-- /.box-header -->
 							<transition name="bounce">
 							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/2.55+'px'">
-								<Select class="smr" v-model="prostate" style="width:100%;" placeholder="进度" @on-change="getprogress(1)">
-									<Option key="6" label="全部" value="6"></Option>
-									<Option key="1" label="等待接单" value="1"></Option>
-									<Option key="2" label="批准工单中" value="2"></Option>
-									<Option key="3" label="处理中" value="3"></Option>
-									<Option key="4" label="等待签字确认" value="4"></Option>
-									<Option key="5" label="存入档案" value="5"></Option>
+								<Select class="smr" v-model="prostate" style="width:100%;" :placeholder="$t('progress')" @on-change="getprogress(1)">
+									<Option key="6" :label="$t('all')" value="6"></Option>
+									<Option key="1" :label="$t('untreated')" value="1"></Option>
+									<Option key="2" :label="$t('examine order')" value="2"></Option>
+									<Option key="3" :label="$t('treating')" value="3"></Option>
+									<Option key="4" :label="$t('examine finished')" value="4"></Option>
+									<Option key="5" :label="$t('stored')" value="5"></Option>
 								</Select>
 								<Scroll :on-reach-bottom='handleReachBottom2' :distance-to-edge="0" style="margin-top: 5px;width:101%" :height="screenheight/2.55-55">
 								<ul class="todo-list" style=" padding:3">
 									<div v-for="item in todo" :style="'font-size:'+screenheight/54+'px'" style="">
 										<Col span='24'> 
-											<span class="text">设备：{{item.pro}}</span>
+											<span class="text">{{$t('device')}}：{{item.pro}}</span>
 											<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										</Col>
 										<div>
-											<Col span='24' v-if="item.type=='240'">故障代码：E{{item.description}}{{codelist[item.description]}}</Col>
-											<Col span='24' v-if="item.type=='15'">故障代码：E{{item.description}}{{codelist2[parseInt(Math.log2(item.description))]}}</Col>
+											<Col span='24' v-if="item.type=='240'">{{$t('fault code')}}：E{{item.description}}{{codelist[item.description]}}</Col>
+											<Col span='24' v-if="item.type=='15'">{{$t('fault code')}}：E{{item.description}}{{codelist2[parseInt(Math.log2(item.description))]}}</Col>
 										</div>
 										<div>
-											<Col span='24'>安装地址：{{item.addr}}</Col> 
+											<Col span='24'>{{$t('install address')}}：{{item.addr}}</Col> 
 										</div>
-										<Col span='3' style="margin-bottom: 10px;display: inline-block;" :style="'min-width:'+screenwidth/18+'px;'">处理进度：</Col>
-										<Col span='21' style="margin-bottom: 10px;display: inline-block;" :style="">
+										<Col span='3' style="margin-bottom: 10px;display: inline-block;" :style="'min-width:'+screenwidth/18+'px;'">{{$t('progress')}}：</Col>
+										<Col span='18' style="margin-bottom: 10px;display: inline-block;" :style="">
 											<Col span='20' @mouseenter.native="barword=item.num;" @mouseleave.native="barword='';">
 												<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" v-if="item.progress =='100%'" >
 													<div :style="'font-size:'+screenheight/54+'px'" v-if="barword==item.num" style="position: absolute;left:45%;color:#ffffff"> {{item.state}} </div>
@@ -313,14 +314,14 @@
 							<div class="box-header">
 								<i class="fa fa-th"></i>
 
-								<h3 class="box-title" v-if="text3">业务图表</h3>
+								<h3 class="box-title" v-if="text3">{{$t("Achievement Chart")}}</h3>
 								
 								<div class="box-tools pull-right">
 									<div class="btn-group" style="margin-right: 5px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
-											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+											<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',1);chartwidth()"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',2);chartwidth()"></Card>
 											<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth')" @click.native="widthblock3('chartwidth',3);chartwidth()"></Card>
@@ -379,7 +380,7 @@
 											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth2')">
 												<i class="fa fa-bars"></i></button>
 											<div class="dropdown-menu pull-right" role="menu">
-												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',1);chartwidth()"></Card>
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',2);chartwidth()"></Card>
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth2')" @click.native="widthblock3('chartwidth2',3);chartwidth()"></Card>
@@ -408,14 +409,14 @@
 								<div class="box-header">
 									<i class="fa fa-envelope"></i>
 							
-									<h3 class="box-title" v-if="text5">发送邮件</h3>
+									<h3 class="box-title" v-if="text5">{{$t("Notice")}}</h3>
 									<!-- tools box -->
 									<div class="pull-right box-tools">
 										<div class="btn-group" style="margin-right: 5px;">
 											<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('emailwidth')">
 												<i class="fa fa-bars"></i></button>
 											<div class="dropdown-menu pull-right" role="menu">
-												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+												<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',1)"></Card>
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',2)"></Card>
 												<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('emailwidth')" @click.native="widthblock3('emailwidth',3)"></Card>
@@ -435,13 +436,13 @@
 								<div class="box-body" v-if="emailbody" :style="'height:'+screenheight/2.55+'px'">
 									<form action="#" method="post">
 										<div class="form-group">
-											<input type="email" class="form-control" name="emailto" placeholder="发送给:" v-model="options.toId" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
+											<input type="email" class="form-control" name="emailto" :placeholder="$t('Send to:')" v-model="options.toId" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
 										</div>
 										<div class="form-group">
-											<input type="text" class="form-control" name="subject" placeholder="标题" v-model="options.title" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
+											<input type="text" class="form-control" name="subject" :placeholder="$t('title')" v-model="options.title" :style="'height:'+screenheight/25+'px;font-size:'+screenheight/40+'px'">
 										</div>
 										<div>
-											<textarea class="textarea" placeholder="内容" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/6+'px;font-size:'+screenheight/50+'px'"></textarea>
+											<textarea class="textarea" :placeholder="$t('content')" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/6+'px;font-size:'+screenheight/50+'px'"></textarea>
 										</div>
 										<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
 											<i class="fa fa-arrow-circle-right"></i></button>
@@ -455,13 +456,13 @@
 								<div class="box box-primary" v-if="chart3">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
-										<h3 class="box-title" v-if="text6">常见故障</h3>
+										<h3 class="box-title" v-if="text6">{{$t("Common Faults")}}</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
 													<i class="fa fa-bars"></i></button>
 												<div class="dropdown-menu pull-right" role="menu">
-													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',1);chartwidth()"></Card>
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',2);chartwidth()"></Card>
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth3')" @click.native="widthblock3('chartwidth3',3);chartwidth()"></Card>
@@ -493,13 +494,13 @@
 								<div class="box box-primary" v-if="chart4">
 									<div class="box-header">
 										<i class="fa fa-th"></i>
-										<h3 class="box-title" v-if="text7">活跃设备</h3>
+										<h3 class="box-title" v-if="text7">{{$t("Active Devices")}}</h3>
 										<div class="box-tools pull-right">
 											<div class="btn-group" style="margin-right: 5px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
 													<i class="fa fa-bars"></i></button>
 												<div class="dropdown-menu pull-right" role="menu">
-													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">大小：</div>
+													<div style="display: inline-block; font-size:smaller;height:20px;margin-left:5px">{{$t('size')}}：</div>
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size1" @mouseover.native="widthblock2(1)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',1);chartwidth()"></Card>
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size2" @mouseover.native="widthblock2(2)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',2);chartwidth()"></Card>
 													<Card style="height:20px;width:20px;cursor: pointer;display: inline-block;border-radius:0;" :style="'background:'+size3" @mouseover.native="widthblock2(3)" @mouseout.native="widthblock1('chartwidth4')" @click.native="widthblock3('chartwidth4',3);chartwidth()"></Card>
@@ -663,7 +664,7 @@
 				progresspage:0,
 				prostate:'6',
 				chatbottom:false,
-				reply:'请留下您的疑问和建议 ...',
+				reply:'',
 				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
 						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
 						'抱闸接触器故障','封星继电器故障','抱闸开关故障','运行中安全回路断开','运行中门锁断开',
@@ -738,13 +739,8 @@
 		  evt.returnValue = false;  
 	  }  
 	  return false;  
-	}  
-	// window.onload=disabledMouseWheel; 
-	// window.onload=MouseWheel;
-// 	setTimeout(() => {
-// 		window.onload=MouseWheel;
-// 		alert(1)
-// 	},5000)
+	}
+		this.reply=this.$t('Please leave your questions and suggestions')
 		},
 		methods: {
 			selfadaption(){
