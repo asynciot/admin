@@ -77,6 +77,7 @@
 	export default {
 		data () {
 			return {
+				menuss:[],
 				menus:[],
 				list:{
 					name:"",
