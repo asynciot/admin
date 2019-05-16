@@ -3,30 +3,30 @@ div
 	Row(:gutter=20)
 		Col(span=22)
 			Tabs.pd-heard(value="name1",:animated="false",@on-click="Onchange")
-				TabPane(label="地图",name="map")
-				TabPane(label="列表",name="list")
+				TabPane(:label="$t('Map')",name="map")
+				TabPane(:label="$t('List')",name="list")
 		Col(span=2)
 			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
 	div(v-if="div_show" id="serClick" style="margin-top:-30px")
 		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=5)
 				Col(span=2)
-					Select.smr(v-model="show.device_type" style="width:100%" placeholder="类型" @on-change="search()")
-						Option(key="1" label="全部" value='all')
-						Option(key="2" label="控制器" value="15")
-						Option(key="3" label="控制柜" value="240")
+					Select.smr(v-model="show.device_type" style="width:100%", :placeholder="$t('type')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('door')" value="15")
+						Option(key="3", :label="$t('ctrl')" value="240")
 				Col(span=2)
-					Select.smr(v-model="show.state" style="width:100%" placeholder="状态" @on-change="search()")
-						Option(key="1" label="全部" value='all')
-						Option(key="2" label="在线" value="online")
-						Option(key="3" label="离线" value="offline")
-						Option(key="4" label="长期离线" value="longoffline")
+					Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('online')" value="online")
+						Option(key="3", :label="$t('offline')" value="offline")
+						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
-					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=3)
-					Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
+					Input(v-model="query.install_addr" , :placeholder="$t('install address')" max=10)
 				Col(span=3)
-					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|搜索
+					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|{{$t('search')}}
 					Button(type="default" icon="md-add" @click="showtag=!showtag" shape="circle" v-if='!showtag')
 					Button(type="default" icon="md-remove" @click="showtag=!showtag" shape="circle" v-if='showtag')
 				Col(span=4 v-if='showtag')
@@ -61,13 +61,13 @@ div
 									Col(span="12")
 										p.tt1()|{{device.state}}
 					div.api(slot="title" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
-						p()|设备编号:{{device.IMEI}}
-						p()|别名:{{device.device_name}}
+						p()|{{$t('device IMEI')}} : {{device.IMEI}}
+						p()|{{$t('device name')}} : {{device.device_name}}
 					div.api(slot="content" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
-						p()|设备类型:{{device.device_type}}
-						p()|基站定位:{{device.cell_address}}
-						p()|ip定位:{{device.ip_country+device.ip_region+device.ip_city}}
-						p()|安装地址:{{device.install_addr}}
+						p()|{{$t('device type')}} : {{device.device_type}}
+						p()|{{$t('base station')}} : {{device.cell_address}}
+						p()|{{$t('IP location')}} : {{device.ip_country+device.ip_region+device.ip_city}}
+						p()|{{$t('install address')}} : {{device.install_addr}}
 			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;")
 </template>
 
@@ -110,8 +110,8 @@ div
 	export default {
 		data() {
 			const type = {
-				15: '控制器',
-				240: '控制柜',
+				15: this.$t('door'),
+				240: this.$t('ctrl'),
 			};
 			const netWork = {
 				3: '联通3G',
@@ -232,16 +232,16 @@ div
 				this.options.total = res.data.data.totalNumber		
 				this.devices.forEach(item => {
 					if(item.state == "online"){
-						item.state = "在线"
+						item.state = this.$t('online')
 					}else if(item.state == "offline"){
-						item.state = "离线"
+						item.state = this.$t('offline')
 					}else if(item.state == "longoffline"){
-						item.state = "长期离线"
+						item.state = this.$t('long offline')
 					}
 					if(item.device_type == "240"){
-						item.device_type = "控制柜"
+						item.device_type = this.$t('ctrl')
 					}else if(item.device_type == "15"){
-						item.device_type = "控制器"
+						item.device_type = this.$t('door')
 					}
 					if(item.cell_lat == null||item.cell_lon == null){
 						// this.$api.deldevices({id:item.id}),
@@ -273,8 +273,8 @@ div
 			async search() {
 				if(this.query.search_info.length > 15){
 					this.$Notice.error({
-						title: '警告',
-						desc: '请不要超过15字！',
+						title: this.$t('warning'),
+						desc: this.$t('try keyword within 15 bytes'),
 					})
 				}else{
 					if(this.show.device_type == 'all'){
