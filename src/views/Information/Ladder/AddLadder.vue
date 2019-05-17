@@ -177,6 +177,10 @@
 			this.getList("240")
 		},
 		methods: {
+			search() {
+				this.options.page = 1
+				this.getList()
+			},
 			async getList(item) {
 				if(item!=null){
 					this.query.device_type= item
