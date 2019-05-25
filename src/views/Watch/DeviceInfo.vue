@@ -4,15 +4,15 @@
 			Row(:gutter=5)
 				Col(span=12)
 					card(style="height: 280px")
-						Col(span="24" style="height: 35px;font-size:20px")|基础信息
+						Col(span="24" style="height: 35px;font-size:20px")|{{$t('Basic Information')}}
 							i(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(data.tagcolor)" style="margin-left: 10px")
-						Form.status(label-position="left",:label-width="70")
+						Form.status(label-position="left",:label-width="110")
 							Row
 								Col(span="12")
-									Form-item.fontsize(label="设备名称:")
+									Form-item.fontsize(:label="$t('device name')+':'")
 										p()|{{data.device_name}}
 								Col(span="12")
-									Form-item(label="信号强度:")
+									Form-item(:label="$t('RSSI')+':'")
 										div()
 											icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign[0]")
 											icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign[1]")
@@ -21,47 +21,47 @@
 											icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign[4]")
 											icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign[5]")
 								Col(span="12")
-									Form-item(label="id:")
+									Form-item(label="ID:")
 										p()|{{data.id}}
 								Col(span="12")
 									Form-item(label="IMEI:")
 										p()|{{data.IMEI}}
 								Col(span="12")
-									Form-item(label="类型:")
-										p(v-if="data.device_type=='15'")|控制器
-										p(v-if="data.device_type=='240'")|控制柜
+									Form-item(:label="$t('device type')+':'")
+										p(v-if="data.device_type=='15'")|{{$t('door')}}
+										p(v-if="data.device_type=='240'")|{{$t('ctrl')}}
 								Col(span="12")
-									Form-item(label="状态:")
+									Form-item(:label="$t('state')+':'")
 										p()|{{data.state}}
 								Col(span="12")
-									Form-item(label="ip定位:")
+									Form-item(:label="$t('IP location')+':'")
 										p()|{{data.ipaddr}}
 								Col(span="12" v-if="data.device_type=='15'")
-									Form-item(label="型号:" v-if="data.device_model == '1' ")
+									Form-item(:label="$t('model')+':'" v-if="data.device_model == '1' ")
 										p()|NSFC01-01B
-									Form-item(label="型号:" v-if="data.device_model == '2' ")
+									Form-item(:label="$t('model')+':'" v-if="data.device_model == '2' ")
 										p()|NSFC01-02T
 								Col(span="24")
-									Form-item(label="基站定位:")
+									Form-item(:label="$t('base station')+':'")
 										p()|{{data.cell_address}}
 								Col(span="20")
-									Form-item(label="安装地址:")
+									Form-item(:label="$t('install address')+':'")
 										p()|{{data.install_addr}}
 								Col(span="4")
-									Button(type="primary" @click="parameter()")|菜单
+									Button(type="primary" @click="parameter()")|{{$t('Menu')}}
 					Row(:gutter=5 style="padding-top:5px;")
 						Col(span=12)
 							card.card(style='height: 220px')
 								img(src='../../assets/wave.gif', width='100%', height='200')
 						Col(span=12)
 							card.card(style='height: 220px')
-								p.clearfix(slot='title' style="height: 20px", align='center')|状态监控
-								Form.status(label-position="left",:label-width="70")
+								p.clearfix(slot='title' style="height: 20px", align='center')|{{$t('Status Monitoring')}}
+								Form.status(label-position="left",:label-width="140")
 									Col(span="23")
-										Form-item(label="监控时长(s):")
+										Form-item(:label="$t('Monitoring Duration')+'(s):'")
 											input.iv(v-model='realtime.duration' ,:maxlength=4)
 									Col(span="23" style="")
-										Form-item(label="采样周期(ms):")
+										Form-item(:label="$t('Sampling Period')+'(ms):'")
 											Select(v-model='realtime.interval')
 												Option(key="1" label="100" value='100')
 												Option(key="2" label="200" value='200')
@@ -69,14 +69,14 @@
 												Option(key="4" label="1000" value='1000')
 												Option(key="5" label="2000" value='2000')
 									Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
-										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|状态监控
-										Button(type="success" @click="monitor('1')" v-else style="width:100%")|状态监控
+										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|{{$t('Status Monitoring')}}
+										Button(type="success" @click="monitor('1')" v-else style="width:100%")|{{$t('Status Monitoring')}}
 				Col(span=12)
 					card.card(align='left' style='height: 505px',v-if='data.device_type == 240')
-						Col(span="24" style="height: 35px;font-size:20px")|内存调试
+						Col(span="24" style="height: 35px;font-size:20px")|{{$t('Memory Debugging')}}
 						Row(style="margin-top:20px")|{{this.loading}}
 						Row(style="margin-top:20px")
-							Col(span=5 style="height: 30px;font-size:16px")|段地址:
+							Col(span=5 style="height: 30px;font-size:16px")|{{$t('Segment Address')}}:
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='segment[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -88,7 +88,7 @@
 							Col(span=3)
 								input.iv(style="width:44%" ,:maxlength=4 v-model='segment[3]' id="thr" onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 						Row(style="margin-top:20px")
-							Col(span=5 style="height: 30px;font-size:16px")|偏移地址:
+							Col(span=5 style="height: 30px;font-size:16px")|{{$t('Offset Address')}}:
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[0]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -161,32 +161,32 @@
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[7]' readonly)
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
-								Button(type="success" @click="monitor('2')" v-if="memory != true" disabled="false" style="width:25%")|内存监控
-								Button(type="success" @click="monitor('2')" v-else style="width:25%")|内存监控
+								Button(type="success" @click="monitor('2')" v-if="memory != true" disabled="false" style="width:25%")|{{$t('Memory Debugging')}}
+								Button(type="success" @click="monitor('2')" v-else style="width:25%")|{{$t('Memory Debugging')}}
 					card.card(align='center',v-if='data.device_type == 15' style="height: 505px")
 						Row
-							Col(span=24 style="font-size:20px;text-align:left;")|事件记录
+							Col(span=24 style="font-size:20px;text-align:left;")|{{$t('Event Record')}}
 							div( style="height: 35px;")
 								Col(span=4)
-									Select(v-model="keyword"  placeholder="类型" style="width:75%")
-										Option(key="1" label="id" value='id')
-										Option(key="2" label="长度" value="length")
-										Option(key="3" label="间隔" value="interval")
+									Select(v-model="keyword" , :placeholder="$t('type')" style="width:75%")
+										Option(key="1" label="ID" value='id')
+										Option(key="2", :label="$t('length')" value="length")
+										Option(key="3", :label="$t('interval')" value="interval")
 								Col(span=7)
-									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , placeholder="关键词" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
+									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , :placeholder="$t('keyword')" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
 								Col(span=6)
-									DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="starttime" style='width: 100%;' @on-change="search()")
+									DatePicker(type="date" , :placeholder="$t('from date')" format="yyyy-MM-dd" v-model="starttime" style='width: 100%;' @on-change="search()")
 								Col(span=1)|→
 								Col(span=6)
-									DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="endtime" style='width: 100%;' @on-change="search()")
-							div(style='font-size: large;margin-top:40px;', v-if='total==0')| 这台设备没有事件记录
+									DatePicker(type="date" , :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="endtime" style='width: 100%;' @on-change="search()")
+							div(style='font-size: large;margin-top:40px;', v-if='total==0')| {{$t('This device has no event record')}}
 							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px" , :height="380")
 								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
 									Row
-										Col(span=22)|  事件序号： {{item.id}}
-										Col(span=12)|  发生时间： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
-										Col(span=12)|  结束时间： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
-							div(style='font-size: large;') 共 {{total}} 条
+										Col(span=22)|  {{$t('event id')}} ： {{item.id}}
+													Col(span=12)|  {{$t('start time')}} ： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
+													Col(span=12)|  {{$t('end time')}} ： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
+							div(style='font-size: large;') {{$t('total')}} {{total}} {{$t('events')}}
 </template>
 
 <script>

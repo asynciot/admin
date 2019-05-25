@@ -263,8 +263,8 @@
 											<small class="label label-danger"><i class="fa fa-clock-o"></i> {{item.time}}</small>
 										</Col>
 										<div>
-											<Col span='24' v-if="item.type=='240'">{{$t('fault code')}}：E{{item.description}}{{codelist[item.description]}}</Col>
-											<Col span='24' v-if="item.type=='15'">{{$t('fault code')}}：E{{item.description}}{{codelist2[parseInt(Math.log2(item.description))]}}</Col>
+											<Col span='24' v-if="item.type=='240'">{{$t('fault code')}}：E{{item.description}}{{$t('E'+item.description)}}</Col>
+											<Col span='24' v-if="item.type=='15'">{{$t('fault code')}}：E{{item.description}}{{$t('dE'+item.description)}}</Col>
 										</div>
 										<div>
 											<Col span='24'>{{$t('install address')}}：{{item.addr}}</Col> 
@@ -444,7 +444,7 @@
 										<div>
 											<textarea class="textarea" :placeholder="$t('content')" v-model="options.content" style="width: 100%;line-height: 18px; border: 1px solid #dddddd; padding: 10px;" :style="'height:'+screenheight/6+'px;font-size:'+screenheight/50+'px'"></textarea>
 										</div>
-										<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">确定
+										<button type="button" class="pull-right btn btn-default" id="sendEmail" @click="sent()" :disabled="btn">{{$t('send')}}
 											<i class="fa fa-arrow-circle-right"></i></button>
 									</form>
 								</div>
@@ -665,7 +665,7 @@
 				prostate:'6',
 				chatbottom:false,
 				reply:'',
-				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
+				codelist:[this.$t('maintain'),'过流','母线过压','母线欠压','输入缺相',
 						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
 						'抱闸接触器故障','封星继电器故障','抱闸开关故障','运行中安全回路断开','运行中门锁断开',
 						'门锁短接故障','层站召唤通讯故障','轿厢通讯故障','并联通讯故障','开门故障',
@@ -823,14 +823,14 @@
 				this.btn= false
 				if (res.data.code == 0){
 					this.$Notice.success({
-						title: '成功',
-						desc: '已发送消息'
+						title: this.$t('success'),
+						desc: this.$t('send notice successfully')
 					});
 				}
 				else{
 					this.$Notice.error({
-						title: '错误',
-						desc: '发送失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to send notice')
 					});
 				}
 			},
@@ -841,8 +841,8 @@
 					this.chatlist=[]
 					this.getchat()
 					this.$Notice.success({
-						title: '成功',
-						desc: '已撤回消息'
+						title: this.$t('success'),
+						desc: this.$t('You has callback the message')
 					});
 				}
 			},
@@ -850,8 +850,8 @@
 				var res
 				if (!/\S/.test(this.chatoptions.content)) {
 					this.$Notice.warning({
-						title: '提示',
-						desc: '内容不能为空'
+						title: this.$t('tip'),
+						desc: this.$t('the content can not be empty')
 					});
 				}
 				else {
@@ -864,15 +864,15 @@
 					this.chatlist=[]
 					this.getchat()
 					this.$Notice.success({
-						title: '成功',
-						desc: '已发送消息'
+						title: this.$t('success'),
+						desc: this.$t('send message successfully')
 					});
 					this.chatoptions.content=''
 				}
 				else{
 					this.$Notice.error({
-						title: '错误',
-						desc: '发送失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to send message')
 					});
 				}
 			},
@@ -883,8 +883,8 @@
 					if (cht.body.list.length == 0) {
 						this.chatpage--
 						this.$Notice.warning({
-							title: '提示',
-							desc: '已经到底了'
+							title: this.$t('tip'),
+							desc: this.$t('It is the end！'),
 						});
 					}
 					for(var i=0;i<cht.body.list.length;i++){
@@ -918,8 +918,8 @@
 				}
 				else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取通知失败！'
+						title: this.$t('error'),
+						desc: this.$t('fail to get message')
 					})
 				}
 			},
@@ -943,8 +943,8 @@
 					if (res.data.list.length == 0) {
 						this.progresspage--
 						this.$Notice.warning({
-							title: '提示',
-							desc: '已经到底了'
+							title: this.$t('tip'),
+							desc: this.$t('It is the end！')
 						});
 					}
 					this.data = res.data.list
@@ -955,8 +955,8 @@
 				}
 				else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取故障处理进程失败！'
+						title: this.$t('error'),
+						desc: this.$t('fail to get treating progress')
 					})
 				}
 			},

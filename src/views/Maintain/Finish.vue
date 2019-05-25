@@ -9,15 +9,15 @@
 							Form(ref="form",:model="form",:label-width="120")
 								Row(:gutter="0")
 									Col(span="24",offset="0")
-										Col(span="8" style="margin-top:10px")|工单号名称:{{list.order_id}}
-										Col(span="8" style="margin-top:10px")|设备名称:{{list.device_name}}
-										Col(span="8" style="margin-top:10px")|IMEI号:{{list.IMEI}}
-										Col(span="8" style="margin-top:10px" v-if="list.state == 'treated'")|状态:已处理:{{list.result}}
-										Col(span="8" style="margin-top:10px" v-if="list.state == 'untreated'")|状态:处理中
-										Col(span="8" style="margin-top:10px")|确认时间:{{list.confirm_time}}
+										Col(span="8" style="margin-top:10px")|{{$t('order ID')}}:{{list.order_id}}
+										Col(span="8" style="margin-top:10px")|{{$t('device name')}}:{{list.device_name}}
+										Col(span="8" style="margin-top:10px")|IMEI:{{list.IMEI}}
+										Col(span="8" style="margin-top:10px" v-if="list.state == 'treated'")|{{$t('state')}}:{{$t('treated')}}--{{list.result}}
+										Col(span="8" style="margin-top:10px" v-if="list.state == 'untreated'")|{{$t('state')}}:{{$t('treating')}}
+										Col(span="8" style="margin-top:10px")|{{$t('confirm time')}}:{{list.confirm_time}}
 										Col(span='24' style="margin-top:10px")
-											textarea(v-model='ps' style="width:100%;height:60px" placeholder="本次维保说明")
-									Col(span=24 style="margin-top:10px")|处理前的照片:
+											textarea(v-model='ps' style="width:100%;height:60px", :placeholder="$t('Description of maintenance')")
+									Col(span=24 style="margin-top:10px")|{{$t('photo before treating')}}:
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='before1')
 											img(id="before1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
@@ -27,7 +27,7 @@
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='before3')
 											img(id="before3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span=24 style="margin-top:0px")|处理后的照片:
+									Col(span=24 style="margin-top:0px")|{{$t('photo after treating')}}:
 									Col(span='8' style='height: 160px')
 										upload(:before-upload='after1')
 											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
@@ -41,16 +41,16 @@
 							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
 								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch!= true))" disabled='false')|完成工单
-								Button(type="success",@click="finish('finish')" v-else)|完成工单
+								Button(type="success",@click="finish('finish')" v-else)|{{$t('complete')}}
 							Col(span=6 align="center")
-								Button(type="primary",@click="examine()",v-if="dispatch != true" disabled='false')|请求搁置
-								Button(type="primary",@click="examine()",v-else)|请求搁置
+								Button(type="primary",@click="examine()",v-if="dispatch != true" disabled='false')|{{$t('reprieve')}}
+								Button(type="primary",@click="examine()",v-else)|{{$t('reprieve')}}
 							Col(span=6 align="center")
 								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
 								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch != true))" disabled='false')|转办
-								Button(type="warning",@click="finish('transfer')" v-else)|转办
+								Button(type="warning",@click="finish('transfer')" v-else)|{{$t('transfer')}}
 							Col(span=6 align='center')
-								Button(@click="$router.back(-1)")|取消
+								Button(@click="$router.back(-1)")|{{$t('cancel')}}
 </template>
 
 <script>

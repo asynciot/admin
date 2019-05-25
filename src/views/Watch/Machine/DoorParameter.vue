@@ -119,7 +119,7 @@
 					show:false,
 				    title: 'F07',
 				    list: [
-				      {label: '关门启动速度',value: ''},
+				    {label: '关门启动速度',value: ''},
 					  {label: '关门高速',value: ''},
 					  {label: '速度稳定时允许误差频率',value: ''},
 					  {label: '同步门门刀打开速度',value: ''},

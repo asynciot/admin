@@ -268,7 +268,12 @@
 						name:'print',
 						key:false,
 						label:'Print QR Code'
-					}]
+					}],
+				},{
+					name: 'dashboard2',
+					icon: 'fa fa-dashboard',
+					label: 'Dashboard2',
+					key:true,
 				},],
 				menus:{},
 				roles:0,
@@ -443,11 +448,13 @@
 					case 1:
 						this.$i18n.locale = 'zh-CN';
 						localStorage.setItem('language',this.$i18n.locale)
+						this.$router.push(0)
 						// Vue.config.lang = 'zh-CN'
 						break;
 					case 2:
 						this.$i18n.locale = 'en-US';
 						localStorage.setItem('language',this.$i18n.locale)
+						this.$router.push(0)
 						// Vue.config.lang = 'en-US'
 				}
 			},

@@ -4,33 +4,33 @@
 			Form(ref='form', label-position='left', :label-width='100' @keydown.enter.native.prevent="search()")
 				Row(:gutter=5)
 					Col(span="2")
-						Select.smr(v-model='show.type', style='width:100%;', placeholder='事件类型', @on-change='search()')
-							Option(key='1', label='全部', value='all')
-							Option(key='2', label='故障', value='1')
-							Option(key='3', label='保养', value='2')
-							Option(key='4', label='校检', value='3')
+						Select.smr(v-model='show.type', style='width:100%;', :placeholder='$t("maintenance type")', @on-change='search()')
+							Option(key='1', :label="$t('all')", value='all')
+							Option(key='2', :label="$t('fault')", value='1')
+							Option(key='3', :label="$t('maintain')", value='2')
+							Option(key='4', :label="$t('check')", value='3')
 					Col(span="2")
-						Select.smr(v-model='show.device_type', style='width:100%;', placeholder='设备类型', @on-change='search()')
-							Option(key='1', label='全部', value='all')
-							Option(key='2', label='控制器', value='door')
-							Option(key='3', label='控制柜', value='ctrl')
+						Select.smr(v-model='show.device_type', style='width:100%;', :placeholder='$t("device type")', @on-change='search()')
+							Option(key='1', :label="$t('all')", value='all')
+							Option(key='2', :label="$t('door')", value='door')
+							Option(key='3', :label="$t('ctrl')", value='ctrl')
 					Col(span="2")
-						Select.smr(v-model='show.list_type', style='width:100%;', placeholder='设备类型', @on-change='getList()')
-							Option(key='2', label='工单审核', value='order')
-							Option(key='3', label='维保审核', value='dispatch')
+						Select.smr(v-model='show.list_type', style='width:100%;', :placeholder='$t("type")', @on-change='getList()')
+							Option(key='2', :label="$t('order auditing')", value='order')
+							Option(key='3', :label="$t('dispatch auditing')", value='dispatch')
 					Col(span="4")
-						Input(v-model="options.search_info" ,:data="menu" , placeholder="设备地址和名称" max=15)
+						Input(v-model="options.search_info" ,:data="menu" ,:placeholder='$t("device name")+"、"+$t("install address")' max=15)
 					Col(span="5")
-						Button.mr-10(type='primary', icon='ios-search', @click='search()')|搜索
-						Button(type='default', icon='', @click='code()')|控制柜故障代码
-		el-dialog(title='故障提示', :visible.sync='ctrl', width='30%')
+						Button.mr-10(type='primary', icon='ios-search', @click='search()')|{{$t('search')}}
+						Button(type='default', icon='', @click='code()')|{{$t('fault code')}}
+		el-dialog(:title='$t("tip")', :visible.sync='ctrl', width='30%')
 			img#c(width='100%', src='')
 			span.dialog-footer(slot='footer')
-				Button(type='primary', @click='ctrl = false') 确 定
-		el-dialog(title='故障提示', :visible.sync='door', width='30%')
+				Button(type='primary', @click='ctrl = false') {{$t('OK')}}
+		el-dialog(:title='$t("tip")', :visible.sync='door', width='30%')
 			img#d(width='100%', src='')
 			span.dialog-footer(slot='footer')
-				Button(type='primary', @click='door = false') 确 定
+				Button(type='primary', @click='door = false') {{$t('OK')}}
 		div(style='min-height: 450px; margin-top: 20px;')
 			Table.mb-10(:columns='columns', :data='list' stripe, size='small')
 		Col(span="24" style="text-align:center;")
@@ -67,8 +67,8 @@
 					islast: 1,
 				},
 				columns: [{
-						title: '设备名称',
-						width: 100,
+						title: this.$t('device name'),
+						width: 110,
 						key: 'device_name'
 					}, {
 						title: 'IMEI(设备识别码)',
@@ -76,33 +76,33 @@
 						key: 'IMEI',
 						sortable: true
 					}, {
-						title: '设备类型',
-						width: 90,
+						title: this.$t('device type'),
+						width: 110,
 						key: 'device_type',
 						render: (h, params) => {
 							var type = ''
-							if (params.row.device_type == "ctrl") type = "控制柜"
-							if (params.row.device_type == "door") type = "控制器"
+							if (params.row.device_type == "ctrl") type = this.$t('ctrl')
+							if (params.row.device_type == "door") type = this.$t('door')
 							return h('div', type)
 						},
 					}, {
-						title: '事件类型',
-						width: 90,
+						title: this.$t('maintenance type'),
+						width: 140,
 						key: 'device_type',
 						render: (h, params) => {
 							var type = ''
-							if (params.row.type == "1") type = "故障"
-							if (params.row.type == "2") type = "保养"
-							if (params.row.type == "3") type = "校检"
+							if (params.row.type == "1") type = this.$t('fault')
+							if (params.row.type == "2") type = this.$t('maintain')
+							if (params.row.type == "3") type = this.$t('check')
 							return h('div', type)
 						}
 					}, {
-						title: '发起人',
-						width: 90,
+						title: this.$t('creator'),
+						width: 95,
 						key: 'producer',
 						sortable: true
 					}, {
-						title: '故障代码',
+						title: this.$t('fault code'),
 						width: 100,
 						key: 'type',
 						render: (h, params) => {
@@ -146,21 +146,21 @@
 						}
 					},
 					{
-						title: '安装地址',
+						title: this.$t('install address'),
 						key: 'install_addr'
 					},{
-						title: '说明',
+						title: this.$t('remarks'),
 						key: 'remarks'
 					},
 					{
-						title: '提交时间',
+						title: this.$t('create time'),
 						key: 'createTime',
 						render: (h, params) => {
 							return h('p', this.$format(parseInt(params.row.createTime), 'YYYY-MM-DD HH:mm:ss'))
 						}
 					},
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						width: 100,
 						render: (h, params) => {
 							return h('div', [
@@ -191,7 +191,7 @@
 											}
 										},
 									}
-								},"查看"),
+								},this.$t('look up')),
 							])
 						}
 					}
