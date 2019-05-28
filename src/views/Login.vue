@@ -20,7 +20,8 @@ div.account
 							Col(span=12)
 								Button(type="primary",long,@click="goRegister")|{{$t("register")}}
 							Col(span=12)
-								Button(type="primary",long,@click="login('form')",:loading="loading")|{{$t("login")}}
+								Button(type="primary",long,@click="login('form')" v-if="dislogin != true" ,:loading="loading" disabled="false")|{{$t("login")}}
+								Button(type="primary",long,@click="login('form')" v-else ,:loading="loading" )|{{$t("login")}}
 							Col(span=12)
 								div(style="cursor: pointer;text-align:center" @click="reset")|{{$t("forget_password?")}}
 							Col(span=12 align="center")
@@ -56,6 +57,7 @@ export default {
 			vericode:'',
 			identifyCodes: "1234567890",
 			identifyCode: "",
+			dislogin:true,
 			form: {
 				username: '',
 				password: '',
@@ -121,6 +123,7 @@ export default {
 	},
 	methods: {
 		async login(name) {
+			this.dislogin = false;
 			this.loading = true;
 			this.$refs[name].validate(async (valid) => {
 				if (valid) {

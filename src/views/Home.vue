@@ -187,10 +187,8 @@
 						name:'laddermap',
 						label:'Devices State',
 						key:false,
-					},
-					]
-				},
-				{
+					},]
+				},{
 					name: 'maintain',
 					icon: 'fa fa-cogs',
 					label: 'Work Flow',
@@ -208,8 +206,7 @@
 						name: 'maintainList',
 						label: 'Dispatch List',
 						key:false,
-					},
-					],
+					},],
 				},{
 					name: 'event',
 					icon: 'fa fa-list-alt',
@@ -228,10 +225,11 @@
 						label:'电梯信息',
 						key:false,
 					},
-// 						{
-// 							name:'elevator',
-// 							label:'电梯组',
-// 						},
+					{
+						name:'elevator',
+						label:'电梯组',
+						key:true,
+					},
 // 						{
 // 							name: 'maintainCompany',
 // 							label: '维保单位信息',
