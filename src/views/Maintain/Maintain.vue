@@ -2,58 +2,58 @@
 	<div class="layout-content-main">
 		<div>
 			<Form class="imr" ref="form" label-position="left" :label-width="100" @keydown.enter.native.prevent="search()">
-				<Row :gutter=5>
+				<Row :gutter="5">
 					<Col span='3'>
-						<Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
-							<Option key="1" label="全部" value="all"></Option>
-							<Option key="2" label="未接单" value="untreated"></Option>
-							<Option key="3" label="已接单" value="treating"></Option>
-							<Option key="4" label="已完成" value="treated"></Option>
+						<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
+							<Option key="1" :label="$t('all')" value="all"></Option>
+							<Option key="2" :label="$t('untreated')" value="untreated"></Option>
+							<Option key="3" :label="$t('treating')" value="treating"></Option>
+							<Option key="4" :label="$t('treated')" value="treated"></Option>
 						</Select>
 					</Col>
 					<Col span='3'>
-						<Select class="smr" v-model="show.type" style="width:100%;" placeholder="事件类型" @on-change="search()">
-							<Option key="1" label="全部" value="all"></Option>
-							<Option key="2" label="故障" value="1"></Option>
-							<Option key="3" label="保养" value="2"></Option>
-							<Option key="4" label="校检" value="3"></Option>
+						<Select class="smr" v-model="show.type" style="width:100%;" :placeholder="$t('maintenance type')" @on-change="search()">
+							<Option key="1" :label="$t('all')" value="all"></Option>
+							<Option key="2" :label="$t('fault')" value="1"></Option>
+							<Option key="3" :label="$t('maintain')" value="2"></Option>
+							<Option key="4" :label="$t('check')" value="3"></Option>
 						</Select>
 					</Col>
 					<Col span='3'>
-						<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
-							<Option key="1" label="全部" value="all"></Option>
-							<Option key="2" label="控制器" value="door"></Option>
-							<Option key="3" label="控制柜" value="ctrl"></Option>
+						<Select class="smr" v-model="show.device_type" style="width:100%;" :placeholder="$t('device type')" @on-change="search()">
+							<Option key="1" :label="$t('all')" value="all"></Option>
+							<Option key="2" :label="$t('door')" value="door"></Option>
+							<Option key="3" :label="$t('ctrl')" value="ctrl"></Option>
 						</Select>
 					</Col>
 					<Col span='4'>
 						<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1"
-						 placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
+						 :placeholder="$t('Search by device ID')" style="width:100%;" id="serch1"></AutoComplete>
 					</Col>
 					<Col span='2'>
-						<Button class="mr-10" type="primary" icon="ios-search" @click="search()">搜索</Button>
+						<Button class="mr-10" type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
 					</Col>
 					<Col span='5'>
-						<checkbox style="margin-top:10px" v-model="last" @on-change="search()">只显示每个设备最后一个工单</checkbox>
+						<checkbox style="margin-top:10px" v-model="last" @on-change="search()">{{$t('Show the last order for each device')}}</checkbox>
 					</Col>
 					<Col span='4'>
 						<Button type="default" icon="" @click="code()">
-							控制柜故障代码
+							{{$t('fault code')}}
 						</Button>
 					</Col>
 				</Row>
 			</Form>
 		</div>
-		<el-dialog title="故障提示" :visible.sync="ctrl" width="30%">
+		<el-dialog :title='$t("tip")' :visible.sync="ctrl" width="30%">
 			<img id='c' width="100%" src='' onerror="src='../../../static/miss.png'"></img>
 			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="ctrl = false">确 定</el-button>
+				<el-button type="primary" @click="ctrl = false">{{$t('OK')}}</el-button>
 			</span>
 		</el-dialog>
-		<el-dialog title="故障提示" :visible.sync="door" width="30%">
+		<el-dialog :title='$t("tip")' :visible.sync="door" width="30%">
 			<img id='d' width="100%" src='' onerror="src='../../../static/miss.png'"></img>
 			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="door = false">确 定</el-button>
+				<el-button type="primary" @click="door = false">{{$t('OK')}}</el-button>
 			</span>
 		</el-dialog>
 		<div style="min-height: 450px; margin-top: 20px;">
@@ -97,8 +97,8 @@
 					islast: 1,
 				},
 				columns: [{
-						title: '设备名称',
-						width: 100,
+						title: this.$t('device name'),
+						width: 110,
 						key: 'device_name'
 					}, {
 						title: 'IMEI(设备识别码)',
@@ -106,33 +106,33 @@
 						key: 'IMEI',
 						sortable: true
 					}, {
-						title: '设备类型',
-						width: 90,
+						title: this.$t('device type'),
+						width: 110,
 						key: 'device_type',
 						render: (h, params) => {
 							var type = ''
-							if (params.row.device_type == "ctrl") type = "控制柜"
-							if (params.row.device_type == "door") type = "控制器"
+							if (params.row.device_type == "ctrl") type = this.$t('ctrl')
+							if (params.row.device_type == "door") type = this.$t('door')
 							return h('div', type)
 						},
 					}, {
-						title: '事件类型',
-						width: 90,
+						title: this.$t('maintenance type'),
+						width: 140,
 						key: 'device_type',
 						render: (h, params) => {
 							var type = ''
-							if (params.row.type == "1") type = "故障"
-							if (params.row.type == "2") type = "保养"
-							if (params.row.type == "3") type = "校检"
+							if (params.row.type == "1") type = this.$t('fault')
+							if (params.row.type == "2") type = this.$t('maintain')
+							if (params.row.type == "3") type = this.$t('check')
 							return h('div', type)
 						}
 					}, {
-						title: '发起人',
-						width: 90,
+						title: this.$t('creator'),
+						width: 95,
 						key: 'producer',
 						sortable: true
 					}, {
-						title: '故障类型',
+						title: this.$t('fault code'),
 						width: 100,
 						key: 'type',
 						render: (h, params) => {
@@ -175,47 +175,47 @@
 							], )
 						}
 					}, {
-						title: '状态',
-						width: 80,
+						title: this.$t('state'),
+						width: 90,
 						key: 'state',
 						render: (h, params) => {
 							var state
 							if (params.row.state == "treating") {
-								state = '已接单'
+								state = this.$t('treating')
 							}
 							if (params.row.state == "untreated") {
-								state = '未接单'
+								state = this.$t('untreated')
 							}
 							if (params.row.state == "treated") {
-								state = '已完成'
+								state = this.$t('treated')
 							}
 							return h('div', state)
 						}
 					},
 					{
-						title: '安装地址',
+						title: this.$t('install address'),
 						key: 'install_addr'
 					},
 					{
-						title: '报错时间',
+						title: this.$t('create time'),
 						key: 'createTime',
 						render: (h, params) => {
 							return h('p', this.$format(parseInt(params.row.createTime), 'YYYY-MM-DD HH:mm:ss'))
 						}
 					},
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						width: 100,
 						render: (h, params) => {
 							var order
 							if (params.row.state == "untreated") {
-								order = '接单'
+								order = this.$t('receive')
 							}
 							if (params.row.state == "treating") {
-								order = '已接单'
+								order = this.$t('treating')
 							}
 							if (params.row.state == "treated") {
-								order = '已完成'
+								order = this.$t('treated')
 							}
 							return h('div', [
 								h('Button', {
@@ -291,8 +291,8 @@
 					}
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to get list')
 					});
 				}
 			},
@@ -370,14 +370,14 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '已接单，可在工单界面查看'
+						title: this.$t('success'),
+						desc: this.$t('receive the order successfully')
 					});
 					this.getList()
 				} else {
 					this.$Notice.error({
-						title: '失败',
-						desc: '接单失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to receive the order')
 					});
 				}
 			}

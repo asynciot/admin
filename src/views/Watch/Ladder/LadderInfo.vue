@@ -5,15 +5,15 @@
 				Col(span=12)
 					card()
 						Row
-							Col(span="24" style="height: 35px;font-size:20px")|基础信息
+							Col(span="24" style="height: 35px;font-size:20px")|{{$t('Basic Information')}}
 								i(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(data.tagcolor)" style="margin-left: 10px")
-							Form.status(label-position="left",:label-width="70")
+							Form.status(label-position="left",:label-width="110")
 								Row
 									Col(span="12")
-										Form-item.fontsize(label="设备名称:")
+										Form-item.fontsize(:label="$t('device name')+':'")
 											p()|{{data.name}}
 									Col(span="12")
-										Form-item(label="信号强度:")
+										Form-item(:label="$t('RSSI')+':'")
 											div()
 												icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign[0]")
 												icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign[1]")
@@ -22,65 +22,65 @@
 												icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign[4]")
 												icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign[5]")
 									Col(span="24")
-										Form-item(label="状态:")
+										Form-item(:label="$t('state')+':'")
 											p()|{{data.state}}
 									Row
 										Col(span="12")
-											Form-item(label="控制柜:")
+											Form-item(:label="$t('ctrl')+':'")
 												p()|{{data.ctrl}}
 										Col(span="12")
-											Button.mb(type="primary" @click="godevice(1)" style="width:40%" ,:disabled="judge.ctrl")|详细信息
+											Button.mb(type="primary" @click="godevice(1)" style="width:40%" ,:disabled="judge.ctrl")|{{$t('Details')}}
 									Row
 										Col(span="12")
-											Form-item(label="门机:")
+											Form-item(:label="$t('door')+':'")
 												p()|{{data.door1}}
 										Col(span="12")
-											Button.mb(type="primary" @click="godevice(2)" style="width:40%" ,:disabled="judge.door1")|详细信息
+											Button.mb(type="primary" @click="godevice(2)" style="width:40%" ,:disabled="judge.door1")|{{$t('Details')}}
 									Row
 										Col(span="12")
-											Form-item(label="门机:")
+											Form-item(:label="$t('door')+':'")
 												p()|{{data.door2}}
 										Col(span="12")
-											Button(type="primary" @click="godevice(3)" style="width:40%" disabled="judge.door2")|详细信息
+											Button(type="primary" @click="godevice(3)" style="width:40%" disabled="judge.door2")|{{$t('Details')}}
 									Col(span="12")
-										Form-item(label="ip定位:")
+										Form-item(:label="$t('IP location')+':'")
 											p()|{{data.ipaddr}}
 									Col(span="12" v-if="data.device_type=='15'")
-										Form-item(label="型号:" v-if="data.device_model == '1' ")
+										Form-item(:label="$t('model')+':'" v-if="data.device_model == '1' ")
 											p()|NSFC01-01B
-										Form-item(label="型号:" v-if="data.device_model == '2' ")
+										Form-item(:label="$t('model')+':'" v-if="data.device_model == '2' ")
 											p()|NSFC01-02T
 									Col(span="24")
-										Form-item(label="基站定位:")
+										Form-item(:label="$t('base station')+':'")
 											p()|{{data.cell_address}}
 									Col(span="20")
-										Form-item(label="安装地址:")
+										Form-item(:label="$t('install address')+':'")
 											p()|{{data.install_addr}}
 				Col(span=12)
 					card.card(align='center')
 						Row
-							Col(span=24 style="font-size:20px;text-align:left;")|事件记录
+							Col(span=24 style="font-size:20px;text-align:left;")|{{$t('Event Record')}}
 							div( style="height: 35px;")
 								Col(span=4)
-									Select(v-model="keyword"  placeholder="类型" style="width:75%")
-										Option(key="1" label="id" value='id')
-										Option(key="2" label="长度" value="length")
-										Option(key="3" label="间隔" value="interval")
+									Select(v-model="keyword" , :placeholder="$t('type')" style="width:75%")
+										Option(key="1" label="ID" value='id')
+										Option(key="2", :label="$t('length')" value="length")
+										Option(key="3", :label="$t('interval')" value="interval")
 								Col(span=7)
-									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , placeholder="关键词" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
+									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , :placeholder="$t('keyword')" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
 								Col(span=6)
-									DatePicker(type="date" placeholder="开始日期" format="yyyy-MM-dd" v-model="options.starttime" style='width: 100%;' @on-change="search()")
+									DatePicker(type="date", :placeholder="$t('from date')" format="yyyy-MM-dd" v-model="options.starttime" style='width: 100%;' @on-change="search()")
 								Col(span=1)|→
 								Col(span=6)
-									DatePicker(type="date" placeholder="截止日期" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
-							div(style='font-size: large;margin-top:40px;', v-if='total==0')| 这台设备没有事件记录
+									DatePicker(type="date", :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
+							div(style='font-size: large;margin-top:40px;', v-if='total==0')| {{$t('This device has no event record')}}
 							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px")
 								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
 									Row
-										Col(span=22)|  事件序号： {{item.id}}
-										Col(span=12)|  发生时间： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
-										Col(span=12)|  结束时间： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
-							div(style='font-size: large;') 共 {{total}} 条
+										Col(span=22)|  {{$t('event id')}} ： {{item.id}}
+										Col(span=12)|  {{$t('start time')}} ： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
+										Col(span=12)|  {{$t('end time')}} ： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
+							div(style='font-size: large;') {{$t('total')}} {{total}} {{$t('events')}}
 </template>
 
 <script>
@@ -214,11 +214,11 @@
 						this.judge.door2 = true
 					}
 					if(this.data.state == "online"){
-						this.data.state = "在线"
+						this.data.state = this.$t('online')
 					}else if(this.data.state == "offline"){
-						this.data.state = "离线"
+						this.data.state = this.$t('offline')
 					}else if(this.data.state == "longoffline"){
-						this.data.state = "长期离线"
+						this.data.state = this.$t('long offline')
 					}
 					if (this.data.rssi != ''){
 						if (this.data.rssi==0) {
@@ -242,14 +242,14 @@
 						this.total = eve.data.data.totalNumber
 					}else{
 						this.$Notice.error({
-							title: '错误',
-							desc: '获取事件信息错误！'
+							title:  this.$t('error'),
+							desc:  this.$t('Fail to gain event information')
 						})
 					}
 				}else(
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取电梯数据错误！'
+						title:  this.$t('error'),
+						desc: 'Fail to gain elevator data'
 					})
 				)
 				this.now=Date.parse(new Date())
@@ -271,10 +271,10 @@
 					if((this.options.starttime>=this.options.endtime)&&(this.options.endtime !="")){
 						this.options.endtime=formatDate(Date.parse(this.options.starttime)+86400000,'yyyy-MM-dd')
 						this.$Notice.warning({
-							title: '提示',
-							desc: '截至日期必须大于开始日期',
+							title: this.$t('tip'),
+							desc: this.$t('The closing date must be later than the from date'),
 						})
-					}	
+					}
 					let res = await this.$api.event(this.options)
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
@@ -316,8 +316,8 @@
 				}else{
 					let eve= await this.$api.event(options2)
 					this.$Notice.warning({
-						title: '提示',
-						desc: '已经到底了！',
+						title: this.$t('tip'),
+						desc: this.$t('It is the end！'),
 					})
 				}
 				this.total = eve.data.data.totalNumber

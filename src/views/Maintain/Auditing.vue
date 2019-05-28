@@ -8,15 +8,15 @@
 							Form(ref="form",:model="form",:rules="rules",:label-width="120")
 								Row(:gutter="5")
 									Col(span="20",offset="2")
-										Form-item(label="设备名称:")|{{list.device_name}}
-										Form-item(label="设备类型:" v-if="list.device_type==240")|控制柜
-										Form-item(label="设备类型:" v-if="list.device_type==15")|控制器
-										Form-item(label="IMEI号:")|{{list.IMEI}}
-										Form-item(label="事件类型:")|{{list.type}}
-										Form-item(label="故障原因:" v-if="list.type == '故障'")|{{list.code}}
-										Form-item(label="基站定位:")|{{list.cell_address}}
-										Form-item(label="安装地址:")|{{list.install_addr}}
-										Form-item(label="提交时间:")|{{this.$format(parseInt(list.createTime), 'YYYY-MM-DD HH:mm:ss')}}
+										Form-item(:label="$t('device name')+':'")|{{list.device_name}}
+										Form-item(:label="$t('device type')+':'" v-if="list.device_type==240")|{{$t('ctrl')}}
+										Form-item(:label="$t('device type')+':'" v-if="list.device_type==15")|{{$t('door')}}
+										Form-item(label="IMEI:")|{{list.IMEI}}
+										Form-item(:label="$t('maintenance type')+':'")|{{list.type}}
+										Form-item(:label="$t('fault code')+':'" v-if="list.type == $t('fault')")|{{list.code}}
+										Form-item(:label="$t('base station')+':'")|{{list.cell_address}}
+										Form-item(:label="$t('install address')+':'")|{{list.install_addr}}
+										Form-item(:label="$t('submission time')+':'")|{{this.$format(parseInt(list.createTime), 'YYYY-MM-DD HH:mm:ss')}}
 				Col(span=10)
 					Card()
 						Row
@@ -24,13 +24,13 @@
 								Form(ref="form",:model="form",:rules="rules",:label-width="120" style="height:200px")
 									Row(:gutter="5")
 										Col(span="20",offset="2")
-											Form-item(label="详细说明:")|{{ps}}
+											Form-item(:label="$t('Details')+':'")|{{ps}}
 							Col(span=24)
 								Col(span=12 align="center")
-									Button(type="success",icon="plus",@click="adopt" v-if="auditing != true" disabled="false")|同意
-									Button(type="success",icon="plus",@click="adopt" v-else)|同意
+									Button(type="success",icon="plus",@click="adopt" v-if="auditing != true" disabled="false")|{{$t('approve')}}
+									Button(type="success",icon="plus",@click="adopt" v-else)|{{$t('approve')}}
 								Col(span=12 align='center')
-									Button(icon="close",@click="$router.back(-1)")|取消
+									Button(icon="close",@click="$router.back(-1)")|{{$t('cancel')}}
 </template>
 
 <script>
@@ -87,19 +87,19 @@
 					res.data.data.list[0].device_type = ech.data.data.list[0].device_type
 					res.data.data.list[0].IMEI = ech.data.data.list[0].IMEI
 					if(res.data.data.list[0].type == 1){
-						res.data.data.list[0].type = '故障'
+						res.data.data.list[0].type = this.$t('fault')
 					}
 					if(res.data.data.list[0].type == 2){
-						res.data.data.list[0].type = '保养'
+						res.data.data.list[0].type = this.$t('maintain')
 					}
 					if(res.data.data.list[0].type == 3){
-						res.data.data.list[0].type = '校检'
+						res.data.data.list[0].type = this.$t('check')
 					}
 					res.data.data.list[0].cell_address = ech.data.data.list[0].cell_address
 					res.data.data.list[0].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
 					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
 					var type=''
-					if((res.data.data.list[0].type == '故障')&&(res.data.data.list[0].code != null))
+					if((res.data.data.list[0].type == this.$t('fault'))&&(res.data.data.list[0].code != null))
 					for (var i=7;i>=0;i--){
 						if(res.data.data.list[0].code>=Math.pow(2,i)){
 							res.data.data.list[0].code=res.data.data.list[0].code-Math.pow(2,i)

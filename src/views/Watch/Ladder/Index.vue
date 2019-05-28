@@ -3,25 +3,25 @@ div
 	Row(:gutter=20)
 		Col(span=22)
 			Tabs.pd-heard(value="name1",:animated="false",@on-click="Onchange")
-				TabPane(label="地图",name="map")
-				TabPane(label="列表",name="list")
+				TabPane(:label="$t('Map')",name="map")
+				TabPane(:label="$t('List')",name="list")
 		Col(span=2)
 			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
 	div(v-if="div_show" id="serClick" style="margin-top:-30px")
 		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=5)
 				Col(span=2)
-					Select.smr(v-model="show.state" style="width:100%" placeholder="状态" @on-change="search()")
-						Option(key="1" label="全部" value='all')
-						Option(key="2" label="在线" value="online")
-						Option(key="3" label="离线" value="offline")
-						Option(key="4" label="长期离线" value="longoffline")
+					Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('online')" value="online")
+						Option(key="3", :label="$t('offline')" value="offline")
+						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
-					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=3)
-					Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
+					Input(v-model="query.install_addr" , :placeholder="$t('install address')" max=10)
 				Col(span=3)
-					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|搜索
+					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|{{$t('search')}}
 	Row(:gutter="8")
 		Col.map(span="20")
 			div#map
@@ -39,13 +39,13 @@ div
 									Col(span="12")
 										p.tt1()|{{device.state}}
 					div.api(slot="title" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
-						p(v-if="device.ctrl")|设备编号:{{device.ctrl}}
-						p(v-if="!device.ctrl")|设备编号:{{device.door1}}
-						p()|别名:{{device.name}}
+						p(v-if="device.ctrl")|{{$t('device IMEI')}} : {{device.ctrl}}
+						p(v-if="!device.ctrl")|{{$t('device IMEI')}} : {{device.door1}}
+						p()|{{$t('device name')}} : {{device.name}}
 					div.api(slot="content" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
-						p()|基站定位:{{device.cell_address}}
-						p()|ip定位:{{device.ip_country+device.ip_region+device.ip_city}}
-						p()|安装地址:{{device.install_addr}}
+						p()|{{$t('base station')}} : {{device.cell_address}}
+						p()|{{$t('IP location')}} : {{device.ip_country+device.ip_region+device.ip_city}}
+						p()|{{$t('install address')}} : {{device.install_addr}}
 			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;")
 </template>
 
@@ -213,11 +213,11 @@ div
 				this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
-						item.state = "在线"
+						item.state = this.$t('online')
 					}else if(item.state == "offline"){
-						item.state = "离线"
+						item.state = this.$t('offline')
 					}else if(item.state == "longoffline"){
-						item.state = "长期离线"
+						item.state = this.$t('long offline')
 					}
 					return item;
 				})
@@ -227,8 +227,8 @@ div
 			async search() {
 				if(this.query.search_info.length > 15){
 					this.$Notice.error({
-						title: '警告',
-						desc: '请不要超过15字！',
+						title: this.$t('warning'),
+						desc: this.$t('try keyword within 15 bytes'),
 					})
 				}else{
 					if(this.show.state == 'all'){
@@ -241,16 +241,16 @@ div
 					this.options.total = dev.data.data.totalNumber
 					this.devices.forEach(item =>{
 						if(item.state == "online"){
-							item.state = "在线"
+							item.state = this.$t('online')
 						}else if(item.state == "offline"){
-							item.state = "离线"
+							item.state = this.$t('offline')
 						}else if(item.state == "longoffline"){
-							item.state = "长期离线"
+							item.state = this.$t('long offline')
 						}
-						if(item.device_type == "ctrl"){
-							item.device_type = "控制柜"
-						}else if(item.device_type == "door"){
-							item.device_type = "控制器"
+						if(item.device_type == "240"){
+							item.device_type = this.$t('ctrl')
+						}else if(item.device_type == "15"){
+							item.device_type = this.$t('door')
 						}
 					})
 					this.addMark()
@@ -265,19 +265,19 @@ div
 					if (item.cellocation_id != null){
 						const point = new BMap.Point(item.cell_lon, item.cell_lat);
 						let marker = null;
-						if(item.state == "在线"){
+						if(item.state == this.$t('online')){
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: greenMark
 							});
-						}else if(item.state == "离线"){
+						}else if(item.state == this.$t('offline')){
 							labelStyle.color = 'red';
 							labelStyle.borderColor = 'red';
 							marker = new BMap.Marker(point, {
 								icon: redMark
 							});
-						}else if(item.state == '长期离线'){
+						}else if(item.state == this.$t('long offline')){
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
@@ -317,8 +317,8 @@ div
 			cardClick(val,vd){
 				if ((val==null)||(vd==null)){
 					this.$Notice.warning({
-						title: '警告',
-						desc: '该设备没有记录地址',
+						title: this.$t('warning'),
+						desc: this.$t('This device has no address record'),
 					})
 				}else{
 					this.map.panTo(new BMap.Point(vd, val))
@@ -343,11 +343,11 @@ div
 				var maxlon = -500;
 				this.devices.forEach(item => {
 					if(item.state == "online"){
-						item.state = "在线"
+						item.state = this.$t('online')
 					}else if(item.state == "offline"){
-						item.state = "离线"
+						item.state = this.$t('offline')
 					}else if(item.state == "longoffline"){
-						item.state = "长期离线"
+						item.state = this.$t('long offline')
 					}
 					if(item.cell_lat<=minlat){
 						minlat = item.cell_lat

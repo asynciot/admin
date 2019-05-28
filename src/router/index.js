@@ -6,6 +6,7 @@ const Reset = resolve => require(['@/views/Reset'], resolve)
 const Home = resolve => require(['@/views/Home'], resolve)
 const Index = resolve => require(['@/views/Menu/Index'], resolve)
 const Dashboard = resolve => require(['@/views/Dashboard/Index'], resolve)
+const Dashboard2 = resolve => require(['@/views/Dashboard/Index2'], resolve)
 
 const User = resolve => require(['@/views/User/Index'], resolve)
 const UserInfo = resolve => require(['@/views/User/Info/UserInfo'], resolve)
@@ -143,6 +144,13 @@ export default new Router({
 						name: 'Dash'
 					},
 					component: Dashboard
+				}, {
+					path: '/dashboard2',
+					name: 'dashboard2',
+					meta: {
+						name: 'Dash2'
+					},
+					component: Dashboard2
 				},
 				//user
 				{

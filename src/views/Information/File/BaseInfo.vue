@@ -4,12 +4,12 @@ div
 		Row(:gutter="30")
 			Col(span="16")
 				Card()
-					p(slot="title")|基本信息
+					p(slot="title")|{{$t('Basic Information')}}
 					Row(:gutter="30")
-						Col(span="12")|名称:
+						Col(span="12")|{{$t('device name')}}:
 							input(v-model="list.device_name" style="border: 0" @input="" maxlength='10')
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
-						Col(span="12")|设备ID:
+						Col(span="12")|{{$t('device ID')}}:
 							input(v-model="list.device_id" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|IMEI:
@@ -17,17 +17,17 @@ div
 						Col(span="12")|IMSI:
 							input(v-model="list.device_IMSI" style="border: 0" maxlength='15' readonly)
 					Row(:gutter="30" style="padding-top:10px" )
-						Col(span="12" v-if="list.device_type==15")|设备类型:控制器
-						Col(span="12" v-if="list.device_type==240")|设备类型:控制柜
-						Col(span="12" v-if="list.device_model==1")|型号:NSFC01-01B
-						Col(span="12" v-if="list.device_model==2")|型号:NSFC01-02T
+						Col(span="12" v-if="list.device_type==15")|{{$t('device type')}}:{{$t('door')}}
+						Col(span="12" v-if="list.device_type==240")|{{$t('device type')}}:{{$t('ctrl')}}
+						Col(span="12" v-if="list.device_model==1")|{{$t('model')}}:NSFC01-01B
+						Col(span="12" v-if="list.device_model==2")|{{$t('model')}}:NSFC01-02T
 				Card(v-if="list.device_type == 15" style="margin-top:5px")
-					p(slot="title")|参数信息
+					p(slot="title")|{{$t('Parameter')}}
 					Row(:gutter="30")
-						Col(span="12")|报告时间:
+						Col(span="12")|{{$t('report time')}}:
 							input(v-model="parameter.reporttime" style="border: 0" readonly)
 						Col(span="12")
-							div()|信号强度:&nbsp;&nbsp;
+							div()|{{$t('RSSI')}}:&nbsp;&nbsp;
 								icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign==0")
 								icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign==1")
 								icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign==2")
@@ -35,66 +35,57 @@ div
 								icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign==4")
 								icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign==5")
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|最新事件ID:
+						Col(span="12")|{{$t('last event')}}ID:
 							input(v-model="parameter.waveid" style="border: 0" readonly)
-						Col(span="8")|缓存中的事件数:
+						Col(span="8")|{{$t('event number in cache')}}:
 							input(v-model="parameter.wavenumber" style="border: 0;;width:50%" readonly)
 						Col(span="4")
-							Button(@click="getList();history=true")|查看历史故障
+							Button(@click="getList();history=true")|{{$t('history fault')}}
 				Card(v-if="list.device_type == 240" style="margin-top:5px")
-					p(slot="title")|参数信息
+					p(slot="title")|{{$t('Parameter')}}
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|累计运行次数:
+						Col(span="12")|{{$t('usage count')}}:
 							input(v-model="parameter.runcount" style="border: 0" readonly)
-						Col(span="12")|累计运行时间(s):
+						Col(span="12")|{{$t('operating time')}}(s):
 							input(v-model="parameter.uptime" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")
-							div()|信号强度:&nbsp;&nbsp;
+							div()|{{$t('RSSI')}}:&nbsp;&nbsp;
 								icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign==0")
 								icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign==1")
 								icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign==2")
 								icon(name="sign3",width="24",height="24",slot="prepend" v-if="sign==3")
 								icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign==4")
 								icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign==5")
-						Col(span="8")|最近故障楼层:
+						Col(span="8")|{{$t('recent fault floor')}}:
 							input(v-model="parameter.faultfloor" style="border: 0;width:50%" readonly)
 						Col(span="4")
-							Button(@click="getList();history=true")|查看历史故障
+							Button(@click="getList();history=true")|{{$t('history fault')}}
 				Card(style="margin-top:5px")
-					p(slot="title")|维保
+					p(slot="title")|{{$t('Maintenance Remind')}}
 					Row(:gutter="30")
-						Col(span="12")|下次维保:
-							DatePicker(type="date" placeholder="下次维保日期" format="yyyy-MM-dd" v-model="options.maintenance_nexttime" style='width: 50%; margin-left:20px')
+						Col(span="12")|{{$t('next maintenance')}}:
+							DatePicker(type="date", :placeholder="$t('next maintenance')" format="yyyy-MM-dd" v-model="options.maintenance_nexttime" style='width: 50%; margin-left:20px')
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
-						Col(span="12")|早几日提醒:
+						Col(span="12")|{{$t('remind in advance(Days)')}}:
 							input( style="border: 0" v-model="options.maintenance_remind")
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 					Row(:gutter="30")
-						Col(span="12")|维保类型:
+						Col(span="12")|{{$t('maintenance type')}}:
 							Select(v-model="list.maintenance_type" style="width:50%; margin-left:20px" placeholder="类型" @on-change="search()")
-								Option(key="1" label="故障" value='1')
-								Option(key="2" label="保养" value="2")
-								Option(key="3" label="校检" value="3")
+								Option(key="1", :label="$t('fault')" value='1')
+								Option(key="2", :label="$t('maintain')" value="2")
+								Option(key="3", :label="$t('check')" value="3")
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
-						Col(span="12")|上次维保:{{options.maintenance_lasttime}}
+						Col(span="12")|{{$t('last maintenance')}}:{{options.maintenance_lasttime}}
 				Card(style="margin-top:5px")
-					p(slot="title")|系统
-					Row(:gutter="30")
-						Col(span="12")|入网状态:
-							input( style="border: 0" readonly)
-						Col(span="12")|使用单位:
-							input( style="border: 0" readonly)
+					p(slot="title")|{{$t('System')}}
+
 					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|楼号:
-							input( style="border: 0" readonly)
-						Col(span="12")|梯号:
-							input( style="border: 0" readonly)
-					Row(:gutter="30" style="padding-top:10px")
-						Col(span="12")|安装地址:
+						Col(span="12")|{{$t('install address')}}:
 							input(v-model="list.install_addr" style="border: 0" @input="" maxlength='18')
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
-						Col(span="12")|安装日期:
+						Col(span="12")|{{$t('install date')}}:
 							input(v-model="options.install_date" style="border: 0" readonly)
 			Col(span="7" )
 				Card()
@@ -114,34 +105,34 @@ div
 						span.pd(id="black" style="color:black;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 				Col(span=24)
 					Col(span=12)
-						Button(@click="burnn()" type="primary" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|注册设备
-						Button(@click="clearr()" type="primary" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|解除注册
-						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 92%")|注册中
+						Button(@click="burnn()" type="primary" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|{{$t('register device')}}
+						Button(@click="clearr()" type="primary" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|{{$t('deregister')}}
+						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 92%")|{{$t('registering')}}
 					Col(span=11)
-						Button(@click="burn()" type="warning" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 100%" ,:disabled='upsuccess')|强制注册
-						Button(@click="clear()" type="warning" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|强制解除
-						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 100%")|注册中
+						Button(@click="burn()" type="warning" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 100%" ,:disabled='upsuccess')|{{$t('marked as registered')}}
+						Button(@click="clear()" type="warning" v-if="(list.register == 'registered')&&(list.commond !='contract')" style="margin-top: 20px;width: 100%" ,:disabled='upsuccess')|{{$t('marked as unregistered')}}
+						Button(disabled= true type="primary" v-if="list.commond =='contract'" style="margin-top: 20px; width: 100%")|{{$t('registering')}}
 				Col(span=24)
 					Col(span=12)
-						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='(!sent)&&(updevices!=true)' disabled='false')|提交信息
-						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-else)|提交信息
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-if='(!sent)&&(updevices!=true)' disabled='false')|{{$t('submit information')}}
+						Button(@click="update()" type="success" style="margin-top: 20px; width: 92%" v-else)|{{$t('submit information')}}
 					Col(span=11)
-						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" v-if='(!sent)&&(rmdevices!=true)' disabled='false')|信息重置
-						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" v-else)|信息重置
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" v-if='(!sent)&&(rmdevices!=true)' disabled='false')|{{$t('reset information')}}
+						Button(@click="del()" type="error" style="margin-top: 20px;width: 100%" v-else)|{{$t('reset information')}}
 				Col(span=24)
 					Col(span=12)
-						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-if='(addladder!=true)' disabled='false')|新建电梯
-						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-else)|新建电梯
+						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-if='(addladder!=true)' disabled='false')|{{$t('new elevator')}}
+						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-else)|{{$t('new elevator')}}
 					Col(span=12)
-						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|绑定到已有电梯
-	el-dialog(title="历史故障", :visible.sync="history" width="50%")
+						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|{{$t('bind to an elevator')}}
+	el-dialog(:title="$t('history fault')", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		span(slot="footer" class="dialog-footer")
 			div(style="height:40px")
 				Col(span='6')
 					Page(show-elevator :total="total", :page-size="fault.num",:current="fault.page" @on-change="pageChange" show-total style="margin-left:60px;margin-top:10px" simple)
 				Col(span='18')
-					el-button(type="primary" @click="history = false")|确 定
+					el-button(type="primary" @click="history = false")|{{$t('OK')}}
 </template>
 
 <script>
@@ -165,7 +156,7 @@ export default {
 		return {
 			column: [
 				{
-					title: '工单编号',
+					title: this.$t('order ID'),
 					key: 'order_id',
 					width:90,
 					render: (h, params) => {
@@ -193,18 +184,18 @@ export default {
 						)
 					}
 				},{
-					title: '维保人员电话',
+					title: this.$t('phone'),
 					key: 'phone',
 					width: 140,
 				},{
-					title: '接单时间',
+					title: this.$t('accept time'),
 					key: 'create_time',
 					// width:150,
 					render: (h, params) => {
 						return h('p',this.$format(parseInt(params.row.create_time), 'YYYY-MM-DD HH:mm:ss'))
 					}
 				},{
-					title: '完成时间',
+					title: this.$t('finish time'),
 					key: 'finish_time',
 					// width:150,
 					render: (h, params) => {
@@ -424,8 +415,8 @@ export default {
 		},
 		newladder(){
 			this.$Modal.confirm({
-				title: '绑定电梯',
-				content:'你确定要新建电梯么？',
+				title: this.$t('new elevator'),
+				content:this.$t('Do you want to create a new elevator?'),
 				onOk: () => {
 					this.$router.push({
 						name: 'addladder',
@@ -440,8 +431,8 @@ export default {
 		},
 		adladder(){
 			this.$Modal.confirm({
-				title: '绑定电梯',
-				content:'你确定要绑定到已有的电梯？',
+				title: this.$t('bind to an elevator'),
+				content:this.$t('Bind this device to an existing elevator?'),
 				onOk: () => {
 					this.$router.push({
 						name: 'coverladder',
@@ -457,7 +448,7 @@ export default {
 		},
 		burnn() {
 			this.$Modal.confirm({
-				title: '确定要注册这台设备吗',
+				title: this.$t('register device'),
 				content:'',
 				onOk: () => {
 					this.toburnn()
@@ -468,8 +459,8 @@ export default {
 		},
 		burn() {
 			this.$Modal.confirm({
-				title: '确定要强制注册吗',
-				content:'可能会生成错误信息！',
+				title: this.$t('Are you sure to marked as registered?'),
+				content:this.$t('Error messages may be generated!'),
 				onOk: () => {
 					this.toburn()
 				},
@@ -479,7 +470,7 @@ export default {
 		},
 		clearr() {
 			this.$Modal.confirm({
-				title: '确定要解除注册吗',
+				title: this.$t('deregister device'),
 				content:'',
 				onOk: () => {
 					this.toclearr()
@@ -490,8 +481,8 @@ export default {
 		},
 		clear() {
 			this.$Modal.confirm({
-				title: '确定要强制解除注册吗',
-				content:'可能会生成错误信息！',
+				title: this.$t('Are you sure to marked as unregistered?'),
+				content:this.$t('Error messages may be generated!'),
 				onOk: () => {
 					this.toclear()
 				},
@@ -506,14 +497,14 @@ export default {
 				this.refreshNum = 2
 				this.refresh()
 				this.$Notice.success({
-					title: '成功',
-					desc: '开始注册！稍后在运维界面显示该设备'
+					title: this.$t('success'),
+					desc: this.$t('Start to register!Show the device later in the Operations Interface')
 				});
 			} else {
 				this.list.commond = "ok"
 				this.$Notice.error({
-					title: '错误',
-					desc: '注册失败'
+					title: this.$t('error'),
+					desc: this.$t('Fail to register')
 				});
 			}
 		},
@@ -524,22 +515,22 @@ export default {
 				this.refreshNum = 2
 				this.refresh()
 				this.$Notice.success({
-					title: '成功',
-					desc: '开始注册！稍后在运维界面显示该设备'
+					title: this.$t('success'),
+					desc: this.$t('Start to register!Show the device later in the Operations Interface')
 				});
 			}else {
 				let ress=await this.$api.setdevices
 				({id: this.list.id,IMEI: this.list.IMEI,isreg: True})
 				if (ress.data.code === 0){
 					this.$Notice.success({
-						title: '成功',
-						desc: '注册异常，但已将该设备标为注册'
+						title: this.$t('success'),
+						desc: this.$t('Fail to register,but it marked as registered')
 					});
 				}else {
 					this.list.commond = "ok"
 					this.$Notice.error({
-						title: '错误',
-						desc: '注册失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to register')
 					});
 				}
 			}
@@ -548,15 +539,15 @@ export default {
 			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
 			if (res.data.code === 0) {
 				this.$Notice.success({
-					title: '成功',
-					desc: '开始清除'
+					title: this.$t('success'),
+					desc: this.$t('Start to deregister!')
 				});
 				this.list.commond = "contract"
 			}else {
 				this.list.commond = "ok"
 				this.$Notice.error({
-					title: '错误',
-					desc: '清除失败'
+					title: this.$t('error'),
+					desc: this.$t('Fail to register!')
 				});
 			}
 		},
@@ -564,8 +555,8 @@ export default {
 			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
 			if (res.data.code === 0) {
 				this.$Notice.success({
-					title: '成功',
-					desc: '开始清除'
+					title: this.$t('success'),
+					desc: this.$t('Start to deregister!')
 				});
 				this.list.commond = "contract"
 			}else {
@@ -573,21 +564,21 @@ export default {
 				if (ress.data.code === 0){
 					this.list.commond = "contract"
 					this.$Notice.success({
-						title: '成功',
-						desc: '清除异常，但已将该设备标为未注册'
+						title: this.$t('success'),
+						desc: this.$t('Fail to register,but it marked as unregistered')
 					});
 				}else {
 						this.list.commond = "ok"
 						this.$Notice.error({
-							title: '错误',
-							desc: '清除失败'
+							title: this.$t('error'),
+							desc: this.$t('Fail to register!')
 					});
 				}
 			}
 		},
 		async del() {
 			this.$Modal.confirm({
-				title: '确定要删除这台设备吗',
+				title: this.$t('reset information'),
 				content:'',
 				onOk: () => {
 					this.todel()
@@ -600,14 +591,14 @@ export default {
 			let res =await this.$api.deldevices({id: this.list.id,IMEI: this.list.IMEI})
 			if (res.data.code === 0){
 				this.$Notice.success({
-					title: '成功',
-					desc: '已经删除此设备'
+					title: this.$t('success'),
+					desc: this.$t('Information on this device has been reset')
 				});
 				this.$router.back(-1)
 			}else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '删除失败'
+						title: this.$t('error'),
+						desc: this.$t('Faul to reset')
 					});
 			}
 		},

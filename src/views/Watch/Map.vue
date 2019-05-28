@@ -110,8 +110,8 @@ div
 	export default {
 		data() {
 			const type = {
-				15: this.$t('door'),
-				240: this.$t('ctrl'),
+// 				15: this.$t('door'),
+// 				240: this.$t('ctrl'),
 			};
 			const netWork = {
 				3: '联通3G',
@@ -288,22 +288,22 @@ div
 						this.query.state = this.show.state
 					}
 					let dev = await this.$api.devices(this.query)
-					this.devices = dev.data.data.list
 					this.options.total = dev.data.data.totalNumber
-					this.devices.forEach(item =>{
+					dev.data.data.list.forEach(item =>{
 						if(item.state == "online"){
-							item.state = "在线"
+							item.state = this.$t('online')
 						}else if(item.state == "offline"){
-							item.state = "离线"
+							item.state = this.$t('offline')
 						}else if(item.state == "longoffline"){
-							item.state = "长期离线"
+							item.state = this.$t('long offline')
 						}
-						if(item.device_type == "ctrl"){
-							item.device_type = "控制柜"
-						}else if(item.device_type == "door"){
-							item.device_type = "控制器"
+						if(item.device_type == "240"){
+							item.device_type = this.$t('ctrl')
+						}else if(item.device_type == "15"){
+							item.device_type = this.$t('door')
 						}
 					})
+					this.devices = dev.data.data.list
 					this.addMark()
 					await this.centpoint()
 				}
@@ -317,21 +317,21 @@ div
 					{
 						const point = new BMap.Point(item.cell_lon+Math.random()/500, item.cell_lat);
 						let marker = null;
-						if (item.state  == "在线") {
+						if (item.state  == this.$t('online')) {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: greenMark
 							});
 						}
-						if (item.state == "离线") {
+						if (item.state == this.$t('offline')) {
 							labelStyle.color = 'red';
 							labelStyle.borderColor = 'red';
 							marker = new BMap.Marker(point, {
 								icon: redMark
 							});
 						}
-						if (item.state  == '长期离线') {
+						if (item.state  == this.$t('long offline')) {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
@@ -362,8 +362,8 @@ div
 			cardClick(val,vd){
 				if ((val==null)||(vd==null)){
 					this.$Notice.warning({
-						title: '警告',
-						desc: '该设备没有记录地址',
+						title: this.$t('warning'),
+						desc: this.$t('This device has no address record'),
 					})
 				}
 				else {this.map.panTo(new BMap.Point(vd, val))}
@@ -387,16 +387,16 @@ div
 				this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
-						item.state = "在线"
+						item.state = this.$t('online')
 					}else if(item.state == "offline"){
-						item.state = "离线"
+						item.state = this.$t('offline')
 					}else if(item.state == "longoffline"){
-						item.state = "长期离线"
+						item.state = this.$t('long offline')
 					}
 					if(item.device_type == "240"){
-						item.device_type = "控制柜"
+						item.device_type = this.$t('ctrl')
 					}else if(item.device_type == "15"){
-						item.device_type = "控制器"
+						item.device_type = this.$t('door')
 					}
 					if(item.cell_lat<=minlat){
 						minlat = item.cell_lat

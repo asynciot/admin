@@ -3,30 +3,30 @@ div
 	Row(:gutter=20)
 		Col(span=22)
 			Tabs.pd-heard(value="name1",:animated="false",@on-click="Onchange")
-				TabPane(label="地图",name="map")
-				TabPane(label="列表",name="list")
+				TabPane(:label="$t('Map')",name="map")
+				TabPane(:label="$t('List')",name="list")
 		Col(span=2)
 			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
 	div(v-if="div_show" id="serClick" style="margin-top:-30px")
 		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=5)
 				Col(span=2)
-					Select.smr(v-model="show.device_type" style="width:100%" placeholder="类型" @on-change="search()")
-						Option(key="1" label="全部" value='all')
-						Option(key="2" label="控制器" value="15")
-						Option(key="3" label="控制柜" value="240")
+					Select.smr(v-model="show.device_type" style="width:100%", :placeholder="$t('type')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('door')" value="15")
+						Option(key="3", :label="$t('ctrl')" value="240")
 				Col(span=2)
-					Select.smr(v-model="show.state" style="width:100%" placeholder="状态" @on-change="search()")
-						Option(key="1" label="全部" value='all')
-						Option(key="2" label="在线" value="online")
-						Option(key="3" label="离线" value="offline")
-						Option(key="4" label="长期离线" value="longoffline")
+					Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('online')" value="online")
+						Option(key="3", :label="$t('offline')" value="offline")
+						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
-					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span=3)
-					Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
+					Input(v-model="query.install_addr" , :placeholder="$t('install address')" max=10)
 				Col(span=2)
-					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px")|搜索
+					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px")|{{$t('search')}}
 				Col(span=1)
 					Button(type="default" icon="md-add" @click="showtag=!showtag" shape="circle" v-if='!showtag')
 					Button(type="default" icon="md-remove" @click="showtag=!showtag" shape="circle" v-if='showtag')
@@ -58,13 +58,13 @@ div
 		},
 		data() {
 			const type = {
-				15: '控制器',
-				240: '控制柜',
+				15: this.$t('door'),
+				240: this.$t('ctrl'),
 			};
 			const model = {
-				'online': '在线',
-				'offline': '离线',
-				'longoffline': '长期离线',
+				'online': this.$t('online'),
+				'offline': this.$t('offline'),
+				'longoffline': this.$t('long offline'),
 			};
 			const netWork = {
 				3: '联通3G',
@@ -102,12 +102,12 @@ div
 				openAnimateList: [],
 				columns: [
 					{
-					title: '编号',
+					title: this.$t('ID'),
 					key: 'device_id',
 					width: 60,
 					},
 					{
-						title: '设备名称',
+						title: this.$t('device name'),
 						width: 120,
 						key: 'device_name',
 						align:'left',
@@ -119,8 +119,8 @@ div
 										size: "small",
 									},
 									style: {
-										paddingRight: '4px',
-										paddingLeft: '4px',
+										paddingRight: '1px',
+										paddingLeft: '1px',
 									},
 									on: {
 										click: () => {
@@ -148,15 +148,15 @@ div
 					width: 140,
 					},
 					{
-						title: '设备类型',
-						width: 90,
+						title: this.$t('device type'),
+						width: 105,
 						key: 'device_type',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
 						}
 					},
 					{
-					  title: '状态',
+					  title: this.$t('state'),
 					  key: 'state',
 						width: 90,
 					  render: (h, params) => {
@@ -164,14 +164,14 @@ div
 					  }
 					},
 					{
-						title: 'IP定位',
+						title: this.$t('IP location'),
 						width: 120,
 						render: (h, params) => {
 							return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
 					 }
 					},
 					{
-						title: '基站定位',
+						title: this.$t('base station'),
 						key: 'cell_address',
 						render: (h,params) => {
 							var addr= params.row.cell_address
@@ -304,8 +304,8 @@ div
 			async search(){
 				if(this.query.search_info.length > 15){
 					this.$Notice.error({
-						title: '警告',
-						desc: '请不要超过15字！',
+						title: this.$t('warning'),
+						desc: this.$t('try keyword within 15 bytes'),
 					})
 				}else{
 					if(this.show.device_type == 'all'){
@@ -337,13 +337,13 @@ div
 				if (res.data.code === 0) {
 					this.getList()
 					this.$Notice.success({
-						title: '成功',
-						desc: '开始清除'
+						title: this.$t('success'),
+						desc: this.$t('start clear')
 					});
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '开始清除失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to clear')
 					});
 				}
 			},

@@ -2,31 +2,31 @@
 	<div class="layout-content-main">
 		<div>
 		<Form class="imr" ref="form" label-position="left" :label-width="100">
-		  <Row :gutter=5>
+		  <Row :gutter="5">
 				<Col span='3'>
-					<Select class="smr" v-model="show.state" style="width:100%;" placeholder="状态" @on-change="search()">
-						<Option key="1" label="全部" value="all"></Option>
-						<Option key="2" label="搁置" value="reprieve"></Option>
-						<Option key="3" label="处理中" value="untreated"></Option>
-						<Option key="4" label="审核中" value="examined"></Option>
-						<Option key="5" label="已结束" value="treated"></Option>
+					<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
+						<Option key="1" :label="$t('all')" value="all"></Option>
+						<Option key="2" :label="$t('reprieve')" value="reprieve"></Option>
+						<Option key="3" :label="$t('treating')" value="untreated"></Option>
+						<Option key="4" :label="$t('examine finished')" value="examined"></Option>
+						<Option key="5" :label="$t('finished')" value="treated"></Option>
 					</Select>
 				</Col>
 				<Col span='3'>
-					<Select class="smr" v-model="show.order_type" style="width:100%;" placeholder="事件类型" @on-change="search()">
-						<Option key="1" label="全部" value="all"></Option>
-						<Option key="2" label="故障" value="1"></Option>
-						<Option key="3" label="保养" value="2"></Option>
-						<Option key="4" label="校检" value="3"></Option>
+					<Select class="smr" v-model="show.order_type" style="width:100%;" :placeholder="$t('maintenance type')" @on-change="search()">
+						<Option key="1" :label="$t('all')" value="all"></Option>
+						<Option key="2" :label="$t('fault')" value="1"></Option>
+						<Option key="3" :label="$t('maintain')" value="2"></Option>
+						<Option key="4" :label="$t('check')" value="3"></Option>
 					</Select>
 				</Col>
 				<Col span='2'>
 				</Col>
 				<Col span='4'>
-					<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" placeholder="按设备ID查询" style="width:100%;" id="serch1"></AutoComplete>
+					<AutoComplete class="handle-input mr10" v-model="options.device_id" :data="menu" @on-search="handleSearch1" :placeholder="$t('Search by device ID')" style="width:100%;" id="serch1"></AutoComplete>
 				</Col>
 				<Col span='1'>
-					<Button class="mr-10" type="primary" icon="ios-search" @click="search()">搜索</Button>
+					<Button class="mr-10" type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
 				</Col>
 		  </Row>
 		</Form>
@@ -66,12 +66,12 @@
 					device_id:'',
 				},
 				columns: [ {
-					title: '工单编号',
+					title: this.$t('order ID'),
 					key: 'order_id',
 					width:90,
 				},
 				{
-					title: '设备名称',
+					title: this.$t('device name'),
 					key: 'device_name',
 					width:120,
 				},
@@ -82,23 +82,23 @@
 					sortable: true
 				},
 				{
-					title: '状态',
+					title: this.$t('state'),
 					key: 'state',
 					width:80,
 					render: (h, params) => {
 						var state
-						if (params.row.state == "treated") {state = '已结束'}
-						if (params.row.state == "untreated") {state = '处理中'}
+						if (params.row.state == "treated") {state = this.$t('finished')}
+						if (params.row.state == "untreated") {state = this.$t('treating')}
 						return h('div', state)
 					}
 				},
 				{
-					title: '维保人员电话',
+					title: this.$t('phone'),
 					key: 'phone',
 					width: 140,
 				},
 				{
-					title: '安装地址',
+					title: this.$t('install address'),
 					key: 'install_addr',
 
 				},
@@ -123,7 +123,7 @@
 // 				}
 // 				},
 				{
-					title: '接单时间',
+					title: this.$t('accept time'),
 					key: 'create_time',
 					width:150,
 					render: (h, params) => {
@@ -131,9 +131,9 @@
 					}
 				},
 				{
-					title: '完成时间',
+					title: this.$t('finish time'),
 					key: 'finish_time',
-					width:175,
+					width:170,
 					render: (h, params) => {
 						var time=''
 						var color='#000'
@@ -146,14 +146,14 @@
 					}
 				},
 				{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'companyName',
-					width: 100,
+					width: 115,
 					align: 'center',
 					render: (h, params) => {
 						var state
-						if (params.row.state == "treated") {state = '已修复'}
-						if (params.row.state == "untreated") {state = '完成'}
+						if (params.row.state == "treated") {state = this.$t('treated')}
+						if (params.row.state == "untreated") {state = this.$t('finish')}
 						return h('div', [
 							h('Button', {
 								props: {
@@ -182,7 +182,7 @@
 // 										})
 									}
 								}
-							}, '查看/确认')
+							}, this.$t('watch')+'/'+this.$t('confirm'))
 						]);
 					}
 				}
