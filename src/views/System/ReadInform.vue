@@ -7,17 +7,17 @@ div.layout-content-main
 					Form(ref='form',:model="query",label-position="left")
 						Row(:gutter="5")
 							Col(span="20")
-								Form-item(label="标题：")|{{list.title}}
+								Form-item(:label="$t('title')+'：'")|{{list.title}}
 							Col(span="10")
-								Form-item(label="发件人：admin")
+								Form-item(:label="$t('sender')+'：admin'")
 							Col(span="12")
-								Form-item(label="时间：")|{{$format(list.createTime, 'YYYY-MM-DD HH:mm:ss')}}
+								Form-item(:label="$t('create time')+'：'")|{{$format(list.createTime, 'YYYY-MM-DD HH:mm:ss')}}
 							Col(span="24")
-								Form-item(label="内容：")
-									Input(v-model="list.content" type="textarea",readonly=true,:rows="5",placeholder="没有内容")
+								Form-item(:label="$t('content')+'：'")
+									Input(v-model="list.content" type="textarea",readonly=true,:rows="5",:placeholder="$t('no content')")
 							Col(span="10")|&nbsp;
 							Col(span="10")
-								Button(type="" @click="$router.back(-1)" )|返回
+								Button(type="" @click="$router.back(-1)" )|{{$t('cancel')}}
 </template>
 
 <script>

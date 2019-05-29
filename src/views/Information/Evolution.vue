@@ -4,18 +4,18 @@ div.layout-content-main
 		Form(ref='query',:model="query",label-position="right",:label-width="100" @keydown.enter.native.prevent="getList()")
 			Row(:gutter=5)
 				Col(span="3")
-					Select(placeholder="请选择版本号",v-model="version" style="width:100%" @on-change="getList()")
+					Select(:placeholder="$t('Please select the version')",v-model="version" style="width:100%" @on-change="getList()")
 						Option(v-for="item in versions",:key="item",:value="item")|{{item}}
 				Col(span='3')
-					AutoComplete(name="inpSer" v-model="options.search_info" ,:data="menu" ,@on-search="handleSearch1()" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+					AutoComplete(name="inpSer" v-model="options.search_info" ,:data="menu" ,@on-search="handleSearch1()", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 				Col(span="13")
-					Button(type="primary" icon='ios-search' @click='getList()')|搜索
-					Button.mr-10(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|更新选中设备
+					Button(type="primary" icon='ios-search' @click='getList()')|{{$t('search')}}
+					Button.mr-10(type="success",:disabled="(select.length == 0) || !version",@click="update(select)")|{{$t('Update the selected device')}}
 				Col(span="3")
 					upload(:before-upload='handleUpload' action='')
-						Button(icon='ios-cloud-upload-outline') {{filename}}
+						Button(icon='ios-cloud-upload-outline')|{{filename}}
 				Col(span="2")
-					Button.mr-10(type='success', @click='confirm()' style='' v-if='!upsuccess') 上传
+					Button.mr-10(type='success', @click='confirm()' style='' v-if='!upsuccess')|{{$t('upload')}}
 	div(style="min-height: 450px;")
 		Table(@on-selection-change="selection",:columns="columns",:data="data",size="small" stripe)
 	div
@@ -36,8 +36,8 @@ export default {
 	},
 	data() {
 		const type= {
-			15: '控制器',
-			240: '控制柜',
+			15: this.$t('door'),
+			240: this.$t('ctrl'),
 		};
 		const netWork = {
 			3: '联通3G',
@@ -48,7 +48,7 @@ export default {
 			versions: [],
 			version: '',
 			upsuccess: true,
-			filename: '请选择文件',
+			filename: this.$t('Please select the file'),
 			select: [],
 			query:{},
 			api: api,
@@ -58,9 +58,9 @@ export default {
 			columns: [{
 				type: 'selection',
 				align: 'center',
-				width: 60,
+				width: 35,
 			},{
-				title: '设备名称',
+				title: this.$t('device name'),
 				key: 'device_name',
 				align: 'center',
 				width: 110,
@@ -70,13 +70,13 @@ export default {
 				width: 140,
 				minWidth:140,
 			},{
-				title: '设备类型',
+				title: this.$t('device type'),
 				key: 'device_type',
-				width:90,
+				width:105,
 				render: (h, params) => {
 					var i='';
-					if (params.row.device_type==240) i='控制柜';
-					if (params.row.device_type==15) i='控制器';
+					if (params.row.device_type==240) i=this.$t('ctrl');
+					if (params.row.device_type==15) i=this.$t('door');
 					return h('p',i)
 				}
 			},
@@ -89,59 +89,60 @@ export default {
 	//        }
 	//      },
 			{
-				title: '版本',
+				title: this.$t('firmware version'),
 				key: 'device_firmware',
-				width:90,
+				width:135,
 			},
 			{
-				title: '状态',
+				title: this.$t('state'),
 				width:90,
 				render: (h, params) => {
-					return h('p',(params.row.commond=='update') ? '更新中':'未在更新')
+					return h('p',(params.row.commond=='update') ? this.$t('updating'):this.$t('updatable'))
 				}
 			},
 			{
-				title: 'IP定位',
+				title: this.$t('IP location'),
 						 width: 110,
 				 render: (h, params) => {
 				 return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
 				 }
 			},
 			{
-				title: '基站定位',
-				key: 'cell_address',
-				render: (h,params) => {
-					var addr= params.row.cell_address
-					if (params.row.cell_address !=null) {
-						if(params.row.cell_address.length>=38){
-							addr=item.cell_address.substring(0,38)+"…"
+				title: this.$t('install address'),
+				// width: 250,
+				key: 'install_addr',
+				render: (h, params) => {
+					var addr = params.row.install_addr
+					if (params.row.install_addr != null) {
+						if (params.row.install_addr.length >= 30) {
+							addr = params.row.install_addr.substring(0, 28) + "…"
 						}
 					}
-					return  h('Poptip',{
+					return h('Poptip', {
 						props: {
-							trigger:"hover",
-							placement:"top-start",
-							content:params.row.cell_address
+							trigger: "hover",
+							placement: "top-start",
+							content: params.row.install_addr
 						},
-					},addr)
+					}, addr)
 				}
 			},
 			{
-				title: '操作',
+				title: this.$t('handle'),
 				width:80,
 				render: (h, params) => {
 					return h('Button', {
 						props: {
 							type: 'primary',
 							size: "small",
-							disabled: (this.evelution != true),
+							disabled: (params.row.commond=='update'),
 						},
 						on: {
 							click: () => {
 								this.update([params.row])
 							}
 						}
-					}, '更新')
+					}, this.$t('update'))
 				}
 			}],
 			data: [],

@@ -3,10 +3,10 @@
 	<div class="form" padding-top="100">
 		<Row>
 			<Col span='4'>
-				<AutoComplete v-model="query.search_info" :data="menu" @on-search="handleSearch1" placeholder="请输入关键词" style="width:100%"></AutoComplete>
+				<AutoComplete v-model="query.search_info" :data="menu" @on-search="handleSearch1" style="width:100%"></AutoComplete>
 			</Col>
 			<Col span='2'>
-				<Button class="mr-10" type="primary" icon="ios-search" @click="search()" style="margin-left:10px">搜索</Button>
+				<Button class="mr-10" type="primary" icon="ios-search" @click="search()" style="margin-left:10px">{{$t('search')}}</Button>
 			</Col>
 		</Row>
 	<div style="min-height:450px; margin-top: 10px;">
@@ -17,7 +17,7 @@
 	</Col>
 	<div id="capture"></div>
 	<div id="printer" >
-		<p >宁波申菱电梯二维码</p><br />
+		<p >{{$t('NBSL Elevator QR Code')}}</p><br />
 		<img :src="dataUrl" >
 		<p v-text="id"></p>
 	</div>
@@ -31,8 +31,8 @@
 	export default {
 		data() {
 			const type = {
-				15: '控制器',
-				240: '控制柜',
+				15: this.$t('door'),
+				240: this.$t('ctrl'),
 			};
 			const netWork = {
 				3: '联通3G',
@@ -63,7 +63,7 @@
 					tagcolor: '',
 				},
 				columns: [{
-			          title: '设备名称',
+			          title: this.$t('device name'),
 			          width:120,
 			          key: 'device_name'
 			        },
@@ -78,31 +78,31 @@
 					 width: 140,
 					},
 					{
-						title: 'IP定位',
+						title: this.$t('IP location'),
 		               width: 120,
 					   render: (h, params) => {
 					   return h('div',params.row.ip_country+params.row.ip_region+params.row.ip_city)
 					   }
 					},
 			        {
-			          title: '基站定位',
-			          // width: 500,
-			          key: 'cell_address',
-					  render: (h,params) => {
-					  	var addr= params.row.cell_address
-					  	if (params.row.cell_address !=null) {
-					  	if(params.row.cell_address.length>=38){
-					  		addr=params.row.cell_address.substring(0,38)+"…"
-					  	}
-					  	}
-					  return  h('Poptip',{
-					  			props: {
-					  				trigger:"hover",										
-					  				placement:"top-start",
-					  				content:params.row.cell_address
-					  			},
-					  		},addr)
-					  }
+			        	title: this.$t('install address'),
+			        	// width: 250,
+			        	key: 'install_addr',
+			        	render: (h, params) => {
+			        		var addr = params.row.install_addr
+			        		if (params.row.install_addr != null) {
+			        			if (params.row.install_addr.length >= 30) {
+			        				addr = params.row.install_addr.substring(0, 28) + "…"
+			        			}
+			        		}
+			        		return h('Poptip', {
+			        			props: {
+			        				trigger: "hover",
+			        				placement: "top-start",
+			        				content: params.row.install_addr
+			        			},
+			        		}, addr)
+			        	}
 			        },
 // 			        {
 // 			          title: '更新时间',
@@ -119,7 +119,7 @@
 // 			          }
 // 			        },
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						width: 120,
 						align:'center',
 						render: (h, params) => {
@@ -134,7 +134,7 @@
 										this.print(params.row)
 									}
 								}
-							}, '打印')
+							}, this.$t('print'))
 						}
 					}
 				],
@@ -143,6 +143,9 @@
 		},
 		created() {
 			this.getList()
+		},
+		mounted() {
+			this.print=this.global.functions.print
 		},
 		methods: {
 		  	handleSearch1 (selectword) {
@@ -196,16 +199,16 @@
 					this.options.total = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to gain elevator data')
 					});
 				}
 			},
 			async search() {
 				if (this.query.search_info.length>15){
 					this.$Notice.error({
-								title: '错误',
-								desc: '关键字太长！'
+								title: this.$t('error'),
+								desc: this.$t('The keyword is too long'),
 							})
 				}
 				else {

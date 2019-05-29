@@ -1,16 +1,16 @@
 <template lang="jade">
 div.layout-content-main
 	div.form
-		Form(ref='form',:model="options",label-position="left",:label-width="100")
+		Form(ref='form',:model="options",label-position="left",:label-width="120")
 			Row(:gutter="16")
 				Col(span="6")
-					Form-item(label="用户名称：")
-						Input(v-model="options.username",placeholder="请输入用户名称")
+					Form-item(:label="$t('user name')+'：'")
+						Input(v-model="options.username",placeholder="")
 				Col(span="6")
-					Form-item(label="手机号码：")
-						Input(v-model="options.mobile",placeholder="请输入手机号码")
+					Form-item(:label="$t('phone number')+'：'")
+						Input(v-model="options.mobile",placeholder="")
 				Col(span="6")
-					Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")|搜索
+					Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")|{{$t('search')}}
 	div(style="min-height: 450px")
 		Table(:loading="loading",:stripe="true",:columns="column",:data="list",stripe size="small")
 	Col(span=6)|&nbsp;
@@ -35,19 +35,19 @@ export default {
 			},
 			column: [
 				{
-					title: '用户名称',
+					title: this.$t('user name'),
 					key: 'username',
 				},
 				{
-					title: '用户描述',
+					title: this.$t('user introduction'),
 					key: 'introduction',
 				},
+// 				{
+// 					title: this.$t('profession'),
+// 					key: 'profession',
+// 				},
 				{
-					title: '职务',
-					key: 'profession',
-				},
-				{
-					title: '角色',
+					title: this.$t('role'),
 					render: (h, params) => {
 						var authority;
 						if (params.row.username=='admin') {authority='超级管理员'}
@@ -56,15 +56,15 @@ export default {
 					}
 				},
 				{
-					title: '电话',
+					title: this.$t('phone number'),
 					key: 'mobile',
 				},
 				{
-					title: '邮箱',
+					title: this.$t('email'),
 					key: 'email',
 				},
 				{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'userName',
 					width: 300,
 					align: 'center',
@@ -90,7 +90,7 @@ export default {
 										})
 									}
 								}
-							}, '发送通知'),
+							}, this.$t('sent notice')),
 							h('Button', {
 								props: {
 									type: 'error',
@@ -100,8 +100,8 @@ export default {
 								on: {
 									click: () => {
 										this.$Modal.confirm({
-											title: '警告!',
-											content: '<p>是否删除此项 ？</p>',
+											title: this.$t('warning'),
+											content: this.$t('Make sure you want to delete this item？'),
 											onOk: () => {
 												this.deleteRow(params)											
 											},
@@ -110,7 +110,7 @@ export default {
 										})	
 									}
 								}
-							}, '删除'),
+							}, this.$t('delete')),
 						]);
 					}
 				}

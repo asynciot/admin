@@ -665,15 +665,15 @@
 				prostate:'6',
 				chatbottom:false,
 				reply:'',
-				codelist:[this.$t('maintain'),'过流','母线过压','母线欠压','输入缺相',
-						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
-						'抱闸接触器故障','封星继电器故障','抱闸开关故障','运行中安全回路断开','运行中门锁断开',
-						'门锁短接故障','层站召唤通讯故障','轿厢通讯故障','并联通讯故障','开门故障',
-						'关门故障','开关门到位故障','平层信号异常','终端减速开关故障','下限位信号异常',
-						'上限位信号异常','打滑故障','电梯速度异常','电机反转故障','磁极位置学习故障',
-						'E30','停车速度检测','井道自学习故障','马达过热故障','制动力严重不足',
-						  '制动力不足警告',],
-				codelist2:['输入电压过低','输入电压过高','','','开关门受阻','飞车保护','电机过载','输出过流'],
+// 				codelist:[this.$t('maintain'),'过流','母线过压','母线欠压','输入缺相',
+// 						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
+// 						'抱闸接触器故障','封星继电器故障','抱闸开关故障','运行中安全回路断开','运行中门锁断开',
+// 						'门锁短接故障','层站召唤通讯故障','轿厢通讯故障','并联通讯故障','开门故障',
+// 						'关门故障','开关门到位故障','平层信号异常','终端减速开关故障','下限位信号异常',
+// 						'上限位信号异常','打滑故障','电梯速度异常','电机反转故障','磁极位置学习故障',
+// 						'E30','停车速度检测','井道自学习故障','马达过热故障','制动力严重不足',
+// 						  '制动力不足警告',],
+// 				codelist2:['输入电压过低','输入电压过高','','','开关门受阻','飞车保护','电机过载','输出过流'],
 			}
 		},
 		mounted(){
@@ -977,16 +977,16 @@
 				}
 				var pro='0%'
 				var code='0'
-				var state='等待接单'
+				var state=this.$t('untreated')
 				var e='未填写'
 				if (this.data[val].code != null) {
 					code=this.data[val].code.toString(16)
 					}
-				if (this.data[val].state2 == 'examined') {pro='10%';state='批准工单中'}
-				if (this.data[val].state2 == 'untreated') {pro='0%';state='等待接单'}
-				if (this.data[val].state == 'examined') {pro='80%';state='等待签字确认'}
-				if (this.data[val].state == 'untreated') {pro='40%';state='处理中'}
-				if (this.data[val].state2 == 'treated') {pro='100%';state='存入档案'}
+				if (this.data[val].state2 == 'examined') {pro='10%';state=this.$t('examine order')}
+				if (this.data[val].state2 == 'untreated') {pro='0%';state=this.$t('untreated')}
+				if (this.data[val].state == 'examined') {pro='80%';state=this.$t('examine finished')}
+				if (this.data[val].state == 'untreated') {pro='40%';state=this.$t('treating')}
+				if (this.data[val].state2 == 'treated') {pro='100%';state=this.$t('stored')}
 				this.todo.push({pro:this.data[val].device_name,description: code,time:this.data[val].create_time,progress:pro,addr:this.data[val].install_addr,expect:e,type:ech.data.data.list[0].device_type,state:state,num:10*this.progresspage + val})
 			},
 			async getinfo(){
