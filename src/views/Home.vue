@@ -222,12 +222,12 @@
 						key:false,
 					},{
 						name:'ladder',
-						label:'电梯信息',
+						label:'elevator information',
 						key:false,
 					},
 					{
 						name:'elevator',
-						label:'电梯组',
+						label:'elevator group',
 						key:true,
 					},
 // 						{

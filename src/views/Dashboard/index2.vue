@@ -1,26 +1,82 @@
 <template>
 	<div class="wrapper layout-content-main account" style="padding:0px;overflow-y: scroll;padding-left: 10px;" id="lay">
-		<Col span="6" style="color:#fff">
-			<div style="height:300px;width:100%;text-align: center;">
-				<h2>今天</h2>
-				<div style="font-size:20px">
-					<Col span="12">今日故障：10</Col>
-					<Col span="12">今日维修：5</Col>
-					<Col span="24">
-						<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" style="background: #000080;">
-							<div class="progress-bar" style="background: #7CEDFF;" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+'10%'"></div>
-						</div>
-					</Col>
+		<Row :gutter='20' style="padding-top: 20px;margin-left: 35px;">
+			<Col span="6" style="color:#fff">
+				<div style="height:300px;width:100%;text-align: center;">
+					<h2>今天</h2>
+					<div style="font-size:20px">
+						<Col span="12">今日故障：10</Col>
+						<Col span="12">今日维修：5</Col>
+						<Col span="24">
+							<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" style="background: #000080;">
+								<div class="progress-bar" style="background: #7CEDFF;" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+'10%'"></div>
+							</div>
+						</Col>
+					</div>
 				</div>
-			</div>
-			<div class="box10">
-				<h1>Sample Box</h1>   
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-				</p> 
-				<br />
-			</div>
-		</Col>
+				<div class="box10">
+					<h1>Sample Box</h1>   
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+					</p>
+					<br />
+				</div>
+				<div class="box10">
+					<h1>Sample Box</h1>   
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+					</p>
+					<br />
+				</div>
+			</Col>
+			<Col span="9" style="color:#fff">
+				<div style="height:350px;width:100%;text-align: center;">
+					<div id="chart1" style="width:100%;height:300px"></div>
+				</div>
+				<div class="box10">
+					<h1>Sample Box</h1>   
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+					</p>
+					<br />
+				</div>
+				<div class="box10">
+					<h1>Sample Box</h1>   
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+					</p>
+					<br />
+				</div>
+			</Col>
+			<Col span="6" style="color:#fff">
+				<div style="height:300px;width:100%;text-align: center;">
+					<h2>昨天</h2>
+					<div style="font-size:20px">
+						<Col span="12">今日故障：10</Col>
+						<Col span="12">今日维修：5</Col>
+						<Col span="24">
+							<div class="progress horizontal active" :style="'height:'+screenheight/42+'px'" style="background: #000080;">
+								<div class="progress-bar" style="background: #7CEDFF;" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" :style="'width:'+'10%'"></div>
+							</div>
+						</Col>
+					</div>
+				</div>
+				<div class="box10">
+					<h1>Sample Box</h1>   
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+					</p>
+					<br />
+				</div>
+				<div class="box10">
+					<h1>Sample Box</h1>   
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+					</p>
+					<br />
+				</div>
+			</Col>
+		</Row>
 	</div>
 </template>
 <script>
@@ -144,20 +200,12 @@
 				prostate:'6',
 				chatbottom:false,
 				reply:'',
-				codelist:['维护','过流','母线过压','母线欠压','输入缺相',
-						'输出缺相','输出过力矩','编码器故障','模块过热','运行接触器故障',
-						'抱闸接触器故障','封星继电器故障','抱闸开关故障','运行中安全回路断开','运行中门锁断开',
-						'门锁短接故障','层站召唤通讯故障','轿厢通讯故障','并联通讯故障','开门故障',
-						'关门故障','开关门到位故障','平层信号异常','终端减速开关故障','下限位信号异常',
-						'上限位信号异常','打滑故障','电梯速度异常','电机反转故障','磁极位置学习故障',
-						'E30','停车速度检测','井道自学习故障','马达过热故障','制动力严重不足',
-						  '制动力不足警告',],
-				codelist2:['输入电压过低','输入电压过高','','','开关门受阻','飞车保护','电机过载','输出过流'],
+
 			}
 		},
 		mounted(){
 			// this.shineword();
-
+			this.Chart1()
 			
 		},
 		created(){
@@ -170,7 +218,46 @@
 			});
 
 		},
-		methods: {}
+		methods: {
+			Chart1() {
+			
+							let activedoor = this.$echarts.init(document.getElementById('chart1'))
+							activedoor.resize()
+							activedoor.setOption({
+								tooltip : {
+									formatter: "{a} <br/>{b} : {c}%"
+								},
+								toolbox: {
+									show : true,
+									feature : {
+										mark : {show: true},
+										restore : {show: true},
+										saveAsImage : {show: true}
+									}
+								},
+								series : [
+									{
+										name:'业务指标',
+										type:'gauge',
+										detail : {formatter:'{value}%'},
+										data:[{value: 50, name: '完成率'}]
+									}
+								]
+							})
+							if(activedoor._$handlers.click){
+								activedoor._$handlers.click.length = 0;
+							}
+							var _this=this
+							activedoor.on('click', function (params) {
+								_this.$router.push({
+									name: 'eventreport',
+									params: {
+										device_name: params.name
+									}
+								})
+							})
+						},
+		}
 	}
 	
 </script>

@@ -3,19 +3,19 @@
 		Form.imr(ref="form" label-position="left" ,:label-width="100" @keydown.enter.native.prevent="search()")
 			Row(:gutter=5)
 				Col(span='2')
-					Select.smr(v-model="show.state" style="width:100%;" placeholder="在线状态" @on-change="search()")
-						Option(key="1" label="全部" value="all")
-						Option(key="2" label="在线" value="online")
-						Option(key="3" label="离线" value="offline")
-						Option(key="4" label="长期离线" value="longoffline")
+					Select.smr(v-model="show.state" style="width:100%;", :placeholder="$t('state')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value="all")
+						Option(key="2", :label="$t('online')" value="online")
+						Option(key="3", :label="$t('offline')" value="offline")
+						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
 					AutoComplete.handle-input(v-model="options.search_info" ,:data="menu" @on-search="handleSearch1"
-					 placeholder="关键词" style="width:100%;" id="serch1")
+					 :placeholder="$t('keyword')" style="width:100%;" id="serch1")
 				Col( span=2)
-					Input( v-model="options.install_addr"  placeholder="安装地址" max=10)
+					Input( v-model="options.install_addr", :placeholder="$t('install address')" max=10)
 				Col( span='10')
-					Button(type="primary" icon="ios-search" @click="search()")|搜索
-					Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goLadder()")|添加电梯
+					Button(type="primary" icon="ios-search" @click="search()")|{{$t('search')}}
+					Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goLadder()")|{{$t('new elevator')}}
 		div( style="min-height: 450px; margin-top: 5px;")
 			Table.mb-10( stripe :columns="columns" ,:data="list" size="small")
 		Col( span="24" style="text-align: center;")
@@ -51,31 +51,31 @@
 				loading: false,
 				columns: [
 					{
-						title: '电梯名称',
+						title: this.$t('ladder name'),
 						width: 120,
 						key: 'name',
 					},
 					{
-						title: '控制柜',
+						title: this.$t('ctrl'),
 						key: 'ctrl',
 					},
 					{
-						title: '门机',
+						title: this.$t('door'),
 						key: 'door1',
 					},
 					{
-						title: '门机',
+						title: this.$t('door'),
 						key: 'door2',
 					},
 					{
-						title: 'IP定位',
+						title: this.$t('IP location'),
 						key: 'ipaddr',
 						render: (h, params) => {
 							return h('div', params.row.ip_country + params.row.ip_region + params.row.ip_city)
 						}
 					},
 					{
-						title: '安装地址',
+						title: this.$t('install address'),
 						// width: 250,
 						key: 'install_addr',
 						render: (h, params) => {
@@ -95,13 +95,13 @@
 						}
 					},
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						width:240,
 						render: (h, params) => {
-							var follow = "关注电梯"
+							var follow = this.$t('follow')
 							this.follow.forEach(item => {
 								if (params.row.IMEI == item.imei) {
-									follow = '取消关注'
+									follow = this.$t('remove follow')
 								}
 							})
 							return h('div', [
@@ -115,9 +115,9 @@
 									},
 									on: {
 										click: () => {
-											if (follow == "关注电梯"){
+											if (follow == this.$t('follow')){
 												this.addfl(params.row.ctrl,params.row.door1,params.row.door2)
-											}else if(follow == "取消关注"){
+											}else if(follow == this.$t('remove follow')){
 												this.delfl(params.row.id)
 											}
 										},
@@ -141,7 +141,7 @@
 											})
 										},
 									}
-								}, '查看/编辑'),
+								}, this.$t('watch')+'/'+this.$t('edit')),
 								h('Button', {
 									props: {
 										type: 'error',
@@ -156,7 +156,7 @@
 											this.getList()
 										},
 									}
-								}, '删除'),
+								}, this.$t('delete')),
 							])
 						}
 					}
@@ -224,21 +224,21 @@
 			},
 			async remLadder(val) {
 				this.$Modal.confirm({
-					title: '删除设备',
-					content:'你确定要删除该电梯么？',
+					title: this.$t('delete'),
+					content:this.$t('Make sure you want to delete this item？'),
 					onOk: () => {
 						let res = this.$api.removeLadder({
 							ladder_id: val
 						})
 						if(res.data.code==0){
 							this.$Notice.success({
-								title: '成功',
-								desc: '已删除该设备！'
+								title: this.$t('success'),
+								desc: ''
 							});
 						}else{
 							this.$Notice.error({
-								title: '失败',
-								desc: '发生错误！'
+								title: this.$t('error'),
+								desc: ''
 							});
 						}
 					},

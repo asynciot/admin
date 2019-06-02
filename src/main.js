@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
 /* eslint-disable no-new */
 Vue.locale = () => {};
 const i18n = new VueI18n({
-  locale: localStorage.getItem("language") || 'zh-CN',    // 语言标识
+  locale: window.localStorage.getItem("language") || 'zh-CN',    // 语言标识
   messages: {
     'zh-CN': Object.assign(zh,app_zh),   // 中文语言包
     'en-US': Object.assign(en,app_en)    // 英文语言包
