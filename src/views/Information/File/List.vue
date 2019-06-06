@@ -1,39 +1,39 @@
 <template>
 	<div class="layout-content-main">
 		<Form class="imr" ref="form" label-position="left" :label-width="100" @keydown.enter.native.prevent="search()">
-			<Row :gutter=5>
+			<Row :gutter='5'>
 				<Col span='2'>
-				<Select class="smr" v-model="show.device_type" style="width:100%;" placeholder="设备类型" @on-change="search()">
-					<Option key="1" label="全部" value="all"></Option>
-					<Option key="2" label="控制器" value="15"></Option>
-					<Option key="3" label="控制柜" value="240"></Option>
+				<Select class="smr" v-model="show.device_type" style="width:100%;" :placeholder="$t('device type')" @on-change="search()">
+					<Option key="1" :label="$t('all')" value="all"></Option>
+					<Option key="2" :label="$t('door')" value="15"></Option>
+					<Option key="3" :label="$t('ctrl')" value="240"></Option>
 				</Select>
 				</Col>
 				<Col span='2'>
-				<Select class="smr" v-model="show.register" style="width:100%;" placeholder="注册状态" @on-change="search()">
-					<Option key="1" label="全部" value="all"></Option>
-					<Option key="2" label="未注册" value="unregistered"></Option>
-					<Option key="3" label="已注册" value="registered"></Option>
+				<Select class="smr" v-model="show.register" style="width:100%;" :placeholder="$t('register')+$t('state')" @on-change="search()">
+					<Option key="1" :label="$t('all')" value="all"></Option>
+					<Option key="2" :label="$t('unregistered')" value="unregistered"></Option>
+					<Option key="3" :label="$t('registered')" value="registered"></Option>
 				</Select>
 				</Col>
 				<Col span='2'>
-				<Select class="smr" v-model="show.state" style="width:100%;" placeholder="在线状态" @on-change="search()">
-					<Option key="1" label="全部" value="all"></Option>
-					<Option key="2" label="在线" value="online"></Option>
-					<Option key="3" label="离线" value="offline"></Option>
-					<Option key="4" label="长期离线" value="longoffline"></Option>
+				<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
+					<Option key="1" :label="$t('all')" value="all"></Option>
+					<Option key="2" :label="$t('online')" value="online"></Option>
+					<Option key="3" :label="$t('offline')" value="offline"></Option>
+					<Option key="4" :label="$t('long offline')" value="longoffline"></Option>
 				</Select>
 				</Col>
 				<Col span=4>
 					<AutoComplete class="handle-input mr10" v-model="options.search_info" :data="menu" @on-search="handleSearch1"
-					 placeholder="关键词" style="width:100%;" id="serch1"></AutoComplete>
+					 :placeholder="$t('keyword')" style="width:100%;" id="serch1"></AutoComplete>
 				</Col>
 				<Col span=2>
-					<Input v-model="options.install_addr"  placeholder="安装地址" max=10></Input>
+					<Input v-model="options.install_addr"  :placeholder="$t('install address')" max=10></Input>
 				</Col>
 					
 				<Col span='2'>
-					<Button class="mr-10" type="primary" icon="ios-search" @click="search()">搜索</Button>
+					<Button class="mr-10" type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
 				</Col>
 				<Col span='1'>
 					<Button class="mr-10" type="default" icon="md-add" @click="showtag=!showtag" shape="circle" v-if='!showtag'></Button>
@@ -97,11 +97,11 @@
 					install_addr:'',
 				},
 				total:0,
-				searchkey: '搜索类型',
+				searchkey: this.$t('install address')+this.$t('install address'),
 				loading: false,
 				columns: [
 					{
-						title: '设备名称',
+						title: this.$t('device name'),
 						key: 'device_name',
 						width: 110,
 						align: 'center',
@@ -110,19 +110,19 @@
 							var reg = '';
 							if (params.row.install_addr == null) {
 								type = 'ios-help';
-								reg = '设备没有输入安装地址;';
+								reg = this.$t('No install address');
 							}
 							if (params.row.device_name == null) {
 								type = 'ios-help';
-								reg = reg + '设备未命名;';
+								reg = reg + this.$t('This device is unnamed')+';';
 							}
 							if (params.row.IMEI == null) {
 								type = 'ios-help';
-								reg = reg + '设备缺失IMEI;';
+								reg = reg + this.$t('No IMEI')+';';
 							}
 							if (params.row.rssi <= 5) {
 								type = 'ios-help';
-								reg = reg + '信号太弱';
+								reg = reg + this.$t('The signal is too weak')+';';
 							}
 							return h('div', [
 								h('Poptip', {
@@ -192,25 +192,25 @@
 						width: 148,
 					},
 					{
-						title: '设备类型',
+						title: this.$t('device type'),
 						key: 'device_type',
-						width: 90,
+						width: 105,
 						render: (h, params) => {
 							var type = "-"
-							if (params.row.device_type == '240') type = '控制柜'
-							if (params.row.device_type == '15') type = '控制器'
+							if (params.row.device_type == '240') type = this.$t('ctrl')
+							if (params.row.device_type == '15') type = this.$t('door')
 							return h('div', type)
 						}
 					},
 					{
-						title: 'IP定位',
+						title: this.$t('IP location'),
 						width: 120,
 						render: (h, params) => {
 							return h('div', params.row.ip_country + params.row.ip_region + params.row.ip_city)
 						}
 					},
 					{
-						title: '安装地址',
+						title: this.$t('install address'),
 						// width: 250,
 						key: 'install_addr',
 						render: (h, params) => {
@@ -244,13 +244,13 @@
 					//                }
 					//              },
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						width: 280,
 						render: (h, params) => {
-							var follow = "关注设备"
+							var follow = this.$t('follow')
 							this.follow.forEach(item => {
 								if (params.row.IMEI == item.imei) {
-									follow = '取消关注'
+									follow = this.$t('remove follow')
 								}
 							})
 							return h('div', [
@@ -264,9 +264,9 @@
 									},
 									on: {
 										click: () => {
-											if (follow == "关注设备")
+											if (follow == this.$t('follow'))
 												this.addfl(params.row.IMEI)
-											if (follow == "取消关注")
+											if (follow == this.$t('remove follow'))
 												this.delfl(params.row.id)
 										},
 									}
@@ -290,7 +290,7 @@
 											})
 										},
 									}
-								}, '添加工单'),
+								}, this.$t('new order')),
 								h('Button', {
 									props: {
 										type: 'primary',
@@ -309,7 +309,7 @@
 											})
 										},
 									}
-								}, '查看/编辑'),
+								}, this.$t('watch')+'/'+this.$t('edit')),
 							])
 						}
 					}

@@ -9,31 +9,31 @@
 							Form(ref="form",:model="form",:rules="rules",:label-width="120")
 								Row(:gutter="5")
 									Col(span="20",offset="2")
-										Form-item(label="名称",prop="name")
-											Input(v-model="form.nickname",placeholder="请输入名称")
-										Form-item(label="权限")|{{role}}						
+										Form-item(:label="$t('nickname')",prop="name")
+											Input(v-model="form.nickname")
+										Form-item(:label="$t('role')")|{{role}}						
 										//Form-item(label="所属单位",prop="unit") 
 										//	Input(v-model="form.unit",placeholder="所属单位")
-										Form-item(label="联系电话",prop="mobile") 
-											Input(v-model="form.mobile",placeholder="手机号码")
-										Form-item(label="邮箱",prop="email") 
-											Input(v-model="form.email",placeholder="请填写邮箱地址")
-										Form-item(label="备注",prop="remark")
+										Form-item(:label="$t('phone number')",prop="mobile") 
+											Input(v-model="form.mobile")
+										Form-item(:label="$t('email')",prop="email") 
+											Input(v-model="form.email")
+										Form-item(:label="$t('introduction')",prop="remark")
 											textarea(v-model="form.introduction" style=" width:100%;height:70px")
 						Col(span=9)
 							div(style="height:300px; width:250px")
 								upload(:before-upload='handleUpload')
 									img(id="image" src="../../assets/admin.jpg" style="height:250px; width:250px; cursor: pointer;")
-								Button(style="margin-left:0px" icon="ios-cloud-upload-outline",@click="confirm" v-if="upsuccess")|上传头像
-								Button(style="margin-left:0px" icon="ios-cloud-upload-outline",@click="confirm" v-if="!upsuccess" disabled)|上传头像
-								Col(span=24 style="margin-left:10px;color:#f11")|图片不要大于2M,否则可能显示不出来
+								Button(style="margin-left:0px" icon="ios-cloud-upload-outline",@click="confirm" v-if="upsuccess")|{{$t('upload portrait')}}
+								Button(style="margin-left:0px" icon="ios-cloud-upload-outline",@click="confirm" v-if="!upsuccess" disabled)|{{$t('upload portrait')}}
+								Col(span=24 style="margin-left:10px;color:#f11")
 						Col(span=24)
 							Col(span=8 align="center")
-								Button(type="primary" icon="ios-call-outline",@click="getData()")|重置
+								Button(type="primary" ,@click="getData()")|{{$t('reset')}}
 							Col(span=8 align="center")
-								Button(type="success",icon="plus",@click="create('form'),$router.back(-1)",)|提交
+								Button(type="success" ,@click="create('form'),$router.back(-1)",)|{{$t('submit')}}
 							Col(span=8 align="center")
-								Button(icon="close",@click="$router.back(-1)")|取消 
+								Button(@click="$router.back(-1)")|{{$t('cancel')}} 
 </template>
 
 <script>
@@ -57,7 +57,7 @@
 					nickname: [{
 						required: true,
 						type: 'string',
-						message: '请填写名称',
+						message: this.$t('Please fill the name'),
 						trigger: 'blur'
 					}],
 					unit: [{
@@ -69,14 +69,14 @@
 					mobile: [{
 						required: false,
 						type: 'string',
-						message: '请填写正确的手机号',
+						message: this.$t('Please fill the correct phone number'),
 						pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
 						trigger: 'blur'
 					}],
 					email: [{
 						required: false,
 						type: 'string',
-						message: '请填写正确的email',
+						message: this.$t('Please fill the correct email address'),
 						pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
 						trigger: 'blur'
 					}],
@@ -135,21 +135,21 @@
 				})
 				if (res.data.code ==0) {
 					this.$Notice.success({
-					title: '成功',
-					desc: '更改信息成功'
+					title: this.$t('success'),
+					desc: this.$t('Personal information is updated')
 					});
 				}
 				else {
 					this.$Notice.error({
-					title: '失败',
-					desc: '提交错误'
+					title: this.$t('error'),
+					desc: this.$t('Fail to submit information')
 					});
 				}
 			},
 			handleUpload (file) {
-				console.log(file)
 				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')){
+				if (file.size<2097152){
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 				this.file = new File([file], new Date().getTime()+".jpg",{type:"image/jpeg"});
 				this.filename = this.file.name;
 				this.upsuccess = true;
@@ -167,8 +167,15 @@
 				}
 				else{
 					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
+						title: this.$t('warning'), 
+						desc: this.$t('File type must be picture')
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: this.$t('warning'),
+						desc: this.$t('File size must be less than 2M')
 					})
 				}
 			},
@@ -181,15 +188,15 @@
 				if (res.data.code == 0){
 				this.upsuccess=false
 				this.$Notice.success({
-					title: '成功',
-					desc: ('成功上传'+this.filename)
+					title: this.$t('success'),
+					desc: (this.$t('successfully upload')+this.filename)
 				})
 				this.getData()
 				this.filename='已上传'+this.filename
 				}
 				else{
 					this.$Notice.error({
-						title: '错误',
+						title: this.$t('error'),
 						desc: '上传失败'
 					})
 				}

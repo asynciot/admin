@@ -2,53 +2,53 @@
 	div
 		div.box
 			div.box-header.with-border
-				p.box-title 添加到已有电梯
+				p.box-title {{$t('add to existing elevator')}}
 			div.form
 				Row(:gutter="30")
 					Col(span="8")
 						Card()
-							p(slot="title")|基本信息
+							p(slot="title")|{{$t('Basic Information')}}
 							Form(:label-width="120")
 								Row(:gutter="5")
 									Col(span="20")
-										Form-item(label="电梯名称：")
-											Input(type='text', v-model="ladder.name" placeholder='请输入电梯名称' disabled)
-										Form-item(label="安装地址：")
-											Input(type='text', v-model="ladder.install_addr" placeholder='请输入安装地址' disabled)
+										Form-item(:label="$t('device name')+':'")
+											Input(type='text', v-model="ladder.name" disabled)
+										Form-item(:label="$t('install address')+':'")
+											Input(type='text', v-model="ladder.install_addr" disabled)
 						Card(style="margin-top:10px;")
-							p(slot="title")|设备替换
+							p(slot="title")|{{$t('Device Replace')}}
 							Form(:label-width="120")
 								Row(:gutter="5")
 									Col(span="20")
-										Form-item(label="请选择要替换的设备")
+										Form-item(:label="$t('Please select the equipment to replace')")
 							Row(:gutter=5)
 								Col(span=6 offset=3)
-									Button(type="primary" @click='cover(1)')|控制柜
+									Button(type="primary" @click='cover(1)')|{{$t('ctrl')}}
 								Col(span=10)
-									Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI' disabled)
+									Input(type='text' v-model='ladder.ctrl', :placeholder="$t('ctrl')+'IMEI'" disabled)
 							Row.mt-1(:gutter=5)
 								Col(span=6 offset=3)
-									Button(type="primary"  @click='cover(2)')|门机
+									Button(type="primary"  @click='cover(2)')|{{$t('door')}}
 								Col(span=10)
-									Input(type='text' v-model='ladder.door1' placeholder='门机IMEI' disabled)
+									Input(type='text' v-model='ladder.door1', :placeholder="$t('door')+'IMEI'" disabled)
 							Row.mt-1(:gutter=5)
 								Col(span=6 offset=3)
-									Button(type="primary"  @click='cover(3)')|门机
+									Button(type="primary"  @click='cover(3)')|{{$t('door')}}
 								Col(span=10)
-									Input(type='text' v-model='ladder.door2' placeholder='门机IMEI' disabled)
+									Input(type='text' v-model='ladder.door2', :placeholder="$t('door')+'IMEI'" disabled)
 							Row.mt-1(:gutter=5 style="text-align:center")
-									Button(@click='updateLadder()' type='success')|完成
-									Button.ml-5(@click="$router.back(-1)")|返回
+									Button(@click='updateLadder()' type='success')|{{$t('OK')}}
+									Button.ml-5(@click="$router.back(-1)")|{{$t('cancel')}}
 					Col(span="16")
 						Card()
 							Row
 								Row(:gutter=5)
 									Col(span=6)
-										AutoComplete(name="inpSer" v-model="query.search_info" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+										AutoComplete(name="inpSer" v-model="query.search_info", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 									Col(span=4)
-										Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
+										Input(v-model="query.install_addr", :placeholder="$t('install address')" max=10)
 									Col(span=10)
-										Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px")|搜索
+										Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px")|{{$t('search')}}
 								div.ssa
 									Table(:columns="columns",:data="list",size="small" stripe)
 								Col(span='24' style="text-align:center;")
@@ -70,33 +70,33 @@
 				},
 				columns: [
 					{
-						title: '设备名称',
+						title: this.$t('device name'),
 						key: 'name',
                         fixed: 'left',
                         width: 100,
 					},
 					{
-						title: '控制柜',
+						title: this.$t('ctrl'),
 						key: 'ctrl',
                         width: 150,
 					},
 					{
-						title: '门机',
+						title: this.$t('door'),
 						key: 'door1',
                         width: 150,
 					},
 					{
-						title: '门机',
+						title: this.$t('door'),
 						key: 'door2',
                         width: 150,
 					},
 					{
-						title: '安装地址',
+						title: this.$t('install address'),
 						key: 'install_addr',
                         width: 200,
 					},
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						key: 'companyName',
 						align: 'center',
                         width: 100,
@@ -121,7 +121,7 @@
 											this.ladder.door2 = params.row.door2
 										}
 									}
-								}, '选择'),
+								}, this.$t('select')),
 							]);
 						}
 					}
@@ -176,8 +176,8 @@
 					this.ladder.type = item
 				}
 				this.$Modal.confirm({
-					title: '设备替换',
-					content:'你确定要将 '+this.coverladder+' 替换成 '+i+' 设备么？',
+					title: this.$t('Device Replace'),
+					content: this.$t('Are you sure replace ')+this.coverladder+this.$t(' with ')+i,
 					onOk: () => {
 						if(item == 1){
 							this.ladder.ctrl = i
@@ -204,14 +204,14 @@
 				let res = await this.$api.updateLadder(this.save);
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '替换成功，可在电梯信息查看！'
+						title: this.$t('success'),
+						desc: ''
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-					title: '失败',
-					desc: '替换失败'
+					title: this.$t('error'),
+					desc: ''
 					});
 				}
 			},

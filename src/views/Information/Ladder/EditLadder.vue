@@ -2,40 +2,40 @@
 	div
 		div.box
 			div.box-header.with-border
-				p.box-title 电梯编辑
+				p.box-title {{$t('Edit elevator')}}
 			div.form
 				Row(:gutter="30")
 					Col(span="8")
 						Card()
-							p(slot="title")|基本信息
+							p(slot="title")|{{$t('Basic Information')}}
 							Form(:label-width="120")
 								Row(:gutter="5")
 									Col(span="20")
-										Form-item(label="电梯名称：")
-											Input(type='text', v-model="ladder.name" placeholder='请输入电梯名称')
-										Form-item(label="安装地址：")
-											Input(type='text', v-model="ladder.install_addr" placeholder='请输入安装地址')
+										Form-item(:label="$t('device name')+':'")
+											Input(type='text', v-model="ladder.name" disabled)
+										Form-item(:label="$t('install address')+':'")
+											Input(type='text', v-model="ladder.install_addr" disabled)
 						div.form-group
 							Card()
-								p(slot="title")|设备绑定
+								p(slot="title")|{{$t('Device Binding')}}
 								Row(:gutter=5)
 									Col(span=6 offset=3)
-										Button(type="primary")|控制柜
+										Button(type="primary")|{{$t('ctrl')}}
 									Col(span=10)
-										Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI' disabled)
+										Input(type='text' v-model='ladder.ctrl', :placeholder="$t('ctrl')+'IMEI'" disabled)
 								Row.mt-1(:gutter=5)
 									Col(span=6 offset=3)
-										Button(type="primary")|门机
+										Button(type="primary")|{{$t('door')}}
 									Col(span=10)
-										Input(type='text' v-model='ladder.door1' placeholder='门机IMEI' disabled)
+										Input(type='text' v-model='ladder.door1', :placeholder="$t('door')+'IMEI'" disabled)
 								Row.mt-1(:gutter=5)
 									Col(span=6 offset=3)
-										Button(type="primary")|门机
+										Button(type="primary")|{{$t('door')}}
 									Col(span=10)
-										Input(type='text' v-model='ladder.door2' placeholder='门机IMEI' disabled)
+										Input(type='text' v-model='ladder.door2', :placeholder="$t('door')+'IMEI'" disabled)
 								Row.mt-1(:gutter=5 style="text-align:center")
-										Button(@click='updateLadder()' type='success')|完成
-										Button.ml-5(@click="$router.back(-1)")|返回
+										Button(@click='updateLadder()' type='success')|{{$t('OK')}}
+										Button.ml-5(@click="$router.back(-1)")|{{$t('cancel')}}
 						
 </template>
 
@@ -43,13 +43,13 @@
 	export default {
 		data () {
 			const type = {
-				15: '门机',
-				240: '控制柜',
+				15: this.$t('door'),
+				240: this.$t('ctrl'),
 			};
 			const model = {
-				'online': '在线',
-				'offline': '离线',
-				'longoffline': '长期离线',
+				'online': this.$t('online'),
+				'offline': this.$t('offline'),
+				'longoffline': this.$t('long offline'),
 			};
 			return {
 				list: [],
@@ -103,14 +103,14 @@
 				let res = await this.$api.updateLadder(this.save);
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '编辑成功，可在电梯信息查看！'
+						title: this.$t('success'),
+						desc: this.$t('successfully bind,it will show in ladder list')
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-					title: '失败',
-					desc: '编辑失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to bind')
 					});
 				}
 			},

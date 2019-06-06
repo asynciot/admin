@@ -2,7 +2,7 @@
 	div
 		div.box
 			div.box-header.with-border
-				p.box-title 新增电梯
+				p.box-title {{$t('new elevator')}}
 			form.form-horizontal
 				div.box-body
 					Row(:gutter="10")
@@ -10,58 +10,58 @@
 							Card
 								div.form-group
 									Card()
-										p(slot="title")|基本信息
+										p(slot="title")|{{$t('Basic Information')}}
 										Form(:label-width="120")
 											Row(:gutter="5")
 												Col(span="20")
-													Form-item(label="电梯名称：")
-														Input(type='text', v-model="ladder.name" placeholder='请输入电梯名称')
-													Form-item(label="安装地址：")
-														Input(type='text', v-model="ladder.install_addr" placeholder='请输入安装地址')
+													Form-item(:label="$t('device name')+':'")
+														Input(type='text', v-model="ladder.name")
+													Form-item(:label="$t('install address')+':'")
+														Input(type='text', v-model="ladder.install_addr")
 								div.form-group
 									Card
-										p(slot="title")|设备绑定
+										p(slot="title")|{{$t('Device Binding')}}
 										Row(:gutter=5)
 											Col(span=6)
-												Button(type="primary" @click='getList("240")')|控制柜
+												Button(type="primary" @click='getList("240")')|{{$t('ctrl')}}
 											Col(span=10)
-												Input(type='text' v-model='ladder.ctrl' placeholder='控制柜IMEI' disabled)
+												Input(type='text' v-model='ladder.ctrl', :placeholder="$t('ctrl')+'IMEI'" disabled)
 											Col(span=6)
-												Button(type="error" @click='remove(1)')|清除
+												Button(type="error" @click='remove(1)')|{{$t('delete')}}
 										Row.mt-1(:gutter=5)
 											Col(span=6)
-												Button(type="primary"  @click='getList("15")')|门机
+												Button(type="primary"  @click='getList("15")')|{{$t('door')}}
 											Col(span=10)
-												Input(type='text' v-model='ladder.door1' placeholder='门机IMEI' disabled)
+												Input(type='text' v-model='ladder.door1', :placeholder="$t('door')+'IMEI'" disabled)
 											Col(span=6)
-												Button(type="error" @click='remove(2)')|清除
+												Button(type="error" @click='remove(2)')|{{$t('delete')}}
 										Row.mt-1(:gutter=5)
 											Col(span=6)
-												Button(type="primary"  @click='getList("15")')|门机
+												Button(type="primary"  @click='getList("15")')|{{$t('door')}}
 											Col(span=10)
-												Input(type='text' v-model='ladder.door2' placeholder='门机IMEI' disabled)
+												Input(type='text' v-model='ladder.door2', :placeholder="$t('door')+'IMEI'" disabled)
 											Col(span=6)
-												Button(type="error" @click='remove(3)')|清除
+												Button(type="error" @click='remove(3)')|{{$t('delete')}}
 								div.form-group
 									Card
-										Button(@click='NewLadder()' type='success')|完成
-										Button.ml-5(@click="$router.back(-1)")|取消
+										Button(@click='NewLadder()' type='success')|{{$t('OK')}}
+										Button.ml-5(@click="$router.back(-1)")|{{$t('cancel')}}
 						Col(span="16")
 							Card()
 								Row
 									Row(:gutter=5)
 										Col(span=3)
-											Select.smr(v-model="show.state" style="width:100%" placeholder="状态" @on-change="getList()")
-												Option(key="1" label="全部" value='all')
-												Option(key="2" label="在线" value="online")
-												Option(key="3" label="离线" value="offline")
-												Option(key="4" label="长期离线" value="longoffline")
+											Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="getList()")
+												Option(key="1", :label="$t('all')" value='all')
+												Option(key="2", :label="$t('online')" value="online")
+												Option(key="3", :label="$t('offline')" value="offline")
+												Option(key="4", :label="$t('long offline')" value="longoffline")
 										Col(span=6)
-											AutoComplete(name="inpSer" v-model="query.search_info" placeholder="关键词" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+											AutoComplete(name="inpSer" v-model="query.search_info", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
 										Col(span=4)
-											Input(v-model="query.install_addr"  placeholder="安装地址" max=10)
+											Input(v-model="query.install_addr", :placeholder="$t('install address')" max=10)
 										Col(span=10)
-											Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px")|搜索
+											Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px")|{{$t('search')}}
 									div.ssa
 										Table(:columns="columns",:data="list",size="small" stripe)
 									Col(span='24' style="text-align:center;")
@@ -73,13 +73,13 @@
 	export default {
 		data () {
 			const type = {
-				15: '门机',
-				240: '控制柜',
+				15: this.$t('door'),
+				240: this.$t('ctrl'),
 			};
 			const model = {
-				'online': '在线',
-				'offline': '离线',
-				'longoffline': '长期离线',
+				'online': this.$t('online'),
+				'offline': this.$t('offline'),
+				'longoffline': this.$t('long offline'),
 			};
 			return {
 				list: [],
@@ -98,7 +98,7 @@
 				},
 				columns: [
 					{
-						title: '设备名称',
+						title: this.$t('device name'),
 						key: 'device_name',
 						align:'left',
 					},
@@ -107,21 +107,21 @@
 						key: 'IMEI',
 					},
 					{
-						title: '设备类型',
+						title: this.$t('device type'),
 						key: 'device_type',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
 						}
 					},
 					{
-						title: '状态',
+						title: this.$t('state'),
 						key: 'state',
 						render: (h, params) => {
 							return h('p',model[params.row.state]||'')
 						}
 					},
 					{
-						title: '操作',
+						title: this.$t('handle'),
 						key: 'companyName',
 						align: 'center',
 						render: (h, params) => {
@@ -145,7 +145,7 @@
 											}
 										}
 									}
-								}, '选择'),
+								}, this.$t('select')),
 							]);
 						}
 					}
@@ -216,14 +216,14 @@
 				let res = await this.$api.newLadder(this.ladder);
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '创建成功，可在电梯信息查看！'
+						title: this.$t('success'),
+						desc: this.$t('successfully bind,it will show in ladder list')
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-						title: '失败',
-						desc: '创建失败'
+						title: this.$t('error'),
+						desc: this.$t('fail to bind')
 					});
 				}
 			},

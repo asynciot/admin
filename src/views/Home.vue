@@ -48,7 +48,7 @@
 							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
 								<Button type="primary" long class="w-button">
 									<Col span="5">
-										language:
+										Language:
 									</Col>
 									<Col span="19">
 										<p style="color: white;width: 100%;">{{$t("lang")}}</p>
@@ -80,7 +80,7 @@
 						</Col>
 						<Col span="1" style="">
 							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;" size="small" @click="fullscreen()">
-								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;{{$t("fullscreen")}}</div>
+								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;{{$t("Fullscreen")}}</div>
 							</Button>
 						</Col>
 					</Row>
@@ -98,7 +98,7 @@
 					</Col>
 					<Col span='2' v-if='quit' @mouseout="show(2)" style="cursor: pointer;">
 						<div @mouseout="show(2)">
-							<icon name="quit" width="10" height="10" slot="prepend" ></icon> {{$t("quit")}}
+							<icon name="quit" width="10" height="10" slot="prepend" ></icon> {{$t("Quit")}}
 						</div>
 					</Col>
 				</div>
@@ -221,7 +221,7 @@
 						key:false,
 					},{
 						name:'ladder',
-						label:'电梯信息',
+						label:'elevator information',
 						key:false,
 					}],
 				},{

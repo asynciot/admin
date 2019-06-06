@@ -8,21 +8,21 @@ div.account
 		Col(span=12 style="padding-top:5%")
 			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 				Form-item(prop="oldPassword")
-					Input(type="password",v-model="form.oldPassword",placeholder="请输入新密码")
+					Input(type="password",v-model="form.oldPassword",:placeholder="$t('Please enter the original password')")
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item(prop="password")
-					Input(type="password",v-model="form.password",placeholder="请输入新密码")
+					Input(type="password",v-model="form.password",:placeholder="$t('Please enter the new password')")
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item(prop="confirm")
-					Input(type="password",v-model="query.confirm",placeholder="请重复新密码")
+					Input(type="password",v-model="query.confirm",:placeholder="$t('Please confirm the new password')")
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item
 					Col(span=4)|&nbsp;
 					Col(span=10)
-						Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|更改密码
+						Button.ss(type="" ,:style="{width: '125px'}" @click="$router.back(-1)")|{{$t('cancel')}}
 					Col(span=10)
-						Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|返回
-</template>
+						Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|{{$t('change password')}}
+</template>				
 
 <script>
 import {

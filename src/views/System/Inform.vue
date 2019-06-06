@@ -2,10 +2,10 @@
 div.layout-content-main
 	Row(:gutter=1)
 		Col(span=2)
-			Select.smr(v-model="done" style="width:100%;" placeholder="消息类型" @on-change="getList()")
-				Option(key="1" label="全部" value='all')
-				Option(key="2" label="已读" value="true")
-				Option(key="3" label="未读" value="false")
+			Select.smr(v-model="done" style="width:100%;", :placeholder="$t('state')" @on-change="getList()")
+				Option(key="1", :label="$t('all')" value='all')
+				Option(key="2", :label="$t('read')" value="true")
+				Option(key="3", :label="$t('unread')" value="false")
 	div.form(style="margin-top:20px")
 		Row(:gutter="30")
 			Col(span="24")
@@ -27,21 +27,21 @@ export default{
 				count: 0,
 			},
 			column:[{
-				title: '发件人',
+				title: this.$t('sender'),
 				key:'username',
 				render: (h, params) => {
 					return h('div', ['admin'])}
 			},{
-			    title: '标题',
+			    title: this.$t('title'),
 				key:'title',
 			},{
-				title: '时间',
+				title: this.$t('create time'),
 				key:'createTime',
 				render: (h, params) => {
 					var time=this.$format(params.row.createTime, 'YYYY-MM-DD HH:mm:ss')
 					return h('div', time)}
 			},{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'companyName',
 					width: 400,
 					align: 'center',
@@ -65,7 +65,7 @@ export default{
 										 })
 									}
 								}
-							}, '查看'),
+							}, this.$t('watch')),
 // 							h('Button', {
 // 								props: {
 // 									type: 'success',
@@ -141,8 +141,8 @@ export default{
 			}
 			else {
 				this.$Notice.error({
-					title: '错误',
-					desc: '获取通知失败！'
+					title: this.$t('error'),
+					desc: this.$t('Fail to send notice'),
 				})
 			}
 		},
