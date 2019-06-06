@@ -4,7 +4,7 @@
 			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
 					<div style="width: 100%;height: 64px;background: #367fa9;">
-						<img src="../assets/logo-menu.png" style="padding-left: 33%;cursor: pointer;width: 66%;" v-on:click="goHome">
+						<img :src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 33%;cursor: pointer;width: 66%;">
 					</div>
 					<template>
 						<div class="user-panel">
@@ -128,6 +128,7 @@
 				portrait:'../../static/admin.jpg',
 				isCollapsed: false,
 				modal: false,
+				logo:'../assets/logo-menu.png',
 				modalType: 0,
 				username:window.localStorage.getItem('username'),
 				info: {
@@ -527,6 +528,9 @@
 				if (0 === res.data.code) {
 					if (res.data.data.list[0].portrait != null) {
 						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
+						}
+					if (res.data.data.list[0].logo != null) {
+						this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
 						}
 					if (res.data.data.list[0].nickname != null) {
 						this.info.nickname=res.data.data.list[0].nickname
