@@ -70,14 +70,19 @@ const DispatchAdopt = resolve => require(['@/views/Maintain/DispatchAdopt'], res
 const FileIndex = resolve => require(['@/views/Information/File/BaseInfo'], resolve)
 const AlList = resolve => require(['@/views/Information/File/List'], resolve)
 const Alert = resolve => require(['@/views/Information/File/Alert'], resolve)
-const Elevator = resolve => require(['@/views/Information/Elevator/Index'], resolve)
-const AddGroup = resolve => require(['@/views/Information/Elevator/AddGroup'], resolve)
-const EditGroup = resolve => require(['@/views/Information/Elevator/EditGroup'], resolve)
 const Evolution = resolve => require(['@/views/Information/Evolution'], resolve)
 const Ladder = resolve => require(['@/views/Information/Ladder/Index'], resolve)
 const AddLadder = resolve => require(['@/views/Information/Ladder/AddLadder'], resolve)
 const EditLadder = resolve => require(['@/views/Information/Ladder/EditLadder'], resolve)
 const CoverLadder = resolve => require(['@/views/Information/Ladder/Cover'], resolve)
+
+//Group
+const Elevator = resolve => require(['@/views/Group/Elevator/Index'], resolve)
+const AddElevator = resolve => require(['@/views/Group/Elevator/AddGroup'], resolve)
+const EditElevator = resolve => require(['@/views/Group/Elevator/EditGroup'], resolve)
+const Organize = resolve => require(['@/views/Group/Organize/Index'], resolve)
+const AddOrganize = resolve => require(['@/views/Group/Organize/AddOrganize'], resolve)
+const EditOrganize = resolve => require(['@/views/Group/Organize/EditOrganize'], resolve)
 
 //system
 const Print = resolve => require(['@/views/System/Print'], resolve)
@@ -539,27 +544,6 @@ export default new Router({
 					},
 					component: FileIndex
 				},{
-					path: '/information/elevator',
-					name: 'elevator',
-					meta: {
-						name: '电梯组'
-					},
-					component: Elevator
-				},{
-					path: '/information/addgroup',
-					name: 'addgroup',
-					meta: {
-						name: '添加电梯组'
-					},
-					component: AddGroup
-				},{
-					path: '/information/editgroup/:id',
-					name: 'editgroup',
-					meta: {
-						name: '编辑电梯组'
-					},
-					component: EditGroup
-				},{
 					path: '/information/ladder',
 					name: 'ladder',
 					meta: {
@@ -587,6 +571,50 @@ export default new Router({
 						name: '添加到已有电梯'
 					},
 					component: CoverLadder
+				},
+				//群组
+				{
+					path: '/group/elevator',
+					name: 'elevator',
+					meta: {
+						name: '电梯组'
+					},
+					component: Elevator
+				},{
+					path: '/group/addElevator',
+					name: 'addElevator',
+					meta: {
+						name: '添加电梯组'
+					},
+					component: AddElevator
+				},{
+					path: '/group/editElevator/:id',
+					name: 'editElevator',
+					meta: {
+						name: '编辑电梯组'
+					},
+					component: EditElevator
+				},{
+					path: '/group/organize',
+					name: 'organize',
+					meta: {
+						name: '人员组'
+					},
+					component: Organize
+				},{
+					path: '/group/addOrganize',
+					name: 'addOrganize',
+					meta: {
+						name: '添加人员组'
+					},
+					component: AddOrganize
+				},{
+					path: '/group/editOrganize/:id',
+					name: 'editOrganize',
+					meta: {
+						name: '编辑人员组'
+					},
+					component: EditOrganize
 				},
 				//系统管理
 				{
