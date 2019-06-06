@@ -79,7 +79,9 @@ export default {
 	portrait:(data)=>{
 		return AccountApi.save({key1:'portrait'},data)
 	},
-	
+	getOrganization:(data)=>{
+		return AccountApi.query(Object.assign({key1:'readOrganization'},data))
+	},
 	//role
 	newMenu:(data)=>{
 		return AccountApi.save({key1:'addMenu'},data)
@@ -237,5 +239,36 @@ export default {
 	},
 	updateLadder: (data) => {
 		return DeviceApi.update({key1:'Ladder'}, data)
-	},	
+	},
+	upLadderGroup: (data) => {
+		return DeviceApi.update({key1:'Ladder',key2:'Group'}, data)
+	},
+	rmLadderGroup: (data) => {
+		return DeviceApi.update({key1:'Ladder',key2:'RemoveGroup'}, data)
+	},
+	//company
+	newGroup:(data)=> {
+		return DeviceApi.save({key1:'Organize'}, data)
+	},
+	readGroup:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Organize'}, data))
+	},
+	updateGroup: (data) => {
+		return DeviceApi.update({key1:'Organize'}, data)
+	},
+	rmGroup:(data)=> {
+		return DeviceApi.remove(Object.assign({key1:'Organize'}, data))
+	},
+	newOrganize:(data)=> {
+		return DeviceApi.save({key1:'Group'}, data)
+	},
+	readOrganize:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Group'}, data))
+	},
+	updateOrganize: (data) => {
+		return DeviceApi.update({key1:'Group'}, data)
+	},
+	rmOrganize:(data)=> {
+		return DeviceApi.remove(Object.assign({key1:'Group'}, data))
+	},
 }

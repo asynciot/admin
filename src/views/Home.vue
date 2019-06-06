@@ -144,7 +144,7 @@
 						required: true,
 						message: '旧密码不能为空',
 						trigger: 'blur'
-					}, {
+					},{
 						min: 5,
 						message: '密码不能少于6个字符',
 						trigger: 'blur'
@@ -153,7 +153,7 @@
 						required: true,
 						message: '新密码不能为空',
 						trigger: 'blur'
-					}, {
+					},{
 						min: 5,
 						message: '密码不能少于6个字符',
 						trigger: 'blur'
@@ -202,12 +202,11 @@
 						name: 'maintain',
 						label: 'Order List',
 						key:false,
-					},
-					{
+					},{
 						name: 'maintainList',
 						label: 'Dispatch List',
 						key:false,
-					},],
+					}],
 				},{
 					name: 'event',
 					icon: 'fa fa-list-alt',
@@ -225,17 +224,7 @@
 						name:'ladder',
 						label:'elevator information',
 						key:false,
-					},
-					{
-						name:'elevator',
-						label:'elevator group',
-						key:true,
-					},
-// 						{
-// 							name: 'maintainCompany',
-// 							label: '维保单位信息',
-// 						},
-					],
+					}],
 				},{
 					name: 'system',
 					icon: 'fa fa-address-card-o',
@@ -273,10 +262,23 @@
 					icon: 'fa fa-dashboard',
 					label: 'Dashboard2',
 					key:true,
-				},],
+				},{
+					name: 'group',
+					icon: 'fa fa-group',
+					label: '群组',
+					key:true,
+					sub: [{
+						name:'elevator',
+						label:'电梯组',
+						key:true,
+					},{
+						name: 'organize',
+						label: '人员组',
+						key:true,
+					}],
+				}],
 				menus:{},
 				roles:0,
-				role_id:0,
 				lang:'',
 			}
 		},
@@ -294,8 +296,11 @@
 			}
 		},
 		async beforeCreate(){
-			this.role_id=window.localStorage.getItem('id')
-			const val = await this.$api.people({id:this.role_id,num:1,page:1})
+			const val = await this.$api.people({
+				id:window.localStorage.getItem('id'),
+				num:1,
+				page:1,
+			})
 			this.roles = val.data.data.list[0].role
 			const res = await this.$api.getMenu({
 				page:1,
@@ -339,8 +344,6 @@
 			this.screenwidth=document.documentElement.clientWidth*1
 			this.getportrait()
 			this.getFunction()
-			var _this=this
-
 		},
 		methods: {
 			getMenu(){
