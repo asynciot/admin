@@ -186,7 +186,6 @@
 								},
 								on: {
 									click:()=>{
-										console.log(1)
 										this.rmLadder(params.row.id)
 									}
 								}
@@ -217,6 +216,7 @@
 				})
 				this.form = res.data.data.list[0]
 				this.form.region = this.form.region.split(',')
+				delete this.form.t_create
 			},
 			async getList() {
 				let res = await this.$api.reLadder(this.options)
@@ -237,17 +237,20 @@
 				}
 			},
 			async upGroup(){
-				let res = await this.$api.updateGroup(this.form)
+				this.loading = true
+				this.form.region = this.form.region[0].toString()+','+this.form.region[1].toString()+','+this.form.region[2].toString()
+				const res = await this.$api.updateGroup(this.form)
 				if (res.data.code == 0) {
+					this.loading = false
 					this.$Notice.success({
 						title: '成功',
-						desc: '编辑成功！'
+						desc: '添加成功！'
 					});
-					this.$router.back(-1)
 				}else{
+					this.loading = false
 					this.$Notice.error({
 					title: '失败',
-					desc: '编辑失败'
+					desc: '添加失败'
 					});
 				}
 			},
@@ -257,11 +260,13 @@
 					ladder_id:val,
 				})
 				if (res.data.code == 0) {
+					this.loading = false
 					this.$Notice.success({
 						title: '成功',
 						desc: '添加成功！'
 					});
 				}else{
+					this.loading = false
 					this.$Notice.error({
 					title: '失败',
 					desc: '添加失败'

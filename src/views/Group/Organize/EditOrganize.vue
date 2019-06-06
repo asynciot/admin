@@ -131,7 +131,6 @@
 								},
 								on: {
 									click:()=>{
-										this.updateLadder(params.row.id)
 									}
 								}
 							}, '绑定')
@@ -188,6 +187,7 @@
 				})
 				this.form = res.data.data.list[0]
 				this.form.region = this.form.region.split(',')
+				delete this.form.t_create
 			},
 			async getList() {
 				let res = await this.$api.readGroup({
@@ -211,34 +211,21 @@
 				}
 			},
 			async upOrganize(){
+				this.loading = true
+				this.form.region = this.value2[0]+','+this.value2[1]+','+this.value2[2]
 				let res = await this.$api.updateOrganize(this.form)
 				if (res.data.code == 0) {
+					this.loading = false
 					this.$Notice.success({
 						title: '成功',
 						desc: '编辑成功！'
 					});
 					this.$router.back(-1)
 				}else{
+					this.loading = false
 					this.$Notice.error({
 					title: '失败',
 					desc: '编辑失败'
-					});
-				}
-			},
-			async updateLadder(val){
-				let res = await this.$api.upLadderGroup({
-					id:this.$route.params.id,
-					ladder_id:val,
-				})
-				if (res.data.code == 0) {
-					this.$Notice.success({
-						title: '成功',
-						desc: '添加成功！'
-					});
-				}else{
-					this.$Notice.error({
-					title: '失败',
-					desc: '添加失败'
 					});
 				}
 			},
