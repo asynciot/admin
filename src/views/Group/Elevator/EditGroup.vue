@@ -10,7 +10,7 @@
 									Form-item(label="电梯组名:" v-model="form.name")
 										Input(:value="form.name")
 									Form-item(label="创建人:" v-model="form.leader")
-										Input(:value="form.leader")
+										Input(:value="form.leader" disabled)
 									Form-item(label="所在区域",prop="location",data-toggle="distpicker")
 										Cascader(:data="region" v-model="form.region")
 									Form-item(label="电话:" v-model="form.phone")
@@ -219,13 +219,12 @@
 				delete this.form.t_create
 			},
 			async getList() {
-				let res = await this.$api.reLadder(this.options)
+				const res = await this.$api.reLadder(this.options)
 				this.list = res.data.data.list
 				this.total = res.data.data.totalNumber
 			},
 			async getList2() {
-				let res = await this.$api.reLadder(this.query)
-				
+				const res = await this.$api.reLadder(this.query)
 				if (res.data.code === 0) {
 					this.list1 = res.data.data.list
 					this.total = res.data.data.totalNumber

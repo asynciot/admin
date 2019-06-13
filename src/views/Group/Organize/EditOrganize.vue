@@ -10,7 +10,7 @@
 									Form-item(label="群组名:" v-model="form.name")
 										Input(:value="form.name")
 									Form-item(label="负责人:" v-model="form.leader")
-										Input(:value="form.leader")
+										Input(:value="form.leader" disabled)
 									Form-item(label="所在区域",prop="location",data-toggle="distpicker")
 										Cascader(:data="region" v-model="form.region")
 									Col.ta(span="8")
@@ -131,6 +131,7 @@
 								},
 								on: {
 									click:()=>{
+										this.bindGroup(params.row.id)
 									}
 								}
 							}, '绑定')
@@ -157,7 +158,7 @@
 								},
 								on: {
 									click:()=>{
-										this.rmLadder(params.row.id)
+										this.rmGroup(params.row.id)
 									}
 								}
 							}, '删除')
@@ -198,7 +199,7 @@
 				this.total = res.data.data.totalNumber
 			},
 			async getList2() {
-				let res = await this.$api.getOrganization(this.query)
+				const res = await this.$api.getOrganization(this.query)
 				
 				if (res.data.code === 0) {
 					this.list1 = res.data.data.list
@@ -213,7 +214,7 @@
 			async upOrganize(){
 				this.loading = true
 				this.form.region = this.value2[0]+','+this.value2[1]+','+this.value2[2]
-				let res = await this.$api.updateOrganize(this.form)
+				const res = await this.$api.updateOrganize(this.form)
 				if (res.data.code == 0) {
 					this.loading = false
 					this.$Notice.success({
@@ -229,9 +230,9 @@
 					});
 				}
 			},
-			async rmLadder(val){
-				let res = await this.$api.rmLadderGroup({
-					ladder_id:val,
+			async rmGroup(val){
+				const res = await this.$api.rmGroup({
+					id:val,
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
@@ -242,10 +243,28 @@
 				}else{
 					this.$Notice.error({
 					title: '失败',
-					desc: '删除失败'
+					desc: '删除失败！'
 					});
 				}
-			}
+			},
+			async bindGroup(val){
+				const res = await this.$api.bindGroup({
+					id:this.$route.params.id,
+					group_id:val,
+				})
+				if (res.data.code == 0) {
+					this.$Notice.success({
+						title: '成功',
+						desc: '绑定成功！'
+					});
+					this.getList2()
+				}else{
+					this.$Notice.error({
+					title: '失败',
+					desc: '绑定失败！'
+					});
+				}
+			},
 		}
 	}	
 </script>

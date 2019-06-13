@@ -248,27 +248,36 @@ export default {
 	},
 	//company
 	newGroup:(data)=> {
-		return DeviceApi.save({key1:'Organize'}, data)
-	},
-	readGroup:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Organize'}, data))
-	},
-	updateGroup: (data) => {
-		return DeviceApi.update({key1:'Organize'}, data)
-	},
-	rmGroup:(data)=> {
-		return DeviceApi.remove(Object.assign({key1:'Organize'}, data))
-	},
-	newOrganize:(data)=> {
 		return DeviceApi.save({key1:'Group'}, data)
 	},
-	readOrganize:(data)=> {
+	readGroup:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Group'}, data))
 	},
-	updateOrganize: (data) => {
+	updateGroup: (data) => {
 		return DeviceApi.update({key1:'Group'}, data)
 	},
-	rmOrganize:(data)=> {
+	rmGroup:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'Group'}, data))
+	},
+	newOrganize:(data)=> {
+		return DeviceApi.save({key1:'Organization'}, data)
+	},
+	readOrganize:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Organization'}, data))
+	},
+	updateOrganize: (data) => {
+		return DeviceApi.update({key1:'Organization'}, data)
+	},
+	rmOrganize:(data)=> {
+		return DeviceApi.remove(Object.assign({key1:'Organization'}, data))
+	},
+	joinGroup: (data) => {
+		return DeviceApi.update({key1:'Organization',key2:'join'}, data)
+	},
+	rmGroup: (data) => {
+		return DeviceApi.update({key1:'Organization',key2:'remove'}, data)
+	},
+	bindGroup: (data) => {
+		return DeviceApi.update({key1:'Organization',key2:'bind'}, data)
 	},
 }
