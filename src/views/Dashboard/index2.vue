@@ -2,7 +2,7 @@
 	<div class="wrapper layout-content-main account" style="padding:0px;overflow-y: scroll;padding-left: 10px;" id="lay">
 		<Row :gutter='20' style="padding-top: 20px;margin-left: 35px;">
 			<Col span="6" style="color:#fff">
-				<div style="height:300px;width:100%;text-align: center;">
+				<div style="height:350px;width:100%;text-align: center;">
 					<h2>今天</h2>
 					<div style="font-size:20px">
 						<Col span="12">今日故障：10</Col>
@@ -45,11 +45,11 @@
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
 					</p>
-					<br />
+					<br/>
 				</div>
 			</Col>
 			<Col span="6" style="color:#fff">
-				<div style="height:300px;width:100%;text-align: center;">
+				<div style="height:350px;width:100%;text-align: center;">
 					<h2>昨天</h2>
 					<div style="font-size:20px">
 						<Col span="12">今日故障：10</Col>
