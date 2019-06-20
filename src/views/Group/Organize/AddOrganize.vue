@@ -56,7 +56,7 @@ div.layout-content-main
 				this.loading = true
 				this.form.region = this.value2[0]+','+this.value2[1]+','+this.value2[2]
 				const res= await this.$api.newOrganize(this.form)
-				if(res.data.data.code==0){
+				if(res.data.code==0){
 					this.loading = false
 					this.$Notice.success({
 						title: '成功',

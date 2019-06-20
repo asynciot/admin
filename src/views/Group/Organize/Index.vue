@@ -8,7 +8,7 @@
 							Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goOrganize()")|添加群组
 						Col(span="5")
 							Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,getOrganize()")
-							Input(v-model="query.name",placeholder="请输入搜索内容" style="width:75%;")
+							Input(v-model="query.number",placeholder="请输入搜索内容" style="width:75%;")
 		div(style="min-height:450px")
 			Table(:columns="columns",:data="list",size="small" stripe)
 		Col(span="24" style="text-align:center;")
@@ -29,13 +29,16 @@
 				query:{
 					page:1,
 					nums:10,
-					name:'',
+					number:'',
 				},
 				dislist:false,
 				list:[],
 				list1:[],
 				loading:false,
 				columns: [{
+					title: '群号',
+					key: 'number',
+				},{
 					title: '组名',
 					key: 'name',
 				},{
@@ -59,7 +62,7 @@
 								},
 								on: {
 									click:()=>{
-										this.joinGroup(params.row.id)
+										this.joinGroup(params.row.number)
 									}
 								}
 							}, '加入'),
@@ -142,7 +145,7 @@
 			},
 			async getOrganize(){
 				this.loading = true
-				if(this.query.name==null||this.query.name==""){
+				if(this.query.number==null||this.query.number==""){
 					this.$Notice.error({
 						title: '失败',
 						desc: '请输入搜索内容！'
@@ -178,7 +181,7 @@
 			async joinGroup(val){
 				this.loading = true
 				const res = await this.$api.joinGroup({
-					organize_id:val,
+					number:val,
 				})
 				if(res.data.code == 0){
 					this.$Notice.success({
