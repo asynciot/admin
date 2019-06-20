@@ -3,8 +3,8 @@
 		<Layout class="test" :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
 			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
-					<div style="width: 100%;height: 64px;background: #367fa9;">
-						<img :src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 33%;cursor: pointer;width: 66%;">
+					<div style="width: 100%;height: 64px;" :style="'background:#'+bg1">
+						<img :src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
 					</div>
 					<template>
 						<div class="user-panel">
@@ -39,14 +39,14 @@
 				</Menu>
 			</Sider>
 			<Layout>
-				<Header  class="m-header" v-if="!full">
+				<Header  class="m-header" v-if="!full" :style="'background:#'+bg2">
 					<Row>
 						<Col span="17">
 							&nbsp;
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
-								<Button type="primary" long class="w-button">
+								<Button type="primary" long class="w-button" :style="'background:#'+bg2">
 									<Col span="5">
 										Language:
 									</Col>
@@ -62,7 +62,7 @@
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
-								<Button type="primary" long class="w-button">
+								<Button type="primary" long class="w-button" :style="'background:#'+bg2">
 									<Col span="5">
 										<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 									</Col>
@@ -122,6 +122,8 @@
 				}
 			};
 			return {
+				bg1:'367fa9',
+				bg2:'3c8dbc',
 				full:false,
 				quit:false,
 				tagsList: [],
@@ -261,7 +263,7 @@
 					name: 'dashboard2',
 					icon: 'fa fa-dashboard',
 					label: 'Dashboard2',
-					key:true,
+					key:false,
 				},{
 					name: 'group',
 					icon: 'fa fa-group',
@@ -531,6 +533,12 @@
 						}
 					if (res.data.data.list[0].logo != null) {
 						this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
+						}
+					if (res.data.data.list[0].bg1 != null) {
+						this.bg1=res.data.data.list[0].bg1
+						}
+					if (res.data.data.list[0].bg2 != null) {
+						this.bg2=res.data.data.list[0].bg2
 						}
 					if (res.data.data.list[0].nickname != null) {
 						this.info.nickname=res.data.data.list[0].nickname
