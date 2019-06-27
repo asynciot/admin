@@ -132,6 +132,9 @@ export default {
  	deldevices: (data) => {
 		return DeviceApi.remove(Object.assign({key1:'Device'}, data))
 	},
+	locate: (data) => {
+		return DeviceApi.query(Object.assign({key1:'Device',key2:'Locate'}, data))
+	},
  	regdevices: (data) => {
 		return DeviceApi.save({key1:'Register'}, data)
 	},

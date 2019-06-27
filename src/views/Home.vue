@@ -263,7 +263,7 @@
 					name: 'dashboard2',
 					icon: 'fa fa-dashboard',
 					label: 'Dashboard2',
-					key:false,
+					key:true,
 				},{
 					name: 'group',
 					icon: 'fa fa-group',
