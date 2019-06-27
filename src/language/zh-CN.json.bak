@@ -633,9 +633,7 @@
 	"elevator group":"电梯组",
 	"order auditing":"工单审核",
 	"dispatch auditing":"维保审核",
-	"Group":"群组",
-	"Elevator Group":"电梯组",
-	"Member Group":"人员组",
+	"select":"选择",
     "refresh" : "刷新",
     "array": [
         1,2,3,4
