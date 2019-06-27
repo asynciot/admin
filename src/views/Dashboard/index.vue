@@ -65,7 +65,7 @@
 						<div class="small-box bg-green">
 							<div class="inner" style="text-align:center; padding:4px">
 								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font14" style='font-weight: bold;' v-if="shine">{{onlinedevice}}/{{alldevice}}</div>
-								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font24">{{$t("Tasks Completed Today")}} {{parseInt(100*onlinedevice/alldevice)}}%</p>
+								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font24">{{$t("Online Devices")}} {{parseInt(100*onlinedevice/alldevice)}}%</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
