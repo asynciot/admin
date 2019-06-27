@@ -93,49 +93,69 @@ export const menu = [
 	}, {
 		id: 4,
 		pId: 0,
-		label: '系统管理',
-		value: 'sys',
+		label: '群组',
+		value: 'group',
 		val:12,
 		sub: [
 			{
 				id: 41,
 				pId: 4,
-				label: '用户管理',
-				value: 'user_manage',
+				label: '电梯群组',
+				value: 'eleGroup',
 				val:13,
-			}, {
+			},{
 				id: 42,
 				pId: 4,
-				label: '通知记录',
-				value: 'inform',
+				label: '人员群组',
+				value: 'organize',
 				val:14,
-			}, {
-				id: 43,
-				pId: 4,
-				label: '说明文档',
-				value: 'instructions',
-				checked: true,
-				val:15,
-			}, {
-				id: 44,
-				pId: 4,
-				label: '权限管理',
-				value: 'authority',
-				val:16,
-			}]
-	}, {
+			}],
+	},{
 		id: 5,
 		pId: 0,
-		label: '出厂设置',
-		value: 'setting',
-		val:17,
+		label: '系统管理',
+		value: 'sys',
+		val:15,
 		sub: [
 			{
 				id: 51,
 				pId: 5,
+				label: '用户管理',
+				value: 'user_manage',
+				val:16,
+			}, {
+				id: 52,
+				pId: 5,
+				label: '通知记录',
+				value: 'inform',
+				val:17,
+			}, {
+				id: 53,
+				pId: 5,
+				label: '说明文档',
+				value: 'instructions',
+				checked: true,
+				val:18,
+			}, {
+				id: 54,
+				pId: 5,
+				label: '权限管理',
+				value: 'authority',
+				val:19,
+			}]
+	}, {
+		id: 6,
+		pId: 0,
+		label: '出厂设置',
+		value: 'setting',
+		val:20,
+		sub: [
+			{
+				id: 61,
+				pId: 6,
 				label: '打印二维码',
 				value: 'print',
-				val:18,
+				val:21,
 			}]
 	}, 
 ];

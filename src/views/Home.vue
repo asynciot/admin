@@ -228,6 +228,20 @@
 						key:false,
 					}],
 				},{
+					name: 'group',
+					icon: 'fa fa-group',
+					label: '群组',
+					key:true,
+					sub: [{
+						name:'elevator',
+						label:'电梯组',
+						key:true,
+					},{
+						name: 'organize',
+						label: '人员组',
+						key:true,
+					}],
+				},{
 					name: 'system',
 					icon: 'fa fa-address-card-o',
 					label: 'System',
@@ -264,20 +278,6 @@
 					icon: 'fa fa-dashboard',
 					label: 'Dashboard2',
 					key:false,
-				},{
-					name: 'group',
-					icon: 'fa fa-group',
-					label: '群组',
-					key:true,
-					sub: [{
-						name:'elevator',
-						label:'电梯组',
-						key:true,
-					},{
-						name: 'organize',
-						label: '人员组',
-						key:true,
-					}],
 				}],
 				menus:{},
 				roles:0,
@@ -304,42 +304,42 @@
 				page:1,
 			})
 			this.roles = val.data.data.list[0].role
-			const res = await this.$api.getMenu({
-				page:1,
-				num:1,
-				id:this.roles,
-			})
+			// const res = await this.$api.getMenu({
+			// 	page:1,
+			// 	num:1,
+			// 	id:this.roles,
+			// })
 			window.localStorage.setItem("role",this.roles)
-			if(res.data.code == 0){
-				this.menus = res.data.data.list[0]
-			}
-			if(this.menus.dashboard==false){
-				this.menu[0].key = false
-			}
-			if(this.menus.menu==false){
-				this.menu[1].key = false
-			}
-			if(this.menus.map==false){
-				this.menu[1].sub[0].key = false
-			}
-			if(this.menus.laddermap==false){
-				this.menu[1].sub[1].key = false
-			}
-			if(this.menus.auditinglist==false){
-				this.menu[2].sub[0].key = false
-			}
-			if(this.menus.maintain==false){
-				this.menu[2].sub[1].key = false
-			}
-			if(this.menus.maintainlist == false){
-				this.menu[2].sub[2].key = false
-			}
-			if(this.menus.maintainlist== false&&this.menus.auditinglist==false&&this.menus.maintain==false){
-				this.menu[2].key = false
-			}
-			if(this.menus.allist == false){
-				this.menu[3].sub[0].key = false
-			}
+			// if(res.data.code == 0){
+			// 	this.menus = res.data.data.list[0]
+			// }
+			// if(this.menus.dashboard==false){
+			// 	this.menu[0].key = false
+			// }
+			// if(this.menus.menu==false){
+			// 	this.menu[1].key = false
+			// }
+			// if(this.menus.map==false){
+			// 	this.menu[1].sub[0].key = false
+			// }
+			// if(this.menus.laddermap==false){
+			// 	this.menu[1].sub[1].key = false
+			// }
+			// if(this.menus.auditinglist==false){
+			// 	this.menu[2].sub[0].key = false
+			// }
+			// if(this.menus.maintain==false){
+			// 	this.menu[2].sub[1].key = false
+			// }
+			// if(this.menus.maintainlist == false){
+			// 	this.menu[2].sub[2].key = false
+			// }
+			// if(this.menus.maintainlist== false&&this.menus.auditinglist==false&&this.menus.maintain==false){
+			// 	this.menu[2].key = false
+			// }
+			// if(this.menus.allist == false){
+			// 	this.menu[3].sub[0].key = false
+			// }
 		},
 		created(){
 			this.getMenu()
@@ -386,18 +386,27 @@
 				if(this.menus.ladder == true){
 					this.menu[3].sub[2].key = true
 				}
+				// if(this.menus.user_manage == true){
+				// 	this.menu[4].sub[0].key = true
+				// }
+				// if(this.menus.inform == true){
+				// 	this.menu[4].sub[1].key = true
+				// }
+				// if(this.menus.authority == true){
+				// 	this.menu[4].sub[2].key = true
+				// }
 				if(this.menus.user_manage == true){
-					this.menu[4].sub[0].key = true
+					this.menu[5].sub[0].key = true
 				}
 				if(this.menus.inform == true){
-					this.menu[4].sub[1].key = true
+					this.menu[5].sub[1].key = true
 				}
 				if(this.menus.authority == true){
-					this.menu[4].sub[3].key = true
+					this.menu[5].sub[3].key = true
 				}
 				if(this.menus.print == true){
-					this.menu[5].key = true
-					this.menu[5].sub[0].key = true
+					this.menu[6].key = true
+					this.menu[6].sub[0].key = true
 				}
 				this.$forceUpdate()
 			},
@@ -480,6 +489,7 @@
 						window.$cookie.delete('role')
 						window.localStorage.removeItem('id');
 						window.localStorage.removeItem('menu');
+						window.localStorage.removeItem('username');
 						this.$router.replace({
 							name: 'login'
 						})

@@ -136,12 +136,26 @@
 			}
 		},
 		created() {
+			this.Organize()
 		},
 		methods:{
 			goOrganize(){
 				this.$router.push({
 					name:'addOrganize',
 				})
+			},
+			async Organize(){
+				this.loading = true
+				const res = await this.$api.readOrganize({
+					username:window.localStorage.getItem("username"),
+					nums:10,
+					page:1,
+				})
+				if(res.data.code == 0){
+					this.list = res.data.data.list
+					this.options.total = res.data.data.totalNumber
+				}
+				this.loading = false
 			},
 			async getOrganize(){
 				this.loading = true
