@@ -96,7 +96,7 @@
 					},
 					{
 						title: this.$t('handle'),
-						width:240,
+						width:280,
 						render: (h, params) => {
 							var follow = this.$t('follow')
 							this.follow.forEach(item => {
@@ -203,6 +203,14 @@
 					this.query.state = this.show.state
 				}
 				let res = await this.$api.reLadder(this.query)
+				let fol = await this.$api.followladder({
+					num: 100,
+					page: 1
+				})
+				this.loading = false
+				if (fol.data.code == 0) {
+					this.follow = fol.data.data.list
+				}
 				this.list = res.data.data.list
 				this.total = res.data.data.totalNumber
 			},
@@ -210,12 +218,23 @@
 				this.options.page = 1
 				this.getList()
 			},
-			addfl(val,item,inx){
-				this.$api.newfollow({
+			async addfl(val,item,inx){
+				const res = await this.$api.newfollow({
 					ctrl:val,
 					door1:item,
 					door2:inx,
 				})
+				if(res.data.code==0){
+					this.$Notice.success({
+						title: this.$t('success'),
+						desc: ''
+					});
+				}else{
+					this.$Notice.error({
+						title: this.$t('error'),
+						desc: ''
+					});
+				}
 			},
 			Onchange: function(val) {
 				this.$router.push({
