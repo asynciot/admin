@@ -52,22 +52,22 @@
 				dcode:[
 					{
 						value:'1',
-						label:'输入电压过低'
-					},{
-						value:'2',
-						label:'输入电压过高'
-					},{
-						value:'16',
 						label:'开关门受阻'
 					},{
-						value:'32',
+						value:'2',
 						label:'飞车保护'
 					},{
-						value:'64',
+						value:'16',
 						label:'电机过载'
 					},{
-						value:'128',
+						value:'32',
 						label:'输出过流'
+					},{
+						value:'64',
+						label:'输入电压过低'
+					},{
+						value:'128',
+						label:'输入电压过高'
 					},
 				],
 				list:[],

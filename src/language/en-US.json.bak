@@ -54,12 +54,19 @@
 	"E40" : "Drive protection fault",
 	"E41" : "Hoistway data check fault",
 	"E42" : "Door lock can't break failure",
-	"dE1" : "Switch door blocked",
-	"dE2" : "Galloping protection",
-	"dE10" : "Motor overload",
-	"dE20" : "Output over-current",
-	"dE40" : "Input under-voltage",
-	"dE80" : "Input over-voltage",
+	"dE1" : "Input under-voltage",
+	"dE2" : "Output under-voltage",
+	"dE10" : "Switch door blocked",
+	"dE20" : "Galloping protection",
+	"dE40" : "Motor overload",
+	"dE80" : "Output over-current",
+	
+	
+	
+	
+	
+	
+	
 	
     "refresh" : "Refresh",
     "array": [
