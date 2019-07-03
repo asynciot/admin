@@ -277,7 +277,7 @@ export default {
 	joinGroup: (data) => {
 		return DeviceApi.update({key1:'Organization',key2:'join'}, data)
 	},
-	rmGroup: (data) => {
+	rmGroupPeo: (data) => {
 		return DeviceApi.update({key1:'Organization',key2:'remove'}, data)
 	},
 	bindGroup: (data) => {

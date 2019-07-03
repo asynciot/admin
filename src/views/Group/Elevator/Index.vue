@@ -73,7 +73,7 @@
 							h('Button', {
 								props: {
 									type: 'error',
-									size: 'small'
+									size: 'small',
 								},
 								style: {
 									marginRight: '5px'

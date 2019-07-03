@@ -21,6 +21,7 @@
 	export default {
 		data() {
 			return {
+				username:window.localStorage.getItem("username"),
 				options:{
 					page:1,
 					nums:10,
@@ -55,7 +56,9 @@
 							h('Button', {
 								props: {
 									type: 'success',
-									size: 'small'
+									size: 'small',
+									disabled:this.username==params.row.leader,
+									loading: this.loading,
 								},
 								style: {
 									marginRight: '5px'
@@ -69,7 +72,8 @@
 							h('Button', {
 								props: {
 									type: 'primary',
-									size: 'small'
+									size: 'small',
+									loading: this.loading,
 								},
 								style: {
 									marginRight: '5px'
@@ -88,7 +92,8 @@
 							h('Button', {
 								props: {
 									type: 'primary',
-									size: 'small'
+									size: 'small',
+									loading: this.loading,
 								},
 								style: {
 									marginRight: '5px'
@@ -103,7 +108,8 @@
 							h('Button', {
 								props: {
 									type: 'error',
-									size: 'small'
+									size: 'small',
+									loading: this.loading,
 								},
 								style: {
 									marginRight: '5px'
