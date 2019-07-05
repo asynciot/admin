@@ -60,7 +60,7 @@ div()
 				query:{
 					search_info: '',
 					page: 1,
-					num:100,
+					num:1000,
 					device_type: '',
 					state:'online',
 					register: "registered",
@@ -85,6 +85,7 @@ div()
 				markerClusterer: null,
 				markers: [],
 				list:'',
+				countmark:0,
 				center:{
 					lat: 0,
 					lon: 0,
@@ -290,6 +291,7 @@ div()
 						marker.addEventListener('mouseover',function () {this.openInfoWindow(new BMap.InfoWindow(steelContent, steelOpts))})
 						// marker.addEventListener('mouseout',function () {this.closeInfoWindow()})
 						this.markers.push(marker)
+
 					}
 				})
 				// this.map.panTo(new BMap.Point(29.71174431,105.67720032))

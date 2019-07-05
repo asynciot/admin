@@ -248,13 +248,6 @@
 				if (res.data.code == 0){
 				this.today = res.data.data.totalNumber
 				}
-				res = await this.$api.getRepair({
-					search_info: '',page: 1,num: 4,isreg: "True",state:'untreated',order_type:'',result:'',device_id:'',
-				})
-				if (res.data.code == 0){
-				this.faultdevice =this.faultdevice + res.data.data.totalNumber
-				this.allevents=this.today+this.faultdevice
-				}
 				res = await this.$api.devices({page: 1,num: 10,isreg: ''})
 				if (res.data.code == 0){
 				this.alldevice =res.data.data.totalNumber
