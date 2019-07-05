@@ -16,8 +16,6 @@ import 'font-awesome/scss/font-awesome.scss';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import echarts from 'echarts'
-import vuescroll from 'vuescroll';
-import 'vuescroll/dist/vuescroll.css';
 import 'babel-polyfill';
 import Icon from 'vue2-svg-icon/Icon.vue';
 import './lib/jquery-vender.js'
@@ -28,29 +26,19 @@ import 'admin-lte/dist/css/AdminLTE.min.css'
 import 'admin-lte/dist/css/skins/_all-skins.min.css'
 import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
-import vueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
-// import language from "./language"; //国际化语言包
-import VueI18n from 'vue-i18n'
+import 'swiper/dist/css/swiper.css';
+import VueI18n from 'vue-i18n';
 import en from 'iview/dist/locale/en-US';
 import zh from 'iview/dist/locale/zh-CN';
-import app_zh from './language/zh-CN.json'
+import app_zh from './language/zh-CN.json';
 import app_en from './language/en-US.json';
-// import zh from "iview/src/locale/lang/zh-CN";
-// import en from "iview/src/locale/lang/en-US";
-// import cn from "./lang/zh";
-// import us from "./lang/en";
 Vue.use(VueI18n);
-import global from './global'
 
-Vue.prototype.global = global
-Vue.use(vueAwesomeSwiper);
 Vue.component('icon', Icon);
-Vue.use(vuescroll);
 Vue.use(ElementUI, { size: 'small' });
 Vue.use(VueResource);
 Vue.http.options.emulateJSON = true;
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.use(iView).use(VueCookie);
 Vue.use(iView,{
 	i18n: (key, value) => i18n.t(key, value)
@@ -59,7 +47,7 @@ Vue.use(iView,{
 window.$cookie = VueCookie
 window._ = _
 window.moment = moment;
-window.base64url = base64url
+window.base64url = base64url;
 window.format = (val, type) => val ? format(val, type) : null;
 
 Vue.prototype.$api = api
@@ -81,10 +69,6 @@ const i18n = new VueI18n({
     'en-US': Object.assign(en,app_en)    // 英文语言包
   },
 })
-
-// Vue.config.lang = 'zh-CN';
-// Vue.locale('zh-CN', Object.assign(zh,app_zh));
-// Vue.locale('en-US', Object.assign(en,app_en));
 
 new Vue({
   el: '#app',

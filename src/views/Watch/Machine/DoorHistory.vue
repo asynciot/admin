@@ -372,34 +372,33 @@ div.layout-content-main
 			async getData(val = false) {
 				let response = await this.$api.event(this.query)
 				if (response.data.code === 0) {
-					let res = response.data.data.list[0]
+					const res = response.data.data.list[0]
 					this.interval = res.interval
 					this.nums = res["length"]
 					let buffer = []
 					if (true) {
 						buffer = base64url.toBuffer(res.data);	//8位转流
-						console.log(buffer)
 					}
 					for(var i=0 ; i<this.nums ; i++){
-						this.show.openIn = this.event.openIn[i] = (buffer[i*8]&0x80)>>7						//获取开门信号
+						this.show.openIn = this.event.openIn[i] = (buffer[i*8]&0x80)>>7							//获取开门信号
 						this.show.closeIn = this.event.closeIn[i] = (buffer[i*8]&0x40)>>6						//获取关门信号
 						this.show.openTo =	this.event.openTo[i] = (buffer[i*8+0]&0x20)>>5						//获取开到位输入信号
 						this.show.closeTo = this.event.closeTo[i] = (buffer[i*8+0]&0x10)>>4						//获取关到位输入信号	
 						this.show.openToOut = this.event.openToOut[i] = (buffer[i*8]&0x02)>>1					//获取开到位输出信号
-						this.show.closeToOut = this.event.closeToOut[i] = buffer[i*8]&0x01					//获取关到位输出信号			
-						this.show.door	= this.event.door[i] = (buffer[i*8+1]&0x80)>>7						//门光幕信号
-						this.show.open	= this.event.open[i] = (buffer[i*8+1]&0x40)>>6						//正在开门信号
+						this.show.closeToOut = this.event.closeToOut[i] = buffer[i*8]&0x01						//获取关到位输出信号			
+						this.show.door	= this.event.door[i] = (buffer[i*8+1]&0x80)>>7							//门光幕信号
+						this.show.open	= this.event.open[i] = (buffer[i*8+1]&0x40)>>6							//正在开门信号
 						this.show.close =	this.event.close[i] = (buffer[i*8+1]&0x20)>>5						//正在关门信号
 						this.show.openKeep	= this.event.openKeep[i] = (buffer[i*8+1]&0x10)>>4					//开门到位维持信号
 						this.show.closeKeep	= this.event.closeKeep[i] = (buffer[i*8+1]&0x08)>>3					//关门到位维持信号
-						this.show.stop	= this.event.stop[i] = (buffer[i*8+1]&0x04)>>2					//停止输出信号
-						this.show.inHigh = this.event.inHigh[i] = (buffer[i*8+1]&0x02)>>1							//输入电压过高
-						this.show.inLow = this.event.inLow[i] = buffer[i*8+1]&0x01							//输入电压过低
+						this.show.stop	= this.event.stop[i] = (buffer[i*8+1]&0x04)>>2							//停止输出信号
+						this.show.inHigh = this.event.inHigh[i] = (buffer[i*8+1]&0x02)>>1						//输入电压过高
+						this.show.inLow = this.event.inLow[i] = buffer[i*8+1]&0x01								//输入电压过低
 						this.show.outHigh = this.event.outHigh[i] = (buffer[i*8+2]&0x80)>>7						//输出过流
 						this.show.motorHigh = this.event.motorHigh[i] = (buffer[i*8+2]&0x40)>>6					//电机过载
 						this.show.flySafe = this.event.flySafe[i] = (buffer[i*8+2]&0x20)>>5						//飞车保护
 						this.show.closeStop = this.event.closeStop[i] = (buffer[i*8+2]&0x10)>>4					//开关门受阻
-						this.show.position	= this.event.position[i] = ((buffer[i*8+2]&0x0f)<<8)+(buffer[i*8+3]&0xff)		//获取位置信号
+						this.show.position	= this.event.position[i] = ((buffer[i*8+2]&0x0f)<<8)+(buffer[i*8+3]&0xff)			//获取位置信号
 						this.show.current = this.event.current[i] = (((buffer[i*8+4]&0xff)<<8)+(buffer[i*8+5]&0xff))/1000		//获取电流信号
 						this.show.speed = this.event.speed[i] = (((buffer[i*8+6]&0xff)<<8)+(buffer[i*8+7]&0xff))/1000
 					    if(this.event.speed[i]>32.767){
