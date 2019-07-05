@@ -249,12 +249,14 @@
 					title: ' ',
 					key: 'IMEI',
 				}],
-				monitors:this.global.functions.monitor,
-				memory:this.global.functions.memory,
+				monitors:'',
+				memory:'',
 			}
 		},
 		created() {
+			console.log(1)
 			this.getData()
+			console.log(1)
 		},
 		watch:{
 			'segment': function(val){

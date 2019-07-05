@@ -11,6 +11,8 @@ import moment from 'moment'
 import _ from 'lodash'
 import { format } from 'date-fns'
 import "printthis";
+import vuescroll from 'vuescroll';
+import 'vuescroll/dist/vuescroll.css';
 import VueResource from 'vue-resource'; 
 import 'font-awesome/scss/font-awesome.scss';
 import ElementUI from 'element-ui';
@@ -33,7 +35,9 @@ import zh from 'iview/dist/locale/zh-CN';
 import app_zh from './language/zh-CN.json';
 import app_en from './language/en-US.json';
 Vue.use(VueI18n);
+import global from './global'
 
+Vue.prototype.global = global
 Vue.component('icon', Icon);
 Vue.use(ElementUI, { size: 'small' });
 Vue.use(VueResource);

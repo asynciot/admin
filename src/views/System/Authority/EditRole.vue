@@ -78,7 +78,14 @@
 						label: '电梯状态',
 						key:false,
 						val:3,
-					}]
+					}, 
+		// 			{
+		// 				id: 13,
+		// 				pId: 1,
+		// 				label: '更新状态',
+		// 				val:2,
+		// 			},
+					]
 				}, {
 					id: 2,
 					pId: 0,
@@ -133,65 +140,46 @@
 				}, {
 					id: 4,
 					pId: 0,
-					label: '群组',
+					label: '系统管理',
 					key:false,
 					val:12,
 					sub: [{
 						id: 41,
 						pId: 4,
-						label: '电梯组',
+						label: '用户管理',
 						key:false,
 						val:13,
-					},{
+					}, {
 						id: 42,
 						pId: 4,
-						label: '人员组',
+						label: '通知记录',
 						key:false,
 						val:14,
-					}],
+					}, {
+						id: 43,
+						pId: 4,
+						label: '说明文档',
+						key:true,
+						val:15,
+					}, {
+						id: 44,
+						pId: 4,
+						label: '权限管理',
+						key:false,
+						val:16,
+					}]
 				}, {
 					id: 5,
 					pId: 0,
-					label: '系统管理',
+					label: '出厂设置',
 					key:false,
-					val:15,
+					val:17,
 					sub: [{
 						id: 51,
 						pId: 5,
-						label: '用户管理',
-						key:false,
-						val:16,
-					}, {
-						id: 52,
-						pId: 5,
-						label: '通知记录',
-						key:false,
-						val:17,
-					}, {
-						id: 53,
-						pId: 5,
-						label: '说明文档',
-						key:true,
-						val:18,
-					}, {
-						id: 54,
-						pId: 5,
-						label: '权限管理',
-						key:false,
-						val:19,
-					}]
-				}, {
-					id: 6,
-					pId: 0,
-					label: '出厂设置',
-					key:false,
-					val:20,
-					sub: [{
-						id: 61,
-						pId: 6,
 						label: '打印二维码',
 						key:false,
-						val:21,
+						val:18,
 					}]
 				}],
 				menus:[],
@@ -209,7 +197,6 @@
 					allist:0,
 					evolution:0,
 					ladder:0,
-					ele_group:0,
 					sys:0,
 					user_manage:0,
 					inform:0,
@@ -312,25 +299,17 @@
 				if(this.menuList.ladder == true){
 					this.menu[3].sub[2].key = true
 				}
-				if(this.menuList.ele_group == true){
-					this.menu[4].sub[0].key = true
-					this.menu[4].key = true
-				}
-				if(this.menuList.organize == true){
-					this.menu[4].sub[1].key = true
-					this.menu[4].key = true
-				}
 				if(this.menuList.user_manage == true){
-					this.menu[5].sub[0].key = true
+					this.menu[4].sub[0].key = true
 				}
 				if(this.menuList.inform == true){
-					this.menu[5].sub[1].key = true
+					this.menu[4].sub[1].key = true
 				}
 				if(this.menuList.authority == true){
-					this.menu[5].sub[3].key = true
+					this.menu[4].sub[3].key = true
 				}
 				if(this.menuList.print == true){
-					this.menu[6].sub[0].key = true
+					this.menu[5].sub[0].key = true
 				}
 				
 			},
@@ -430,9 +409,9 @@
 						this.list.map = 1
 					}else if(item.val==3){
 						this.list.laddermap = 1
-					}else if(item.val==5){
-						this.list.maintain = 1
 					}else if(item.val==6){
+						this.list.maintain = 1
+					}else if(item.val==5){
 						this.list.auditinglist = 1
 					}else if(item.val==7){
 						this.list.maintainlist = 1
@@ -444,21 +423,17 @@
 						this.list.evolution = 1
 					}else if(item.val==11){
 						this.list.ladder = 1
-					}else if(item.val==13){
-						this.list.ele_group = 1
-					}else if(item.val==14){
-						this.list.organize = 1
-					}else if(item.val==15){
+					}else if(item.val==12){
 						this.list.sys = 1
-					}else if(item.val==16){
+					}else if(item.val==13){
 						this.list.user_manage = 1
-					}else if(item.val==17){
+					}else if(item.val==14){
 						this.list.inform = 1
-					}else if(item.val==19){
+					}else if(item.val==16){
 						this.list.authority = 1
-					}else if(item.val==20){
+					}else if(item.val==17){
 						this.list.setting = 1
-					}else if(item.val==21){
+					}else if(item.val==18){
 						this.list.print = 1
 					}
 				})

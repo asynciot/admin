@@ -307,43 +307,7 @@
 				page:1,
 			})
 			this.roles = val.data.data.list[0].role
-			// const res = await this.$api.getMenu({
-			// 	page:1,
-			// 	num:1,
-			// 	id:this.roles,
-			// })
 			window.localStorage.setItem("role",this.roles)
-			
-			// if(res.data.code == 0){
-			// 	this.menus = res.data.data.list[0]
-			// }
-			// if(this.menus.dashboard==false){
-			// 	this.menu[0].key = false
-			// }
-			// if(this.menus.menu==false){
-			// 	this.menu[1].key = false
-			// }
-			// if(this.menus.map==false){
-			// 	this.menu[1].sub[0].key = false
-			// }
-			// if(this.menus.laddermap==false){
-			// 	this.menu[1].sub[1].key = false
-			// }
-			// if(this.menus.auditinglist==false){
-			// 	this.menu[2].sub[0].key = false
-			// }
-			// if(this.menus.maintain==false){
-			// 	this.menu[2].sub[1].key = false
-			// }
-			// if(this.menus.maintainlist == false){
-			// 	this.menu[2].sub[2].key = false
-			// }
-			// if(this.menus.maintainlist== false&&this.menus.auditinglist==false&&this.menus.maintain==false){
-			// 	this.menu[2].key = false
-			// }
-			// if(this.menus.allist == false){
-			// 	this.menu[3].sub[0].key = false
-			// }
 		},
 		created(){
 			this.getMenu()
