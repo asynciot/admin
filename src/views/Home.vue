@@ -1,9 +1,9 @@
 <template>
 	<div class="layout">
 		<Layout class="test" :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
-			<Sider :style="{background:'#1e282c'}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
-				<Menu ref="side1" :class="menuitemClasses" theme="dark" width="auto" @on-select="go" :active-name="active" :style="{background:'#1e282c',}">
-					<div style="width: 100%;height: 64px;" :style="'background:#'+bg1">
+			<Sider :style="{minHeight: '100vh',background:bottomcolor,color:fontcolor}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
+				<Menu ref="side1" :class="menuitemClasses" :theme="bg3" width="auto" @on-select="go" :active-name="active" :style="{background:bottomcolor,color:fontcolor}">
+					<div style="width: 100%;height: 64px;" :style="'background:'+bg1">
 						<img :src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
 					</div>
 					<template>
@@ -11,13 +11,13 @@
 							<Col span="8" >
 								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 							</Col>
-							<Col span="16" style="color: #fff;padding-top: 10px;">
+							<Col span="16" style="padding-top: 10px;">
 								<p>{{info.nickname}}</p>
 							</Col>
 						</div>
 					</template>
 					<template v-for="item in menu" v-if="!item.sub" >
-						<MenuItem  :key="item.name" :name="item.name" :style="{color:'#b8c7ce'}" v-if="item.key" style="font-size:13px">
+						<MenuItem  :key="item.name" :name="item.name" :style="{}" v-if="item.key" style="font-size:13px">
 							<i :key="item.name" :class="item.icon" size="16" style="margin-left: -15px;"></i>
 							{{$t(isCollapsed?'':item.label.toString())}}
 						</MenuItem >
@@ -31,7 +31,7 @@
 								</Badge>
 								<i v-else>{{$t(isCollapsed?'':item.label.toString())}}</i>
 							</template>
-							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{background:'#2c3b41',color:'#b8c7ce'}" :name="sub.name" v-if="sub.key" style="margin-left:-7px;font-size:13px">
+							<Menu-item class="submenu" v-for="sub in item.sub" :key="sub.name" :style="{color:fontcolor}" :name="sub.name" v-if="sub.key" style="margin-left:-7px;font-size:13px">
 								<Badge class-name="badge-alone" overflow-count="99" :count="sub.count?sub.count:0">{{$t(sub.label.toString())}}</Badge>
 							</Menu-item>
 						</Submenu>
@@ -39,14 +39,14 @@
 				</Menu>
 			</Sider>
 			<Layout>
-				<Header  class="m-header" v-if="!full" :style="'background:#'+bg2">
+				<Header  class="m-header" v-if="!full" :style="'background:'+bg2">
 					<Row>
 						<Col span="17">
 							&nbsp;
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
-								<Button type="primary" long class="w-button" :style="'background:#'+bg2">
+								<Button type="primary" long class="w-button" :style="'background:'+bg2">
 									<Col span="5">
 										Language:
 									</Col>
@@ -62,7 +62,7 @@
 						</Col>
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
-								<Button type="primary" long class="w-button" :style="'background:#'+bg2">
+								<Button type="primary" long class="w-button" :style="'background:'+bg2">
 									<Col span="5">
 										<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 									</Col>
@@ -122,8 +122,11 @@
 				}
 			};
 			return {
-				bg1:'367fa9',
-				bg2:'3c8dbc',
+				bg1:'#367fa9',
+				bg2:'#3c8dbc',
+				bg3:"dark",
+				bottomcolor:"#1e282c",
+				fontcolor:"#ffffff",
 				full:false,
 				quit:false,
 				tagsList: [],
@@ -224,21 +227,21 @@
 						key:false,
 					},{
 						name:'ladder',
-						label:'elevator information',
+						label:'Elevator Information',
 						key:false,
 					}],
 				},{
 					name: 'group',
 					icon: 'fa fa-group',
-					label: '群组',
+					label: 'Group',
 					key:true,
 					sub: [{
 						name:'elevator',
-						label:'电梯组',
+						label:'Elevator Group',
 						key:true,
 					},{
 						name: 'organize',
-						label: '人员组',
+						label: 'Member Group',
 						key:true,
 					}],
 				},{
@@ -310,6 +313,7 @@
 			// 	id:this.roles,
 			// })
 			window.localStorage.setItem("role",this.roles)
+			
 			// if(res.data.code == 0){
 			// 	this.menus = res.data.data.list[0]
 			// }
@@ -541,20 +545,31 @@
 					if (res.data.data.list[0].portrait != null) {
 						this.portrait='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].portrait
 						}
-					if (res.data.data.list[0].logo != null) {
-						this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
-						}
-					if (res.data.data.list[0].bg1 != null) {
-						this.bg1=res.data.data.list[0].bg1
-						}
-					if (res.data.data.list[0].bg2 != null) {
-						this.bg2=res.data.data.list[0].bg2
-						}
+
 					if (res.data.data.list[0].nickname != null) {
 						this.info.nickname=res.data.data.list[0].nickname
 					}else {
 						this.info.nickname=res.data.data.list[0].username
 					}
+					
+					res = await this.$api.readOrganize({
+						id:res.data.data.list[0].organization_id,
+						nums:1,
+						page:1,
+					})
+					if (res.data.data.list.length>0){
+					this.bg1=res.data.data.list[0].bg1
+					this.bg2=res.data.data.list[0].bg2
+					console.log(res.data.data.list[0].bg3)
+					if (res.data.data.list[0].bg3!=null){
+						this.bg3=res.data.data.list[0].bg3
+						if (this.bg3=="dark"){this.bottomcolor="#1e282c";this.fontcolor="#ffffff"}
+						if (this.bg3=="light"){this.bottomcolor="#ffffff";this.fontcolor="#1e282c"}
+						if (this.bg3=="primary"){this.bottomcolor="#2d8cf0";this.fontcolor="#ffff22"}
+						}
+					this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
+					}
+					
 				}
 			},
 		},

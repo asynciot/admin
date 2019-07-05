@@ -813,7 +813,6 @@
 				this.getprogress()
 			},
 			showpanel(val1,val2){
-				alert(val2)
 				if (val2) {window.localStorage.setItem(val1,0)}
 				else {window.localStorage.setItem(val1,1)}
 			},

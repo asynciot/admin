@@ -3,22 +3,38 @@
 		div.form
 			Row(:gutter=5)
 				Col(span=9)
-					Card
-						Row
+					Card(style="margin-top:0px;height:550px")
+						Col(span=22)
+							Form(ref="form",:data="form",:rules="rules",:label-width="80")
+								Form-item(label="群组名:" v-model="form.name")
+									Input(:value="form.name")
+								Form-item(label="负责人:" v-model="form.leader")
+									Input(:value="form.leader" disabled)
+								Form-item(label="所在区域",prop="location",data-toggle="distpicker")
+									Cascader(:data="region" v-model="value2")
+						Col(span=12)
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
 								Col(span=22)
-									Form-item(label="群组名:" v-model="form.name")
-										Input(:value="form.name")
-									Form-item(label="负责人:" v-model="form.leader")
-										Input(:value="form.leader" disabled)
-									Form-item(label="所在区域",prop="location",data-toggle="distpicker")
-										Cascader(:data="region" v-model="form.region")
-									Col.ta(span="8")
-										Button(type="success" @click="upOrganize()" ,:loading="loading")|提交
-									Col.ta(span="8")
-										Button(type="primary" @click="getList2(),dislist=true")|人员列表
-									Col.ta(span="8")
-										Button(@click="$router.back(-1)")|取消
+									Form-item(label="背景1:")
+										ColorPicker(v-model="color1")
+									Form-item(label="背景2:")
+										ColorPicker(v-model="color2")
+									Form-item(label="背景3:")
+										RadioGroup(v-model="color3")
+											Radio(label="light")
+											Radio(label="dark")
+											Radio(label="primary")
+						Col(span=12)
+							upload(:before-upload='handleUpload' action='')
+								img(:src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 200px;height:150px")			
+						Col(span=24)
+							Col.ta(span="8")
+								Button(type="success" @click="upOrganize()" ,:loading="loading")|提交
+							Col.ta(span="8")
+								Button(type="primary" @click="getList2(),dislist=true")|人员列表
+							Col.ta(span="8")
+								Button(@click="$router.back(-1)")|取消
+
 				Col(span=15)
 					Card
 						Row
@@ -48,9 +64,15 @@
 				region: region,
 				dislist:false,
 				cityList: [],
+				value2:['','',''],
 				districtList: [],
 				loading:false,
 				IMEI:'',
+				logo:'',
+				file:'',
+				color1:'#19be6b',
+				color2:'#19be6b',
+				color3:'#19be6b',
 				options:{
 					install_addr:'',
 					search_info:'',
@@ -187,7 +209,8 @@
 					page:1,
 				})
 				this.form = res.data.data.list[0]
-				this.form.region = this.form.region.split(',')
+				this.form.value2 = this.form.region.split(',')
+				this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
 				delete this.form.t_create
 			},
 			async getList() {
@@ -211,10 +234,58 @@
 					});
 				}
 			},
+			handleUpload (file) {
+				var type = file.name.split('.')
+				if (file.size<2097152){
+				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+				this.file = new File([file], new Date().getTime()+".jpg",{type:"image/jpeg"});
+				// this.filename = this.file.name;
+				// this.upsuccess = true;
+				
+				  let url = null ;
+				  if (window.createObjectURL!=undefined) { // basic
+					url = window.createObjectURL(this.file) ;
+				  }else if (window.webkitURL!=undefined) { // webkit or chrome
+					url = window.webkitURL.createObjectURL(this.file) ;
+				  }else if (window.URL!=undefined) { // mozilla(firefox)
+					url = window.URL.createObjectURL(this.file) ;
+				  }
+				this.logo=url;
+				return false;
+				}
+				else{
+					this.$Notice.warning({
+						title: this.$t('warning'), 
+						desc: this.$t('File type must be picture')
+					})
+				}
+				}
+				else{
+					this.$Notice.warning({
+						title: this.$t('warning'),
+						desc: this.$t('File size must be less than 2M')
+					})
+				}
+			},
 			async upOrganize(){
 				this.loading = true
+				console.log('value2')
+				console.log(this.form.region)
 				this.form.region = this.value2[0]+','+this.value2[1]+','+this.value2[2]
-				const res = await this.$api.updateOrganize(this.form)
+				
+				var formData = new FormData()
+				var formData = new window.FormData()
+				formData.append('logo',this.file)
+				formData.append('bg1',this.color1)
+				formData.append('bg2',this.color2)
+				formData.append('bg3',this.color3)
+				formData.append('id',this.form.id)
+				formData.append('leader',this.form.leader)
+				formData.append('name',this.form.name)
+				formData.append('region',this.form.region)
+				formData.append('organize_id',this.form.organize_id)
+				formData.append('number',this.form.number)
+				const res = await this.$api.updateOrganize(formData)
 				if (res.data.code == 0) {
 					this.loading = false
 					this.$Notice.success({
