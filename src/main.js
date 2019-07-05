@@ -11,21 +11,21 @@ import moment from 'moment'
 import _ from 'lodash'
 import { format } from 'date-fns'
 import "printthis";
-import vuescroll from 'vuescroll';
-import 'vuescroll/dist/vuescroll.css';
-import VueResource from 'vue-resource'; 
+// import vuescroll from 'vuescroll';
+// import 'vuescroll/dist/vuescroll.css';
+import VueResource from 'vue-resource';
 import 'font-awesome/scss/font-awesome.scss';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import echarts from 'echarts'
+import echarts from 'echarts';
 import 'babel-polyfill';
 import Icon from 'vue2-svg-icon/Icon.vue';
-import './lib/jquery-vender.js'
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'admin-lte'
-import 'admin-lte/dist/css/AdminLTE.min.css'
-import 'admin-lte/dist/css/skins/_all-skins.min.css'
+import './lib/jquery-vender.js';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'admin-lte';
+import 'admin-lte/dist/css/AdminLTE.min.css';
+import 'admin-lte/dist/css/skins/_all-skins.min.css';
 import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import 'swiper/dist/css/swiper.css';

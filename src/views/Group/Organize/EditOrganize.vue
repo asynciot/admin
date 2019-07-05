@@ -26,7 +26,7 @@
 											Radio(label="primary")
 						Col(span=12)
 							upload(:before-upload='handleUpload' action='')
-								img(:src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 200px;height:150px")			
+								img(:src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 200px;height:150px")
 						Col(span=24)
 							Col.ta(span="8")
 								Button(type="success" @click="upOrganize()" ,:loading="loading")|提交
