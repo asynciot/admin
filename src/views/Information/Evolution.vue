@@ -177,7 +177,7 @@ export default {
 		},
 		handleUpload (file) {
 			var type = file.name.split('.')
-			if (type[1] == 'bin'){
+			if (type[type.length-1] == 'bin'){
 				this.file = file;
 				this.filename = this.file.name;
 				this.upsuccess = false;
