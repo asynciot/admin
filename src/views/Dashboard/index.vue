@@ -645,7 +645,7 @@
 					isSettled:false,
 				},
 				chatoptions: {
-					fromId:window.localStorage.getItem('username'),
+					fromId:window.localStorage.getItem('id'),
 					title:'1',
 					content:'',
 					info:'1',
