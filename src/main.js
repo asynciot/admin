@@ -16,17 +16,17 @@ import "printthis";
 import VueResource from 'vue-resource';
 import 'font-awesome/scss/font-awesome.scss';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+// import 'element-ui/lib/theme-chalk/index.css';
 import echarts from 'echarts';
 import 'babel-polyfill';
 import Icon from 'vue2-svg-icon/Icon.vue';
 import './lib/jquery-vender.js';
 import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.css';
 import 'admin-lte';
-import 'admin-lte/dist/css/AdminLTE.min.css';
-import 'admin-lte/dist/css/skins/_all-skins.min.css';
-import 'iview/dist/styles/iview.css';    // 使用 CSS
+// import 'admin-lte/dist/css/AdminLTE.min.css';
+// import 'admin-lte/dist/css/skins/_all-skins.min.css';
+// import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import 'swiper/dist/css/swiper.css';
 import VueI18n from 'vue-i18n';
@@ -34,9 +34,9 @@ import en from 'iview/dist/locale/en-US';
 import zh from 'iview/dist/locale/zh-CN';
 import app_zh from './language/zh-CN.json';
 import app_en from './language/en-US.json';
-Vue.use(VueI18n);
 import global from './global'
 
+Vue.use(VueI18n);
 Vue.prototype.global = global
 Vue.component('icon', Icon);
 Vue.use(ElementUI, { size: 'small' });
