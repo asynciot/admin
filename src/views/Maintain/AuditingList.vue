@@ -191,7 +191,7 @@
 											}
 										},
 									}
-								},this.$t('look up')),
+								},this.$t('watch')),
 							])
 						}
 					}

@@ -1,7 +1,7 @@
 <template lang="jade">
 	div(class="layout-content-main" style="padding:0;overflow-y: scroll;")
 		div(style="text-align:center;font-weight:'';font-size:25px" )|{{$route.params.device_name}}{{$t('Menu')}}
-		div(style="margin: 0 auto;width: 800px" v-for="showlist in all")
+		div(style="margin: 0 auto;width: 90%" v-for="showlist in all")
 			Card(style="margin-top:10px; width:100%; font-size:20px; color:#878787;height:40px;cursor: pointer;border-radius:0;" v-bind:padding='5' @click.native="showlist.show=!showlist.show")
 				Col(span='23')|{{showlist.title}}
 				Col(span='1' style="font-size:15px")
@@ -169,7 +169,7 @@
 				{label:this.$t('IC card service floor 00‐FF call switch'),value:''}],
 				},{
 				show:false,
-				title:+this.$t('Software version'),
+				title:this.$t('Software version'),
 				list:[
 				{label:this.$t('Elevator control software version'),value:''},
 				{label:this.$t('Motor control software version'),value:''},
@@ -193,6 +193,7 @@
 				if (res.data.code == 0){
 					res.data.data.list.forEach(item=>{
 						if (item.data != null) {buffer = base64url.toBuffer(item.data)}
+						
 						if (item.type == 8196){
 							for (var i=0;i<11;i++){
 								this.all[0].list[i].value=256*(buffer[2*i])+(buffer[2*i+1])
@@ -215,134 +216,134 @@
 						if (item.type == 8199){
 							for (var i=0;i<10;i++){
 								this.all[3].list[i].value=(buffer[i])
-								if (this.all[3].list[i].value == 0) {this.all[3].list[i].value='常开'}
-								if (this.all[3].list[i].value == 1) {this.all[3].list[i].value='常闭'}
-								if (typeof(this.all[3].list[i].value) == 'number') {this.all[3].list[i].value='其他'}
+								if (this.all[3].list[i].value == 0) {this.all[3].list[i].value=this.$t('Normally Open')}
+								if (this.all[3].list[i].value == 1) {this.all[3].list[i].value=this.$t('Normally Closed')}
+								if (typeof(this.all[3].list[i].value) == 'number') {this.all[3].list[i].value=this.$t('Other')}
 							}
 						}
 						if (item.type == 8200){
 							for (var i=0;i<8;i++){
 								this.all[4].list[i].value=(buffer[i])
-								if (this.all[4].list[i].value == 0) {this.all[4].list[i].value='未使用'}
-								if (this.all[4].list[i].value == 1) {this.all[4].list[i].value='门 1 开门按钮'}
-								if (this.all[4].list[i].value == 2) {this.all[4].list[i].value='门 1 关门按钮'}
-								if (this.all[4].list[i].value == 3) {this.all[4].list[i].value='司机开关门'}
-								if (this.all[4].list[i].value == 4) {this.all[4].list[i].value='独立按钮'}
-								if (this.all[4].list[i].value == 5) {this.all[4].list[i].value='直驶按钮'}
-								if (this.all[4].list[i].value == 6) {this.all[4].list[i].value='司机换向按钮'}
-								if (this.all[4].list[i].value == 7) {this.all[4].list[i].value='消防钥匙开关'}
-								if (this.all[4].list[i].value == 8) {this.all[4].list[i].value='门转开关'}
-								if (this.all[4].list[i].value == 9) {this.all[4].list[i].value='延时关门'}
-								if (this.all[4].list[i].value == 10) {this.all[4].list[i].value='门 2 开门按钮'}
-								if (this.all[4].list[i].value == 11) {this.all[4].list[i].value='门 2 关门按钮'}
-								if (this.all[4].list[i].value == 12) {this.all[4].list[i].value='医梯开关'}
-								if (this.all[4].list[i].value == 13) {this.all[4].list[i].value='服务层切换 1'}
-								if (this.all[4].list[i].value == 14) {this.all[4].list[i].value='服务层切换 2'}
-								if (this.all[4].list[i].value == 15) {this.all[4].list[i].value='服务层切换 3'}
-								if (typeof(this.all[4].list[i].value) == 'number') {this.all[4].list[i].value='其他'}
+								if (this.all[4].list[i].value == 0) {this.all[4].list[i].value=this.$t('Unused')}
+								if (this.all[4].list[i].value == 1) {this.all[4].list[i].value=this.$t('Door 1 Open Button')}
+								if (this.all[4].list[i].value == 2) {this.all[4].list[i].value=this.$t('Door 1 Close Button')}
+								if (this.all[4].list[i].value == 3) {this.all[4].list[i].value=this.$t('Driver Opens and Closes the Door')}
+								if (this.all[4].list[i].value == 4) {this.all[4].list[i].value=this.$t('Independent Button')}
+								if (this.all[4].list[i].value == 5) {this.all[4].list[i].value=this.$t('Direct Drive Button')}
+								if (this.all[4].list[i].value == 6) {this.all[4].list[i].value=this.$t("Driver's Switch Button")}
+								if (this.all[4].list[i].value == 7) {this.all[4].list[i].value=this.$t('Fire Key Switch')}
+								if (this.all[4].list[i].value == 8) {this.all[4].list[i].value=this.$t('Door Turn Switch')}
+								if (this.all[4].list[i].value == 9) {this.all[4].list[i].value=this.$t('Delayed Close')}
+								if (this.all[4].list[i].value == 10) {this.all[4].list[i].value=this.$t('Door 2 Open Button')}
+								if (this.all[4].list[i].value == 11) {this.all[4].list[i].value=this.$t('Door 2 Close Button')}
+								if (this.all[4].list[i].value == 12) {this.all[4].list[i].value=this.$t('Medical Ladder Switch')}
+								if (this.all[4].list[i].value == 13) {this.all[4].list[i].value=this.$t('Service Layer Switching 1')}
+								if (this.all[4].list[i].value == 14) {this.all[4].list[i].value=this.$t('Service Layer Switching 2')}
+								if (this.all[4].list[i].value == 15) {this.all[4].list[i].value=this.$t('Service Layer Switching 3')}
+								if (typeof(this.all[4].list[i].value) == 'number') {this.all[4].list[i].value=this.$t('Other')}
 							}
 						}
 						if (item.type == 8201){
 							for (var i=0;i<8;i++){
 								this.all[5].list[i].value=(buffer[i])
-								if (this.all[5].list[i].value == 0) {this.all[5].list[i].value='未使用'}
-								if (this.all[5].list[i].value == 1) {this.all[5].list[i].value='运行接触器'}
-								if (this.all[5].list[i].value == 2) {this.all[5].list[i].value='封星接触器'}
-								if (this.all[5].list[i].value == 3) {this.all[5].list[i].value='抱闸接触器'}
-								if (this.all[5].list[i].value == 4) {this.all[5].list[i].value='抱闸维持接触器  '}
-								if (this.all[5].list[i].value == 5) {this.all[5].list[i].value='消防照明继电器'}
-								if (this.all[5].list[i].value == 6) {this.all[5].list[i].value='消防道基站'}
-								if (this.all[5].list[i].value == 7) {this.all[5].list[i].value='封门继电器'}
-								if (this.all[5].list[i].value == 8) {this.all[5].list[i].value='停电应急救援运行'}
-								if (this.all[5].list[i].value == 9) {this.all[5].list[i].value='门 1 开门输出'}
-								if (this.all[5].list[i].value == 10) {this.all[5].list[i].value='门 1 关门输出'}
-								if (this.all[5].list[i].value == 11) {this.all[5].list[i].value='门 2 开门输出'}
-								if (this.all[5].list[i].value == 12) {this.all[5].list[i].value='门 2 关门输出'}
-								if (this.all[5].list[i].value == 13) {this.all[5].list[i].value='救援蜂鸣输出'}
-								if (typeof(this.all[5].list[i].value) == 'number') {this.all[5].list[i].value='其他'}
+								if (this.all[5].list[i].value == 0) {this.all[5].list[i].value=this.$t('Unused')}
+								if (this.all[5].list[i].value == 1) {this.all[5].list[i].value=this.$t('Operating Contactor')}
+								if (this.all[5].list[i].value == 2) {this.all[5].list[i].value=this.$t('Sealing Star Contactor')}
+								if (this.all[5].list[i].value == 3) {this.all[5].list[i].value=this.$t('Brake Contactor')}
+								if (this.all[5].list[i].value == 4) {this.all[5].list[i].value=this.$t('Brake Holding Contactor')}
+								if (this.all[5].list[i].value == 5) {this.all[5].list[i].value=this.$t('Fire Lighting Relay')}
+								if (this.all[5].list[i].value == 6) {this.all[5].list[i].value=this.$t('Fireway Base Station')}
+								if (this.all[5].list[i].value == 7) {this.all[5].list[i].value=this.$t('Door-Closing Relay')}
+								if (this.all[5].list[i].value == 8) {this.all[5].list[i].value=this.$t('Outage Emergency Rescue Operation')}
+								if (this.all[5].list[i].value == 9) {this.all[5].list[i].value=this.$t('Door 1 Open Output')}
+								if (this.all[5].list[i].value == 10) {this.all[5].list[i].value=this.$t('Door 1 Close Output')}
+								if (this.all[5].list[i].value == 11) {this.all[5].list[i].value=this.$t('Door 2 Open Output')}
+								if (this.all[5].list[i].value == 12) {this.all[5].list[i].value=this.$t('Door 2 Close Output')}
+								if (this.all[5].list[i].value == 13) {this.all[5].list[i].value=this.$t('Rescue Buzz Output')}
+								if (typeof(this.all[5].list[i].value) == 'number') {this.all[5].list[i].value=this.$t('Other')}
 							}
 						}
 						if (item.type == 8202){
 							for (var i=0;i<3;i++){
 								this.all[6].list[i].value=(buffer[i])
-								if (this.all[6].list[i].value == 0) {this.all[6].list[i].value='无信号输出'}
-								if (this.all[6].list[i].value == 1) {this.all[6].list[i].value='输出上行到站钟'}
-								if (this.all[6].list[i].value == 2) {this.all[6].list[i].value='输出下行到站钟'}
-								if (this.all[6].list[i].value == 3) {this.all[6].list[i].value='上下行到站钟合并输出'}
-								if (this.all[6].list[i].value == 4) {this.all[6].list[i].value='超载蜂鸣'}
-								if (this.all[6].list[i].value == 5) {this.all[6].list[i].value='消防警铃'}
-								if (typeof(this.all[6].list[i].value) == 'number') {this.all[6].list[i].value='其他'}
+								if (this.all[6].list[i].value == 0) {this.all[6].list[i].value=this.$t('No Signal Output')}
+								if (this.all[6].list[i].value == 1) {this.all[6].list[i].value=this.$t('Output Up-to-Station Clock')}
+								if (this.all[6].list[i].value == 2) {this.all[6].list[i].value=this.$t('Output Down-to-Station Clock')}
+								if (this.all[6].list[i].value == 3) {this.all[6].list[i].value=this.$t('Up and Down Clock Combining Output')}
+								if (this.all[6].list[i].value == 4) {this.all[6].list[i].value=this.$t('Overload Buzzing')}
+								if (this.all[6].list[i].value == 5) {this.all[6].list[i].value=this.$t('Fire Alarm Bell')}
+								if (typeof(this.all[6].list[i].value) == 'number') {this.all[6].list[i].value=this.$t('Other')}
 							}
 								this.all[6].list[3].value=(buffer[3])
-								if (this.all[6].list[3].value == 0) {this.all[6].list[3].value='无信号输出'}
-								if (this.all[6].list[3].value == 1) {this.all[6].list[3].value='液晶输出'}
-								if (this.all[6].list[3].value == 2) {this.all[6].list[3].value='力必拓 IC 卡'}
-								if (this.all[6].list[3].value == 3) {this.all[6].list[3].value='金博 IC 卡'}
-								if (typeof(this.all[6].list[3].value) == 'number') {this.all[6].list[3].value='其他'}
+								if (this.all[6].list[3].value == 0) {this.all[6].list[3].value=this.$t('No Signal Output')}
+								if (this.all[6].list[3].value == 1) {this.all[6].list[3].value=this.$t('LCD Output')}
+								if (this.all[6].list[3].value == 2) {this.all[6].list[3].value=this.$t('Rio Billiton IC Card')}
+								if (this.all[6].list[3].value == 3) {this.all[6].list[3].value=this.$t('Kimber IC Card')}
+								if (typeof(this.all[6].list[3].value) == 'number') {this.all[6].list[3].value=this.$t('Other')}
 						}
 						if (item.type == 8203){
 							for (var i=0;i<12;i++){
 								this.all[7].list[i].value=(buffer[i])
 							}
-								if (this.all[7].list[0].value == 0) {this.all[7].list[0].value='单梯'}
-								if (this.all[7].list[0].value == 1) {this.all[7].list[0].value='并联'}
-								if (this.all[7].list[0].value == 2) {this.all[7].list[0].value='群控'}
-								if (this.all[7].list[1].value == 0) {this.all[7].list[1].value='副梯'}
-								if (this.all[7].list[1].value == 255) {this.all[7].list[1].value='主梯'}
-								if (this.all[7].list[2].value == 0) {this.all[7].list[2].value='关闭'}
-								if (this.all[7].list[2].value == 1) {this.all[7].list[2].value='开通'}
-								if (this.all[7].list[3].value == 0) {this.all[7].list[3].value='关闭'}
-								if (this.all[7].list[3].value == 1) {this.all[7].list[3].value='开通'}
-								if (this.all[7].list[4].value == 0) {this.all[7].list[4].value='单操纵箱'}
-								if (this.all[7].list[4].value == 1) {this.all[7].list[4].value='第二操纵箱作为残疾人操纵箱'}
-								if (this.all[7].list[4].value == 2) {this.all[7].list[4].value='第二操纵箱作为后门操纵箱'}
-								if (this.all[7].list[5].value == 0) {this.all[7].list[5].value='单层站召唤'}
-								if (this.all[7].list[5].value == 1) {this.all[7].list[5].value='残疾人层站召唤开通'}
-								if (this.all[7].list[5].value == 2) {this.all[7].list[5].value='后门层站召唤开通'}
-								if (this.all[7].list[6].value == 0) {this.all[7].list[6].value='无效'}
-								if (this.all[7].list[6].value == 1) {this.all[7].list[6].value='轿顶板'}
-								if (this.all[7].list[6].value == 2) {this.all[7].list[6].value='主板'}
-								if (this.all[7].list[7].value == 0) {this.all[7].list[7].value='无效'}
-								if (this.all[7].list[7].value == 1) {this.all[7].list[7].value='称重判断'}
-								if (this.all[7].list[7].value == 2) {this.all[7].list[7].value='光幕判断'}
-								if (this.all[7].list[7].value == 2) {this.all[7].list[7].value='轻载开关判断'}
-								if (this.all[7].list[8].value == 1) {this.all[7].list[8].value='到站钟一直开启'}
-								if (this.all[7].list[8].value == 2) {this.all[7].list[8].value='到站钟在设置的时间内开启'}
-								if (this.all[7].list[8].value == 2) {this.all[7].list[8].value='到站钟一直关闭'}
-								if (this.all[7].list[10].value == 1) {this.all[7].list[10].value='未开通'}
-								if (this.all[7].list[10].value == 2) {this.all[7].list[10].value='通过层站召唤按钮启用开通'}
-								if (this.all[7].list[10].value == 2) {this.all[7].list[10].value='通过层站召唤端子启用开通'}
-								if (this.all[7].list[10].value == 2) {this.all[7].list[10].value='通过 IO 板端口启用开通'}
-								if (this.all[7].list[11].value == 2) {this.all[7].list[11].value='关闭'}
-								if (this.all[7].list[11].value == 2) {this.all[7].list[11].value='开通'}
+								if (this.all[7].list[0].value == 0) {this.all[7].list[0].value=this.$t('Single Ladder')}
+								if (this.all[7].list[0].value == 1) {this.all[7].list[0].value=this.$t('Parallel Connection')}
+								if (this.all[7].list[0].value == 2) {this.all[7].list[0].value=this.$t('Group Control')}
+								if (this.all[7].list[1].value == 0) {this.all[7].list[1].value=this.$t('Auxiliary Ladder')}
+								if (this.all[7].list[1].value == 255) {this.all[7].list[1].value=this.$t('Main Ladder')}
+								if (this.all[7].list[2].value == 0) {this.all[7].list[2].value=this.$t('Close')}
+								if (this.all[7].list[2].value == 1) {this.all[7].list[2].value=this.$t('Open')}
+								if (this.all[7].list[3].value == 0) {this.all[7].list[3].value=this.$t('Close')}
+								if (this.all[7].list[3].value == 1) {this.all[7].list[3].value=this.$t('Open')}
+								if (this.all[7].list[4].value == 0) {this.all[7].list[4].value=this.$t('Single Control Box')}
+								if (this.all[7].list[4].value == 1) {this.all[7].list[4].value=this.$t('Second Control Box as Disabled Control Box')}
+								if (this.all[7].list[4].value == 2) {this.all[7].list[4].value=this.$t('Second Control Box as Backdoor Control Box')}
+								if (this.all[7].list[5].value == 0) {this.all[7].list[5].value=this.$t('Single Level Station Call')}
+								if (this.all[7].list[5].value == 1) {this.all[7].list[5].value=this.$t('The Disabled Level Station Calls Open')}
+								if (this.all[7].list[5].value == 2) {this.all[7].list[5].value=this.$t('Backdoor Level Station Calls Open')}
+								if (this.all[7].list[6].value == 0) {this.all[7].list[6].value=this.$t('Invalid')}
+								if (this.all[7].list[6].value == 1) {this.all[7].list[6].value=this.$t('Car Roof')}
+								if (this.all[7].list[6].value == 2) {this.all[7].list[6].value=this.$t('Main Board')}
+								if (this.all[7].list[7].value == 0) {this.all[7].list[7].value=this.$t('Invalid')}
+								if (this.all[7].list[7].value == 1) {this.all[7].list[7].value=this.$t('Weighing Judgment')}
+								if (this.all[7].list[7].value == 2) {this.all[7].list[7].value=this.$t('Light Screen Judgement')}
+								if (this.all[7].list[7].value == 2) {this.all[7].list[7].value=this.$t('Judgment of Lightload Switch')}
+								if (this.all[7].list[8].value == 1) {this.all[7].list[8].value=this.$t('Arrival Clock Open All the Way')}
+								if (this.all[7].list[8].value == 2) {this.all[7].list[8].value=this.$t('Arrival Clock Open in the Set Time')}
+								if (this.all[7].list[8].value == 2) {this.all[7].list[8].value=this.$t('Arrival Clock close All the Way')}
+								if (this.all[7].list[10].value == 1) {this.all[7].list[10].value=this.$t('Not Open')}
+								if (this.all[7].list[10].value == 2) {this.all[7].list[10].value=this.$t('Enabling Landing Call Button Open')}
+								if (this.all[7].list[10].value == 2) {this.all[7].list[10].value=this.$t('Enabling Landing Call Port Open')}
+								if (this.all[7].list[10].value == 2) {this.all[7].list[10].value=this.$t('Enabling IO Board Port Open')}
+								if (this.all[7].list[11].value == 2) {this.all[7].list[11].value=this.$t('Close')}
+								if (this.all[7].list[11].value == 2) {this.all[7].list[11].value=this.$t('Open')}
 							for (var i=0;i<9;i++){
-								if (typeof(this.all[7].list[i].value) == 'number') {this.all[7].list[i].value='其他'}
+								if (typeof(this.all[7].list[i].value) == 'number') {this.all[7].list[i].value=this.$t('Other')}
 							}
 							for (var i=10;i<12;i++){
-								if (typeof(this.all[7].list[i].value) == 'number') {this.all[7].list[i].value='其他'}
+								if (typeof(this.all[7].list[i].value) == 'number') {this.all[7].list[i].value=this.$t('Other')}
 							}
 						}
 						if (item.type == 8204){
 							for (var i=0;i<5;i++){
 								this.all[8].list[i].value=(buffer[i])
 							}
-								if (this.all[8].list[0].value == 0) {this.all[8].list[0].value='无效'}
-								if (this.all[8].list[0].value == 1) {this.all[8].list[0].value='层站召唤板端子输入'}
-								if (this.all[8].list[0].value == 2) {this.all[8].list[0].value='IO 板端子输入'}
-								if (this.all[8].list[1].value == 0) {this.all[8].list[1].value='启用消防电梯开关，消防员钥匙开关和消防联 动开关输入无效'}
-								if (this.all[8].list[1].value == 1) {this.all[8].list[1].value='启用消防电梯开关和消防联动开关，消防员钥 匙开关输入无效'}
-								if (this.all[8].list[1].value == 2) {this.all[8].list[1].value='启用消防电梯开关和消防员钥匙开关，消防联 动开关无效'}
-								if (this.all[8].list[1].value == 3) {this.all[8].list[1].value='启用消防电梯开关、消防员钥匙开关、消防联 动开关'}
-								if (this.all[8].list[2].value == 0) {this.all[8].list[2].value='系统标配消防模式'}
-								if (this.all[8].list[2].value == 1) {this.all[8].list[2].value='香港消防模式'}
-								if (this.all[8].list[3].value == 0) {this.all[8].list[3].value='不检测抱闸行程开关'}
-								if (this.all[8].list[3].value == 1) {this.all[8].list[3].value='检测左右抱闸行程开关'}
-								if (this.all[8].list[3].value == 2) {this.all[8].list[3].value='检测左抱闸行程开关'}
-								if (this.all[8].list[3].value == 3) {this.all[8].list[3].value='检测右抱闸行程开关'}
-								if (this.all[8].list[4].value == 0) {this.all[8].list[4].value='启动运行部检测关门到位'}
-								if (this.all[8].list[4].value == 1) {this.all[8].list[4].value='启动运行检测关门到位，关门不到位禁止电梯 运行'}
+								if (this.all[8].list[0].value == 0) {this.all[8].list[0].value=this.$t('Invalid')}
+								if (this.all[8].list[0].value == 1) {this.all[8].list[0].value=this.$t('Landing Call Board Port Input')}
+								if (this.all[8].list[0].value == 2) {this.all[8].list[0].value=this.$t('IO Board Port Input')}
+								if (this.all[8].list[1].value == 0) {this.all[8].list[1].value=this.$t('Fire elevator switch enabled, fireman key switch and fire link switch invalid input')}
+								if (this.all[8].list[1].value == 1) {this.all[8].list[1].value=this.$t('Enable fire elevator switch and fire linkage switch, the input of fireman key switch is invalid')}
+								if (this.all[8].list[1].value == 2) {this.all[8].list[1].value=this.$t('Fire elevator switch and fireman key switch are activated, fire linkage switch is invalid')}
+								if (this.all[8].list[1].value == 3) {this.all[8].list[1].value=this.$t('Enable fire elevator switch, fireman key switch, fire linkage switch')}
+								if (this.all[8].list[2].value == 0) {this.all[8].list[2].value=this.$t('System Standard Fire Fighting Mode')}
+								if (this.all[8].list[2].value == 1) {this.all[8].list[2].value=this.$t('Hong Kong Fire Fighting Mode')}
+								if (this.all[8].list[3].value == 0) {this.all[8].list[3].value=this.$t('No Detection of Brake Holding Travel Switch')}
+								if (this.all[8].list[3].value == 1) {this.all[8].list[3].value=this.$t('Detection of Left and Right Brake Trip Switch')}
+								if (this.all[8].list[3].value == 2) {this.all[8].list[3].value=this.$t('Detection of Left Brake Trip Switch')}
+								if (this.all[8].list[3].value == 3) {this.all[8].list[3].value=this.$t('Detection of Right Brake Trip Switch')}
+								if (this.all[8].list[4].value == 0) {this.all[8].list[4].value=this.$t('Not Detect if Closing Arrival When Start Operation')}
+								if (this.all[8].list[4].value == 1) {this.all[8].list[4].value=this.$t('Detect if Closing Arrival When Start Operation,Forbid Operation Unless Closing Arrival')}
 								for (var i=0;i<5;i++){
-									if (typeof(this.all[8].list[i].value) == 'number') {this.all[8].list[i].value='其他'}
+									if (typeof(this.all[8].list[i].value) == 'number') {this.all[8].list[i].value=this.$t('Other')}
 								}
 						}
 						if (item.type == 8205){
@@ -350,13 +351,13 @@
 								this.all[9].list[i].value=(buffer[i])
 							}
 							for (var i=0;i<10;i++){
-								if (this.all[9].list[i].value == 0) {this.all[9].list[i].value='关闭'}
-								if (this.all[9].list[i].value == 1) {this.all[9].list[i].value='开通'}
-								if (typeof(this.all[9].list[i].value) == 'number') {this.all[9].list[i].value='其他'}
+								if (this.all[9].list[i].value == 0) {this.all[9].list[i].value=this.$t('Close')}
+								if (this.all[9].list[i].value == 1) {this.all[9].list[i].value=this.$t('Open')}
+								if (typeof(this.all[9].list[i].value) == 'number') {this.all[9].list[i].value=this.$t('Other')}
 							}
-								if (this.all[9].list[10].value == 0) {this.all[9].list[10].value='关闭'}
-								if (this.all[9].list[10].value == 255) {this.all[9].list[10].value='开通'}
-								if (typeof(this.all[9].list[10].value) == 'number') {this.all[9].list[10].value='其他'}
+								if (this.all[9].list[10].value == 0) {this.all[9].list[10].value=this.$t('Close')}
+								if (this.all[9].list[10].value == 255) {this.all[9].list[10].value=this.$t('Open')}
+								if (typeof(this.all[9].list[10].value) == 'number') {this.all[9].list[10].value=this.$t('Other')}
 						}
 						if (item.type == 8206){
 							for (var i=0;i<5;i++){

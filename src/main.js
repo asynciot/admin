@@ -26,7 +26,7 @@ import 'bootstrap';
 import 'admin-lte';
 // import 'admin-lte/dist/css/AdminLTE.min.css';
 // import 'admin-lte/dist/css/skins/_all-skins.min.css';
-// import 'iview/dist/styles/iview.css';    // 使用 CSS
+import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import 'swiper/dist/css/swiper.css';
 import VueI18n from 'vue-i18n';
