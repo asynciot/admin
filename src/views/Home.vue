@@ -12,7 +12,7 @@
 								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
 							</Col>
 							<Col span="16" style="padding-top: 10px;">
-								<p>{{info.nickname}}</p>
+								<p>&nbsp;&nbsp;{{info.nickname}}</p>
 							</Col>
 						</div>
 					</template>
@@ -64,7 +64,7 @@
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
 								<Button type="primary" long class="w-button" :style="'background:'+bg2">
 									<Col span="5">
-										<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
+										<img :src="portrait" class="img-circle2" alt="User Image" onerror="src='../../static/admin.jpg'">
 									</Col>
 									<Col span="19">
 										<p style="color: white;width: 100%;">{{info.nickname}}</p>
@@ -733,10 +733,16 @@
 		background-color: #0B93D5;
 	}
 	.img-circle{
-		width: 100%;
-		max-width: 45px;
-		height: auto;
-		border-radius: 50%;
+		width: 50px;
+		// max-width: 45px;
+		height: 50px;
+		border-radius: 100%;
+	}
+	.img-circle2{
+		width: 30px;
+		// max-width: 45px;
+		height: 20px;
+		border-radius: 100%;
 	}
 	.user-panel{
 		padding-left: 20%;
