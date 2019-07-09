@@ -37,7 +37,7 @@
 	export default{	
 		data(){
 			return{
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				id:window.localStorage.getItem('id'),
 				form:{
 					type:'1',
@@ -46,7 +46,7 @@
 				ps:'',
 				list:[],
 				query:{
-					username:window.localStorage.getItem('username'),
+					username:this.global.username,
 					name:'',
 				},
 				file:'',
@@ -72,7 +72,6 @@
 				}
 			},
 			adopt(){
-				
 				this.$Notice.success({
 					title: '成功',
 					desc: '已通过审核！'

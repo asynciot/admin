@@ -150,7 +150,7 @@
 					isSettled:false,
 				},
 				chatoptions: {
-					fromId:window.localStorage.getItem('username'),
+					fromId:this.global.username,
 					title:'1',
 					content:'',
 					info:'1',

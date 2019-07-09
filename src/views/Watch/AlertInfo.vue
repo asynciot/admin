@@ -24,7 +24,7 @@
 	export default{	
 		data(){
 			return{
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				id:window.localStorage.getItem('id'),
 				form:{
 					type:'1',
@@ -33,7 +33,7 @@
 				ps:'因零件未到位，请求搁置3日后维修。',
 				list:[],
 				query:{
-					username:window.localStorage.getItem('username'),
+					username:this.global.username,
 					name:'',
 				},
 				social:[],

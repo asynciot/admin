@@ -30,7 +30,7 @@
 	export default{	
 		data(){
 			return{
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				id:window.localStorage.getItem('id'),
 				mobile:window.localStorage.getItem('mobile'),
 				fault:[0,0,0,0,0,0,0,0],
@@ -40,7 +40,7 @@
 				faultcode:false,
 				list:[],
 				query:{
-					username:window.localStorage.getItem('username'),
+					username:this.global.username,
 					name:'',
 				},
 				ladList:[],

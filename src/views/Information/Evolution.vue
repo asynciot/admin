@@ -274,19 +274,16 @@ export default {
 		update(val) {
 			var name = []
 			val.forEach(item=>{
-				console.log("1")
 				if(item.device_name!=null){
 					name.push(item.device_name);
 				}else{
 					name.push(item.IMEI)
 				}
-				console.log("2")
 			})
 			this.$Modal.confirm({
 				title: '请确认要升级的设备',
 				content:name,
 				onOk: () => {
-					console.log("1")
 					this.toupdate(val)
 				},
 				onCancel: () => {
@@ -298,7 +295,6 @@ export default {
 			var success=[]
 			var error =[]
 			for (var i=0;i<val.length;i++) {
-				console.log("2")
 				res = await this.$api.updat({IMEI:val[i].IMEI,firmware:this.version})
 					if(res.data.code === 0){
 						if(val[i].device_name!=null){

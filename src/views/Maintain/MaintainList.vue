@@ -44,7 +44,7 @@
 	export default {
 		data() {
 			return{
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				color:[false,false,false,false,false,false],
 				col:['green','red','yellow','blue','gray','black'],
 				menu:[],

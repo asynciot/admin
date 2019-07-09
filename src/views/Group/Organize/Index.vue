@@ -21,7 +21,7 @@
 	export default {
 		data() {
 			return {
-				username:window.localStorage.getItem("username"),
+				username:this.global.username,
 				options:{
 					page:1,
 					nums:10,
@@ -153,7 +153,7 @@
 			async Organize(){
 				this.loading = true
 				const res = await this.$api.readOrganize({
-					username:window.localStorage.getItem("username"),
+					username:this.global.username,
 					nums:10,
 					page:1,
 				})

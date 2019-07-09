@@ -26,7 +26,7 @@ import 'bootstrap';
 import 'admin-lte';
 // import 'admin-lte/dist/css/AdminLTE.min.css';
 // import 'admin-lte/dist/css/skins/_all-skins.min.css';
-// import 'iview/dist/styles/iview.css';    // 使用 CSS
+import 'iview/dist/styles/iview.css';    // 使用 CSS
 import '@/assets/public.scss';    // 使用 CSS
 import 'swiper/dist/css/swiper.css';
 import VueI18n from 'vue-i18n';
@@ -58,7 +58,8 @@ Vue.prototype.$api = api
 Vue.prototype.$format = window.format
 Vue.prototype.$echarts = echarts
 router.beforeEach((to, from, next) => {
-	if(window.localStorage.getItem('username')||to.name=='login'||to.name=='register'){	
+	// console.log(this.global.usernmae)
+	if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
 		next()
 	}else {
 		next({name:'login'})

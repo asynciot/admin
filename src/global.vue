@@ -1,5 +1,6 @@
 <script>
 	var roles = '';
+	var username = '';
 	var menus = {};
 	var functions = {};
 
