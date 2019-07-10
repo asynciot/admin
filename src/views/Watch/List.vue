@@ -138,7 +138,7 @@ div
 							],)
 					},
 					{
-					title: 'IMEI(设备识别码)',
+					title: this.$t('IMEI'),
 					key: 'IMEI',
 					width: 140,
 					},

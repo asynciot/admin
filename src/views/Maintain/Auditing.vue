@@ -16,7 +16,7 @@
 										Form-item(:label="$t('fault code')+':'" v-if="list.type == $t('fault')")|{{list.code}}
 										Form-item(:label="$t('base station')+':'")|{{list.cell_address}}
 										Form-item(:label="$t('install address')+':'")|{{list.install_addr}}
-										Form-item(:label="$t('submission time')+':'")|{{this.$format(parseInt(list.createTime), 'YYYY-MM-DD HH:mm:ss')}}
+										Form-item(:label="$t('submission time')+':'")|{{$format(parseInt(list.createTime), 'YYYY-MM-DD HH:mm:ss')}}
 				Col(span=10)
 					Card()
 						Row

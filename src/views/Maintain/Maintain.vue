@@ -101,7 +101,7 @@
 						width: 110,
 						key: 'device_name'
 					}, {
-						title: 'IMEI(设备识别码)',
+						title: this.$t('IMEI'),
 						width: 150,
 						key: 'IMEI',
 						sortable: true

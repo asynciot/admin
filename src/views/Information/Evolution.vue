@@ -64,7 +64,7 @@ export default {
 				align: 'center',
 				width: 110,
 			},{
-				title: 'IMEI(设备识别码)',
+				title: this.$t('IMEI'),
 				key: 'IMEI',
 				width: 140,
 				minWidth:140,

@@ -12,6 +12,15 @@
 	"Work Flow" : "Work Flow",
 	"faultdevices" : "Fault Devices",
 	"Firmware Update" : "Firmware Update",
+	"device name" : "Device Name",
+	"device type" : "Device Type",
+	"Maintenance Type" : "Maintenance Type",
+	"creator" : "Creator",
+	"fault code" : "Fault Code",
+	"state" : "State",
+	"install address" : "Install Address",
+	"create time" : "Create Time",
+	"handle" : "Handle",
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",
 	"E3" : "Bus under-voltage",
@@ -54,19 +63,12 @@
 	"E40" : "Drive protection fault",
 	"E41" : "Hoistway data check fault",
 	"E42" : "Door lock can't break failure",
-	"dE1" : "Input under-voltage",
-	"dE2" : "Output under-voltage",
-	"dE10" : "Switch door blocked",
-	"dE20" : "Galloping protection",
-	"dE40" : "Motor overload",
-	"dE80" : "Output over-current",
-	
-	
-	
-	
-	
-	
-	
+	"dE1" : "Switch door blocked",
+	"dE2" : "Galloping protection",
+	"dE10" : "Motor overload",
+	"dE20" : "Output over-current",
+	"dE40" : "Input under-voltage",
+	"dE80" : "Input over-voltage",
 	
     "refresh" : "Refresh",
     "array": [

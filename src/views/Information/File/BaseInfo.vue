@@ -250,7 +250,7 @@ export default {
 			addladder:this.global.functions.new_ladder,
 			columns: [
 			{
-				title: '设备类型',
+				title: this.$t('device type'),
 				key: 'typeId',
 				render: (h, params) => {
 					return h('p',type[params.row.typeId]||'')
@@ -287,8 +287,8 @@ export default {
 				this.total = res.data.data.totalNumber
 			} else {
 				this.$Notice.error({
-					title: '错误',
-					desc: '获取列表失败'
+					title: this.$t('error'),
+					desc: this.$t('Fail to gain elevator data')
 				});
 			}
 		},

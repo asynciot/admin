@@ -68,12 +68,12 @@
 			          key: 'device_name'
 			        },
 			        {
-			          title: 'IMEI(设备识别码)',
+			          title: this.$t('IMEI'),
 			          width:140,
 			          key: 'IMEI',
 			        },
 			        {
-					 title: 'IMSI(用户识别码)',
+					 title: this.$t('IMSI'),
 					 key: 'device_IMSI',
 					 width: 140,
 					},
