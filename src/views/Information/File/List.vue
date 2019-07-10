@@ -85,7 +85,7 @@
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
 				menu: [],
 				follow: [],
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				options: {
 					search_info: '',
 					device_type: '',

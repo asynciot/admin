@@ -47,7 +47,7 @@ export default {
 			time: '',
 			ladderApi: ladderApi,
 			loading: false,
-			username:window.localStorage.getItem('username'),
+			username:this.global.username,
 			form: {
 				password: '',
 				oldPassword: '',

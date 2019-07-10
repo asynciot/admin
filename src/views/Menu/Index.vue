@@ -121,11 +121,11 @@
 				followtotal:'',
 				table:'all',
 				userList:[],
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				list:[],
 				inform:[],
 				query:{
-					username:window.localStorage.getItem('username'),
+					username:this.global.username,
 					name:'',
 				},
 				ladList:[],

@@ -32,7 +32,7 @@ div.layout-content-main
 				loading:false,
 				form:{
 					name:'',
-					leader:window.localStorage.getItem("username"),
+					leader:this.global.username,
 					region:'',
 				},
 				rules: {

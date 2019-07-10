@@ -135,7 +135,7 @@
 				modal: false,
 				logo:'../assets/logo-menu.png',
 				modalType: 0,
-				username:window.localStorage.getItem('username'),
+				username:this.global.username,
 				info: {
 					nickname: '',
 					phone: ''
@@ -299,6 +299,9 @@
 			window.onresize = () =>{
 				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
 			}
+			window.addEventListener('beforeunload', e => {
+				window.localStorage.removeItem('username')
+			});
 		},
 		async beforeCreate(){
 			const val = await this.$api.people({
@@ -457,7 +460,8 @@
 						window.$cookie.delete('role')
 						window.localStorage.removeItem('id');
 						window.localStorage.removeItem('menu');
-						window.localStorage.removeItem('username');
+						// window.localStorage.removeItem('username');
+						this.global.username = ''
 						this.$router.replace({
 							name: 'login'
 						})

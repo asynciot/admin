@@ -126,7 +126,8 @@ export default {
 				if (valid) {
 					let res = await this.$api.login(this.form)
 					if (!res.data.code) {
-						window.localStorage.setItem('username',res.data.account.username)
+						this.global.username = res.data.account.username
+						window.localStorage.setItem('username',this.global.username)
 						window.localStorage.setItem('id',res.data.account.id)
 						window.localStorage.setItem('rem',this.rem)
 						window.localStorage.setItem('u',this.form.username)

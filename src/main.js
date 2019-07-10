@@ -58,7 +58,8 @@ Vue.prototype.$api = api
 Vue.prototype.$format = window.format
 Vue.prototype.$echarts = echarts
 router.beforeEach((to, from, next) => {
-	if(window.localStorage.getItem('username')||to.name=='login'||to.name=='register'){	
+	// console.log(this.global.usernmae)
+	if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
 		next()
 	}else {
 		next({name:'login'})
