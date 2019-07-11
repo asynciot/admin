@@ -14,7 +14,7 @@
 		Col(span="24" style="text-align:center;")
 			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page" on-change="pageChange",show-total)
 		el-dialog(:visible.sync="dislist" width="80%")
-			Table.bt-10(border,:columns="columns2",:data="list1",size="large" stripe)
+			Table.bt-10(border,:columns="columns2",:data="list1",size="large" stripe height="600")
 </template>
 
 <script>
@@ -189,7 +189,16 @@
 						title: '成功',
 						desc: '删除成功！'
 					});
-						this.getOrganize()
+					
+						this.loading = true
+
+							const res = await this.$api.readOrganize(this.query)
+							if(res.data.code == 0){
+								this.list = res.data.data.list
+								this.options.total = res.data.data.totalNumber
+							}
+						this.loading = false
+
 				}else{
 					this.$Notice.error({
 						title: '失败',
@@ -219,7 +228,7 @@
 			},
 			async getGroup(val){
 				const res = await this.$api.reLadder({
-					num:10,
+					num:1000,
 					page:1,
 					group_id:val,
 				})

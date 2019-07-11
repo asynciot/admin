@@ -21,6 +21,9 @@
 	"install address" : "Install Address",
 	"create time" : "Create Time",
 	"handle" : "Handle",
+	"success" : "Success",
+	"cancel" : "Cancel",
+	
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",
 	"E3" : "Bus under-voltage",

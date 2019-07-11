@@ -69,7 +69,7 @@
 	"maintain" : "保养",
 	"check" : "校检",
 	"install address" : "安装地址",
-	"install date" : "安装地址",
+	"install date" : "安装日期",
 	"device" : "设备",
 	"size" : "大小",
 	"Send to:" : "发送给：",
@@ -117,6 +117,7 @@
 	"try keyword within 15 bytes" : "关键词请不要超过15字",
 	"success" : "成功",
 	"error" : "错误",
+	"This device is in alert" : "该设备已经告警",
 	"start clear" : "开始清除",
 	"fail to clear" : "清除失败",
 	"fail to get list" : "清除失败",
@@ -635,6 +636,7 @@
 	"Edit elevator":"电梯编辑",
 	"Elevator Information":"电梯信息",
 	"Elevator Group":"电梯组",
+	"Elevator Group Name":"电梯组名",
 	"order auditing":"工单审核",
 	"dispatch auditing":"维保审核",
 	"Group":"群组",
@@ -725,8 +727,8 @@
 	
 	
 	"Create order":"创建工单",
-	"Other":"其他",
-	"Other":"其他",
+	"Group Creator":"群组创建人",
+	"Region":"所在区域",
 	"Other":"其他",
 	
     "refresh" : "刷新",

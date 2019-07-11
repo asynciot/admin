@@ -38,11 +38,11 @@
 								Table(border,:columns="columns1",:data="list",size="small" stripe)
 						Row
 							Col.ta(span="24")
-								Page(show-elevator :total="list.length",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
+								Page(show-elevator :total="total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 		el-dialog(:visible.sync="dislist")
 			Row(:gutter=5)
 				Col.list(span="24")|设备列表
-			Table(border,:columns="columns2",:data="list1",size="small" stripe)
+			Table(border,:columns="columns2",:data="list1",size="small" stripe height="600")
 </template>
 
 <script>
@@ -56,6 +56,8 @@
 				districtList: [],
 				loading:false,
 				IMEI:'',
+				total:'',
+				total2:'',
 				options:{
 					install_addr:'',
 					search_info:'',
@@ -66,7 +68,7 @@
 				},
 				query:{
 					group_id:this.$route.params.id,
-					num:10,
+					num:1000,
 					page:1,
 				},
 				form:{},
@@ -147,13 +149,16 @@
 				{
 					title: '电梯别名',
 					key: 'name',
+					// width:150,
 				},
 				{
 					title: '安装地址',
 					key: 'install_addr',
+					// width:350,
 				},
 				{
 					title: '操作',
+					// width:250,
 					key: 'IMEI',
 					render: (h, params) => {
 						return h('div', [
@@ -227,7 +232,7 @@
 				const res = await this.$api.reLadder(this.query)
 				if (res.data.code === 0) {
 					this.list1 = res.data.data.list
-					this.total = res.data.data.totalNumber
+					this.total2 = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
 						title: '错误',

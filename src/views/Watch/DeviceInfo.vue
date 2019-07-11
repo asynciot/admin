@@ -59,7 +59,12 @@
 								Form.status(label-position="left",:label-width="140")
 									Col(span="23")
 										Form-item(:label="$t('Monitoring Duration')+'(s):'")
-											input.iv(v-model='realtime.duration' ,:maxlength=4)
+											Select(v-model='realtime.duration')
+												Option(key="1" label="10" value='10')
+												Option(key="2" label="30" value='30')
+												Option(key="3" label="60" value='60')
+												Option(key="4" label="120" value='120')
+												Option(key="5" label="300" value='300')
 									Col(span="23" style="")
 										Form-item(:label="$t('Sampling Period')+'(ms):'")
 											Select(v-model='realtime.interval')
@@ -249,7 +254,7 @@
 					title: ' ',
 					key: 'IMEI',
 				}],
-				monitors:'',
+				monitors: true,
 				memory:'',
 			}
 		},

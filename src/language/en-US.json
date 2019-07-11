@@ -23,6 +23,8 @@
 	"handle" : "Handle",
 	"success" : "Success",
 	"cancel" : "Cancel",
+	"phone" : "Phone",
+	"phone number" : "Phone Number",
 	
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",

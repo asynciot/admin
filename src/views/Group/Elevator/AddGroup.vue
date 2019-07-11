@@ -8,11 +8,11 @@ div.layout-content-main
 							Form(ref="form",:model="form",:rules="rules",:label-width="100")
 								Row(:gutter="5")
 									Col(span="20",offset="2")
-										Form-item(label="电梯组名:")
+										Form-item(:label="$t('Elevator Group Name')")
 											Input(v-model="form.name")
-										Form-item(label="创建人:")
+										Form-item(:label="$t('Group Creator')")
 											Input(v-model="form.leader" disabled)
-										Form-item(label="所在区域",prop="location",data-toggle="distpicker")
+										Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
 											Cascader(:data="region" v-model="value2")
 										Form-item(label="电话:")
 											Input(v-model="form.mobile")
@@ -67,7 +67,7 @@ div.layout-content-main
 				this.form.region = this.value2[0]+','+this.value2[1]+','+this.value2[2]
 				console.log(this.form.region)
 				const res= await this.$api.newGroup(this.form)
-				if(res.data.data.code==0){
+				if(res.data.code==0){
 					this.loading = false
 					this.$Notice.success({
 						title: '成功',
