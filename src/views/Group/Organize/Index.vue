@@ -5,10 +5,10 @@
 				div(style="padding-bottom:5px")
 					Row(:gutter=5)
 						Col(span="19")
-							Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goOrganize()")|添加群组
+							Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goOrganize()")|{{$t('New')}} {{$t('Member Group')}}
 						Col(span="5")
 							Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,getOrganize()")
-							Input(v-model="query.number",placeholder="请输入搜索内容" style="width:75%;")
+							Input(v-model="query.number",:placeholder="$t('keyword')" style="width:75%;")
 		div(style="min-height:450px")
 			Table(:columns="columns",:data="list",size="small" stripe)
 		Col(span="24" style="text-align:center;")
@@ -37,19 +37,19 @@
 				list1:[],
 				loading:false,
 				columns: [{
-					title: '群号',
+					title: this.$t('Group ID'),
 					key: 'number',
 				},{
-					title: '组名',
+					title: this.$t('Group Name'),
 					key: 'name',
 				},{
-					title: '创建人',
+					title: this.$t('Leader'),
 					key: 'leader',
 				},{
-					title: '地址',
+					title: this.$t('Region'),
 					key: 'region',
 				},{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
 						return h('div', [
@@ -68,7 +68,7 @@
 										this.joinGroup(params.row.number)
 									}
 								}
-							}, '加入'),
+							}, this.$t('Join')),
 							h('Button', {
 								props: {
 									type: 'primary',
@@ -88,7 +88,7 @@
 										})
 									}
 								}
-							}, '编辑'),
+							}, this.$t('edit')),
 							h('Button', {
 								props: {
 									type: 'primary',
@@ -104,7 +104,7 @@
 										this.getGroup(params.row.organize_id)
 									}
 								}
-							}, '设备'),
+							}, this.$t('Device List')),
 							h('Button', {
 								props: {
 									type: 'error',
@@ -119,24 +119,24 @@
 										this.rmOrganize(params.row.id)
 									}
 								}
-							}, '删除'),
+							}, this.$t('delete')),
 						]);
 					}
 				}],
 				columns2: [{
-					title: '设备名称',
+					title: this.$t('device name'),
 					key: 'name',
 				},{
-					title: '地址',
+					title: this.$t('install address'),
 					key: 'install_addr',
 				},{
-					title: '控制柜',
+					title: this.$t('ctrl'),
 					key: 'ctrl',
 				},{
-					title: '门机',
+					title: this.$t('door'),
 					key: 'door1',
 				},{
-					title: '门机',
+					title: this.$t('door'),
 					key: 'door2',
 				},],
 			}

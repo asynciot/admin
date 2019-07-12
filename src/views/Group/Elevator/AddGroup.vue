@@ -14,12 +14,12 @@ div.layout-content-main
 											Input(v-model="form.leader" disabled)
 										Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
 											Cascader(:data="region" v-model="value2")
-										Form-item(label="电话:")
+										Form-item(:label="$t('phone number')")
 											Input(v-model="form.mobile")
 										Col(span="16")
-											Button.mr-10(type="success",icon="plus",@click="newGroup()" ,:loading="loading")|提交
+											Button.mr-10(type="success",icon="plus",@click="newGroup()" ,:loading="loading")|{{$t('OK')}}
 										Col(span="8")
-											Button(icon="close",@click="$router.back(-1)")|取消
+											Button(icon="close",@click="$router.back(-1)")|{{$t('cancel')}}
 </template>
 
 <script>
@@ -70,14 +70,14 @@ div.layout-content-main
 				if(res.data.code==0){
 					this.loading = false
 					this.$Notice.success({
-						title: '成功',
-						desc: '添加成功！'
+						title: this.$t('success'),
+						desc: ''
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-						title: '失败',
-						desc: '添加失败'
+						title: this.$t('error'),
+						desc: ''
 					});
 				}
 			},

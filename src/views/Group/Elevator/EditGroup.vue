@@ -7,20 +7,21 @@
 						Row
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
 								Col(span=22)
-									Form-item(label="电梯组名:" v-model="form.name")
+									Form-item(:label="$t('Elevator Group Name')" v-model="form.name")
 										Input(:value="form.name")
-									Form-item(label="创建人:" v-model="form.leader")
+									Form-item(:label="$t('Group Creator')" v-model="form.leader")
 										Input(:value="form.leader" disabled)
-									Form-item(label="所在区域",prop="location",data-toggle="distpicker")
+									Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
 										Cascader(:data="region" v-model="form.region")
-									Form-item(label="电话:" v-model="form.phone")
+									Form-item(:label="$t('phone number')" v-model="form.phone")
 										Input(:value="form.mobile")
 									Col.ta(span="8")
-										Button(type="success" @click="upGroup()" ,:loading="loading")|提交
+										Button(type="success" @click="upGroup()" ,:loading="loading")|{{$t('OK')}}
 									Col.ta(span="8")
-										Button(type="primary" @click="getList2(),dislist=true")|设备列表
+										Button(type="primary" @click="getList2(),dislist=true")|{{$t('Device List')}}
 									Col.ta(span="8")
-										Button(@click="$router.back(-1)")|取消
+										Button(@click="$router.back(-1)")|{{$t('cancel')}}
+
 				Col(span=15)
 					Card
 						Row
@@ -29,10 +30,10 @@
 									div
 										Row(:gutter=5)
 											Col(span="9" style="margin-bottom:5px")
-												Input(v-model="options.search_info",placeholder="请输入搜索内容" style="width:60%")
+												Input(v-model="options.search_info",:placeholder="$t('keyword')" style="width:60%")
 												Button.ml-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")
 											Col(span="9" style="margin-bottom:5px")
-												Input(v-model="options.install_addr",placeholder="请输入安装地址" style="width:60%")
+												Input(v-model="options.install_addr",:placeholder="$t('install address')" style="width:60%")
 												Button.ml-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")
 							div.minheight
 								Table(border,:columns="columns1",:data="list",size="small" stripe)
@@ -41,7 +42,7 @@
 								Page(show-elevator :total="total",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 		el-dialog(:visible.sync="dislist")
 			Row(:gutter=5)
-				Col.list(span="24")|设备列表
+				Col.list(span="24")|{{$t('Device List')}}
 			Table(border,:columns="columns2",:data="list1",size="small" stripe height="600")
 </template>
 
@@ -97,15 +98,15 @@
 				list1:[],
 				columns1: [
 				{
-					title: '电梯别名',
+					title: this.$t('Elevator Name'),
 					key: 'name',
 				},
 				{
-					title: '安装地址',
+					title: this.$t('install address'),
 					key: 'install_addr',
 				},
 				{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
 						return h('div', [
@@ -127,7 +128,7 @@
 										})
 									}
 								}
-							}, '查看'),
+							}, this.$t('watch')),
 							h('Button', {
 								props: {
 									type: 'success',
@@ -141,23 +142,23 @@
 										this.updateLadder(params.row.id)
 									}
 								}
-							}, '添加')
+							}, this.$t('New'))
 						]);
 					}
 				}],
 				columns2: [
 				{
-					title: '电梯别名',
+					title: this.$t('Elevator Name'),
 					key: 'name',
 					// width:150,
 				},
 				{
-					title: '安装地址',
+					title: this.$t('install address'),
 					key: 'install_addr',
 					// width:350,
 				},
 				{
-					title: '操作',
+					title: this.$t('handle'),
 					// width:250,
 					key: 'IMEI',
 					render: (h, params) => {
@@ -180,7 +181,7 @@
 										})
 									}
 								}
-							}, '查看'),
+							}, this.$t('watch')),
 							h('Button', {
 								props: {
 									type: 'error',
@@ -194,7 +195,7 @@
 										this.rmLadder(params.row.id)
 									}
 								}
-							}, '删除')
+							}, this.$t('delete'))
 						]);
 					}
 				}],
@@ -235,8 +236,8 @@
 					this.total2 = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
 					});
 				}
 			},
@@ -247,14 +248,14 @@
 				if (res.data.code == 0) {
 					this.loading = false
 					this.$Notice.success({
-						title: '成功',
-						desc: '添加成功！'
+						title: this.$t('success'),
+						desc: ''
 					});
 				}else{
 					this.loading = false
 					this.$Notice.error({
-					title: '失败',
-					desc: '添加失败'
+					title: this.$t('error'),
+					desc: ''
 					});
 				}
 			},
@@ -266,14 +267,14 @@
 				if (res.data.code == 0) {
 					this.loading = false
 					this.$Notice.success({
-						title: '成功',
-						desc: '添加成功！'
+						title: this.$t('success'),
+						desc: ''
 					});
 				}else{
 					this.loading = false
 					this.$Notice.error({
-					title: '失败',
-					desc: '添加失败'
+					title: this.$t('error'),
+					desc: ''
 					});
 				}
 			},
@@ -283,14 +284,14 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '删除成功！'
+						title: this.$t('success'),
+						desc: ''
 					});
 					this.getList2()
 				}else{
 					this.$Notice.error({
-					title: '失败',
-					desc: '删除失败'
+					title: this.$t('error'),
+					desc: ''
 					});
 				}
 			}

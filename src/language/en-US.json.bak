@@ -23,6 +23,12 @@
 	"handle" : "Handle",
 	"success" : "Success",
 	"cancel" : "Cancel",
+	"phone" : "Phone",
+	"phone number" : "Phone Number",
+	"install address" : "Install Address",
+	"handle" : "Handle",
+	"delete":"Delete",
+	"edit" : "Edit",
 	
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",

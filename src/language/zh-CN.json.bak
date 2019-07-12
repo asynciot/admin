@@ -176,6 +176,7 @@
 	"Fail to send notice" : "发送消息失败",
 	"send message successfully" : "成功发送消息",
 	"fail to get message" : "获取消息失败",
+	"Fail to get List" : "获取列表失败",
 	"fail to get treating progress" : "获取故障处理进程失败",
 	"phone" : "维保人员电话",
 	"phone number" : "联系电话",
@@ -624,6 +625,7 @@
 	"successfully bind":"成功上传",
 	"fail to upload":"上传失败",
 	"Device Binding":"设备绑定",
+	"Bind":"绑定",
 	"select":"选择",
 	"successfully bind,it will show in ladder list":"创建成功，可在电梯信息查看",
 	"fail to bind":"绑定失败",
@@ -725,12 +727,18 @@
 	"Not Detect if Closing Arrival When Start Operation":"启动运行不检测关门到位",
 	"Detect if Closing Arrival When Start Operation,Forbid Operation Unless Closing Arrival":"启动运行检测关门到位，关门不到位禁止电梯运行",
 	
-	
+	"Group Name":"组名",
 	"Create order":"创建工单",
 	"Group Creator":"群组创建人",
-	"Other":"其他",
-	"Other":"其他",
-	
+	"Region":"所在区域",
+	"Device List":"设备列表",
+	"Elevator Name":"电梯名称",
+	"New":"添加",
+	"Background":"背景",
+	"Leader":"负责人",
+	"Member List":"成员列表",
+	"Member":"成员",
+	"Group ID":"群号",
     "refresh" : "刷新",
     "array": [
         1,2,3,4

@@ -6,20 +6,20 @@
 					Card(style="margin-top:0px;height:550px")
 						Col(span=22)
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
-								Form-item(label="群组名:" v-model="form.name")
+								Form-item(:label="$t('Group Name')" v-model="form.name")
 									Input(:value="form.name")
-								Form-item(label="负责人:" v-model="form.leader")
+								Form-item(:label="$t('Leader')" v-model="form.leader")
 									Input(:value="form.leader" disabled)
-								Form-item(label="所在区域",prop="location",data-toggle="distpicker")
+								Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
 									Cascader(:data="region" v-model="value2")
 						Col(span=12)
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
 								Col(span=22)
-									Form-item(label="背景1:")
+									Form-item(:label="$t('Background')+'1'")
 										ColorPicker(v-model="color1")
-									Form-item(label="背景2:")
+									Form-item(:label="$t('Background')+'2'")
 										ColorPicker(v-model="color2")
-									Form-item(label="背景3:")
+									Form-item(:label="$t('Background')+'3'")
 										RadioGroup(v-model="color3")
 											Radio(label="light")
 											Radio(label="dark")
@@ -29,11 +29,11 @@
 								img(:src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 200px;height:150px")
 						Col(span=24)
 							Col.ta(span="8")
-								Button(type="success" @click="upOrganize()" ,:loading="loading")|提交
+								Button(type="success" @click="upOrganize()" ,:loading="loading")|{{$t('OK')}}
 							Col.ta(span="8")
-								Button(type="primary" @click="getList2(),dislist=true")|人员列表
+								Button(type="primary" @click="getList2(),dislist=true")|{{$t('Member List')}}
 							Col.ta(span="8")
-								Button(@click="$router.back(-1)")|取消
+								Button(@click="$router.back(-1)")|{{$t('cancel')}}
 
 				Col(span=15)
 					Card
@@ -43,7 +43,7 @@
 									div
 										Row(:gutter=5)
 											Col(span="9" style="margin-bottom:5px")
-												Input(v-model="options.search_info",placeholder="请输入搜索内容" style="width:60%")
+												Input(v-model="options.search_info",:placeholder="$t('keyword')" style="width:60%")
 												Button.ml-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")
 							div.minheight
 								Table(border,:columns="columns1",:data="list",size="small" stripe)
@@ -52,7 +52,7 @@
 								Page(show-elevator :total="list.length",:page-size="options.num",:current="options.page",@on-change="pageChange",show-total)
 		el-dialog(:visible.sync="dislist")
 			Row(:gutter=5)
-				Col.list(span="24")|人员列表
+				Col.list(span="24")|{{$t('Member List')}}
 			Table(border,:columns="columns2",:data="list1",size="small" stripe)
 </template>
 
@@ -112,15 +112,15 @@
 				list1:[],
 				columns1: [
 				{
-					title: '电梯组名',
+					title: this.$t('Group Name'),
 					key: 'name',
 				},
 				{
-					title: '安装地址',
+					title: this.$t('install aedress'),
 					key: 'region',
 				},
 				{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
 						return h('div', [
@@ -142,7 +142,7 @@
 										})
 									}
 								}
-							}, '查看'),
+							}, this.$t('watch')),
 							h('Button', {
 								props: {
 									type: 'success',
@@ -156,17 +156,17 @@
 										this.bindGroup(params.row.id)
 									}
 								}
-							}, '绑定')
+							}, this.$t('Bind'))
 						]);
 					}
 				}],
 				columns2: [
 				{
-					title: '成员',
+					title: this.$t('Member'),
 					key: 'username',
 				},
 				{
-					title: '操作',
+					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
 						return h('div', [
@@ -183,7 +183,7 @@
 										this.rmGroup(params.row.id)
 									}
 								}
-							}, '删除')
+							}, this.$t('delete'))
 						]);
 					}
 				}],

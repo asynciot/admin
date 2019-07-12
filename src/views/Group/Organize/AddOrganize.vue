@@ -8,16 +8,16 @@ div.layout-content-main
 							Form(ref="form",:model="form",:rules="rules",:label-width="100")
 								Row(:gutter="5")
 									Col(span="20",offset="2")
-										Form-item(label="组名:")
+										Form-item(:label="$t('Group Name')")
 											Input(v-model="form.name")
-										Form-item(label="负责人:")
+										Form-item(:label="$t('Leader')")
 											Input(v-model="form.leader" disabled)
-										Form-item(label="所在区域",prop="location",data-toggle="distpicker")
+										Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
 											Cascader(:data="region" v-model="value2")
 										Col(span="16")
-											Button.mr-10(type="success",icon="plus",@click="newOrganize()" ,:loading="loading")|提交
+											Button.mr-10(type="success",icon="plus",@click="newOrganize()" ,:loading="loading")|{{$t('OK')}}
 										Col(span="8")
-											Button(icon="close",@click="$router.back(-1)")|取消
+											Button(icon="close",@click="$router.back(-1)")|{{$t('cancel')}}
 </template>
 
 <script>
@@ -59,14 +59,14 @@ div.layout-content-main
 				if(res.data.code==0){
 					this.loading = false
 					this.$Notice.success({
-						title: '成功',
-						desc: '添加成功！'
+						title: $t('success'),
+						desc: ''
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-						title: '失败',
-						desc: '添加失败'
+						title: $t('error'),
+						desc: ''
 					});
 				}
 			},
