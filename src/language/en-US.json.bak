@@ -22,14 +22,15 @@
 	"create time" : "Create Time",
 	"handle" : "Handle",
 	"success" : "Success",
-	"cancel" : "Cancel",
+	"cancel" : "Dismiss",
 	"phone" : "Phone",
 	"phone number" : "Phone Number",
 	"install address" : "Install Address",
 	"handle" : "Handle",
 	"delete":"Delete",
 	"edit" : "Edit",
-	
+	"watch" : "Watch",
+
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",
 	"E3" : "Bus under-voltage",

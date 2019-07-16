@@ -5,7 +5,7 @@
 				Form.status(:model="show",label-position="left",:label-width="80")
 					Row(:gutter="16")
 						Col(span="4")
-							Form-item(label="创建人：")
+							Form-item(:label="$t('creator')")
 								p()
 						Col(span="5")
 							Form-item(label="创建时间：")
@@ -21,51 +21,51 @@
 			Row.mb-10(:gutter="8")
 				Col.padding(span="8")
 					Card.card
-						p.clearfix(slot="title")|基础信息
-						Form.status(:model="show",label-position="left",:label-width="80")
+						p.clearfix(slot="title")|{{$t('Basic Information')}}
+						Form.status(:model="show",label-position="left",:label-width="100")
 							Row(:gutter="16")
 								Col(span="12")
-									Form-item(label="运行状态：",:label-width="90")
-										p(v-text="show.run ? '运行':'停车'")
+									Form-item(:label="$t('Operation State')+'：'")
+										p(v-text="show.run ? $t('Operating'):$t('Parking')")
 								Col(span="10")
-									Form-item(label="门锁信号：",:label-width="100")
-										p(v-text="show.lock ? '通':'断'")
+									Form-item(:label="$t('Door Lock Signal')+'：'",:label-width="100")
+										p(v-text="show.lock ? $t('Open'):$t('Close')")
 							Row(:gutter="16")
 								Col(span="12")
-									Form-item(label="开门信号：")
-										p(v-text="show.open ? '动作':'不动作'")
+									Form-item(:label="$t('Close Door Signal')+'：'")
+										p(v-text="show.close ? $t('Active'):$t('Inactive')")
 								Col(span="12")
-									Form-item(label="关门信号：")
-										p(v-text="show.close ? '动作':'不动作'")
-								
+									Form-item(:label="$t('Close Door Button Signal')+'：'",:label-width="100")
+										p(v-text="show.closeBtn ? $t('Existing'):$t('None')")
 							Row(:gutter="16")
 								Col(span="12")
-									Form-item(label="开门按钮信号：",:label-width="100")
-										p(v-text="show.openBtn ? '有':'无'")
-								Col(span="12")
-									Form-item(label="关门按钮信号：",:label-width="100")
-										p(v-text="show.closeBtn ? '有':'无'")
-							Row(:gutter="16")
-								Col(span="12")
-									Form-item(label="电梯模式：")
+									Form-item(:label="$t('Elevator Mode')+'：'")
 										p(v-text="parseModel(show)")
-								Col(span="12")
-									Form-item(label="状态：")
+								Col(span="10")
+									Form-item(:label="$t('Open Door Button Signal')+'：'",:label-width="100")
+										p(v-text="show.openBtn ? $t('Existing'):$t('None')")
+							Row(:gutter="16")
+								Col(span="24")
+									Form-item(:label="$t('Devices State')+'：'")
 										p(v-text="parseStatus(show)")
-								Col(span="12")
-									Form-item(label="上运方向行信号：",:label-width="120")
-										p(v-text="show.upCall ? '有':'无'")
-								Col(span="12")
-									Form-item(label="下运方向行信号：",:label-width="120")
-										p(v-text="show.downCall ? '有':'无'")
-								Col(span="12")
-									Form-item(label="开始时间：")
-										p(v-text="formatDate(this.t_start, 'HH:mm:ss')")
-								Col(span="12")
-									Form-item(label="结束时间：")
-										p(v-text="formatDate(this.t_end, 'HH:mm:ss')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('Upward Direction Signal')+'：'",:label-width="100")
+										p(v-text="show.upCall ? $t('Existing'):$t('None')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('Downward Direction Signal')+'：'",:label-width="100")
+										p(v-text="show.downCall ? $t('Existing'):$t('None')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('start time')+'：'")
+										p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('end time')+'：'")
+										p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
 					Card.card.animate
-						p(slot="title")|控制柜
+						p(slot="title")|{{$t('ctrl')}}
 						div.doors
 							div.outer
 								div.inner
@@ -83,15 +83,15 @@
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
 						Card(style="margin-bottom:10px")
-							p.drag(slot="title")|运行信号
+							p.drag(slot="title")|{{$t('Operating Signal')}}
 							div.ss(id="run" draggable=false)
 						Card(style="margin-bottom:10px")
-							p.drag(slot="title")|门锁信号
+							p.drag(slot="title")|{{$t('Door Lock Signal')}}
 							div.ss(id="lock" draggable=false)
 						Card(style="margin-bottom:10px")
-							p.drag(slot="title")|关门信号
+							p.drag(slot="title")|{{$t('Close Door Signal')}}
 							div.ss(id="close" draggable=false)
-						div(style="color:#f00")|注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.
+						div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
 </template>
 <script>
 	import echarts from 'echarts'

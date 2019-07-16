@@ -739,7 +739,24 @@
 	"Member List":"成员列表",
 	"Member":"成员",
 	"Group ID":"群号",
+	"Operating":"运行",
+	"Parking":"停车",
+	"Door Lock Signal":"门锁信号",
+	"Close Door Signal":"关门信号",
+	"Active":"动作",
+	"Inactive":"无动作",
+	"Close Door Button Signal":"关门按钮信号",
+	"Open Door Button Signal":"开门按钮信号",
+	"None":"无",
+	"Existing":"有",
+	"Elevator Mode":"电梯模式",
+	"Upward Direction Signal":"上运方向信号",
+	"Downward Direction Signal":"下运方向信号",
+	"Operating Signal":"运行信号",
+	"Note:Can not try again when monitoring end until 1 minute ago.":"注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.",
 	"Join":"加入",
+	
+	
     "refresh" : "刷新",
     "array": [
         1,2,3,4

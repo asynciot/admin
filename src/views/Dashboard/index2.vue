@@ -2,7 +2,7 @@
 	<div class="wrapper layout-content-main account" style="padding:0px;overflow-y: scroll;padding-left: 10px;" id="lay">
 		<Row :gutter='20' style="padding-top: 20px;margin-left: 35px;">
 			<Col span="6" style="color:#fff">
-				<div style="height:320px;width:100%;text-align: center;font-family:'楷体'">
+				<div style="height:270px;width:100%;text-align: center;font-family:'楷体'">
 					<h2 style="font-size:30px;text-align: left;font-family:'楷体'">今天    {{time}}</h2>
 					<div style="font-size:20px">
 						<Col span="24" style="font-size:larger;text-align: left;">总设备数：{{alldevice}}</Col>
@@ -20,15 +20,29 @@
 						</Col>
 					</div>
 				</div>
-				<div class="box10">
-					<h1>厂家保留</h1>   
-					<p style="font-size:16px">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-					</p>
-					<br />
+				<div class="box10" style="height:570px">
+					<p style="text-align: center;font-size:15px">最容易掉线的设备</p>
+					<Col span='12' style="margin-top:5px">
+					<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" v-model="starttime" style='color:#000' @on-change="getoffline()"></DatePicker>
+					</Col>
+					<Col span='12' style="margin-top:5px">
+					<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="endtime" style='color:#000' @on-change="getoffline()"></DatePicker>
+					</Col>
+					<Col span='24' style="margin-top:5px">
+						<table border='1' style="border-color: #fff;width:100%;text-align: center;">
+							<tr style="width:100%;height:16px;font-size:12px;"><td style="width:20%;border: 1px solid #0094ff;">设备名称</td><td style="border: 1px solid #0094ff;">掉线时间</td></tr>
+							<tr style="width:100%;height:16px;font-size:12px;" v-for="item in data">
+								<td style="border: 1px solid #0094ff;">{{item.device_name}}</td>
+								<td style="border: 1px solid #0094ff;">
+									<div style="background:#0000EE;height:20px;width:335px">
+										<div style="width:2px;background:rgba(255,80,0,0.33);height:20px;position:absolute;" :style="'margin-left:'+single.left+'px'" v-for="single in item.singlelist"></div>
+									</div>
+								</td>
+							</tr>
+						</table>
+						<div v-for="item in day" style="position:absolute;" :style="'margin-left:'+item.left+'%'">{{item.value}}</div>
+						<Col span='4'>&nbsp;</Col>
+					</Col>
 				</div>
 
 			</Col>
@@ -45,7 +59,7 @@
 					</table>
 				</Col>
 				<Col span="24" style="height:50px">
-				<div class="box10" style="height:50px">
+				<div class="box10" style="height:50px;color:#5E5A09">
 					<h1>最新工单</h1>
 						<p>设备名称：HPC181-202</p>
 						<p>故障类型：E16层站召唤通讯故障</p>
@@ -108,29 +122,69 @@
 				shine:true,
 				barword:'',
 				todo:[],
+				day:1,
 				chatlist:[],
-				swiperOption:{
-					autoplay:true,
-					delay:20000,
-					notNextTick:true,
-					direction:'horizontal',
-					grabCursor:true,
-					setWrapperSize:true,
-					autoHerght:true,
-					slidesPerView: 1,
-					mousewheel:true,
-					mousewheelControl:true,
-					height:window.innerHeight,
-					resistanceRatio:0,
-					observeParents:true,
-					observer:true,//修改swiper自己或子元素时，自动初始化swiper
-					allowTouchMove: false,
-					navigation: {
-						prevEl: '.swiper-button-prev',
-						nextEl: '.swiper-button-next',
+				columns: [
+					{
+						title: this.$t('device name'),
+						key: 'device_name',
+						width: 110,
+						align: 'center',
+						render: (h, params) =>
+							h('div',[
+								h('Button', {
+									props: {
+										type: 'text',
+										size: "small",
+									},
+									on: {
+										click: () => {
+											this.singleoffline(params.row.id)
+										}
+									}
+								}, params.row.device_name)
+							],)
+						
 					},
-				},
+					{
+						title: this.$t('IMEI'),
+						key: 'imei',
+						width: 148,
+						align: 'center',
+						render: (h, params) =>
+							h('div',[
+								h('Button', {
+									props: {
+										type: 'text',
+										size: "small",
+									},
+									on: {
+										click: () => {
+											this.$router.push({
+												name: 'deviceInfo',
+												params: {
+													id: '',
+													IMEI: params.row.imei,
+													type: '',
+												}
+											})
+										}
+									}
+								}, params.row.imei)
+							],)
+					},
+					{
+						title: '断线次数',
+						key: 'counter',
+						width: 148,
+					},
+
+				],
 				data:[],
+				starttime:'',
+				endtime:'',
+				first:'',
+				last:'',
 				area:[],
 				LastWeek:'',
 				LastWeekend:'',
@@ -222,6 +276,10 @@
 			var _this=this
 			$(window).resize(function(){
 			});
+			this.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
+			this.endtime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
+
+			this.getoffline()
 
 		},
 		methods: {
@@ -230,6 +288,45 @@
 					this.time=this.$format(new Date(),'YYYY-MM-DD HH:mm:ss')
 					this.showtime()
 				}, 1000)
+			},
+			async getoffline(){			
+				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:20,page:1})
+				if (off.data.code == 0) {
+					this.data=off.data.list
+					for (var i=0;i<this.data.length;i++){
+						this.singleoffline(this.data[i].id,i)
+					}
+					this.day=[]
+					var day=parseInt((Date.parse(this.endtime)-Date.parse(this.starttime))/86400000)+1
+					if (day==1) {
+						day=8
+						for (var i=0;i<day;i++){
+							this.day.push({value:((3*i)+':00'),left:(i*10)+17})
+						}
+						this.day.push({value:'0:00',left:96})
+					}
+					else{
+						for (var i=0;i<day;i++){
+							this.day.push({value:(i+1)+'day',left:(i*80/day)+17})
+						}
+					}
+				}
+			},
+			async singleoffline(val,val2){
+				let off = await this.$api.singleoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),id:val})
+				var singlelist=[]
+				if (off.data.code == 0) {
+					singlelist=off.data.list
+					this.last=this.$format(new Date(singlelist[0].t_logout),'YYYY-MM-DD HH:mm:ss')
+					this.first=this.$format(new Date(singlelist[singlelist.length-1].t_logout),'YYYY-MM-DD HH:mm:ss')
+					var left=Date.parse(this.starttime)
+					var right=Date.parse(this.endtime)-Date.parse(this.starttime)+86400000
+					singlelist.forEach(item=>{
+						item.left=parseInt((item.t_logout-left)*332/right)
+					})
+					// alert(typeof(this.singlelist[0].t_logout))
+				}
+				this.data[val2].singlelist=singlelist
 			},
 			async getinfo(){
 				var res
