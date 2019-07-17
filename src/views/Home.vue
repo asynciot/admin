@@ -298,10 +298,13 @@
 		mounted(){
 			window.onresize = () =>{
 				document.getElementById('layout').style.width=document.documentElement.clientWidth+'px'
-			}
+			};
+			const logout = new Date().getTime()
+			window.localStorage.setItem('logout',logout)
 			window.addEventListener('beforeunload', e => {
 				window.localStorage.removeItem('username')
 			});
+			
 		},
 		async beforeCreate(){
 			const val = await this.$api.people({

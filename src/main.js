@@ -58,11 +58,16 @@ Vue.prototype.$api = api
 Vue.prototype.$format = window.format
 Vue.prototype.$echarts = echarts
 router.beforeEach((to, from, next) => {
-	// console.log(this.global.usernmae)
-	if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
+	const logon = new Date().getTime()
+	const logout = window.localStorage.getItem("logout")
+	if(logon-logout<5000){
 		next()
-	}else {
-		next({name:'login'})
+	}else{
+		if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
+			next()
+		}else {
+			next({name:'login'})
+		}
 	}
 })
 /* eslint-disable no-new */
