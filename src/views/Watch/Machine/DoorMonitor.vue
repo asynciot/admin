@@ -5,96 +5,97 @@
 				Form.status(:model="show",label-position="left",:label-width="80")
 					Row(:gutter="16")
 						Col(span="4")
-							Form-item(label="创建人：")
+							Form-item(:label="$t('creator')")
 								p()
 						Col(span="5")
-							Form-item(label="创建时间：")
+							Form-item(:label="$t('creator')")
 								p()
 						Col(span="5")
-							Form-item(label="在线人数：")|{{pernum}}
+							Form-item(:label="$t('Online Peaple')")|{{pernum}}
 						Col(span="5")
 							div()|{{loading}}
 						Col(span="4")
-							Button.mr-10(type="default" @click="modal1 = true")|终止当前数据
-							Modal(v-model="modal1" title="警告"  @on-ok="closed")
-								p()|你确定要终止此次实时数据么？
+							Button.mr-10(type="default" @click="modal1 = true")|{{$t('Stop')}}
+							Modal(v-model="modal1", :title="$t('warning')"  @on-ok="closed")
+								p()|{{$t('Stop this monitoring?')}}		
 			Row.mb-10(:gutter="8")
-				Col.padding(span="8")
-					Card.card
-						p.clearfix(slot="title")|基础信息
-						Form.status(:model="show",label-position="left",:label-width="80")
-							Row(:gutter="16")
-								Col(span="10")
-									Form-item(label="门坐标：")
-										p(v-text="show.position ? show.position : '无'")
-								Col(span="12")
-									Form-item(label="门电流：")
-										p(v-text="isNaN(show.current) ? '无' : `${show.current} A`")
-							Row(:gutter="16")
-								Col(span="10")
-									Form-item(label="开门信号：")
-										p(v-text="show.openIn ? '开' : '关'")
-								Col(span="10")
-									Form-item(label="关门信号：")
-										p(v-text="show.closeIn ? '开' : '关'")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(label="门状态：")
-										p(v-text="parseStatus(show)")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(label="开到位输出信号：",:label-width="120")
-										p(v-text="show.openToOut ? '开' : '关'")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(label="关到位输出信号：",:label-width="120")
-										p(v-text="show.closeToOut ? '开' : '关'")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(label="开始时间：",:label-width="75")
-										p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(label="结束时间：",:label-width="75")
-										p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(label="报警：",:label-width="75")
-										p(v-text="alertName(show)")
-					Card.card.animate
-						p(slot="title")
-							div.shaft()
-								section
-									div
-								section.noborder
-									div
-								p
-								div.shaftinfo
-									p|关到位输入
-										i.signal(:class="show.closeTo?'ready':''")
-									p|开到位输入
-										i.signal(:class="show.openTo?'ready':''")
-							div.realdoors()
-								div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
-								section.doorstitle
-									div(:class="show.door?'screen':''")
-									p|光幕信号
-								div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
-				Col(span=16)
-					draggable(:options="{animation: 60,handle:'.drag'}")
-						Card(style="margin-top:5px")
-							p.drag(slot="title")|开关门信号 {{this.interval}} ms
-							div.ss(id="openIn" draggable=false)
-						Card(style="margin-top:5px")
-							p.drag(slot="title")|开关门到位信号
-							div.ss(id="closeIn" draggable=false)
-						Card(style="margin-top:5px")
-							p.drag(slot="title" )|门电流
-							div.ss1(id="current" draggable=false)
-						Card(style="margin-top:5px")
-							p.drag(slot="title")|门速度 m/s
-							div.ss1(id="speed" draggable=false)
-						div(style="color:#f00")|注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.
+				Col.padding(span=8)
+				Card.card
+					p.clearfix(slot="title")|{{$t('Basic Information')}}
+					Form.status(:model="show",label-position="left",:label-width="100")
+						Row(:gutter="16")
+							Col(span="10")
+								Form-item(:label="$t('Door Coordinate')+'：'")
+									p(v-text="show.position ? show.position : $t('None')")
+									p(v-text="show.run ? $t('Operating'):$t('Parking')")
+							Col(span="12")
+								Form-item(:label="$t('Door Current')+'：'")
+									p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
+						Row(:gutter="16")
+							Col(span="10")
+								Form-item(:label="$t('Open Door Signal')+'：'")
+									p(v-text="show.openIn ? $t('Active'):$t('Inactive')")
+							Col(span="10")
+								Form-item(:label="$t('Close Door Signal')+'：'")
+									p(v-text="show.closeIn ? $t('Active'):$t('Inactive')")
+						Row(:gutter="16")
+							Col(span="22")
+								Form-item(:label="$t('Devices State')+'：'")
+									p(v-text="parseStatus(show)")
+						Row(:gutter="16")
+							Col(span="22")
+								Form-item(:label="$t('Opening Arrival Output')+'：'",:label-width="100")
+									p(v-text="show.openToOut ? $t('Active') : $t('Inactive')")
+						Row(:gutter="16")
+							Col(span="22")
+								Form-item(:label="$t('Closing Arrival Output')+'：'",:label-width="100")
+									p(v-text="show.closeToOut ? $t('Active') : $t('Inactive')")
+						Row(:gutter="16")
+							Col(span="22")
+								Form-item(:label="$t('start time')+'：'")
+									p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
+						Row(:gutter="16")
+							Col(span="22")
+								Form-item(:label="$t('end time')+'：'")
+									p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
+						Row(:gutter="16")
+							Col(span="22")
+								Form-item(:label="$t('Alert')+'：'")
+									p(v-text="alertName(show)")
+				Card.card.animate
+					p(slot="title")
+						div.shaft()
+							section
+								div
+							section.noborder
+								div
+							p
+							div.shaftinfo
+								p|{{$t('Closing Arrival Input')}}
+									i.signal(:class="show.closeTo?'ready':''")
+								p|{{$t('Opening Arrival Input')}}
+									i.signal(:class="show.openTo?'ready':''")
+						div.realdoors()
+							div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
+							section.doorstitle
+								div(:class="show.door?'screen':''")
+								p|{{$t('Light Curtain Signal')}}
+							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
+			Col(span=16)
+				draggable(:options="{animation: 60,handle:'.drag'}")
+					Card(style="margin-bottom:10px" )
+						p.drag(slot="title")|{{$t('Switching Door Signal')}} {{this.interval}} ms
+						div.ss(id="openIn" draggable=false)
+					Card(style="margin-bottom:10px")
+						p.drag(slot="title")|{{$t('Switch Door Arrival Signal')}}
+						div.ss(id="closeIn" draggable=false)
+					Card(style="margin-bottom:10px")
+						p.drag(slot="title")|{{$t('Door Current')}}
+						div.ss1(id="current" draggable=false)
+					Card(style="margin-bottom:10px")
+						p(slot="title")|{{$t('Door Speed')}} m/s
+						div.ss1(id="speed" draggable=false)
+						div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
 </template>
 <script>
 	import echarts from 'echarts'
@@ -113,7 +114,7 @@
 	export default {
 		data () {
 			return {
-				loading:"连接设备中,请耐心等待",
+				loading:this.$t('Please wait patiently in connection equipment'),
 				count: 0,
 				pernum: 0,
 				doorWidth:4096,
@@ -191,7 +192,7 @@
 					}
 				}
 				let res = await this.$api.monitor(this.query);
-				if (res.data.code == 670) {alert("该电梯已被其他人启动实时监控")}
+				if (res.data.code == 670) {alert(this.$t('The elevator has been monitored by others'))}
 				this.person();
 				if((res.data.code == 0)||(res.data.code == 670)){
 					let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.id+'&userId='+window.localStorage.getItem('id')
@@ -202,21 +203,23 @@
 					this.websock.onmessage = this.websocketonmessage;
 				}
 				else {
-					this.loading="连接失败"
+					this.loading=this.$t('Connection failed')
 				}
 			}, 
 			websocketonopen() {
-				this.loading='WebSocket连接成功，请等待数据'
+				console.log("WebSocket连接成功");
+				this.loading=this.$t('WebSocket connection successful,please wait for data')
 			},
 			websocketonerror(e) { //错误
+				console.log(this.id)
 				console.log("WebSocket连接发生错误");
-				this.loading='WebSocket连接发生错误'
+				this.loading=this.$t('WebSocket connection failed')
 			},
 			websocketonmessage(e){ //数据接收
-			this.loading='获取数据中'
+			this.loading=this.$t('Getting data')
 				if(e.data=="closed"){
 					if(this.openIn<=15)
-						this.loading="此次实时数据已结束"
+						this.loading=this.$t('The monitoring data is over')
 				}else{
 					var redata = JSON.parse(e.data)	
 					this.getData(redata)
@@ -239,7 +242,7 @@
 					threshold: threshold,
 					interval: interval,
 				});
-				this.loading="此次实时数据已结束"
+				this.loading=this.$t('The monitoring data is over')
 			},
 			websocketclosed(){
 			},
@@ -323,7 +326,7 @@
 							trigger: 'axis'
 						},
 						legend: {
-							data:['开门信号', '关门信号']
+							data:[this.$t('Open Door Signal'), this.$t('Close Door Signal')]
 						},
 						grid: {
 							left: '3%',
@@ -338,12 +341,12 @@
 							data:[0,1]
 						},
 						series: [{
-							name:'开门信号',
+							name:this.$t('Open Door Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.openIn
 						},{
-							name:'关门信号',
+							name:this.$t('Close Door Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.closeIn
@@ -354,7 +357,7 @@
 							trigger: 'axis'
 						},
 						legend: {
-							data:['开门到位信号', '关门到位信号']
+							data:[this.$t('Open Door Arrival Signal'), this.$t('Close Door Arrival Signal')]
 						},
 						grid: {					
 							left: '3%',
@@ -369,12 +372,12 @@
 							data:[0,1]
 						},
 						series: [{
-							name:'开门到位信号',
+							name:this.$t('Open Door Arrival Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.openTo
 						},{
-							name:'关门到位信号',
+							name:this.$t('Close Door Arrival Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.closeTo
@@ -434,50 +437,50 @@
 			},
 			//状态
 			parseStatus(event) {
-				let statusName = '无';
+				let statusName = this.$t('None');
 				if (event.openKeep) {
-					statusName = '开门到位维持';
+					statusName = this.$t('Open Door Arrival Holding');
 				}
 				if (event.closeKeep) {
-					statusName = '关门到位维持';
+					statusName = this.$t('Close Door Arrival Holding');
 				}
 				if (event.open) {
-					statusName = '正在开门';
+					statusName = this.$t('Opening the Door');
 				}
 				if (event.close) {
-					statusName = '正在关门';
+					statusName = this.$t('Closing the Door');
 				}
 				if (event.stop) {
-					statusName = '停止输出';
+					statusName = this.$t('Stop Output');
 				}
 				return statusName
 			},
 			//报警状态
 			alertName(event) {
 				if (event.isLoss) {
-					return '无';
+					return this.$t('None');
 				}
 				let str = '';
 				if (event.inHigh) {
-					str += ' 输入电压过高 ';
+					str += this.$t('dE80')+' ';
 				}
 				if (event.inLow) {
-					str += ' 输入电压过低 ';
+					str += this.$t('dE40')+' ';
 				}
 				if (event.outHigh) {
-					str += ' 输出过流 ';
+					str += this.$t('dE20')+' ';
 				}
 				if (event.motorHigh) {
-					str += ' 电机过载 ';
+					str += this.$t('dE10')+' ';
 				}
 				if (event.flySafe) {
-					str += ' 飞车保护 ';
+					str += this.$t('dE2')+' ';
 				}
 				if (event.closeStop) {
-					str += ' 开关门受阻 ';
+					str += this.$t('dE1')+' ';
 				}
 				if (str === '') {
-					str = '运行正常';
+					str = this.$t('Normal Operation');
 				}
 				return str;
 			},

@@ -70,13 +70,13 @@ div.layout-content-main
 						p.drag(slot="title")|{{$t('Switching Door Signal')}} {{this.interval}} ms
 						div.ss(id="openIn" draggable=false)
 					Card(style="margin-bottom:10px")
-						p.drag(slot="title")|{{$t('Switching Door Arrival Signal')}}
+						p.drag(slot="title")|{{$t('Switch Door Arrival Signal')}}
 						div.ss(id="closeIn")
 					Card(style="margin-bottom:10px")
 						p.drag(slot="title")|{{$t('Door Current')}}
 						div.ss1(id="current")
 					Card(style="margin-bottom:10px")
-						p(slot="title")|门速度 m/s
+						p(slot="title")|{{$t('Door Speed')}} m/s
 						div.ss1(id="speed")
 </template>
 <script>
@@ -204,7 +204,7 @@ div.layout-content-main
 						trigger: 'axis'
 					},
 					legend: {
-						data:['开门信号', '关门信号']
+						data:[this.$t('Open Door Signal'), this.$t('Close Door Signal')]
 					},
 					grid: {
 						left: '3%',
@@ -225,12 +225,12 @@ div.layout-content-main
 						type: 'inside'
 					}],
 					series: [{
-						name:'开门信号',
+						name:this.$t('Open Door Signal'),
 						type:'line',
 						step: 'start',
 						data:this.event.openIn
 					},{
-						name:'关门信号',
+						name:this.$t('Close Door Signal'),
 						type:'line',
 						step: 'start',
 						data:this.event.closeIn
@@ -241,7 +241,7 @@ div.layout-content-main
 						trigger: 'axis'
 					},
 					legend: {
-						data:['开门到位信号', '关门到位信号']
+						data:[this.$t('Open Door Arrival Signal'), this.$t('Close Door Arrival Signal')]
 					},
 					grid: {					
 						left: '3%',
@@ -262,12 +262,12 @@ div.layout-content-main
 						type: 'inside'
 					}],
 					series: [{
-						name:'开门到位信号',
+						name:this.$t('Open Door Arrival Signal'),
 						type:'line',
 						step: 'start',
 						data:this.event.openTo
 					},{
-						name:'关门到位信号',
+						name:this.$t('Close Door Arrival Signal'),
 						type:'line',
 						step: 'start',
 						data:this.event.closeTo
@@ -424,50 +424,50 @@ div.layout-content-main
 			},
 			//状态
 			parseStatus(event) {
-				let statusName = '无';
+				let statusName = this.$t('None');
 				if (event.openKeep) {
-					statusName = '开门到位维持';
+					statusName = this.$t('Open Door Arrival Holding');
 				}
 				if (event.closeKeep) {
-					statusName = '关门到位维持';
+					statusName = this.$t('Close Door Arrival Holding');
 				}
 				if (event.open) {
-					statusName = '正在开门';
+					statusName = this.$t('Opening the Door');
 				}
 				if (event.close) {
-					statusName = '正在关门';
+					statusName = this.$t('Closing the Door');
 				}
 				if (event.stop) {
-					statusName = '停止输出';
+					statusName = this.$t('Stop Output');
 				}
 				return statusName
 			},
 			//报警状态
 			alertName(event) {
 				if (event.isLoss) {
-					return '无';
+					return this.$t('None');
 				}
 				let str = '';
 				if (event.inHigh) {
-					str += ' 输入电压过高 ';
+					str += this.$t('dE80')+' ';
 				}
 				if (event.inLow) {
-					str += ' 输入电压过低 ';
+					str += this.$t('dE40')+' ';
 				}
 				if (event.outHigh) {
-					str += ' 输出过流 ';
+					str += this.$t('dE20')+' ';
 				}
 				if (event.motorHigh) {
-					str += ' 电机过载 ';
+					str += this.$t('dE10')+' ';
 				}
 				if (event.flySafe) {
-					str += ' 飞车保护 ';
+					str += this.$t('dE2')+' ';
 				}
 				if (event.closeStop) {
-					str += ' 开关门受阻 ';
+					str += this.$t('dE1')+' ';
 				}
 				if (str === '') {
-					str = '运行正常';
+					str = this.$t('Normal Operation');
 				}
 				return str;
 			},

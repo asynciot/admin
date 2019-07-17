@@ -266,7 +266,7 @@
 					threshold: threshold,
 					interval: interval,
 				});
-				this.loading=this.$t('The monitoring data is over')
+				this.loading=this.$t('Getting data')
 			},
 			//电梯数据展示
 			getData(val) {
