@@ -26,7 +26,8 @@
 			getPdfInfo () {
 				// let name = this.pdf
 				let src = '../../../static/Instructions.pdf'
-				this.src = src
+				// this.src = src
+				this.src = 'http://server.asynciot.com/getfile?filePath=portrait/Instructions.pdf'
 			}
 		}
 	}

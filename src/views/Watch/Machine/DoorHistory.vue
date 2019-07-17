@@ -4,45 +4,46 @@ div.layout-content-main
 		Row.mb-10(:gutter="8")
 			Col.padding(span=8)
 				Card.card
-					p.clearfix(slot="title")|基础信息
-					Form.status(:model="show",label-position="left",:label-width="80")
+					p.clearfix(slot="title")|{{$t('Basic Information')}}
+					Form.status(:model="show",label-position="left",:label-width="100")
 						Row(:gutter="16")
 							Col(span="10")
-								Form-item(label="门坐标：")
-									p(v-text="show.position ? show.position : '无'")
+								Form-item(:label="$t('Door Coordinate')+'：'")
+									p(v-text="show.position ? show.position : $t('None')")
+									p(v-text="show.run ? $t('Operating'):$t('Parking')")
 							Col(span="12")
-								Form-item(label="门电流：")
-									p(v-text="isNaN(show.current) ? '无' : `${show.current} A`")
+								Form-item(:label="$t('Door Current')+'：'")
+									p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
 						Row(:gutter="16")
 							Col(span="10")
-								Form-item(label="开门信号：")
-									p(v-text="show.openIn ? '开' : '关'")
+								Form-item(:label="$t('Open Door Signal')+'：'")
+									p(v-text="show.openIn ? $t('Active'):$t('Inactive')")
 							Col(span="10")
-								Form-item(label="关门信号：")
-									p(v-text="show.closeIn ? '开' : '关'")
+								Form-item(:label="$t('Close Door Signal')+'：'")
+									p(v-text="show.closeIn ? $t('Active'):$t('Inactive')")
 						Row(:gutter="16")
 							Col(span="22")
-								Form-item(label="门状态：")
+								Form-item(:label="$t('Devices State')+'：'")
 									p(v-text="parseStatus(show)")
 						Row(:gutter="16")
 							Col(span="22")
-								Form-item(label="开到位输出信号：",:label-width="120")
-									p(v-text="show.openToOut ? '开' : '关'")
+								Form-item(:label="$t('Opening Arrival Output')+'：'",:label-width="100")
+									p(v-text="show.openToOut ? $t('Active') : $t('Inactive')")
 						Row(:gutter="16")
 							Col(span="22")
-								Form-item(label="关到位输出信号：",:label-width="120")
-									p(v-text="show.closeToOut ? '开' : '关'")
+								Form-item(:label="$t('Closing Arrival Output')+'：'",:label-width="100")
+									p(v-text="show.closeToOut ? $t('Active') : $t('Inactive')")
 						Row(:gutter="16")
 							Col(span="22")
-								Form-item(label="开始时间：")
+								Form-item(:label="$t('start time')+'：'")
 									p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
 						Row(:gutter="16")
 							Col(span="22")
-								Form-item(label="结束时间：")
+								Form-item(:label="$t('end time')+'：'")
 									p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
 						Row(:gutter="16")
 							Col(span="22")
-								Form-item(label="报警：")
+								Form-item(:label="$t('Alert')+'：'")
 									p(v-text="alertName(show)")
 				Card.card.animate
 					p(slot="title")
@@ -53,26 +54,26 @@ div.layout-content-main
 								div
 							p
 							div.shaftinfo
-								p|关到位输入
+								p|{{$t('Closing Arrival Input')}}
 									i.signal(:class="show.closeTo?'ready':''")
-								p|开到位输入
+								p|{{$t('Opening Arrival Input')}}
 									i.signal(:class="show.openTo?'ready':''")
 						div.realdoors()
 							div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
 							section.doorstitle
 								div(:class="show.door?'screen':''")
-								p|光幕信号
+								p|{{$t('Light Curtain Signal')}}
 							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
 			Col(span=16)
 				draggable(:options="{animation: 60,handle:'.drag'}")
 					Card(style="margin-bottom:10px" )
-						p.drag(slot="title")|开关门信号 {{this.interval}} ms
+						p.drag(slot="title")|{{$t('Switching Door Signal')}} {{this.interval}} ms
 						div.ss(id="openIn" draggable=false)
 					Card(style="margin-bottom:10px")
-						p.drag(slot="title")|开关门到位信号
+						p.drag(slot="title")|{{$t('Switching Door Arrival Signal')}}
 						div.ss(id="closeIn")
 					Card(style="margin-bottom:10px")
-						p.drag(slot="title")|门电流
+						p.drag(slot="title")|{{$t('Door Current')}}
 						div.ss1(id="current")
 					Card(style="margin-bottom:10px")
 						p(slot="title")|门速度 m/s
