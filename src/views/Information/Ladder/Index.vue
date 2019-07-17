@@ -100,7 +100,7 @@
 						render: (h, params) => {
 							var follow = this.$t('follow')
 							this.follow.forEach(item => {
-								if (params.row.IMEI == item.imei) {
+								if (params.row.ctrl == item.ctrl) {
 									follow = this.$t('remove follow')
 								}
 							})
@@ -193,7 +193,7 @@
 				}
 			},
 			pageChange(val) {
-				this.options.page = val
+				this.query.page = val
 				this.getList()
 			},
 			async getList() {
@@ -205,7 +205,7 @@
 				let res = await this.$api.reLadder(this.query)
 				let fol = await this.$api.followladder({
 					num: 100,
-					page: 1
+					page: 1,
 				})
 				this.loading = false
 				if (fol.data.code == 0) {
