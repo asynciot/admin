@@ -283,7 +283,6 @@
 				this.loading = true
 				this.counter = 0
 				let res = await this.$api.fault(this.options)
-				alert(123)
 				if (res.data.code === 0) {
 					this.data2 = res.data.data.list
 					this.options.total = res.data.data.totalNumber
