@@ -58,17 +58,28 @@ Vue.prototype.$api = api
 Vue.prototype.$format = window.format
 Vue.prototype.$echarts = echarts
 router.beforeEach((to, from, next) => {
+	window.addEventListener('beforeunload', e => {
+		window.localStorage.setItem('counts',1)
+		const logout = new Date().getTime()
+		window.localStorage.setItem('logout',logout)
+	});
 	const logon = new Date().getTime()
 	const logout = window.localStorage.getItem("logout")
-	if(logon-logout<5000){
-		next()
-	}else{
-		if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
-			next()
-		}else {
-			next({name:'login'})
+	const counts = window.localStorage.getItem("counts")
+	if(counts!=null){
+		if(logon-logout>5000&&counts==1){
+			window.localStorage.removeItem("username")
 		}
 	}
+	if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
+		next()
+		window.localStorage.setItem('counts',0)
+		const logout = new Date().getTime()
+		window.localStorage.setItem('logout',logout)
+	}else {
+		next({name:'login'})
+	}
+	// }
 })
 /* eslint-disable no-new */
 Vue.locale = () => {};
