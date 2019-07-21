@@ -12,7 +12,7 @@
 		div(style="min-height:450px")
 			Table(:columns="columns",:data="list",size="small" stripe)
 		Col(span="24" style="text-align:center;")
-			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page" on-change="pageChange",show-total)
+			Page(show-elevator :total="options.total",:page-size="options.num",:current="options.page" @on-change="pageChange",show-total)
 		el-dialog(:visible.sync="dislist" width="80%")
 			Table.bt-10(border,:columns="columns2",:data="list1",size="large" stripe height="600")
 </template>
@@ -150,6 +150,23 @@
 					name:'addOrganize',
 				})
 			},
+			async pageChange(val) {
+				this.query.page = val
+				this.loading = true
+				var query=''
+				if (this.query.number==null||this.query.number==""){
+					query={nums:this.query.nums,page:this.query.page}
+				}
+				else{
+					query={nums:this.query.nums,page:this.query.page,number:this.query.number}
+				}
+				const res = await this.$api.readOrganize(query)
+				if(res.data.code == 0){
+					this.list = res.data.data.list
+					this.options.total = res.data.data.totalNumber
+				}
+				this.loading = false
+			},
 			async Organize(){
 				this.loading = true
 				const res = await this.$api.readOrganize({
@@ -167,8 +184,8 @@
 				this.loading = true
 				if(this.query.number==null||this.query.number==""){
 					this.$Notice.error({
-						title: '失败',
-						desc: '请输入搜索内容！'
+						title: this.$t('error'),
+						desc: this.$t('Please input keyword!')
 					});
 				}else{
 					const res = await this.$api.readOrganize(this.query)
@@ -191,8 +208,14 @@
 					});
 					
 						this.loading = true
-
-							const res = await this.$api.readOrganize(this.query)
+							var query=''
+							if (this.query.number==null||this.query.number==""){
+								query={nums:this.query.nums,page:this.query.page}
+							}
+							else{
+								query={nums:this.query.nums,page:this.query.page,number:this.query.number}
+							}
+							const res = await this.$api.readOrganize(query)
 							if(res.data.code == 0){
 								this.list = res.data.data.list
 								this.options.total = res.data.data.totalNumber

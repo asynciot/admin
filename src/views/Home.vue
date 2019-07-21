@@ -79,8 +79,8 @@
 							</Dropdown>
 						</Col>
 						<Col span="1" style="">
-							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;" size="small" @click="fullscreen()">
-								<div style="color:#ffffff"><icon name="full" width="10" height="10" slot="prepend"></icon>&nbsp;{{$t("Fullscreen")}}</div>
+							<Button style="border:0;background:transparent;padding-left: 20px;right: 0px;font-size:12px" size="small" @click="fullscreen()">
+								<div style="color:#ffffff"><icon name="full" width="10px" height="10px" slot="prepend"></icon>&nbsp;{{$t("Fullscreen")}}</div>
 							</Button>
 						</Col>
 					</Row>
@@ -528,10 +528,11 @@
 						nums:1,
 						page:1,
 					})
+					console.log(res.data)
 					if (res.data.data.list.length>0){
 					this.bg1=res.data.data.list[0].bg1
 					this.bg2=res.data.data.list[0].bg2
-					console.log(res.data.data.list[0].bg3)
+					// console.log(res.data.data.list[0].bg3)
 					if (res.data.data.list[0].bg3!=null){
 						this.bg3=res.data.data.list[0].bg3
 						if (this.bg3=="dark"){this.bottomcolor="#1e282c";this.fontcolor="#ffffff"}

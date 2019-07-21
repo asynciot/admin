@@ -43,11 +43,9 @@ Vue.use(ElementUI, { size: 'small' });
 Vue.use(VueResource);
 Vue.http.options.emulateJSON = true;
 Vue.config.productionTip = false;
-Vue.use(iView).use(VueCookie);
-Vue.use(iView,{
-	i18n: (key, value) => i18n.t(key, value)
-});
+Vue.use(VueCookie);
 
+// Vue.use(iView);
 window.$cookie = VueCookie
 window._ = _
 window.moment = moment;
@@ -75,10 +73,14 @@ Vue.locale = () => {};
 const i18n = new VueI18n({
   locale: window.localStorage.getItem("language") || 'zh-CN',    // 语言标识
   messages: {
-    'zh-CN': Object.assign(zh,app_zh),   // 中文语言包
-    'en-US': Object.assign(en,app_en)    // 英文语言包
+    'zh-CN': Object.assign(app_zh,zh),   // 中文语言包
+    'en-US': Object.assign(app_en,en)    // 英文语言包
   },
 })
+
+Vue.use(iView,{
+	i18n: (key, value) => i18n.t(key, value)
+});
 
 new Vue({
   el: '#app',

@@ -77,20 +77,20 @@
 					groupname: [{
 						required: true,
 							type: 'string',
-							message: '请填写电梯组名称',
+							message: this.$t('Please fill in the group name'),
 							trigger: 'blur'
 					}],
 					username: [{
 						required: false,
 						type: 'string',
-						message: '请填写电梯组负责人',
+						message: this.$t('Please fill in the group leader'),
 						trigger: 'blur'
 					}],
 					phone: [{
 						required: false,
 						type: 'string',
 						pattern:/^1(3|4|5|7|8)\d{9}$/,
-						message: '请填写正确的号码',
+						message: this.$t('Please fill in the legal number'),
 						trigger: 'blur'
 					}],
 				},

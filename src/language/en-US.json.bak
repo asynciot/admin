@@ -32,9 +32,9 @@
 	"watch" : "Watch",
 	"start time" : "Start Time",
 	"end time" : "End Time",
-	"watch" : "Watch",
-	"watch" : "Watch",
-	
+	"warning" : "Warning",
+	"success" : "Success",
+	"error" : "Error",
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",
 	"E3" : "Bus under-voltage",

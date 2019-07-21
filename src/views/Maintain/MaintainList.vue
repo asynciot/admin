@@ -79,7 +79,17 @@
 					title: this.$t('IMEI'),
 					key: 'IMEI',
 					width:150,
-					sortable: true
+					sortable: true,
+					render: (h, params) => {
+						var sub='';
+						if (params.row.IMEI !=null) {
+							for (var j=0;j<params.row.IMEI.length;j++){
+								if (params.row.IMEI.substring(j,j+1).charCodeAt()>1)
+								sub=sub+params.row.IMEI.substring(j,j+1)
+							}
+						}	
+						return h('div', sub)
+					}
 				},
 				{
 					title: this.$t('state'),

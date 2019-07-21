@@ -184,8 +184,8 @@ export default {
 			}
 			else{
 				this.$Notice.warning({
-					title: '警告',
-					desc: '只能上传bin类型的文件'
+					title: this.$t('warning'),
+					desc: this.$t('File type should be bin')
 				})
 			}
 		},
@@ -200,10 +200,10 @@ export default {
 			if (flag==1) {
 				this.upsuccess=true
 				this.$Notice.warning({
-					title: '成功',
-					desc: (this.filename+'已存在')
+					title: this.$t('success'),
+					desc: (this.filename+this.$t(' existing'))
 				})
-				this.filename='已上传'+this.filename
+				this.filename=this.$t('Uploaded ')+this.filename
 			}else {
 				let res = await this.$api.upload(formData)
 				if (res.data.code == 0){
@@ -214,15 +214,15 @@ export default {
 					})
 					this.upsuccess=true
 					this.$Notice.success({
-						title: '成功',
-						desc: ('成功上传'+this.filename)
+						title: this.$t('success'),
+						desc: (this.$t('Uploaded ')+this.filename)
 					})
-					this.filename='已上传'+this.filename
+					this.filename=this.$t('Uploaded ')+this.filename
 				}
 				else{
 					this.$Notice.error({
-						title: '错误',
-						desc: '上传失败'
+						title: this.$t('error'),
+						desc: this.$t('Upload failed')
 					})
 				}
 			}
@@ -248,20 +248,28 @@ export default {
 				for (var i=0;i<res.data.data.list.length;i++){
 					if (res.data.data.list[i].device_firmware !=null) {
 						var sub=''
-					for (var j=0;j<res.data.data.list[i].device_firmware.length;j++){
-						if (res.data.data.list[i].device_firmware.substring(j,j+1).charCodeAt()>1)
-						sub=sub+res.data.data.list[i].device_firmware.substring(j,j+1)
+						for (var j=0;j<res.data.data.list[i].device_firmware.length;j++){
+							if (res.data.data.list[i].device_firmware.substring(j,j+1).charCodeAt()>1)
+							sub=sub+res.data.data.list[i].device_firmware.substring(j,j+1)
+						}
+						res.data.data.list[i].device_firmware=sub
 					}
-					res.data.data.list[i].device_firmware=sub
+					if (res.data.data.list[i].IMEI !=null) {
+						var sub=''
+						for (var j=0;j<res.data.data.list[i].IMEI.length;j++){
+							if (res.data.data.list[i].IMEI.substring(j,j+1).charCodeAt()>1)
+							sub=sub+res.data.data.list[i].IMEI.substring(j,j+1)
+						}
+						res.data.data.list[i].IMEI=sub
 					}
-					
 				}
+				
 				this.data = res.data.data.list
 				this.options.total = res.data.data.totalNumber
 			}else{
 				this.$Notice.error({
-				  title: '错误',
-				  desc: '获取列表失败'
+				  title: this.$t('error'),
+				  desc: this.$t('Fail to get List')
 				});
 			}
 		},
@@ -281,7 +289,7 @@ export default {
 				}
 			})
 			this.$Modal.confirm({
-				title: '请确认要升级的设备',
+				title: this.$t('Please confirm the devices to be updated'),
 				content:name,
 				onOk: () => {
 					this.toupdate(val)

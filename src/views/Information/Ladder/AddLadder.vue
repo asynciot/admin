@@ -103,7 +103,7 @@
 						align:'left',
 					},
 					{
-						title: 'IMEI(设备识别码)',
+						title: this.$t('IMEI'),
 						key: 'IMEI',
 					},
 					{

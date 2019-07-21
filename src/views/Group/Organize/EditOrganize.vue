@@ -91,20 +91,20 @@
 					groupname: [{
 						required: true,
 							type: 'string',
-							message: '请填写电梯组名称',
+							message: this.$t('Please fill in the group name'),
 							trigger: 'blur'
 					}],
 					username: [{
 						required: false,
 						type: 'string',
-						message: '请填写电梯组负责人',
+						message: this.$t('Please fill in the group leader'),
 						trigger: 'blur'
 					}],
 					phone: [{
 						required: false,
 						type: 'string',
 						pattern:/^1(3|4|5|7|8)\d{9}$/,
-						message: '请填写正确的号码',
+						message: this.$t('Please fill in the legal number'),
 						trigger: 'blur'
 					}],
 				},
@@ -229,8 +229,8 @@
 					this.total = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
 					});
 				}
 			},
@@ -289,15 +289,15 @@
 				if (res.data.code == 0) {
 					this.loading = false
 					this.$Notice.success({
-						title: '成功',
-						desc: '编辑成功！'
+						title: this.$t('success'),
+						desc: this.$t('Successfully edit')
 					});
 					this.$router.back(-1)
 				}else{
 					this.loading = false
 					this.$Notice.error({
-					title: '失败',
-					desc: '编辑失败'
+					title: this.$t('error'),
+					desc: this.$t('Fail to edit')
 					});
 				}
 			},
@@ -307,14 +307,14 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '删除成功！'
+						title: this.$t('success'),
+						desc: this.$t('Successfully delete')
 					});
 					this.getList2()
 				}else{
 					this.$Notice.error({
-					title: '失败',
-					desc: '删除失败！'
+					title: this.$t('error'),
+					desc: this.$t('Fail to delete')
 					});
 				}
 			},
@@ -325,14 +325,14 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '绑定成功！'
+						title: this.$t('success'),
+						desc: this.$t('successfully bind')
 					});
 					this.getList2()
 				}else{
 					this.$Notice.error({
-					title: '失败',
-					desc: '绑定失败！'
+					title: this.$t('error'),
+					desc: this.$t('Fail to bind')
 					});
 				}
 			},

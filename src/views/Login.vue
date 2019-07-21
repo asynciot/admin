@@ -9,10 +9,10 @@ div.account
 			div()
 				Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 					Form-item(prop="username")
-						Input(type="text",v-model="form.username",placeholder="用户名")
+						Input(type="text",v-model="form.username",:placeholder="$t('Username')")
 							span(class="fa fa-user-o",size="20",slot="prepend")
 					Form-item(prop="password")
-						Input(type="password",v-model="form.password",placeholder="密码",@on-keyup.enter="login('form')")
+						Input(type="password",v-model="form.password",:placeholder="$t('Password')",@on-keyup.enter="login('form')")
 							span(class="fa fa-lock" ,size="20",slot="prepend")
 							<!-- div(class="code" @click="refreshCode") s-identify(:identifyCode="identifyCode") -->
 					Form-item
@@ -63,13 +63,13 @@ export default {
 			rules: {
 				username: [{
 					required: true,
-					message: '请填写用户名',
+					message: this.$t("Please fill in the username"),
 					trigger: 'blur'
 				},
 				{
 					type: 'string',
 					min: 4,
-					message: '用户名长度不能小于6位',
+					message: this.$t("Username should not less than 6 letters"),
 					trigger: 'blur'
 				}],
 				password: [{

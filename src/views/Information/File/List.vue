@@ -164,8 +164,15 @@
 						key: 'IMEI',
 						width: 148,
 						align: 'center',
-						render: (h, params) =>
-							h('div',[
+						render: (h, params) =>{
+							var sub='';
+							if (params.row.IMEI !=null) {
+								for (var j=0;j<params.row.IMEI.length;j++){
+									if (params.row.IMEI.substring(j,j+1).charCodeAt()>1)
+									sub=sub+params.row.IMEI.substring(j,j+1)
+								}
+							}	
+							return h('div',[
 								h('Button', {
 									props: {
 										type: 'text',
@@ -183,13 +190,23 @@
 											})
 										}
 									}
-								}, params.row.IMEI)
-							],)
+								}, sub)
+							],)}
 					},
 					{
-						title: 'IMSI(用户识别码)',
+						title: 'IMSI',
 						key: 'device_IMSI',
 						width: 148,
+						render: (h, params) => {
+							var sub='';
+							if (params.row.device_IMSI !=null) {
+								for (var j=0;j<params.row.device_IMSI.length;j++){
+									if (params.row.device_IMSI.substring(j,j+1).charCodeAt()>1)
+									sub=sub+params.row.device_IMSI.substring(j,j+1)
+								}
+							}	
+							return h('div', sub)
+						}
 					},
 					{
 						title: this.$t('device type'),

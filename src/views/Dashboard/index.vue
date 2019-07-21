@@ -249,8 +249,8 @@
 							<div class="box-body" v-if="progressbody" style="" :style="'height:'+screenheight/2.55+'px'">
 								<Select class="smr" v-model="prostate" style="width:100%;" :placeholder="$t('progress')" @on-change="getprogress(1)">
 									<Option key="6" :label="$t('all')" value="6"></Option>
-									<Option key="1" :label="$t('untreated')" value="1"></Option>
-									<Option key="2" :label="$t('examine order')" value="2"></Option>
+									<Option key="1" :label="$t('untreated')" value="2"></Option>
+									<Option key="2" :label="$t('examine order')" value="1"></Option>
 									<Option key="3" :label="$t('treating')" value="3"></Option>
 									<Option key="4" :label="$t('examine finished')" value="4"></Option>
 									<Option key="5" :label="$t('stored')" value="5"></Option>
@@ -897,7 +897,7 @@
 								else if(t<31536000000){followlist[j].create_time=this.$format(followlist[j].create_time,'MM-DD')}
 								else {followlist[j].create_time=this.$format(followlist[j].create_time,'YYYY-MM-DD')}
 								if (followlist[j].nickname != null) {followlist[j].username = followlist[j].nickname}
-								if (followlist[j].from_id == window.localStorage.getItem('id')) {followlist[j].from_id=true}
+								if ((followlist[j].from_id == window.localStorage.getItem('id'))||(window.localStorage.getItem('username')=='admin')) {followlist[j].from_id=true}					
 								else {followlist[j].from_id=false}
 							}
 						}
@@ -910,7 +910,7 @@
 						if(t<86400000){cht.body.list[i].create_time=this.$format(cht.body.list[i].create_time,'HH:mm')}
 						else if(t<31536000000){cht.body.list[i].create_time=this.$format(cht.body.list[i].create_time,'MM-DD')}
 						else {cht.body.list[i].create_time=this.$format(cht.body.list[i].create_time,'YYYY-MM-DD')}
-						if (cht.body.list[i].from_id == window.localStorage.getItem('id')) {cht.body.list[i].from_id=true}
+						if ((cht.body.list[i].from_id == window.localStorage.getItem('id'))||(window.localStorage.getItem('username')=='admin')) {cht.body.list[i].from_id=true}
 						else {cht.body.list[i].from_id=false}
 						this.chatlist.push({id:cht.body.list[i].id,username:cht.body.list[i].username,content:cht.body.list[i].content,create_time:cht.body.list[i].create_time,followlist:followlist,showlist:false,portrait:portrait,from_id:cht.body.list[i].from_id})
 					}

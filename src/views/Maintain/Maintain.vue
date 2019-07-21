@@ -104,7 +104,17 @@
 						title: this.$t('IMEI'),
 						width: 150,
 						key: 'IMEI',
-						sortable: true
+						sortable: true,
+						render: (h, params) => {
+							var sub='';
+							if (params.row.IMEI !=null) {
+								for (var j=0;j<params.row.IMEI.length;j++){
+									if (params.row.IMEI.substring(j,j+1).charCodeAt()>1)
+									sub=sub+params.row.IMEI.substring(j,j+1)
+								}
+							}	
+							return h('div', sub)
+						}
 					}, {
 						title: this.$t('device type'),
 						width: 110,

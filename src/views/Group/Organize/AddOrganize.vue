@@ -39,13 +39,13 @@ div.layout-content-main
 					name: [{
 						required: true,
 							type: 'string',
-							message: '请填写群组名称',
+							message: this.$t('Please fill in the group name'),
 							trigger: 'blur'
 					}],
 					leader: [{
 						required: false,
 						type: 'string',
-						message: '请填写群组负责人',
+						message: this.$t('Please fill in the group leader'),
 						trigger: 'blur'
 					}],
 				},
@@ -59,13 +59,13 @@ div.layout-content-main
 				if(res.data.code==0){
 					this.loading = false
 					this.$Notice.success({
-						title: $t('success'),
+						title: this.$t('success'),
 						desc: ''
 					});
 					this.$router.back(-1)
 				}else{
 					this.$Notice.error({
-						title: $t('error'),
+						title: this.$t('error'),
 						desc: ''
 					});
 				}
