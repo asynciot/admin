@@ -64,10 +64,10 @@
 				var endtime=''
 				if ((this.starttime>this.endtime)&&(this.endtime !="")) {
 					this.endtime=this.starttime
-// 					this.$Notice.warning({
-// 						title: '提示',
-// 						desc: '截至日期必须大于开始日期',
-// 						})
+					this.$Notice.warning({
+						title: this.$t('tip'),
+						desc: this.$t('The deadline must be greater than the start date'),
+						})
 					}
 				let res = await this.$api.activedoor({starttime: this.$format(this.starttime.toString(),'YYYY-MM-DD'),
 													endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD')})
