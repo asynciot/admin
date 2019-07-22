@@ -4,7 +4,8 @@ div.account
 	Row(:gutter=50 style="padding-bottom:15%")
 		Col(span=12)
 			img.img1(src="../assets/logo-menu.png" align="center")
-			h3.account-title(style="text-align:center")|{{$t("NBSL")}}
+			h3.account-title(style="text-align:center;font-size:23px;line-height:50px;width:250px" v-if="this.$i18n.locale == 'en-US'")|{{$t("NBSL")}}
+			h3.account-title(style="text-align:center" v-if="this.$i18n.locale == 'zh-CN'")|{{$t("NBSL")}}
 		Col(span=12 style="padding-top:5%")
 			div()
 				Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
@@ -25,6 +26,12 @@ div.account
 								div(style="cursor: pointer;text-align:center" @click="reset")|{{$t("forget_password?")}}
 							Col(span=12 align="center")
 								checkbox(v-model="rem" @click="rem=!rem")|{{$t("remember")}}
+							Col(span=5)
+								Button(type="text",@click="changelang")|<
+							Col(span=14)
+								div(style="width:100%;text-align: center;")|{{$t('lang')}}
+							Col(span=1)
+								Button(type="text",@click="changelang")|>
 </template>
 
 <script>
@@ -74,18 +81,18 @@ export default {
 				}],
 				password: [{
 					required: true,
-					message: '请填写密码',
+					message: this.$t("Please fill in the username"),
 					trigger: 'blur'
 				},
 				{
 					type: 'string',
 					min: 3,
-					message: '密码长度不能小于6位',
+					message: this.$t("Password should not less than 6 letters"),
 					trigger: 'blur'
 				}],
 				veri: [{
 					required: true,
-					message: '请填写验证码',
+					message: this.$t("Please fill in the username"),
 					trigger: 'blur'
 				},
 	// 		  {
@@ -144,7 +151,7 @@ export default {
 						const obj = JSON.stringify(itm.data.data.list[0])
 						window.localStorage.setItem('menu',obj)
 						this.$Message.success({
-							content: '登录成功，正在跳转!',
+							content: this.$t("Login successfully, going the home page!"),
 							duration: 0.5,
 							onClose: () => {
 								this.$router.push({
@@ -154,13 +161,27 @@ export default {
 						})
 					} else {
 						this.loading = false;
-						this.$Message.error('登录失败!');
+						this.$Message.error(this.$t("Login failed!"));
 					}
 				} else {
 					this.loading = false;
-					this.$Message.error('请完善登录信息!');
+					this.$Message.error(this.$t("Please improve login information!"));
 				}
 			})
+		},
+		changelang(){
+			if (this.$i18n.locale == 'en-US'){
+				this.$i18n.locale = 'zh-CN';
+				localStorage.setItem('language',this.$i18n.locale)
+				this.$router.push(0)
+				// Vue.config.lang = 'zh-CN'
+			}
+			else{
+				this.$i18n.locale = 'en-US';
+				localStorage.setItem('language',this.$i18n.locale)
+				this.$router.push(0)
+				// Vue.config.lang = 'en-US'
+			}
 		},
 		goRegister(){
 			this.$router.push({

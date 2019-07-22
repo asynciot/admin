@@ -20,82 +20,82 @@
 								p()|{{$t('Stop this monitoring?')}}		
 			Row.mb-10(:gutter="8")
 				Col.padding(span=8)
-				Card.card
-					p.clearfix(slot="title")|{{$t('Basic Information')}}
-					Form.status(:model="show",label-position="left",:label-width="100")
-						Row(:gutter="16")
-							Col(span="10")
-								Form-item(:label="$t('Door Coordinate')+'：'")
-									p(v-text="show.position ? show.position : $t('None')")
-									p(v-text="show.run ? $t('Operating'):$t('Parking')")
-							Col(span="12")
-								Form-item(:label="$t('Door Current')+'：'")
-									p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
-						Row(:gutter="16")
-							Col(span="10")
-								Form-item(:label="$t('Open Door Signal')+'：'")
-									p(v-text="show.openIn ? $t('Active'):$t('Inactive')")
-							Col(span="10")
-								Form-item(:label="$t('Close Door Signal')+'：'")
-									p(v-text="show.closeIn ? $t('Active'):$t('Inactive')")
-						Row(:gutter="16")
-							Col(span="22")
-								Form-item(:label="$t('Devices State')+'：'")
-									p(v-text="parseStatus(show)")
-						Row(:gutter="16")
-							Col(span="22")
-								Form-item(:label="$t('Opening Arrival Output')+'：'",:label-width="100")
-									p(v-text="show.openToOut ? $t('Active') : $t('Inactive')")
-						Row(:gutter="16")
-							Col(span="22")
-								Form-item(:label="$t('Closing Arrival Output')+'：'",:label-width="100")
-									p(v-text="show.closeToOut ? $t('Active') : $t('Inactive')")
-						Row(:gutter="16")
-							Col(span="22")
-								Form-item(:label="$t('start time')+'：'")
-									p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
-						Row(:gutter="16")
-							Col(span="22")
-								Form-item(:label="$t('end time')+'：'")
-									p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
-						Row(:gutter="16")
-							Col(span="22")
-								Form-item(:label="$t('Alert')+'：'")
-									p(v-text="alertName(show)")
-				Card.card.animate
-					p(slot="title")
-						div.shaft()
-							section
-								div
-							section.noborder
-								div
-							p
-							div.shaftinfo
-								p|{{$t('Closing Arrival Input')}}
-									i.signal(:class="show.closeTo?'ready':''")
-								p|{{$t('Opening Arrival Input')}}
-									i.signal(:class="show.openTo?'ready':''")
-						div.realdoors()
-							div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
-							section.doorstitle
-								div(:class="show.door?'screen':''")
-								p|{{$t('Light Curtain Signal')}}
-							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
-			Col(span=16)
-				draggable(:options="{animation: 60,handle:'.drag'}")
-					Card(style="margin-bottom:10px" )
-						p.drag(slot="title")|{{$t('Switching Door Signal')}} {{this.interval}} ms
-						div.ss(id="openIn" draggable=false)
-					Card(style="margin-bottom:10px")
-						p.drag(slot="title")|{{$t('Switch Door Arrival Signal')}}
-						div.ss(id="closeIn" draggable=false)
-					Card(style="margin-bottom:10px")
-						p.drag(slot="title")|{{$t('Door Current')}}
-						div.ss1(id="current" draggable=false)
-					Card(style="margin-bottom:10px")
-						p(slot="title")|{{$t('Door Speed')}} m/s
-						div.ss1(id="speed" draggable=false)
-						div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
+					Card.card
+						p.clearfix(slot="title")|{{$t('Basic Information')}}
+						Form.status(:model="show",label-position="left",:label-width="100")
+							Row(:gutter="16")
+								Col(span="10")
+									Form-item(:label="$t('Door Coordinate')+'：'")
+										p(v-text="show.position ? show.position : $t('None')")
+										p(v-text="show.run ? $t('Operating'):$t('Parking')")
+								Col(span="12")
+									Form-item(:label="$t('Door Current')+'：'")
+										p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
+							Row(:gutter="16")
+								Col(span="10")
+									Form-item(:label="$t('Open Door Signal')+'：'")
+										p(v-text="show.openIn ? $t('Active'):$t('Inactive')")
+								Col(span="10")
+									Form-item(:label="$t('Close Door Signal')+'：'")
+										p(v-text="show.closeIn ? $t('Active'):$t('Inactive')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('Devices State')+'：'")
+										p(v-text="parseStatus(show)")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('Opening Arrival Output')+'：'",:label-width="100")
+										p(v-text="show.openToOut ? $t('Active') : $t('Inactive')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('Closing Arrival Output')+'：'",:label-width="100")
+										p(v-text="show.closeToOut ? $t('Active') : $t('Inactive')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('start time')+'：'")
+										p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('end time')+'：'")
+										p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('Alert')+'：'")
+										p(v-text="alertName(show)")
+					Card.card.animate
+						p(slot="title")
+							div.shaft()
+								section
+									div
+								section.noborder
+									div
+								p
+								div.shaftinfo
+									p|{{$t('Closing Arrival Input')}}
+										i.signal(:class="show.closeTo?'ready':''")
+									p|{{$t('Opening Arrival Input')}}
+										i.signal(:class="show.openTo?'ready':''")
+							div.realdoors()
+								div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
+								section.doorstitle
+									div(:class="show.door?'screen':''")
+									p|{{$t('Light Curtain Signal')}}
+								div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
+					div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
+				Col(span=16)
+					draggable(:options="{animation: 60,handle:'.drag'}")
+						Card(style="margin-bottom:10px" )
+							p.drag(slot="title")|{{$t('Switching Door Signal')}} {{this.interval}} ms
+							div.ss(id="openIn" draggable=false)
+						Card(style="margin-bottom:10px")
+							p.drag(slot="title")|{{$t('Switch Door Arrival Signal')}}
+							div.ss(id="closeIn" draggable=false)
+						Card(style="margin-bottom:10px")
+							p.drag(slot="title")|{{$t('Door Current')}} A
+							div.ss1(id="current" draggable=false)
+						Card(style="margin-bottom:10px")
+							p(slot="title")|{{$t('Door Speed')}} m/s
+							div.ss1(id="speed" draggable=false)
 </template>
 <script>
 	import echarts from 'echarts'
@@ -326,7 +326,8 @@
 							trigger: 'axis'
 						},
 						legend: {
-							data:[this.$t('Open Door Signal'), this.$t('Close Door Signal')]
+							// data:[_this.$t('Open Door Signal'), _this.$t('Close Door Signal')]
+							data:[_this.$t('Open Door Signal'), _this.$t('Close Door Signal')]
 						},
 						grid: {
 							left: '3%',
@@ -341,12 +342,12 @@
 							data:[0,1]
 						},
 						series: [{
-							name:this.$t('Open Door Signal'),
+							name:_this.$t('Open Door Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.openIn
 						},{
-							name:this.$t('Close Door Signal'),
+							name:_this.$t('Close Door Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.closeIn
@@ -357,7 +358,7 @@
 							trigger: 'axis'
 						},
 						legend: {
-							data:[this.$t('Open Door Arrival Signal'), this.$t('Close Door Arrival Signal')]
+							data:[_this.$t('Open Door Arrival Signal'), _this.$t('Close Door Arrival Signal')]
 						},
 						grid: {					
 							left: '3%',
@@ -372,12 +373,12 @@
 							data:[0,1]
 						},
 						series: [{
-							name:this.$t('Open Door Arrival Signal'),
+							name:_this.$t('Open Door Arrival Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.openTo
 						},{
-							name:this.$t('Close Door Arrival Signal'),
+							name:_this.$t('Close Door Arrival Signal'),
 							type:'line',
 							step: 'start',
 							data:_this.closeTo

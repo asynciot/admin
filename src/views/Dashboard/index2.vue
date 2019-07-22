@@ -465,14 +465,14 @@
 								activedoor._$handlers.click.length = 0;
 							}
 							var _this=this
-							activedoor.on('click', function (params) {
-								_this.$router.push({
-									name: 'eventreport',
-									params: {
-										device_name: params.name
-									}
-								})
-							})
+// 							activedoor.on('click', function (params) {
+// 								_this.$router.push({
+// 									name: 'eventreport',
+// 									params: {
+// 										device_name: params.name
+// 									}
+// 								})
+// 							})
 						},
 		}
 	}

@@ -1,9 +1,6 @@
 <template>
 	<div>
 		<iframe :src="src" id='iframebox' ref='pdfiframe' frameborder="0" scrolling="yes" style="position:absolute;"></iframe>
-		<div style="width:25px;height:25px;position:absolute;margin-left:100px">
-			<icon name="sign0" width="24" height="24" slot="prepend"></icon>
-		</div>
 	</div>
 </template>
 

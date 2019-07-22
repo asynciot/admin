@@ -64,10 +64,10 @@
 				var endtime=''
 				if ((this.starttime>this.endtime)&&(this.endtime !="")) {
 					this.endtime=this.starttime
-					this.$Notice.warning({
-						title: '提示',
-						desc: '截至日期必须大于开始日期',
-						})
+// 					this.$Notice.warning({
+// 						title: '提示',
+// 						desc: '截至日期必须大于开始日期',
+// 						})
 					}
 				let res = await this.$api.activedoor({starttime: this.$format(this.starttime.toString(),'YYYY-MM-DD'),
 													endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD')})
@@ -215,17 +215,16 @@
 					activedoor._$handlers.click.length = 0;
 				}
 				var _this=this
-				activedoor.on('click', function (params) {
-					_this.$router.push({
-						name: 'eventreport',
-						params: {
-							device_name: params.name
-						}
-					})
-				})
+// 				activedoor.on('click', function (params) {
+// 					_this.$router.push({
+// 						name: 'eventreport',
+// 						params: {
+// 							device_name: params.name
+// 						}
+// 					})
+// 				})
 			},
 			go(){
-				alert(1)
 				this.$router.push({
 					name: 'order',
 					params: {

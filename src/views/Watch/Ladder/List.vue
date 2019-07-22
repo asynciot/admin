@@ -131,7 +131,7 @@ div
 					{
 						title: this.$t('install address'),
 						key:"install_addr",
-						width: 120,
+						width: 200,
 					},
 					{
 						title: this.$t('base station'),

@@ -203,8 +203,8 @@
 				})
 				if(res.data.code == 0){
 					this.$Notice.success({
-						title: '成功',
-						desc: '删除成功！'
+						title: this.$t('success'),
+						desc: this.$t('Successfully delete')
 					});
 					
 						this.loading = true
@@ -224,8 +224,8 @@
 
 				}else{
 					this.$Notice.error({
-						title: '失败',
-						desc: '删除失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to delete')
 					});
 				}
 				this.loading = false
@@ -237,14 +237,14 @@
 				})
 				if(res.data.code == 0){
 					this.$Notice.success({
-						title: '成功',
-						desc: '加入成功！'
+						title: this.$t('success'),
+						desc: this.$t('Successfully join')
 					});
 					this.getOrganize()
 				}else{
 					this.$Notice.error({
-						title: '失败',
-						desc: '加入失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to join')
 					});
 				}
 				this.loading = false

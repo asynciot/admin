@@ -62,7 +62,7 @@ export default {
 				title: this.$t('device name'),
 				key: 'device_name',
 				align: 'center',
-				width: 110,
+				width: 115,
 			},{
 				title: this.$t('IMEI'),
 				key: 'IMEI',
@@ -71,7 +71,7 @@ export default {
 			},{
 				title: this.$t('device type'),
 				key: 'device_type',
-				width:105,
+				width:115,
 				render: (h, params) => {
 					var i='';
 					if (params.row.device_type==240) i=this.$t('ctrl');

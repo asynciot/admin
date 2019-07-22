@@ -96,7 +96,7 @@
 					},
 					{
 						title: this.$t('handle'),
-						width:280,
+						width:290,
 						render: (h, params) => {
 							var follow = this.$t('follow')
 							this.follow.forEach(item => {

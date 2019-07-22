@@ -108,7 +108,7 @@
 						}
 					}, {
 						title: this.$t('creator'),
-						width: 95,
+						width: 100,
 						key: 'producer',
 						sortable: true
 					}, {

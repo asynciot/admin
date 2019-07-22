@@ -2,7 +2,7 @@
 	div.layout-content-main
 		div.form
 			Row(:gutter=5)
-				Col(span=12)
+				Col(span='12')
 					card(style="height: 280px")
 						Col(span="24" style="height: 35px;font-size:20px")|{{$t('Basic Information')}}
 							i(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(data.tagcolor)" style="margin-left: 10px")
@@ -76,7 +76,7 @@
 									Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
 										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|{{$t('Status Monitoring')}}
 										Button(type="success" @click="monitor('1')" v-else style="width:100%")|{{$t('Status Monitoring')}}
-				Col(span=12)
+				Col(span='12')
 					card.card(align='left' style='height: 505px',v-if='data.device_type == 240')
 						Col(span="24" style="height: 35px;font-size:20px")|{{$t('Memory Debugging')}}
 						Row(style="margin-top:20px")|{{this.loading}}
@@ -328,11 +328,11 @@
 					this.data.ipaddr = res.data.data.list[0].ip_country+res.data.data.list[0].ip_region+res.data.data.list[0].ip_city
 					this.options.device_id=this.data.id
 					if(this.data.state == "online"){
-						this.data.state = "在线"
+						this.data.state = this.$t('online')
 					}else if(this.data.state == "offline"){
-						this.data.state = "离线"
+						this.data.state = this.$t('offline')
 					}else if(this.data.state == "longoffline"){
-						this.data.state = "长期离线"
+						this.data.state = this.$t('long offline')
 					}
 					if (this.data.rssi != ''){
 						if (this.data.rssi==0) {
@@ -356,14 +356,14 @@
 						this.total = eve.data.data.totalNumber
 					}else{
 						this.$Notice.error({
-							title: '错误',
-							desc: '获取事件信息错误！'
+							title: this.$t('error'),
+							desc: this.$t('Fail to gain event information')
 						})
 					}									
 				}else(
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取电梯数据错误！'
+						title: this.$t('error'),
+						desc: this.$t('Fail to gain elevator data')
 					})
 				)
 				this.now=Date.parse(new Date())
@@ -381,8 +381,8 @@
 					if ((this.starttime>this.endtime)&&(this.endtime !="")) {
 						this.endtime=this.starttime
 						this.$Notice.warning({
-							title: '提示',
-							desc: '截至日期必须大于开始日期',
+							title: this.$t('tip'),
+							desc: this.$t('The deadline must be greater than the start date'),
 							})
 						}	
 					this.options.starttime=this.starttime
@@ -433,8 +433,8 @@
 				else {
 					let eve= await this.$api.event(options2)
 					this.$Notice.warning({
-						title: '提示',
-						desc: '已经到底了！',
+						title: this.$t('tip'),
+						desc: this.$t('It is the end！'),
 					})
 				}
 				this.total = eve.data.data.totalNumber
@@ -446,13 +446,13 @@
 				if (this.data.device_type=='15'){
 					if (!(/^\d+$/.test(this.realtime.duration)&&/^\d+$/.test(this.realtime.interval)&&/^\d+$/.test(this.realtime.threshold))){
 						this.$Notice.error({
-							title: '错误',
+							title: this.$t('error'),
 							desc: '所有参数都必须是数字！'
 						})
 					}else{
 						if ((this.realtime.interval*this.realtime.threshold>this.realtime.duration*1000)){
 							this.$Notice.error({
-								title: '错误',
+								title: this.$t('error'),
 								desc: '监控时长必须大于采样周期'
 							})
 						}else{
@@ -542,11 +542,11 @@
 					op:'open',
 				});
 				if(res.data.code != 0){
-					alert("该电梯已被其他人启动实时监控")
+					alert(this.$t('The elevator has been monitored by others'))
 				}else{
 					this.$Notice.success({
-						title: '成功',
-						desc: '监控已开启，两分钟后自动关闭！'
+						title: this.$t('success'),
+						desc: this.$t('Monitoring has been activated')
 					})
 				}
 				let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.data.id+'&userId='+window.localStorage.getItem('id')
@@ -557,16 +557,16 @@
 			}, 
 			websocketonopen() {
 				console.log("WebSocket连接成功");
-				this.loading='WebSocket连接成功'
+				this.loading=this.$t('WebSocket connection successful,please wait for data')
 			},
 			websocketonerror(e) {//错误
 				console.log("WebSocket连接发生错误");
-				this.loading='WebSocket连接失败'
+				this.loading=this.$t('WebSocket connection failed')
 			},
 			websocketonmessage(e){//数据接收
-			this.loading='正在获取数据'
+			this.loading=this.$t('Getting data')
 				if(e.data=="closed"){
-					this.loading="此次实时数据已结束"
+					this.loading=this.$t('The monitoring data is over')
 				}else{
 					var redata = JSON.parse(e.data)
 					var buffer = base64url.toBuffer(redata.data);

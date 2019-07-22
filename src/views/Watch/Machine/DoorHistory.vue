@@ -73,7 +73,7 @@ div.layout-content-main
 						p.drag(slot="title")|{{$t('Switch Door Arrival Signal')}}
 						div.ss(id="closeIn")
 					Card(style="margin-bottom:10px")
-						p.drag(slot="title")|{{$t('Door Current')}}
+						p.drag(slot="title")|{{$t('Door Current')}} A
 						div.ss1(id="current")
 					Card(style="margin-bottom:10px")
 						p(slot="title")|{{$t('Door Speed')}} m/s
@@ -199,12 +199,13 @@ div.layout-content-main
 				let closeIn = this.$echarts.init(document.getElementById('closeIn'))
 				let current = this.$echarts.init(document.getElementById('current'))
 				let speed = this.$echarts.init(document.getElementById('speed'))
+				var _this=this
 				openIn.setOption({
 					tooltip: {
 						trigger: 'axis'
 					},
 					legend: {
-						data:[this.$t('Open Door Signal'), this.$t('Close Door Signal')]
+						data:[_this.$t('Open Door Signal'), _this.$t('Close Door Signal')]
 					},
 					grid: {
 						left: '3%',
@@ -219,21 +220,21 @@ div.layout-content-main
 						data:[0,1]
 					},
 					dataZoom: [{
-						startValue: formatDate(this.t_start,'HH:mm:ss'),
+						startValue: formatDate(_this.t_start,'HH:mm:ss'),
 						top: '60px',
 					}, {
 						type: 'inside'
 					}],
 					series: [{
-						name:this.$t('Open Door Signal'),
+						name:_this.$t('Open Door Signal'),
 						type:'line',
 						step: 'start',
 						data:this.event.openIn
 					},{
-						name:this.$t('Close Door Signal'),
+						name:_this.$t('Close Door Signal'),
 						type:'line',
 						step: 'start',
-						data:this.event.closeIn
+						data:_this.event.closeIn
 					}]
 				});				
 				closeIn.setOption({
@@ -241,7 +242,7 @@ div.layout-content-main
 						trigger: 'axis'
 					},
 					legend: {
-						data:[this.$t('Open Door Arrival Signal'), this.$t('Close Door Arrival Signal')]
+						data:[_this.$t('Open Door Arrival Signal'), _this.$t('Close Door Arrival Signal')]
 					},
 					grid: {					
 						left: '3%',
@@ -250,27 +251,27 @@ div.layout-content-main
 					},
 					xAxis: {
 						type: 'category',
-						data: this.options,
+						data: _this.options,
 					},
 					yAxis: {
 						data:[0,1]
 					},
 					dataZoom: [{
-						startValue: formatDate(this.t_start,'HH:mm:ss'),
+						startValue: formatDate(_this.t_start,'HH:mm:ss'),
 						top: '60px',
 					}, {
 						type: 'inside'
 					}],
 					series: [{
-						name:this.$t('Open Door Arrival Signal'),
+						name:_this.$t('Open Door Arrival Signal'),
 						type:'line',
 						step: 'start',
-						data:this.event.openTo
+						data:_this.event.openTo
 					},{
-						name:this.$t('Close Door Arrival Signal'),
+						name:_this.$t('Close Door Arrival Signal'),
 						type:'line',
 						step: 'start',
-						data:this.event.closeTo
+						data:_this.event.closeTo
 					},]
 				});
 				current.setOption({
@@ -286,13 +287,13 @@ div.layout-content-main
 					},
 					xAxis: {
 						type: 'category',
-						data: this.options,
+						data: _this.options,
 					},
 					yAxis: {
 						
 					},
 					dataZoom: [{
-						startValue: formatDate(this.t_start,'HH:mm:ss'),
+						startValue: formatDate(_this.t_start,'HH:mm:ss'),
 						top: '110px',
 					}, {
 						type: 'inside'
@@ -300,7 +301,7 @@ div.layout-content-main
 					series: [{
 						type: 'line',
 						smooth: true,
-						data:this.event.current
+						data:_this.event.current
 					}]
 				});
 				speed.setOption({
@@ -316,12 +317,12 @@ div.layout-content-main
 					},
 					xAxis: {
 						type: 'category',
-						data: this.options,
+						data: _this.options,
 					},
 					yAxis: {						
 					},
 					dataZoom: [{
-						startValue: formatDate(this.t_start,'HH:mm:ss'),
+						startValue: formatDate(_this.t_start,'HH:mm:ss'),
 						top: '110px',
 					}, {
 						type: 'inside'
@@ -329,10 +330,9 @@ div.layout-content-main
 					series: [{
 						type: 'line',
 						smooth: true,
-						data:this.event.speed
+						data:_this.event.speed
 					}]
 				});
-				var _this = this
 				function ss(i){
 					_this.show.openIn  = _this.event.openIn[i]					//获取开门信号
 					_this.show.closeIn = _this.event.closeIn[i]				//获取关门信号

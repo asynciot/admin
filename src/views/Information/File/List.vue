@@ -95,6 +95,7 @@
 					isreg: '',
 					tagcolor: '',
 					install_addr:'',
+					item:'bd',
 				},
 				total:0,
 				searchkey: this.$t('install address')+this.$t('install address'),
@@ -103,7 +104,7 @@
 					{
 						title: this.$t('device name'),
 						key: 'device_name',
-						width: 110,
+						width: 115,
 						align: 'center',
 						render: (h, params) =>{
 							var type = '';
@@ -211,7 +212,7 @@
 					{
 						title: this.$t('device type'),
 						key: 'device_type',
-						width: 105,
+						width: 115,
 						render: (h, params) => {
 							var type = "-"
 							if (params.row.device_type == '240') type = this.$t('ctrl')
@@ -262,7 +263,7 @@
 					//              },
 					{
 						title: this.$t('handle'),
-						width: 280,
+						width: 300,
 						render: (h, params) => {
 							var follow = this.$t('follow')
 							this.follow.forEach(item => {
@@ -392,17 +393,17 @@
 					this.data.forEach(item => {
 						if (item.register != null) {
 							if (item.register == 'registered') {
-								item.register = '已注册'
+								item.register = this.$t('registered')
 							}
 						}
 						if (item.register != null) {
 							if (item.register == 'unregistered') {
-								item.register = '注册'
+								item.register = this.$t('register')
 							}
 						}
 						if (item.commond != null) {
 							if (item.commond == 'contract') {
-								item.register = '注册中'
+								item.register = this.$t('registering')
 							}
 						}
 						if (item.device_name != null) {
@@ -414,8 +415,8 @@
 					this.total = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
 					});
 				}
 			},
@@ -434,14 +435,14 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '关注成功'
+						title: this.$t('success'),
+						desc: this.$t('Successfully follow')
 					});
 					this.getList()
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '关注失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to follow')
 					});
 				}
 			},
@@ -451,14 +452,14 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: '成功',
-						desc: '不再关注该设备'
+						title: this.$t('success'),
+						desc: this.$t('No longer follow the device')
 					});
 					this.getList()
 				} else {
 					this.$Notice.error({
-						title: '失败',
-						desc: '发生错误'
+						title: this.$t('error'),
+						desc: ''
 					});
 				}
 			},

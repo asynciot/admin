@@ -88,7 +88,7 @@
 				})
 				this.chartrepair.push(rep.data.data.totalNumber)
 				}
-				for (var i=0;i<6;i++){
+				for (var i=0;i<7;i++){
 				ord = await this.$api.fault({
 					search_info: '',
 					page: 1,
@@ -136,7 +136,7 @@
 						}
 					)}
 					var areaChartData = {
-					labels  : ['1月', '2月', '3月', '4月', '5月', '6月'],
+					labels  : [this.$t('Jan'), this.$t('Feb'), this.$t('Mar'), this.$t('Apr'), this.$t('May'), this.$t('June'),this.$t('July')],
 					datasets
 					}
 					// console.log(areaChartData)

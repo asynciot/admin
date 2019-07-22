@@ -539,7 +539,7 @@
 			<Col span='2' style="vertical-align: middle;">
 				<div style="cursor: pointer;color:blue;font-size: larger;margin-left: 20px" @click="value1=true">
 					<span style="font-size: 16px" class="fa fa-eye fa-2x"></span>
-						内容筛选
+						{{$t('Content')}}
 				</div>
 			</Col>
 	</div>
@@ -977,7 +977,7 @@
 				var pro='0%'
 				var code='0'
 				var state=this.$t('untreated')
-				var e='未填写'
+				var e=this.$t('No Record')
 				if (this.data[val].code != null) {
 					code=this.data[val].code.toString(16)
 					}

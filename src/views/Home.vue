@@ -2,14 +2,14 @@
 	<div class="layout">
 		<Layout class="test" :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
 			<Sider :style="{minHeight: '100vh',background:bottomcolor,color:fontcolor}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
-				<Menu ref="side1" :class="menuitemClasses" :theme="bg3" width="auto" @on-select="go" :active-name="active" :style="{background:bottomcolor,color:fontcolor}">
+				<Menu ref="side1" :class="menuitemClasses" :theme="bg3" width="auto" @on-select="go" :active-name="active" :style="{background:bottomcolor,color:fontcolor,height:screenheight}">
 					<div style="width: 100%;height: 64px;" :style="'background:'+bg1">
-						<img :src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
+						<img :src="logo" onerror="imgerrorfun1()" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
 					</div>
 					<template>
 						<div class="user-panel">
 							<Col span="8" >
-								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg'">
+								<img :src="portrait" class="img-circle" alt="User Image" onerror="imgerrorfun2()">
 							</Col>
 							<Col span="16" style="padding-top: 10px;">
 								<p>&nbsp;&nbsp;{{info.nickname}}</p>
@@ -41,10 +41,10 @@
 			<Layout>
 				<Header  class="m-header" v-if="!full" :style="'background:'+bg2">
 					<Row>
-						<Col span="17">
+						<Col span="20">
 							&nbsp;
 						</Col>
-						<Col span="3">
+						<!-- <Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
 								<Button type="primary" long class="w-button" :style="'background:'+bg2">
 									<Col span="5">
@@ -59,7 +59,7 @@
 									<Dropdown-item :name="2">English</Dropdown-item>
 								</Dropdown-menu>
 							</Dropdown>
-						</Col>
+						</Col> -->
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
 								<Button type="primary" long class="w-button" :style="'background:'+bg2">
@@ -133,7 +133,7 @@
 				portrait:'../../static/admin.jpg',
 				isCollapsed: false,
 				modal: false,
-				logo:'../assets/logo-menu.png',
+				logo:'../../static/logo-menu.png',
 				modalType: 0,
 				username:this.global.username,
 				info: {
@@ -173,6 +173,7 @@
 					0: '管理员',
 				},
 				count: null,
+				screenheight:document.documentElement.clientHeight.toString()+'px',
 				screenwidth:'',
 				active: this.$route.path.split('/')[1],
 				menu: [{
@@ -316,6 +317,16 @@
 			this.getFunction()
 		},
 		methods: {
+			imgerrorfun1(){
+				var img=event.srcElement; 
+				img.src='../../static/logo-menu.png';
+				img.onerror=null;
+			},
+			imgerrorfun2(){
+				var img=event.srcElement; 
+				img.src='../../static/admin.jpg';
+				img.onerror=null;
+			},
 			getMenu(){
 				this.menus = JSON.parse(window.localStorage.getItem('menu'))
 				if(this.menus.dashboard == true){
@@ -518,7 +529,7 @@
 					}
 					
 					res = await this.$api.readOrganize({
-						id:res.data.data.list[0].organization_id,
+						id:res.data.data.list[0].organization_id.split(';')[0],
 						nums:1,
 						page:1,
 					})

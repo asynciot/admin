@@ -153,7 +153,7 @@ div
 					}
 					},
 					{
-					title: 'IMSI(用户识别码)',
+					title: 'IMSI',
 					key: 'device_IMSI',
 					width: 140,
 					render: (h, params) => {
@@ -169,7 +169,7 @@ div
 					},
 					{
 						title: this.$t('device type'),
-						width: 105,
+						width: 110,
 						key: 'device_type',
 						render: (h, params) => {
 							return h('p', type[params.row.device_type] || '-')
