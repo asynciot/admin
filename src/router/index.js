@@ -126,7 +126,7 @@ export default new Router({
 			path: '/reset',
 			name: 'reset',
 			meta: {
-				name: '忘记密码'
+				name: '注册'
 			},
 			component: Reset
 		}, {

@@ -144,8 +144,15 @@
 						})
 					}
 					else {
-
+						this.$Notice.warning({
+							title: '警告',
+							desc: '1'
+						})
 					this.beforefile1 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+// 					this.$Notice.warning({
+// 						title: '警告',
+// 						desc: '2'
+// 					})
 					let url = null;
 					if (window.createObjectURL!=undefined) { // basic
 						url = window.createObjectURL(this.beforefile1) ;
@@ -154,6 +161,10 @@
 					}else if (window.URL!=undefined) { // mozilla(firefox)
 						url = window.URL.createObjectURL(this.beforefile1) ;
 					}
+// 					this.$Notice.warning({
+// 						title: '警告',
+// 						desc: '3'
+// 					})
 					document.getElementById('before1').src=url;
 					return false;
 					}

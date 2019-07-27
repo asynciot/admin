@@ -58,12 +58,13 @@ div.layout-content-main
 								p|开到位输入
 									i.signal(:class="show.openTo?'ready':''")
 						div.realdoors()
-							div.doorbox(style="left:-0%" id='leftdoor')
+							div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
 							section.doorstitle
 								div(:class="show.door?'screen':''")
 <<<<<<< HEAD
 <<<<<<< HEAD
 								p|{{$t('Light Curtain Signal')}}
+<<<<<<< HEAD
 							div.doorbox(style="right:-0%" id='rightdoor')
 =======
 =======
@@ -71,6 +72,9 @@ div.layout-content-main
 								p|光幕信号
 							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
 >>>>>>> parent of 37ad0bb... 7-17
+=======
+							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
+>>>>>>> parent of 3ea2754... 7-27
 			Col(span=16)
 				draggable(:options="{animation: 60,handle:'.drag'}")
 					Card(style="margin-bottom:10px" )
@@ -126,8 +130,6 @@ div.layout-content-main
 					page: 1,
 					num: 1,
 				},
-				doorposition:0,
-				doorposition2:0,
 				t_start:'',
 				t_end:'',
 				options:[],
@@ -196,35 +198,10 @@ div.layout-content-main
 				this.$router.back()
 			}
 		},
-		mounted(){
-			this.tweenAni();
-		},
 		components: {
 			draggable,
 		},
 		methods: {
-			tweenAni: function () {
-				let doorposition
-				let AppScrollTopNow = {
-					x: this.doorposition2
-				}, // ================================= 定义一个初始位置
-				AppScrollTopEnd = {
-					x: this.doorposition
-				} ;// ================================= 定义一个结束位置
-				new TWEEN.Tween(AppScrollTopNow) // 传入开始位置
-					.to(AppScrollTopEnd, 100) // 指定时间内完成结束位置
-					.easing(TWEEN.Easing.Quadratic.Out) // 缓动方法名
-					.onUpdate(() => {
-					// 上面的值更新时执行的设置
-					document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
-					document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
-					console.log(document.getElementById('leftdoor').style.left)
-					if (AppScrollTopEnd.x != 0) console.log(AppScrollTopEnd.x)
-				})
-				.start();// ================================= 不要忘了合适的时候启动动画
-				if (this.$route.meta.name == '控制器事件'){requestAnimationFrame(this.tweenAni);}
-				TWEEN.update();
-			},
 			async getDoorWidth(){
 				var buffer
 				if (this.$route.params.device_model == '1') {
@@ -403,9 +380,6 @@ div.layout-content-main
 					_this.show.closeStop = _this.event.closeStop[i]				//开关门受阻
 					_this.show.current = _this.event.current[i]			//获取电流信号
 					_this.show.speed = _this.event.speed[i]
-					_this.doorposition2=_this.doorposition
-					_this.doorposition=-50+(50*_this.show.position/_this.doorWidth)
-					console.log(_this.doorposition)
 				}
 				openIn.on('click',function (params){					
 					var i = params.name;//横坐标的值
@@ -421,7 +395,6 @@ div.layout-content-main
 				});
 			},
 			//电梯数据展示
-
 			async getData(val = false) {
 				let response = await this.$api.event(this.query)
 				if (response.data.code === 0) {

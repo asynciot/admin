@@ -4,12 +4,12 @@
 			<Sider :style="{minHeight: '100vh',background:bottomcolor,color:fontcolor}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
 				<Menu ref="side1" :class="menuitemClasses" :theme="bg3" width="auto" @on-select="go" :active-name="active" :style="{background:bottomcolor,color:fontcolor,height:screenheight}">
 					<div style="width: 100%;height: 64px;" :style="'background:'+bg1">
-						<img :src="logo" onerror="src='../../static/logo-menu.png';onerror=''" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
+						<img :src="logo" onerror="imgerrorfun1()" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
 					</div>
 					<template>
 						<div class="user-panel">
 							<Col span="8" >
-								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg';onerror=''">
+								<img :src="portrait" class="img-circle" alt="User Image" onerror="imgerrorfun2()">
 							</Col>
 							<Col span="16" style="padding-top: 10px;">
 								<p>&nbsp;&nbsp;{{info.nickname}}</p>
@@ -173,7 +173,7 @@
 					0: '管理员',
 				},
 				count: null,
-				screenheight:(document.documentElement.clientHeight-80).toString()+'px',
+				screenheight:document.documentElement.clientHeight.toString()+'px',
 				screenwidth:'',
 				active: this.$route.path.split('/')[1],
 				menu: [{
@@ -192,7 +192,7 @@
 						key:false,
 					},{
 						name:'laddermap',
-						label:'Ladder State',
+						label:'Devices State',
 						key:false,
 					},]
 				},{
@@ -317,16 +317,16 @@
 			this.getFunction()
 		},
 		methods: {
-// 			imgerrorfun1(){
-// 				var img=document.getElementById('logo'); 
-// 				img.src='../../static/logo-menu.png';
-// 				img.onerror=null;
-// 			},
-// 			imgerrorfun2(){
-// 				var img=document.getElementById('portrait'); 
-// 				img.src='../../static/admin.jpg';
-// 				img.onerror=null;
-// 			},
+			imgerrorfun1(){
+				var img=event.srcElement; 
+				img.src='../../static/logo-menu.png';
+				img.onerror=null;
+			},
+			imgerrorfun2(){
+				var img=event.srcElement; 
+				img.src='../../static/admin.jpg';
+				img.onerror=null;
+			},
 			getMenu(){
 				this.menus = JSON.parse(window.localStorage.getItem('menu'))
 				if(this.menus.dashboard == true){
@@ -535,16 +535,14 @@
 					})
 					console.log(res.data)
 					if (res.data.data.list.length>0){
-						if (res.data.data.list[0].bg1 !=null) {
-							this.bg1=res.data.data.list[0].bg1
-							this.bg2=res.data.data.list[0].bg2
-						}
+					this.bg1=res.data.data.list[0].bg1
+					this.bg2=res.data.data.list[0].bg2
 					// console.log(res.data.data.list[0].bg3)
 					if (res.data.data.list[0].bg3!=null){
 						this.bg3=res.data.data.list[0].bg3
 						if (this.bg3=="dark"){this.bottomcolor="#1e282c";this.fontcolor="#ffffff"}
 						if (this.bg3=="light"){this.bottomcolor="#ffffff";this.fontcolor="#1e282c"}
-						if (this.bg3=="primary"){this.bottomcolor="#8d8cf0";this.fontcolor=""}
+						if (this.bg3=="primary"){this.bottomcolor="#2d8cf0";this.fontcolor="#ffff22"}
 						}
 					this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
 					}

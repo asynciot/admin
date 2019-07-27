@@ -62,7 +62,7 @@ div()
 					page: 1,
 					num:1000,
 					device_type: '',
-					state:'longoffline',
+					state:'online',
 					register: "registered",
 					tagcolor: '',
 				},
@@ -182,9 +182,9 @@ div()
 						item.state = "长期离线"
 					}
 					if(item.device_type == "240"){
-						item.device_type = this.$t('ctrl')
+						item.device_type = "控制柜"
 					}else if(item.device_type == "15"){
-						item.device_type = this.$t('door')
+						item.device_type = "控制器"
 					}
 					if(item.cell_lat == null||item.cell_lon == null){
 						// this.$api.deldevices({id:item.id}),

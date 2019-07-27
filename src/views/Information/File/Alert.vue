@@ -33,7 +33,7 @@
 								Button(type="success",icon="plus",@click="sentalert()" v-if="up != true" disabled="false")|{{$t('Create order')}}
 								Button(type="success",icon="plus",@click="sentalert()" v-else)|{{$t('Create order')}}
 							Col(span=12 align='center')
-								Button(icon="close",@click="$router.back(-1)")|{{$t('cancel')}}
+								Button(icon="close",@click="$router.back(-1)")|{{$t('Cancel')}}
 </template>
 
 <script>

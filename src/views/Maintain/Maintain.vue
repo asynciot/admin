@@ -99,14 +99,7 @@
 				columns: [{
 						title: this.$t('device name'),
 						width: 110,
-						key: 'device_name',
-						render: (h, params) => {
-							var name='该设备已移出系统';
-							if (params.row.device_name !=null) {
-								name=params.row.device_name
-							}	
-							return h('div', name)
-						}
+						key: 'device_name'
 					}, {
 						title: this.$t('IMEI'),
 						width: 150,

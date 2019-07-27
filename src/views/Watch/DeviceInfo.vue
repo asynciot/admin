@@ -147,7 +147,7 @@
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[6]' readonly)
 							Col(span=5 style="height: 30px;font-size:16px")
-								checkbox(v-model="ctn" @on-change="contn()")|{{$t('Continuity')}}
+								checkbox(v-model="ctn" @on-change="contn()")|连续
 							Col(span=2)
 								input.iv(style="width:66%" ,:maxlength=4 v-model='address[6]' onkeyup="value=value.replace(/([^0-9a-fA-F])+/g, '')")
 								|&nbsp;:
@@ -255,7 +255,7 @@
 					key: 'IMEI',
 				}],
 				monitors: true,
-				memory:true,
+				memory:'',
 			}
 		},
 		created() {

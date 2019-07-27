@@ -406,11 +406,11 @@
 								item.register = this.$t('registering')
 							}
 						}
-// 						if (item.device_name != null) {
-// 							if (item.device_name.length >= 10) {
-// 								item.device_name = item.device_name.substring(0, 9) + "…"
-// 							}
-// 						}
+						if (item.device_name != null) {
+							if (item.device_name.length >= 10) {
+								item.device_name = item.device_name.substring(0, 9) + "…"
+							}
+						}
 					})
 					this.total = res.data.data.totalNumber
 				} else {
