@@ -62,9 +62,12 @@ div.layout-content-main
 							section.doorstitle
 								div(:class="show.door?'screen':''")
 <<<<<<< HEAD
+<<<<<<< HEAD
 								p|{{$t('Light Curtain Signal')}}
 							div.doorbox(style="right:-0%" id='rightdoor')
 =======
+=======
+>>>>>>> parent of 37ad0bb... 7-17
 								p|光幕信号
 							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
 >>>>>>> parent of 37ad0bb... 7-17
@@ -75,10 +78,17 @@ div.layout-content-main
 						div.ss(id="openIn" draggable=false)
 					Card(style="margin-bottom:10px")
 <<<<<<< HEAD
+<<<<<<< HEAD
 						p.drag(slot="title")|{{$t('Switch Door Arrival Signal')}}
 						div.ss(id="closeIn")
 					Card(style="margin-bottom:10px")
 						p.drag(slot="title")|{{$t('Door Current')}} A
+=======
+						p.drag(slot="title")|开关门到位信号
+						div.ss(id="closeIn")
+					Card(style="margin-bottom:10px")
+						p.drag(slot="title")|门电流
+>>>>>>> parent of 37ad0bb... 7-17
 =======
 						p.drag(slot="title")|开关门到位信号
 						div.ss(id="closeIn")

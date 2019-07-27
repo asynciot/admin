@@ -227,7 +227,7 @@
 	"Fail to register!" : "清除失败！",
 	"Fail to register,but it marked as unregistered" : "清除异常，但已将该设备标为未注册",
 	"Information on this device has been reset" : "此设备的信息已重置",
-	"Faul to reset" : "重置失败",
+	"Fail to reset" : "重置失败",
 	"reset" : "重置",
 	"E1" : "过流",
 	"E2" : "母线过压",
@@ -761,8 +761,9 @@
 	"Upward Direction Signal":"上运方向信号",
 	"Downward Direction Signal":"下运方向信号",
 	"Operating Signal":"运行信号",
-<<<<<<< HEAD
 	"Note:Can not try again when monitoring end until 1 minute ago.":"注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.",
+<<<<<<< HEAD
+<<<<<<< HEAD
 	"Online Peaple":"在线人数",
 	"Stop":"终止当前数据",
 	"Stop this monitoring?":"你确定要终止此次实时数据么？",
@@ -858,7 +859,8 @@
 	"None":"无",
   "refresh" : "刷新",
 =======
-	"Can not try again when monitoring end until 1 minute ago.":"注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.",
+=======
+>>>>>>> parent of 37ad0bb... 7-17
 	"Join":"加入",
 	
 	

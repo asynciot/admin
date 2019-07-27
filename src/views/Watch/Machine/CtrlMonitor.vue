@@ -267,7 +267,11 @@
 					interval: interval,
 				});
 <<<<<<< HEAD
+<<<<<<< HEAD
 				this.loading=this.$t('The monitoring data is over')
+=======
+				this.loading="此次实时数据已结束"
+>>>>>>> parent of 37ad0bb... 7-17
 =======
 				this.loading="此次实时数据已结束"
 >>>>>>> parent of 37ad0bb... 7-17
