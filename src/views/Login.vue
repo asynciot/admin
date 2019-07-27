@@ -69,20 +69,26 @@ export default {
 			},
 			rules: {
 				username: [{
+					// required: true,
+					message: this.$t('Illegal characters!'),
+					trigger: 'blur',
+					pattern:/^[A-Za-z0-9]+$/,
+				},{
 					required: true,
 					message: this.$t("Please fill in the username"),
 					trigger: 'blur'
 				},
 				{
 					type: 'string',
-					min: 4,
-					message: this.$t("Username should not less than 6 letters"),
+					min: 5,
+					message: this.$t("Username should not less than 5 letters"),
 					trigger: 'blur'
 				}],
 				password: [{
 					required: true,
-					message: this.$t("Please fill in the username"),
-					trigger: 'blur'
+					message: this.$t('Illegal characters!'),
+					trigger: 'blur',
+					pattern:/^[A-Za-z0-9]+$/,
 				},
 				{
 					type: 'string',

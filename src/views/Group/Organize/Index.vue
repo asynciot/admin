@@ -208,14 +208,7 @@
 					});
 					
 						this.loading = true
-							var query=''
-							if (this.query.number==null||this.query.number==""){
-								query={nums:this.query.nums,page:this.query.page}
-							}
-							else{
-								query={nums:this.query.nums,page:this.query.page,number:this.query.number}
-							}
-							const res = await this.$api.readOrganize(query)
+							const res = await this.$api.readOrganize(this.query)
 							if(res.data.code == 0){
 								this.list = res.data.data.list
 								this.options.total = res.data.data.totalNumber
@@ -240,7 +233,7 @@
 						title: this.$t('success'),
 						desc: this.$t('Successfully join')
 					});
-					this.getOrganize()
+					this.Organize()
 				}else{
 					this.$Notice.error({
 						title: this.$t('error'),
@@ -260,8 +253,8 @@
 					this.total = res.data.data.totalNumber
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
 					});
 				}
 			},

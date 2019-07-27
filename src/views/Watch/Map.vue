@@ -1,7 +1,74 @@
 <template lang="jade">
-div()
-	Col.map(span="24" id="mapsize")
-		div#map
+div
+	Row(:gutter=20)
+		Col(span=22)
+			Tabs.pd-heard(value="name1",:animated="false",@on-click="Onchange")
+				TabPane(:label="$t('Map')",name="map")
+				TabPane(:label="$t('List')",name="list")
+		Col(span=2)
+			span(id="1" class="fa fa-angle-up fa-3x" aria-hidden="true" ,@click="angleChange()" style="cursor: pointer;margin-top:-10px")
+	div(v-if="div_show" id="serClick" style="margin-top:-30px")
+		Form.imr(ref='form',:model="query",label-position="left",:label-width="100" @keydown.enter.native.prevent="search()")
+			Row(:gutter=5)
+				Col(span=2)
+					Select.smr(v-model="show.device_type" style="width:100%", :placeholder="$t('type')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('door')" value="15")
+						Option(key="3", :label="$t('ctrl')" value="240")
+				Col(span=2)
+					Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="search()")
+						Option(key="1", :label="$t('all')" value='all')
+						Option(key="2", :label="$t('online')" value="online")
+						Option(key="3", :label="$t('offline')" value="offline")
+						Option(key="4", :label="$t('long offline')" value="longoffline")
+				Col(span=4)
+					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
+				Col(span=3)
+					Input(v-model="query.install_addr" , :placeholder="$t('install address')" max=10)
+				Col(span=3)
+					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|{{$t('search')}}
+					Button(type="default" icon="md-add" @click="showtag=!showtag" shape="circle" v-if='!showtag')
+					Button(type="default" icon="md-remove" @click="showtag=!showtag" shape="circle" v-if='showtag')
+				Col(span=4 v-if='showtag')
+					Col(span=4)
+						span.mt(id="green" style="color:green" class="fa fa-tag fa-2x",@click="checkcolor(0)" )
+					Col(span=4)
+						span.mt(id="red" style="color:red" class="fa fa-tag fa-2x",@click="checkcolor(1)")
+					Col(span=4)
+						span.mt(id="yellow" style="color:yellow" class="fa fa-tag fa-2x",@click="checkcolor(2)")
+					Col(span=4)
+						span.mt(id="blue" style="color:blue" class="fa fa-tag fa-2x",@click="checkcolor(3)")
+					Col(span=4)
+						span.mt(id="gray" style="color:gray" class="fa fa-tag fa-2x",@click="checkcolor(4)")
+					Col(span=4)
+						span.mt(id="black" style="" class="fa fa-tag fa-2x",@click="checkcolor(5)")
+	Row(:gutter="8")
+		Col.map(span="20")
+			div#map
+		Col(span="4")
+			div.dv(id='list')
+				Poptip(word-wrap v-for="device in devices" ,:data="devices" trigger="hover" placement="left" v-bind:key="devices.id" )
+					Card.text(v-on:click.native="cardClick(device.cell_lat,device.cell_lon)" style="cursor: pointer;")
+						Row(:gutter="10")
+							div(style="margin-top:-20px")
+								div.ss()
+									i.pd(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(device.tagcolor)")
+							Col(span="24" style="margin-top:5px")
+								p.tt()|{{device.device_name}}
+								Row(:gutter="10" style="margin-top:5px")
+									Col(span="12")
+										p.tt1()|{{device.device_type}}
+									Col(span="12")
+										p.tt1()|{{device.state}}
+					div.api(slot="title" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
+						p()|{{$t('device IMEI')}} : {{device.IMEI}}
+						p()|{{$t('device name')}} : {{device.device_name}}
+					div.api(slot="content" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
+						p()|{{$t('device type')}} : {{device.device_type}}
+						p()|{{$t('base station')}} : {{device.cell_address}}
+						p()|{{$t('IP location')}} : {{device.ip_country+device.ip_region+device.ip_city}}
+						p()|{{$t('install address')}} : {{device.install_addr}}
+			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;")
 </template>
 
 
@@ -43,8 +110,8 @@ div()
 	export default {
 		data() {
 			const type = {
-				15: '控制器',
-				240: '控制柜',
+// 				15: this.$t('door'),
+// 				240: this.$t('ctrl'),
 			};
 			const netWork = {
 				3: '联通3G',
@@ -52,19 +119,19 @@ div()
 				41: '联通4G',
 			};
 			return {
-				showtag:true,
-				title:'',
+				showtag:false,
 				color:[false,false,false,false,false,false],
 				col:['green','red','yellow','blue','gray','black'],
 				menu: [],
 				query:{
 					search_info: '',
 					page: 1,
-					num:1000,
+					num:10,
 					device_type: '',
-					state:'longoffline',
+					state:'online',
 					register: "registered",
 					tagcolor: '',
+					install_addr:'',
 				},
 				show:{
 					device_type: 'all',
@@ -84,8 +151,7 @@ div()
 				openAnimateList: [],
 				markerClusterer: null,
 				markers: [],
-				list:'',
-				countmark:0,
+				list:[],
 				center:{
 					lat: 0,
 					lon: 0,
@@ -96,24 +162,15 @@ div()
 					num: 10,
 					total: 0,
 					register: "registered",				
-				},
-				screenheight:'',
+				}
 			}
 		},
 		mounted() {			
 			this.initMap()
 			this.getList()
-			this.setsize()
+			document.getElementById('list').style.height = (Number(document.documentElement.clientHeight)/1-200) + 'px'
 		},
 		methods: {
-			setsize(){
-				const mapsize = document.getElementById('mapsize')
-				const deviceWidth = document.documentElement.clientWidth
-				this.screenheight = document.documentElement.clientHeight
-				// mapsize.style.width = '100%'
-				mapsize.style.height = (Number(this.screenheight)/2.55) + 'px'
-				// mapsize.style.height ='380px'
-			},
 			async handleSearch1 () {
 				this.menu=[];
 				var str;
@@ -140,7 +197,7 @@ div()
 				let map = new BMap.Map('map', {
 					enableMapClick: false
 				});
-				map.centerAndZoom(point, 10);
+				map.centerAndZoom(point, 7);
 				map.enableScrollWheelZoom();
 				map.addControl(new BMap.NavigationControl({
 					anchor: BMAP_ANCHOR_TOP_RIGHT,
@@ -175,11 +232,11 @@ div()
 				this.options.total = res.data.data.totalNumber		
 				this.devices.forEach(item => {
 					if(item.state == "online"){
-						item.state = "在线"
+						item.state = this.$t('online')
 					}else if(item.state == "offline"){
-						item.state = "离线"
+						item.state = this.$t('offline')
 					}else if(item.state == "longoffline"){
-						item.state = "长期离线"
+						item.state = this.$t('long offline')
 					}
 					if(item.device_type == "240"){
 						item.device_type = this.$t('ctrl')
@@ -216,8 +273,8 @@ div()
 			async search() {
 				if(this.query.search_info.length > 15){
 					this.$Notice.error({
-						title: '警告',
-						desc: '请不要超过15字！',
+						title: this.$t('warning'),
+						desc: this.$t('try keyword within 15 bytes'),
 					})
 				}else{
 					if(this.show.device_type == 'all'){
@@ -231,22 +288,22 @@ div()
 						this.query.state = this.show.state
 					}
 					let dev = await this.$api.devices(this.query)
-					this.devices = dev.data.data.list
 					this.options.total = dev.data.data.totalNumber
-					this.devices.forEach(item =>{
+					dev.data.data.list.forEach(item =>{
 						if(item.state == "online"){
-							item.state = "在线"
+							item.state = this.$t('online')
 						}else if(item.state == "offline"){
-							item.state = "离线"
+							item.state = this.$t('offline')
 						}else if(item.state == "longoffline"){
-							item.state = "长期离线"
+							item.state = this.$t('long offline')
 						}
-						if(item.device_type == "ctrl"){
-							item.device_type = "控制柜"
-						}else if(item.device_type == "door"){
-							item.device_type = "控制器"
+						if(item.device_type == "240"){
+							item.device_type = this.$t('ctrl')
+						}else if(item.device_type == "15"){
+							item.device_type = this.$t('door')
 						}
 					})
+					this.devices = dev.data.data.list
 					this.addMark()
 					await this.centpoint()
 				}
@@ -260,56 +317,53 @@ div()
 					{
 						const point = new BMap.Point(item.cell_lon+Math.random()/500, item.cell_lat);
 						let marker = null;
-						if (item.state  == "在线") {
+						if (item.state  == this.$t('online')) {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: greenMark
 							});
 						}
-						if (item.state == "离线") {
+						if (item.state == this.$t('offline')) {
 							labelStyle.color = 'red';
 							labelStyle.borderColor = 'red';
 							marker = new BMap.Marker(point, {
 								icon: redMark
 							});
 						}
-						if (item.state  == '长期离线') {
+						if (item.state  == this.$t('long offline')) {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
 							marker = new BMap.Marker(point, {
 								icon: lostMark
 							});
 						}
-						var steelContent ='设备id:'+item.device_id+'<div></div>设备名称:'+item.device_name+'<div></div>基站地址:'+item.cell_address
-						var steelOpts = {
-							width : 150,     //信息窗口宽度
-							height: 130,     //信息窗口高度
-							title : "<b>设备信息</b>" , //信息窗口标题
-							enableMessage:true	//设置允许信息窗发送短息
-						};
-						marker.addEventListener('mouseover',function () {this.openInfoWindow(new BMap.InfoWindow(steelContent, steelOpts))})
-						// marker.addEventListener('mouseout',function () {this.closeInfoWindow()})
+						marker.addEventListener('click', () => this.goDevice(item));
 						this.markers.push(marker)
-
 					}
 				})
-				// this.map.panTo(new BMap.Point(29.71174431,105.67720032))
-				var point = new BMap.Point(106.27720032,29.41174431)
-				this.map.panTo(point)
 				this.markerClusterer.addMarkers(this.markers)
 			},
-			showtag1(data) {
-				this.showtag=true
+			goDevice(data) {
+				this.$router.push({
+					name: 'deviceInfo',
+					params: {
+						id: data.id,
+						IMEI: data.IMEI,
+						type: data.device_type,
+					}
+				})
 			},
-			showtag2(data) {
-				this.showtag=false
+			Onchange(val) {
+				this.$router.push({
+					name: val,
+				})
 			},
 			cardClick(val,vd){
 				if ((val==null)||(vd==null)){
 					this.$Notice.warning({
-						title: '警告',
-						desc: '该设备没有记录地址',
+						title: this.$t('warning'),
+						desc: this.$t('This device has no address record'),
 					})
 				}
 				else {this.map.panTo(new BMap.Point(vd, val))}
@@ -333,16 +387,16 @@ div()
 				this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
-						item.state = "在线"
+						item.state = this.$t('online')
 					}else if(item.state == "offline"){
-						item.state = "离线"
+						item.state = this.$t('offline')
 					}else if(item.state == "longoffline"){
-						item.state = "长期离线"
+						item.state = this.$t('long offline')
 					}
 					if(item.device_type == "240"){
-						item.device_type = "控制柜"
+						item.device_type = this.$t('ctrl')
 					}else if(item.device_type == "15"){
-						item.device_type = "控制器"
+						item.device_type = this.$t('door')
 					}
 					if(item.cell_lat<=minlat){
 						minlat = item.cell_lat
@@ -360,35 +414,35 @@ div()
 				cenlat = (minlat+maxlat)/2			
 				cenlon = (minlon+maxlon)/2
 			},
-// 			pageChange(val) {
-// 				this.query.page = val
-// 				this.search()
-// 				this.addMark()
-// 			},
+			pageChange(val) {
+				this.query.page = val
+				this.search()
+				this.addMark()
+			},
 			getlist(val){
 				return val.split(';')
 			},
-// 			async checkcolor(c) {
-// 				this.color[c]=!this.color[c]
-// 				if (this.color[c]) {
-// 					document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
-// 					document.getElementById(this.col[c]).style.marginTop = "4px"
-// 				}
-// 				else {
-// 					document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
-// 					document.getElementById(this.col[c]).style.marginTop = "4px"
-// 				}
-// 				this.query.tagcolor=''
-// 				for (var i=0;i<6;i++) {
-// 				if (this.color[i]) {
-// 					if (this.query.tagcolor!='') {
-// 						this.query.tagcolor=this.query.tagcolor+';'
-// 						}
-// 					this.query.tagcolor=this.query.tagcolor+this.col[i]
-// 				}
-// 				}
-// 				this.search()
-// 			},
+			async checkcolor(c) {
+				this.color[c]=!this.color[c]
+				if (this.color[c]) {
+					document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
+					document.getElementById(this.col[c]).style.marginTop = "4px"
+				}
+				else {
+					document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
+					document.getElementById(this.col[c]).style.marginTop = "4px"
+				}
+				this.query.tagcolor=''
+				for (var i=0;i<6;i++) {
+				if (this.color[i]) {
+					if (this.query.tagcolor!='') {
+						this.query.tagcolor=this.query.tagcolor+';'
+						}
+					this.query.tagcolor=this.query.tagcolor+this.col[i]
+				}
+				}
+				this.search()
+			},
 		}
 	}
 </script>
@@ -398,11 +452,75 @@ div()
 		margin-top: 4px;
 	}
 	.map {
-		height: calc(30vh - 54px);
+		height: calc(100vh - 180px);
 	}
 	#map {
 		position: relative;
 		width: 100%;
 		height: 100%;
+	}
+	.text{
+		margin-top: 5px;
+		font-size: small;		
+		bordered: true;
+		border-width: 3px;
+	}
+	.tt{
+		margin-left: -10px;
+		margin-top: -10px;
+		margin-right: -50px;
+		width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.tt1{
+		margin-left: -10px;
+		margin-top: 5px;
+		margin-bottom: -10px;
+		width: 100px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		padding-bottom: 1px;
+	}
+	.dv{
+		height: 460px;
+		overflow-x: hidden;
+		overflow-y: scroll;
+	}
+	.pd{
+		padding-right: 2px;
+	}
+	.handle-input {
+		width: 200px;
+		display: inline-block;
+	}
+	.imr{
+		margin: 10px;
+		margin-left: 0px;
+	}
+	.smr{
+		margin-right: 10px;
+	}
+	.pd-heard{
+		margin-top: -20px;
+	}
+	.icon{
+		margin-top:-20px;
+		margin-left: 120px;
+	}
+	.icon1{
+		margin-top:-20px;
+		margin-left: 140px;
+		padding-left: 10px;
+	}
+	.ss{
+		display:inline;
+		float: right;
+		padding-right: 2px;
+	}
+	.fonts{
+		font-size: 12px;
 	}
 </style>

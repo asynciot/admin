@@ -91,8 +91,8 @@
 						key: 'device_type',
 						render: (h, params) => {
 							var type = ''
-							if (params.row.device_type == "ctrl") type = this.$t('ctrl')
-							if (params.row.device_type == "door") type = this.$t('door')
+							if (params.row.device_type == "240") type = this.$t('ctrl')
+							if (params.row.device_type == "15") type = this.$t('door')
 							return h('div', type)
 						},
 					}, {
@@ -118,7 +118,7 @@
 						render: (h, params) => {
 							var type = ''
 							var e = ''
-							if ((params.row.type == '1') && (params.row.code != null)) {
+							if ((params.row.code != null)) {
 								type = params.row.code.toString(16)
 								if (type.length == 1) {
 									type = '0' + type
@@ -241,6 +241,7 @@
 						})
 						if (ech.data.data.list.length == 1) {
 							res.data.data.list[i].device_name = ech.data.data.list[0].device_name
+							res.data.data.list[i].device_type = ech.data.data.list[0].device_type
 							res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
 							res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 							res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data
@@ -280,17 +281,24 @@
 						if (ech.data.data.list.length == 1) {
 							res.data.data.list[i].device_name = ech.data.data.list[0].device_name
 							res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
+							res.data.data.list[i].device_type = ech.data.data.list[0].device_type
 							res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
 							res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data
 								.list[0].ip_city
 							res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
 						}
-						ech = await this.$api.runtime({
-							page: 1,
-							num: 20,
-							type: 8195,
-							device_id: res.data.data.list[i].device_id
+
+					}
+					for (var i = 0; i < res.data.data.list.length; i++) {
+						var ech = await this.$api.fault({
+							id: res.data.data.list[i].order_id,
+							num: 10,
+							page: 1
 						})
+						if (ech.data.data.list.length == 1) {
+							res.data.data.list[i].type = ech.data.data.list[0].type
+							res.data.data.list[i].producer = ech.data.data.list[0].producer
+						}
 					}
 					this.list = res.data.data.list
 					this.totalNumber = res.data.data.totalNumber

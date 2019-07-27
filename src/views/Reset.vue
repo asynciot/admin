@@ -4,30 +4,31 @@ div.account
 	Row(:gutter= 50 style="padding-bottom:15%")
 		Col(span=12)
 			img.img1(src="../assets/logo-menu.png" align="center")
-			h3.account-title|宁波申菱 管理系统
+			h3.account-title(style="text-align:center;font-size:23px;line-height:50px;width:250px" v-if="this.$i18n.locale == 'en-US'")|{{$t("NBSL")}}
+			h3.account-title(style="text-align:center" v-if="this.$i18n.locale == 'zh-CN'")|{{$t("NBSL")}}
 		Col(span=12 style="padding-top:5%")
 			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
 				Form-item(prop="mobile")
-					Input(type="text",v-model="form.mobile",placeholder="您注册用的手机")
+					Input(type="text",v-model="form.mobile",:placeholder="$t('Your Registered Mobile Phone')")
 						icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="verifyCode")
 					Row(:gutter=30)
-						Col(span=12)
-							Input(type="text",v-model="form.verifyCode",placeholder="验证码")
+						Col(span=13)
+							Input(type="text",v-model="form.verifyCode",:placeholder="$t('Verification Code')")
 								Icon(type="ios-unlocked-outline",size="20",slot="prepend")
-						Col(span=12)
+						Col(span=11)
 							div()
-								Button(@click="sentMessage",v-if="count<=0",style="width: 100%")|获取验证码
-								Button(@click="sentMessage",v-if="count>0",style="width: 100%" disabled)|获取验证码({{count}})
-				Form-item(prop="password")
-					Input(type="password",v-model="form.newpassword",placeholder="请输入新密码")
+								Button(@click="sentMessage",v-if="count<=0",style="width: 100%")|{{$t('Get Code')}}
+								Button(@click="sentMessage",v-if="count>0",style="width: 100%" disabled)|{{$t('Get Code')}}({{count}})
+				Form-item(prop="newpassword")
+					Input(type="password",v-model="form.newpassword",:placeholder="$t('Please enter a new password.')")
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item(prop="confirm")
-					Input(type="password",v-model="query.confirm",placeholder="请重复新密码")
+					Input(type="password",v-model="query.confirm",:placeholder="$t('Please repeat the new password.')")
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item
-					Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|重置密码
-					Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|返回
+					Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|{{$t('Reset Password')}}
+					Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|{{$t('cancel')}}
 </template>
 
 <script>
@@ -41,9 +42,9 @@ export default {
 	data() {
 		const validateOldPassCheck = (rule, value, callback) => {
 			if(this.query.confirm == '') {
-				callback(new Error('请再次输入密码'));
+				callback(new Error(this.$t('Please enter your password again.')));
 			} else if(this.query.confirm !== this.form.newpassword) {
-				callback(new Error('两次输入密码不一致!'));
+				callback(new Error(this.$t('Inconsistent passwords!')));
 			} else {
 				callback();
 			}
@@ -64,45 +65,48 @@ export default {
 			rules: {
 				username: [{
 					required: true,
-					message: '请填写',
-					trigger: 'blur'
+					message: this.$t('Illegal characters!'),
+					trigger: 'blur',
+					pattern:/^[A-Za-z0-9]+$/,
 				},
 				{
 					type: 'string',
-					min: 6,
-					message: '用户名长度不能小于6位',
+					min: 5,
+					message: this.$t('Username should not less than 5 letters'),
 					trigger: 'blur'
 				}],
 				mobile: [{
 					required: true,
-					message: '请填写手机号码',
+					message: this.$t('Please fill in the phone number.'),
 					trigger: 'blur'
 				},{
-					message: '请填写正确的手机号',
+					message: this.$t('Wrong Phone Number'),
 					pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
 					trigger: 'blur'
-				},
+				}
 				],
 				verifyCode: [{
 					required: true,
-					message: '请填写验证码',
+					pattern:/^[A-Za-z0-9]+$/,
+					message: this.$t('Please fill in the true verification code.'),
 					trigger: 'blur'
 				},
 				{
 					type: 'string',
 					min: 4,
-					message: '验证码至少是4位',
+					message: this.$t('Verification code should be 4 letters'),
 					trigger: 'blur'
 				}],
 				newpassword: [{
 					required: true,
-					message: '请填写密码',
-					trigger: 'blur'
+					message: this.$t('Illegal characters!'),
+					trigger: 'blur',
+					pattern:/^[A-Za-z0-9]+$/,
 				},
 				{
 					type: 'string',
 					min: 6,
-					message: '密码长度不能小于6位',
+					message: this.$t('Password should not less than 6 letters'),
 					trigger: 'blur'
 				}],
 				confirm: [{
@@ -119,10 +123,26 @@ export default {
 	},
 	methods: {
 		async sentMessage(){
-			this.time=Number(Date.parse(new Date()))
-			window.localStorage.setItem('munite',this.time)
-			this.munite()
-			let res = await this.$api.sentMessage(this.form.mobile)
+			if (/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(this.form.mobile)){
+				this.time=Number(Date.parse(new Date()))
+				window.localStorage.setItem('munite',this.time)
+				this.munite()
+				let res = await this.$api.sentMessage(this.form.mobile)
+			}
+			else{
+				if (this.form.mobile == null || this.form.mobile == ''){
+					this.$Notice.error({
+						title: this.$t('error'),
+						desc: this.$t('Please fill in the phone number.')
+					})
+				}
+				else {
+					this.$Notice.error({
+						title: this.$t('error'),
+						desc: this.$t('Wrong Phone Number')
+					})
+				}
+			}
 		},
 		munite(){
 			if (!(/^\d+$/.test(window.localStorage.getItem('munite')))) window.localStorage.setItem('munite',0)
@@ -149,23 +169,23 @@ export default {
 						window.localStorage.setItem('munite',0);
 						this.$router.back();
 						this.$Notice.success({
-							title: '成功',
-							desc: '已经重置密码！',
+							title: this.$t('success'),
+							desc: '',
 							onClose: () => {
 							}
 						})
 					}else {
 						this.loading = false
 						this.$Notice.error({
-							title: '错误',
-							desc: '重置失败，请检查信息'
+							title: this.$t('error'),
+							desc: this.$t('Fail to reset')
 						})
 					}
 				}else{
 					this.loading = false
 					this.$Notice.error({
-						title: '错误',
-						desc: '请检查表单是否完整！'
+						title: this.$t('error'),
+						desc: this.$t('Please check the form!')
 					})
 				}
 			})
