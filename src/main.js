@@ -69,7 +69,7 @@ router.beforeEach((to, from, next) => {
 			window.localStorage.removeItem("username")
 		}
 	}
-	if(to.name=='login'||to.name=='register'||window.localStorage.getItem("username")){
+	if(to.name=='login'||to.name=='register'||to.name=='reset'||window.localStorage.getItem("username")){
 		next()
 		window.localStorage.setItem('counts',0)
 		const logout = new Date().getTime()

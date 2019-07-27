@@ -1,10 +1,11 @@
 {
-    "lang" : "English",
-    "register" : "register",
-	"login" : "login",
-	"forget_password?" : "forget_password?",
-	"remember" : "remember",
-	"NBSL" : "Ningbo Shen Ling Management System",
+  "lang" : "English",
+  "register" : "Register",
+  "Username" : "User Name",
+	"login" : "Login",
+	"forget_password?" : "Forgot password?",
+	"remember" : "Remember",
+	"NBSL" : "Ning Bo Shen Ling Elevator IOT",
 	"Operation Monitor" : "Operation Monitor",
 	"Operation State" : "Operation State",
 	"Devices State" : "Devices State",
@@ -86,6 +87,8 @@
 	"dE20" : "Output over-current",
 	"dE40" : "Input under-voltage",
 	"dE80" : "Input over-voltage",
+	"E64" : "Input under-voltage",
+	"E128" : "Input over-voltage",
 	
     "refresh" : "Refresh",
     "array": [

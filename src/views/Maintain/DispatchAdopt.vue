@@ -9,8 +9,8 @@
 								Row(:gutter="5")
 									Col(span="20",offset="2")
 										Form-item(label="设备名称:")|{{list.device_name}}
-										Form-item(label="设备类型:" v-if="list.device_type==240")|控制柜
-										Form-item(label="设备类型:" v-if="list.device_type==15")|控制器
+										Form-item(label="设备类型:" v-if="list.device_type==240")|{{$t('ctrl')}}
+										Form-item(label="设备类型:" v-if="list.device_type==15")|{{$t('door')}}
 										Form-item(label="IMEI号:")|{{list.IMEI}}
 										Form-item(label="事件类型:")|{{list.type}}
 										Form-item(label="故障原因:" v-if="list.type == '故障'")|{{list.code}}
@@ -24,7 +24,7 @@
 								Form(ref="form",:model="form",:rules="rules",:label-width="120" style="height:200px")
 									Row(:gutter="5")
 										Col(span="20",offset="2")
-											Form-item(label="详细说明:")|{{ps}}
+											Form-item(label="详细说明:")|{{list.remarks}}
 							Col(span=24)
 								Col(span=12 align="center")
 									Button(type="success",icon="plus",@click="adopt",:disabled='upsuccess')|同意

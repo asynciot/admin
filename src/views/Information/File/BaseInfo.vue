@@ -598,7 +598,7 @@ export default {
 			}else {
 					this.$Notice.error({
 						title: this.$t('error'),
-						desc: this.$t('Faul to reset')
+						desc: this.$t('Fail to reset')
 					});
 			}
 		},

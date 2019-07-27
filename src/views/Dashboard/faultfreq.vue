@@ -76,14 +76,15 @@
 						})
 					}
 				let res = await this.$api.faultfreq({starttime: this.$format(this.starttime.toString(),'YYYY-MM-DD'),
-													endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD')})
+													endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),
+													})
 				if (res.data.code == 0){
 					this.topcode=res.data.list
 				}
 			},
 			async getfaultfreq(){
 				// var time=Date.parse(this.$format(new Date(), 'yyyy-MM-DD'))
-				let res = await this.$api.faultfreq()
+				let res = await this.$api.faultfreq({item:'bd'})
 				if (res.data.code == 0){
 					this.topcode=res.data.list
 					for (var i=6;i<this.topcode.length;i++){
@@ -109,12 +110,12 @@
 						bottom: 10,
 						left: 'center',
 						fontsize: '25px',
-						data: [this.codelist[parseInt(this.topcode[0].code.toString(16))], 
-								this.codelist[parseInt(this.topcode[1].code.toString(16))], 
-								this.codelist[parseInt(this.topcode[2].code.toString(16))], 
-								this.codelist[parseInt(this.topcode[3].code.toString(16))], 
-								this.codelist[parseInt(this.topcode[4].code.toString(16))],
-								'其它'
+						data: [this.$t('E'+this.topcode[0].code.toString(16)), 
+								this.$t('E'+this.topcode[1].code.toString(16)), 
+								this.$t('E'+this.topcode[2].code.toString(16)), 
+								this.$t('E'+this.topcode[3].code.toString(16)), 
+								this.$t('E'+this.topcode[4].code.toString(16)), 
+								this.$t('Other'),
 						],
 						textStyle: {
 							fontSize: 12
@@ -126,12 +127,12 @@
 						center: ['50%', '40%'],
 						selectedMode: 'single',
 						data:[
-							{value:this.topcode[0].counter, name: this.codelist[parseInt(this.topcode[0].code.toString(16))]},
-							{value:this.topcode[1].counter, name: this.codelist[parseInt(this.topcode[1].code.toString(16))]},
-							{value:this.topcode[2].counter, name: this.codelist[parseInt(this.topcode[2].code.toString(16))]},
-							{value:this.topcode[3].counter, name: this.codelist[parseInt(this.topcode[3].code.toString(16))]},
-							{value:this.topcode[4].counter, name: this.codelist[parseInt(this.topcode[4].code.toString(16))]},
-							{value:this.topcode[5].counter, name: '其它'},
+							{value:this.topcode[0].counter, name: this.$t('E'+this.topcode[0].code.toString(16))},
+							{value:this.topcode[1].counter, name: this.$t('E'+this.topcode[1].code.toString(16))},
+							{value:this.topcode[2].counter, name: this.$t('E'+this.topcode[2].code.toString(16))},
+							{value:this.topcode[3].counter, name: this.$t('E'+this.topcode[3].code.toString(16))},
+							{value:this.topcode[4].counter, name: this.$t('E'+this.topcode[4].code.toString(16))},
+							{value:this.topcode[5].counter, name: this.$t('Other')},
 						],
 						itemStyle: {
 							emphasis: {

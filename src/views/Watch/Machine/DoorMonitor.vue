@@ -4,15 +4,12 @@
 			Card
 				Form.status(:model="show",label-position="left",:label-width="80")
 					Row(:gutter="16")
-						Col(span="4")
-							Form-item(:label="$t('creator')")
-								p()
 						Col(span="5")
 							Form-item(:label="$t('creator')")
 								p()
 						Col(span="5")
 							Form-item(:label="$t('Online Peaple')")|{{pernum}}
-						Col(span="5")
+						Col(span="9")
 							div()|{{loading}}
 						Col(span="4")
 							Button.mr-10(type="default" @click="modal1 = true")|{{$t('Stop')}}
@@ -76,11 +73,12 @@
 									p|{{$t('Opening Arrival Input')}}
 										i.signal(:class="show.openTo?'ready':''")
 							div.realdoors()
-								div.doorbox(:style="{ left: `-${(show.position / doorWidth) * 50}%` }")
+								div.doorbox(style="left:-0%" id='leftdoor')
 								section.doorstitle
 									div(:class="show.door?'screen':''")
 									p|{{$t('Light Curtain Signal')}}
-								div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
+								div.doorbox(style="right:-0%" id='rightdoor')
+								<!-- div.doorbox(:style="{ right: `-${doorposition}%` }" id="rightdoor") -->
 					div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
 				Col(span=16)
 					draggable(:options="{animation: 60,handle:'.drag'}")
@@ -118,6 +116,8 @@
 				count: 0,
 				pernum: 0,
 				doorWidth:4096,
+				doorposition:0,
+				doorposition2:0,
 				query:{
 					device_type: 15,
 					type: 0,
@@ -171,10 +171,40 @@
 		created(){
 			this.initWebsocket();
 		},
+		mounted(){
+			this.tweenAni();
+		},
 		components: {
 			draggable,
 		},
+		watch:{
+			doorposition :function(newValue, oldValue) {
+			}
+		},
 		methods: {
+			tweenAni: function () {
+								let doorposition
+								let AppScrollTopNow = {
+									x: this.doorposition2
+								}, // ================================= 定义一个初始位置
+								AppScrollTopEnd = {
+									x: this.doorposition
+								} ;// ================================= 定义一个结束位置
+								new TWEEN.Tween(AppScrollTopNow) // 传入开始位置
+								    .to(AppScrollTopEnd, 100) // 指定时间内完成结束位置
+								    .easing(TWEEN.Easing.Quadratic.Out) // 缓动方法名
+								    .onUpdate(() => {
+									// 上面的值更新时执行的设置
+									document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
+									document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
+									
+				// 					document.documentElement.scrollTop = AppScrollTopNow.y;
+				// 					document.body.scrollTop = AppScrollTopNow.y;
+								})
+								.start();// ================================= 不要忘了合适的时候启动动画
+				if (this.$route.meta.name == '控制器监控'){requestAnimationFrame(this.tweenAni);}
+				TWEEN.update();
+			},
 			async initWebsocket(){ //初始化weosocket
 				var buffer
 				if (this.$route.params.device_model == '1') {
@@ -211,7 +241,6 @@
 				this.loading=this.$t('WebSocket connection successful,please wait for data')
 			},
 			websocketonerror(e) { //错误
-				console.log(this.id)
 				console.log("WebSocket连接发生错误");
 				this.loading=this.$t('WebSocket connection failed')
 			},
@@ -258,7 +287,6 @@
 			getData(val) {
 				let buffer = []
 				buffer = base64url.toBuffer(val.data);	//8位转流
-				console.log(buffer)
 				// var _this = this
 				this.count= 0
 				if (this.t_start == '') this.t_start = val.time
@@ -286,10 +314,12 @@
 				this.show.position	= ((buffer[this.count+2]&0x0f)<<8)+(buffer[this.count+3]&0xff)		//获取位置信号
 				this.show.current = (((buffer[this.count+4]&0xff)<<8)+(buffer[this.count+5]&0xff))/1000		//获取电流信号
 				this.show.speed = (((buffer[this.count+6]&0xff)<<8)+(buffer[this.count+7]&0xff))/1000
+
 				if(this.show.speed>32.767){
 					this.show.speed = this.show.speed-65.535
 				}
-				console.log(this.show)
+				this.doorposition2=this.doorposition
+				this.doorposition=-50+(50*this.show.position/this.doorWidth)
 				this.getX()
 // 						_this.count+=8
 // 					}
@@ -302,9 +332,12 @@
 				let openIn = this.$echarts.init(document.getElementById('openIn'))
 				let daowei = this.$echarts.init(document.getElementById('closeIn'))
 				let current = this.$echarts.init(document.getElementById('current'))
-				let speed = this.$echarts.init(document.getElementById('speed'))					
-				
-				var _this = this								
+				let speed = this.$echarts.init(document.getElementById('speed'))
+				var _this = this
+				var openarrival=_this.$t('Open Door Arrival Signal')
+				var closearrival=_this.$t('Close Door Arrival Signal')
+				var opendoor=_this.$t('Open Door Signal')
+				var closedoor=_this.$t('Close Door Signal')
 				var inte = setInterval(function () {
 					_this.openIn.push(_this.show.openIn)
 					_this.closeIn.push(_this.show.closeIn)
@@ -327,7 +360,7 @@
 						},
 						legend: {
 							// data:[_this.$t('Open Door Signal'), _this.$t('Close Door Signal')]
-							data:[_this.$t('Open Door Signal'), _this.$t('Close Door Signal')]
+							data:[opendoor, closedoor]
 						},
 						grid: {
 							left: '3%',
@@ -342,12 +375,12 @@
 							data:[0,1]
 						},
 						series: [{
-							name:_this.$t('Open Door Signal'),
+							name:opendoor,
 							type:'line',
 							step: 'start',
 							data:_this.openIn
 						},{
-							name:_this.$t('Close Door Signal'),
+							name:closedoor,
 							type:'line',
 							step: 'start',
 							data:_this.closeIn
@@ -358,9 +391,9 @@
 							trigger: 'axis'
 						},
 						legend: {
-							data:[_this.$t('Open Door Arrival Signal'), _this.$t('Close Door Arrival Signal')]
+							data:[openarrival, closearrival]
 						},
-						grid: {					
+						grid: {
 							left: '3%',
 							right: '4%',
 							containLabel: true
@@ -373,12 +406,12 @@
 							data:[0,1]
 						},
 						series: [{
-							name:_this.$t('Open Door Arrival Signal'),
+							name:openarrival,
 							type:'line',
 							step: 'start',
 							data:_this.openTo
 						},{
-							name:_this.$t('Close Door Arrival Signal'),
+							name:closearrival,
 							type:'line',
 							step: 'start',
 							data:_this.closeTo
@@ -388,7 +421,7 @@
 						tooltip: {
 							trigger: 'axis'
 						},
-						grid: {					
+						grid: {
 							left: '3%',
 							right: '4%',
 							top: '3%',

@@ -7,7 +7,7 @@
 					<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
 						<Option key="1" :label="$t('all')" value="all"></Option>
 						<Option key="2" :label="$t('reprieve')" value="reprieve"></Option>
-						<Option key="3" :label="$t('treating')" value="untreated"></Option>
+						<Option key="3" :label="$t('treating')" value="treating"></Option>
 						<Option key="4" :label="$t('examine finished')" value="examined"></Option>
 						<Option key="5" :label="$t('finished')" value="treated"></Option>
 					</Select>
