@@ -8,16 +8,16 @@
 							Form-item(:label="$t('creator')")
 								p()
 						Col(span="5")
-							Form-item(:label="$t('creator')")
+							Form-item(label="创建时间：")
 								p()
 						Col(span="5")
-							Form-item(:label="$t('Online Peaple')")|{{pernum}}
+							Form-item(label="在线人数：")|{{pernum}}
 						Col(span="5")
 							div()|{{loading}}
 						Col(span="4")
-							Button.mr-10(type="default" @click="modal1 = true")|{{$t('Stop')}}
-							Modal(v-model="modal1", :title="$t('warning')"  @on-ok="closed")
-								p()|{{$t('Stop this monitoring?')}}
+							Button.mr-10(type="default" @click="modal1 = true")|终止当前数据
+							Modal(v-model="modal1" title="警告"  @on-ok="closed")
+								p()|你确定要终止此次实时数据么？
 			Row.mb-10(:gutter="8")
 				Col.padding(span="8")
 					Card.card
@@ -110,7 +110,7 @@
 	export default {
 		data () {
 			return {
-				loading:this.$t('Please wait patiently in connection equipment'),
+				loading:"连接设备中,请耐心等待",
 				count: 0,
 				pernum: 0,
 				query:{
@@ -200,7 +200,7 @@
 			},
 			async initWebsocket(){ //初始化weosocket	
 				let res = await this.$api.monitor(this.query);
-				if (res.data.code == 670) {alert(this.$t('The elevator has been monitored by others'))}
+				if (res.data.code == 670) {alert("该电梯已被其他人启动实时监控")}
 				this.person()
 				if((res.data.code == 0)||(res.data.code == 670)){
 					let wsurl ='ws://47.96.162.192:9006/device/Monitor/socket?deviceId='+this.id+'&userId='+window.localStorage.getItem('id')
@@ -211,7 +211,7 @@
 					this.websock.onmessage = this.websocketonmessage;
 				}
 				else {
-					this.loading=this.$t('Connection failed')
+					this.loading="连接失败"
 				}
 			},
 			async person(){
@@ -224,19 +224,19 @@
 			},
 			websocketonopen() {
 				console.log("WebSocket连接成功");
-				this.loading=this.$t('WebSocket connection successful,please wait for data')
+				this.loading='WebSocket连接成功,请等待数据'
 			},
 			websocketonerror(e) {//错误
 				console.log(this.id)
 				console.log("WebSocket连接发生错误");
-				this.loading=this.$t('WebSocket connection failed')
+				this.loading='WebSocket连接失败'
 			},
 			websocketonmessage(e){//数据接收
-			this.loading=this.$t('Getting data')
+			this.loading='获取数据中'
 				if(e.data=="closed"){
 					
 					// clearInterval(inte)
-					this.loading=this.$t('The monitoring data is over')
+					this.loading="此次实时数据已结束"
 				}else{
 					var redata = JSON.parse(e.data)
 					this.interval = redata.interval
@@ -266,7 +266,11 @@
 					threshold: threshold,
 					interval: interval,
 				});
+<<<<<<< HEAD
 				this.loading=this.$t('The monitoring data is over')
+=======
+				this.loading="此次实时数据已结束"
+>>>>>>> parent of 37ad0bb... 7-17
 			},
 			//电梯数据展示
 			getData(val) {
@@ -410,41 +414,41 @@
 			parseStatus(event) {//状态
 				let statusName = '';
 				if ((event.status&(0x01)) == 1) {
-					statusName+= this.$t('Automatic')+';';
+					statusName+= '自动;';
 				}
 				if ((event.status&(0x02))>>1 == 1) {
-					statusName+= this.$t('Overhaul')+';';
+					statusName+= '检修;';
 				}
 				if ((event.status&(0x04))>>2 == 1) {
-					statusName+= this.$t('Driver')+';';
+					statusName+= '司机;';
 				}
 				if ((event.status&(0x08))>>3 == 1) {
-					statusName+= this.$t('Firefighting')+';';
+					statusName+= '消防;';
 				}
 				if ((event.status&(0x10))>>4 == 1) {
-					statusName+= this.$t('Lock body')+';';
+					statusName+= '锁体;';
 				}
 				if ((event.status&(0x20))>>5 == 1) {
-					statusName+= this.$t('Broken')+';';
+					statusName+= '故障;';
 				}
 				if ((event.status&(0x40))>>6 == 1) {
-					statusName+= this.$t('Overload')+';';
+					statusName+= '超载;';
 				}
 				if ((event.status&(0x80))>>7 == 1) {
-					statusName+= this.$t('Full load')+';';
+					statusName+= '满载;';
 				}
 				return statusName
 			},
 			parseModel(event) {
-				let statusName = this.$t('None');
+				let statusName = '无';
 				if ((event.model&(0x01)) == 1) {
-					statusName = this.$t('Single Ladder');
+					statusName = '单梯';
 				}
 				if ((event.model&(0x02))>>1 == 1) {
-					statusName = this.$t('Parallel Connection');
+					statusName = '并联';
 				}
 				if ((event.model&(0x04))>>2 == 1) {
-					statusName = this.$t('Group Control');
+					statusName = '群控';
 				}
 				return statusName
 			},

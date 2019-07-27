@@ -32,7 +32,7 @@
 	"print" : "打印",
 	"Personal Information" : "个人信息",
 	"Change Password" : "修改密码",
-	"WeChat Follow" : "微信关注",
+	"WeChat Follow" : "出厂设置",
 	"Logout" : "退出",
 	"Quit" : "退出全屏",
 	"Fullscreen" : "全屏",
@@ -401,7 +401,7 @@
   "Setting for front and rear door": "前后门设置",
   "Closing Auto Detection Stop Position Setting": "关门自动检测停止位置设置",
   "Light Curtain connection selection": "光幕连接选择",
-  "Light Curtain Signal": "光幕信号",
+  
   
   "Operation enable setting":"操作使能设置",
 	"Low speed torque lifting":"低速力矩提升",
@@ -751,7 +751,6 @@
 	"Parking":"停车",
 	"Door Lock Signal":"门锁信号",
 	"Close Door Signal":"关门信号",
-	"Open Door Signal":"开门信号",
 	"Active":"动作",
 	"Inactive":"无动作",
 	"Close Door Button Signal":"关门按钮信号",
@@ -763,6 +762,7 @@
 	"Downward Direction Signal":"下运方向信号",
 	"Operating Signal":"运行信号",
 	"Note:Can not try again when monitoring end until 1 minute ago.":"注:为了保证信息的可靠性,监控结束后保留1分钟缓冲时间,期间不发送信息,避免出现上次监控残余信息.",
+<<<<<<< HEAD
 	"Online Peaple":"在线人数",
 	"Stop":"终止当前数据",
 	"Stop this monitoring?":"你确定要终止此次实时数据么？",
@@ -857,6 +857,12 @@
 	"None":"无",
 	"None":"无",
   "refresh" : "刷新",
+=======
+	"Join":"加入",
+	
+	
+    "refresh" : "刷新",
+>>>>>>> parent of 37ad0bb... 7-17
     "array": [
         1,2,3,4
     ]

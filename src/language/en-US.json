@@ -33,12 +33,16 @@
 	"watch" : "Watch",
 	"start time" : "Start Time",
 	"end time" : "End Time",
+<<<<<<< HEAD
 	"warning" : "Warning",
 	"success" : "Success",
 	"error" : "Error",
 	"tip" : "Tip",
 	"successfully upload":"Successfully upload",
 	"successfully bind":"Successfully bind",
+=======
+	
+>>>>>>> parent of 37ad0bb... 7-17
 	"E1" : "over-current",
 	"E2" : "Bus over-voltage",
 	"E3" : "Bus under-voltage",
