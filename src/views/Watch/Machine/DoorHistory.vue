@@ -68,6 +68,7 @@ div.layout-content-main
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 							div.doorbox(style="right:-0%" id='rightdoor')
 =======
 =======
@@ -75,6 +76,9 @@ div.layout-content-main
 								p|光幕信号
 							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
 >>>>>>> parent of 37ad0bb... 7-17
+=======
+							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
+>>>>>>> parent of 3ea2754... 7-27
 =======
 							div.doorbox(:style="{ right: `-${(show.position / doorWidth) * 50}%` }")
 >>>>>>> parent of 3ea2754... 7-27
