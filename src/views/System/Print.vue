@@ -131,7 +131,8 @@
 								},
 								on: {
 									click: () => {
-										this.print(params.row)
+										this.print = false
+										this.myprint(params.row)
 									}
 								}
 							}, this.$t('print'))
@@ -232,7 +233,36 @@
 					// this.options.total = res.data.data.totalNumber
 				}
 				}
-			},	
+			},
+			async myprint(item){
+				$("#capture").empty();
+				this.id = item.IMEI
+				this.url = `http://server.asynciot.com/company/follow/${item.id}`
+				// $('#capture').qrcode({
+				//   // render: "table",
+				//   text: this.url
+				// });
+				let code = new QRCode(document.getElementById("capture"), {
+					text: `http://server.asynciot.com/company/follow/${item.id}`,
+					// width: '4cm',
+					// height: '4cm',
+				})
+				let canvas = document.querySelector("#capture canvas")
+				const data = canvas.toDataURL("image/png")
+				this.dataUrl = data;
+				
+				$('#printer').printThis({
+					debug: false,
+					importCSS: true,
+					importStyle: true,
+					loadCSS: "",
+					pageTitle: `NBSL`,
+					header: null
+				})
+				setTimeout(()=> {
+					this.print= true
+				}, 2000)
+			},
 			async print(item) {
 				$("#capture").empty();
 				this.id = item.IMEI

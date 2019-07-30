@@ -11,7 +11,6 @@ import moment from 'moment'
 import _ from 'lodash'
 import "printthis";
 import { format } from 'date-fns'
-import "printthis";
 // import vuescroll from 'vuescroll';
 // import 'vuescroll/dist/vuescroll.css';
 import VueResource from 'vue-resource';
