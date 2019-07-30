@@ -95,7 +95,7 @@
 					isreg: '',
 					tagcolor: '',
 					install_addr:'',
-					item:'bd',
+					item:'',
 				},
 				total:0,
 				searchkey: this.$t('install address')+this.$t('install address'),

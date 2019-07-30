@@ -3,17 +3,27 @@ div.account
 	div.text(align="center")
 	Row(:gutter= 50 style="padding-bottom:15%")
 		Col(span=12)
-			img.img1(src="../assets/logo-menu.png" align="center")
+			img.img1(src="../assets/logo-menu.png" align="center" style="margin-top:90px")
 			h3.account-title(style="text-align:center;font-size:23px;line-height:50px;width:250px" v-if="this.$i18n.locale == 'en-US'")|{{$t("NBSL")}}
 			h3.account-title(style="text-align:center" v-if="this.$i18n.locale == 'zh-CN'")|{{$t("NBSL")}}
 		Col(span=12 style="padding-top:5%")
 			Form.account-form(ref='form',:model="form",:rules="rules",:label-width="80")
-				Form-item(prop="mobile")
-					Input(type="text",v-model="form.mobile",:placeholder="$t('phone number')" maxlength=11)
-						icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="username")
 					Input(type="text",v-model="form.username",:placeholder="$t('Username')")
 						Icon(type="ios-person-outline",size="20",slot="prepend")
+				Form-item(prop="password")
+					Input(type="password",v-model="form.password",:placeholder="$t('Password')")
+						Icon(type="ios-locked-outline",size="18",slot="prepend")
+				Form-item(prop="confirm")
+					Input(type="password",v-model="query.confirm",:placeholder="$t('Confirm Password')")
+						Icon(type="ios-locked-outline",size="18",slot="prepend")
+				Form-item(prop="mobile")
+					Row(:gutter=30)
+						Col(span=5)
+							input(style="width:100%" v-model="add86" readonly)
+						Col(span=19)
+							Input(type="text",v-model="form.mobile",:placeholder="$t('phone number')" maxlength=11)
+								icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="verifyCode")
 					Row(:gutter=30)
 						Col(span=13)
@@ -23,12 +33,6 @@ div.account
 							div()
 								Button(@click="sentMessage",v-if="count<=0",style="width: 100%")|{{$t('Get Code')}}
 								Button(@click="sentMessage",v-if="count>0",style="width: 100%" disabled)|{{$t('Get Code')}}({{count}})
-				Form-item(prop="password")
-					Input(type="password",v-model="form.password",:placeholder="$t('Password')")
-						Icon(type="ios-locked-outline",size="18",slot="prepend")
-				Form-item(prop="confirm")
-					Input(type="password",v-model="query.confirm",:placeholder="$t('Confirm Password')")
-						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item
 					Button(type="primary",style="width: 125px" @click="create('form')",:loading="loading")|{{$t('register')}}
 					Button.ss(type="primary" ,:style="{width: '125px'}" @click="$router.back(-1)")|{{$t('cancel')}}
@@ -53,6 +57,7 @@ export default {
 			}
 		};
 		return {
+			add86:'+86',
 			count: 0,
 			time: '',
 			ladderApi: ladderApi,

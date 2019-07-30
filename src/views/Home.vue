@@ -2,14 +2,14 @@
 	<div class="layout">
 		<Layout class="test" :style="{minHeight: '100vh',width: screenwidth+'px'}" style="" id="layout">
 			<Sider :style="{minHeight: '100vh',background:bottomcolor,color:fontcolor}" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" v-if="!full">
-				<Menu ref="side1" :class="menuitemClasses" :theme="bg3" width="auto" @on-select="go" :active-name="active" :style="{background:bottomcolor,color:fontcolor,height:screenheight}">
+				<Menu ref="side1" :class="menuitemClasses" :theme="bg3" width="auto" @on-select="go" :active-name="active" :style="{background:bottomcolor,color:fontcolor,height:'auto'}">
 					<div style="width: 100%;height: 64px;" :style="'background:'+bg1">
-						<img :src="logo" onerror="src='../../static/logo-menu.png';onerror=''" style="padding-left: 30%;cursor: pointer;width: 66%;height:100%">
+						<img :src="logo" onerror="src='../../static/logo-menu.png';onerror=''" style="padding-left: 30%;width: 66%;height:100%">
 					</div>
 					<template>
 						<div class="user-panel">
 							<Col span="8" >
-								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg';onerror=''">
+								<img :src="portrait" class="img-circle" alt="User Image" onerror="src='../../static/admin.jpg';onerror=''" style="cursor: pointer;" @click="personinfo">
 							</Col>
 							<Col span="16" style="padding-top: 10px;">
 								<p>&nbsp;&nbsp;{{info.nickname}}</p>
@@ -36,30 +36,26 @@
 							</Menu-item>
 						</Submenu>
 					</template>
+					<template>
+						<MenuItem name="Fullscreen" :style="{}" style="font-size:13px">
+							<i class="fa fa-arrows-alt" size="16" style="margin-left: -15px;"></i>
+							{{$t('Fullscreen')}}
+						</MenuItem >
+					</template>
+					<template>
+						<MenuItem name="logout" :style="{}" style="font-size:13px">
+							
+							{{$t('Logout')}}
+						</MenuItem >
+					</template>
 				</Menu>
 			</Sider>
 			<Layout>
-				<Header  class="m-header" v-if="!full" :style="'background:'+bg2">
+				<!-- <Header  class="m-header" v-if="!full" :style="'background:'+bg2">
 					<Row>
 						<Col span="20">
 							&nbsp;
 						</Col>
-						<!-- <Col span="3">
-							<Dropdown class="layout-header-user fr" @on-click="changelang" trigger="click" >
-								<Button type="primary" long class="w-button" :style="'background:'+bg2">
-									<Col span="5">
-										Language:
-									</Col>
-									<Col span="19">
-										<p style="color: white;width: 100%;">{{$t("lang")}}</p>
-									</Col>
-								</Button>
-								<Dropdown-menu slot="list">
-									<Dropdown-item :name="1">中文</Dropdown-item>
-									<Dropdown-item :name="2">English</Dropdown-item>
-								</Dropdown-menu>
-							</Dropdown>
-						</Col> -->
 						<Col span="3">
 							<Dropdown class="layout-header-user fr" @on-click="logout" trigger="click" >
 								<Button type="primary" long class="w-button" :style="'background:'+bg2">
@@ -84,7 +80,7 @@
 							</Button>
 						</Col>
 					</Row>
-				</Header>
+				</Header> -->
 				<Content :style="{padding: '0 4px 4px',position:'relative',minHeight: '91vh'}" >
 					<div class="layout-content-main">
 						<transition name="fade">
@@ -277,11 +273,11 @@
 						key:false,
 						label:'Print QR Code'
 					}],
-				},{
-					name: 'dashboard2',
-					icon: 'fa fa-dashboard',
-					label: 'Dashboard2',
-					key:true,
+// 				},{
+// 					name: 'dashboard2',
+// 					icon: 'fa fa-dashboard',
+// 					label: 'Dashboard2',
+// 					key:true,
 				}],
 				menus:{},
 				roles:0,
@@ -490,17 +486,42 @@
 						window.location.href= http.data.qrcode.url
 				}
 			},
-			go(name) {
-				if (typeof name === 'string')
-					this.$router.push({
-						name: name
-					});
+			async go(name) {
+				if (typeof name === 'string'){
+					if (name=="logout"){
+						let res = await this.$api.logout({})
+						window.$cookie.delete('id')
+						window.$cookie.delete('role')
+						window.localStorage.removeItem('id');
+						window.localStorage.removeItem('menu');
+						// window.localStorage.removeItem('username');
+						this.global.username = ''
+						this.$router.replace({
+							name: 'login'
+						})
+					}
+					else if (name=="Fullscreen") {
+						this.fullscreen()
+					}
+					else{
+						this.$router.push({
+							name: name
+						});
+					}
+				}
+					
 			},
 			goHome() {
 				this.$router.push({
 					name: 'index'
 				});
 			},	
+			async personinfo(){
+				let resp = await this.$api.user({})
+				this.$router.push({
+					name: 'person'
+				})
+			},
 			isActive(path) {
                 return path === this.$route.fullPath;
             },

@@ -65,15 +65,7 @@
 												Option(key="3" label="60" value='60')
 												Option(key="4" label="120" value='120')
 												Option(key="5" label="300" value='300')
-									Col(span="23" style="")
-										Form-item(:label="$t('Sampling Period')+'(ms):'")
-											Select(v-model='realtime.interval')
-												Option(key="1" label="100" value='100')
-												Option(key="2" label="200" value='200')
-												Option(key="3" label="500" value='500')
-												Option(key="4" label="1000" value='1000')
-												Option(key="5" label="2000" value='2000')
-									Col(span="23" align='center' style="margin-top: 10px;margin-left: 10px")
+									Col(span="23" align='center' style="margin-top: 50px;margin-left: 10px")
 										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|{{$t('Status Monitoring')}}
 										Button(type="success" @click="monitor('1')" v-else style="width:100%")|{{$t('Status Monitoring')}}
 				Col(span='12')
@@ -228,8 +220,8 @@
 				},
 				realtime: {
 					threshold:'1',
-					duration:120,
-					interval:'1000',
+					duration:'300',
+					interval:'500',
 				},
 				options: {
 					id:'',

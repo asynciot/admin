@@ -34,7 +34,7 @@ div.layout-content-main
 				loading:false,
 				form:{
 					name:'',
-					leader:this.global.username,
+					leader:window.localStorage.getItem('username'),
 					region:'',
 					mobile:'',
 				},

@@ -114,8 +114,12 @@
 			return {
 				loading:this.$t('Please wait patiently in connection equipment'),
 				count: 0,
+				isplay:false,
+				playline:0,
+				savedata:[],
+				saveposition:[0,0],
 				pernum: 0,
-				doorWidth:4096,
+				doorWidth:1600,
 				doorposition:0,
 				doorposition2:0,
 				query:{
@@ -137,6 +141,7 @@
 				buffer:[],
 				interval:'',
 				point:'',
+				isfirst:0,
 				show:{
 					closeIn:'',
 					current:'',
@@ -172,7 +177,10 @@
 			this.initWebsocket();
 		},
 		mounted(){
-			this.tweenAni();
+// 			setTimeout(()=> {
+// 				this.tweenAni();
+// 			}, 3000)
+			
 		},
 		components: {
 			draggable,
@@ -182,28 +190,50 @@
 			}
 		},
 		methods: {
-			tweenAni: function () {
-								let doorposition
-								let AppScrollTopNow = {
-									x: this.doorposition2
-								}, // ================================= 定义一个初始位置
-								AppScrollTopEnd = {
-									x: this.doorposition
-								} ;// ================================= 定义一个结束位置
-								new TWEEN.Tween(AppScrollTopNow) // 传入开始位置
-								    .to(AppScrollTopEnd, 100) // 指定时间内完成结束位置
-								    .easing(TWEEN.Easing.Quadratic.Out) // 缓动方法名
-								    .onUpdate(() => {
-									// 上面的值更新时执行的设置
-									document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
-									document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
-									
-				// 					document.documentElement.scrollTop = AppScrollTopNow.y;
-				// 					document.body.scrollTop = AppScrollTopNow.y;
-								})
-								.start();// ================================= 不要忘了合适的时候启动动画
-				if (this.$route.meta.name == '控制器监控'){requestAnimationFrame(this.tweenAni);}
-				TWEEN.update();
+// 			tweenAni: function () {
+// 					let doorposition
+// 					let AppScrollTopNow = {
+// 						x: -50
+// 					}, // ================================= 定义一个初始位置
+// 					AppScrollTopEnd = {
+// 						x: 0
+// 					} ;// ================================= 定义一个结束位置
+// 					new TWEEN.Tween(AppScrollTopNow) // 传入开始位置
+// 						.to(AppScrollTopEnd, 5000) // 指定时间内完成结束位置
+// 						.easing(TWEEN.Easing.Quadratic.Out) // 缓动方法名
+// 						.onUpdate(() => {
+// 						// 上面的值更新时执行的设置
+// 						document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
+// 						document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
+// 						
+// 	// 					document.documentElement.scrollTop = AppScrollTopNow.y;
+// 	// 					document.body.scrollTop = AppScrollTopNow.y;
+// 					})
+// 					.start();// ================================= 不要忘了合适的时候启动动画
+// 				if (this.$route.meta.name == '控制器监控'){requestAnimationFrame(this.tweenAni);}
+// 				TWEEN.update();
+// 			},
+			mytween(start,end,time,total){
+				time--
+				if (time>=0){
+					var now=parseInt((start-end)*time/total+end)
+					document.getElementById('leftdoor').style.left=now.toString()+'%'
+					document.getElementById('rightdoor').style.right=now.toString()+'%'
+					setTimeout(()=> {
+						this.mytween(start,end,time,total);
+					}, 45)
+				}
+				else {
+					if (this.saveposition.length>2){
+						this.saveposition.shift()
+						this.mytween(this.saveposition[0],this.saveposition[1],10,10);
+					}
+					else {
+						setTimeout(()=> {
+							this.mytween(0,0,0,0);
+						}, 500)
+					}
+				}
 			},
 			async initWebsocket(){ //初始化weosocket
 				var buffer
@@ -238,6 +268,8 @@
 			}, 
 			websocketonopen() {
 				console.log("WebSocket连接成功");
+				this.shiftdata()
+				this.mytween(0,0,0,0)
 				this.loading=this.$t('WebSocket connection successful,please wait for data')
 			},
 			websocketonerror(e) { //错误
@@ -247,12 +279,12 @@
 			websocketonmessage(e){ //数据接收
 			this.loading=this.$t('Getting data')
 				if(e.data=="closed"){
-					if(this.openIn<=15)
-						this.loading=this.$t('The monitoring data is over')
+					if(this.openIn<=15) this.loading=this.$t('The monitoring data is over')
 				}else{
-					var redata = JSON.parse(e.data)	
+					var redata = JSON.parse(e.data)
+					this.savedata.push(redata)
 					this.getData(redata)
-					this.drawLine();
+					// this.drawLine();
 				}
 			},
 			async closed(){//数据发送
@@ -271,10 +303,9 @@
 					threshold: threshold,
 					interval: interval,
 				});
-				this.loading=this.$t('The monitoring data is over')
+				// this.loading=this.$t('The monitoring data is over')
 			},
-			websocketclosed(){
-			},
+			websocketclosed(){},
 			//电梯数据展示
 			async person(){
 				let per = await this.$api.pernum({deviceId:this.id})
@@ -284,9 +315,19 @@
 					else {this.closed()}
 				}, 4000)
 			},
+			shiftdata(){
+				console.log(this.savedata.length)
+				if (this.savedata.length>0) {
+					this.getData(this.savedata[0])
+				}
+				setTimeout(()=>{
+					this.shiftdata()
+				}, 1000)
+			},
 			getData(val) {
 				let buffer = []
 				buffer = base64url.toBuffer(val.data);	//8位转流
+				// console.log(buffer)
 				// var _this = this
 				this.count= 0
 				if (this.t_start == '') this.t_start = val.time
@@ -318,15 +359,13 @@
 				if(this.show.speed>32.767){
 					this.show.speed = this.show.speed-65.535
 				}
+
+				this.drawLine();
+				this.saveposition.push(-50+parseInt(50*(parseInt(this.show.position)/1600)))
 				this.doorposition2=this.doorposition
-				this.doorposition=-50+(50*this.show.position/this.doorWidth)
-				this.getX()
-// 						_this.count+=8
-// 					}
-// 				}, _this.query.interval);
-// 				if((_this.count+8) > buffer.length){
-// 					clearInterval(inte)
-// 				}
+				this.doorposition=-50+parseInt(50*(parseInt(this.show.position)/1600))
+
+				this.savedata.shift()
 			},
 			drawLine(){
 				let openIn = this.$echarts.init(document.getElementById('openIn'))
@@ -338,7 +377,7 @@
 				var closearrival=_this.$t('Close Door Arrival Signal')
 				var opendoor=_this.$t('Open Door Signal')
 				var closedoor=_this.$t('Close Door Signal')
-				var inte = setInterval(function () {
+				
 					_this.openIn.push(_this.show.openIn)
 					_this.closeIn.push(_this.show.closeIn)
 					_this.openTo.push(_this.show.openTo)
@@ -464,10 +503,6 @@
 							data:_this.speed
 						}]
 					});
-				}, _this.query.interval);
-				if(_this.end == 0){
-					clearInterval(inte)
-				}
 			},
 			//状态
 			parseStatus(event) {

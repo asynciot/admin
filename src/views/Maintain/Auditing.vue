@@ -73,8 +73,8 @@
 			},
 			adopt(){
 				this.$Notice.success({
-					title: '成功',
-					desc: '已通过审核！'
+					title: this.$t('success'),
+					desc: ''
 				})
 				this.$router.back()
 			},
@@ -99,25 +99,8 @@
 					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
 					var type=''
 					if((res.data.data.list[0].type == this.$t('fault'))&&(res.data.data.list[0].code != null))
-					for (var i=7;i>=0;i--){
-						if(res.data.data.list[0].code>=Math.pow(2,i)){
-							res.data.data.list[0].code=res.data.data.list[0].code-Math.pow(2,i)
-							if(i==7){
-								type="输出过流"
-							}else if(i==6){
-								type="电机过载"
-							}else if(i==5){
-								type="飞车保护"
-							}else if(i==4){
-								type="开关门受阻"
-							}else if (i==1) {
-								type="输入电压过高"
-							}else if(i==0){
-								type="输入电压过低"
-							}
-						}
-					}
-					res.data.data.list[0].code=type
+					type=res.data.data.list[0].code.toString(16)
+					res.data.data.list[0].code=this.$t('dE'+res.data.data.list[0].code.toString(16))
 					this.list = res.data.data.list[0]
 				}
 			},

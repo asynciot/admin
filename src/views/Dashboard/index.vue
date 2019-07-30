@@ -12,11 +12,10 @@
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
-			<section class="content">
+			<section class="content" style="padding:25px;padding-top:20px;">
 				<!-- Small boxes (Stat box) -->
 				<div class="row" style="">
 					<div class="ivu-col ivu-col-span-6" id='title1' style="padding-left:10px;padding-right:10px">
-
 						<!-- small box -->
 						<div class="small-box bg-red">
 							<div class="inner" style="text-align:center; padding:4px" >
@@ -24,7 +23,7 @@
 								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font21">{{$t("Fault Devices")}}</p>
 							</div>
 
-							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'maintain'})" :style="'font-size:'+setheight[0]/8+'px'">{{$t('More Info')+' '}}<i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 					<!-- ./col -->
@@ -32,13 +31,13 @@
 						<!-- small box -->
 						<div class="small-box bg-aqua">
 							<div class="inner" style="text-align:center; padding:4px">
-								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font12" style='font-weight: bold;'>{{0}}<sup style="font-size: 20px"></sup></div>
+								<div :style="'font-size:'+setheight[0]/2.3+'px'" id="font12" style='font-weight: bold;'>{{firm}}</div>
 								<p :style="'font-size:'+setheight[0]/6.5+'px'" id="font22">{{$t("Updateable Firmware")}}</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'evolution'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'evolution'})" :style="'font-size:'+setheight[0]/8+'px'">{{$t('More Info')+' '}}<i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 
 					</div>
@@ -54,7 +53,7 @@
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'maintainList'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'maintainList'})" :style="'font-size:'+setheight[0]/8+'px'">{{$t('More Info')+' '}}<i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 
 					</div>
@@ -70,7 +69,7 @@
 							<div class="icon">
 								<i class="ion ion-pie-graph"></i>
 							</div>
-							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})" :style="'font-size:'+setheight[0]/8+'px'">More info <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="#" class="small-box-footer" @click="$router.push({name:'map'})" :style="'font-size:'+setheight[0]/8+'px'">{{$t('More Info')+' '}}<i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 
 					</div>
@@ -81,8 +80,6 @@
 				<Row :gutter=20>
 					<!-- Left col -->
 					<!-- <section class="col-lg-5 connectedSortable"> -->
-					
-
 					<draggable :options="{animation: 60,group:'panel'}">
 						<Col span='12' id="mapwidth">
 						<div class="box box-primary" v-if="map">
@@ -654,11 +651,10 @@
 				},
 				chartrepair:[],
 				chartorder:[],
-				usernum: 0,
-				emailnum: 0,
 				today: 0,
 				allevents: 0,
 				alldevice: 0,
+				firm:0,
 				onlinedevice:0,
 				chatpage:0,
 				progresspage:0,
@@ -991,20 +987,20 @@
 			async getinfo(){
 				var res
 				var ech
+				var allorder=0
 				this.faultdevice=0
-				this.usernum=0
-				this.emailnum=0
-				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'untreated',islast:1})
+				this.allevents=0
+				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'',islast:1})
 				if (0 === res.data.code) {
-					this.faultdevice =this.faultdevice + res.data.data.totalNumber
+					allorder = res.data.data.totalNumber
 				}
-				res = await this.$api.people({username: '',mobile: '',name:'',id:'',page: 1,num: 10,total: 0})
+				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'treated',islast:1})
 				if (0 === res.data.code) {
-					this.usernum = res.data.data.totalNumber
+					this.allevents = allorder-res.data.data.totalNumber
 				}
-				res = await this.$api.message({num:10,page:1,done:false})
-				if (res.data.code == 0){
-				this.emailnum = res.data.data.totalNumber
+				res= await this.$api.gettype({type:'firmware',num:1,page:1})
+				if (0 === res.data.code) {
+					this.firm = res.data.data.totalNumber
 				}
 				res = await this.$api.getRepair({
 					search_info: '',page: 1,num: 4,isreg: "True",state:'treated',order_type:'',result:'',device_id:'',
@@ -1012,13 +1008,6 @@
 				})
 				if (res.data.code == 0){
 				this.today = res.data.data.totalNumber
-				}
-				res = await this.$api.getRepair({
-					search_info: '',page: 1,num: 4,isreg: "True",state:'untreated',order_type:'',result:'',device_id:'',
-				})
-				if (res.data.code == 0){
-				this.faultdevice =this.faultdevice + res.data.data.totalNumber
-				this.allevents=this.today+this.faultdevice
 				}
 				res = await this.$api.devices({page: 1,num: 10,isreg: ''})
 				if (res.data.code == 0){

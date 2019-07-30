@@ -243,7 +243,9 @@
 			},
 			async upGroup(){
 				this.loading = true
-				this.form.region = this.form.region[0].toString()+','+this.form.region[1].toString()+','+this.form.region[2].toString()
+				if (this.form.region[2] !=null){
+					this.form.region = this.form.region[0].toString()+','+this.form.region[1].toString()+','+this.form.region[2].toString()
+				}
 				const res = await this.$api.updateGroup(this.form)
 				if (res.data.code == 0) {
 					this.loading = false
