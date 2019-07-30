@@ -77,7 +77,6 @@ router.beforeEach((to, from, next) => {
 	}else {
 		next({name:'login'})
 	}
-	// }
 })
 /* eslint-disable no-new */
 Vue.locale = () => {};

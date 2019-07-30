@@ -183,7 +183,6 @@
 				var formData = new FormData()
 				var formData = new window.FormData()
 				formData.append('file',this.file)
-				console.log(formData)
 				let res = await this.$api.portrait(formData)
 				if (res.data.code == 0){
 				this.upsuccess=false
