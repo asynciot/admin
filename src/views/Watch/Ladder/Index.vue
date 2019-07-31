@@ -104,7 +104,7 @@ div
 				query:{
 					search_info: '',
 					page: 1,
-					num:10,
+					num: 10,
 					install_addr:'',
 					// follow:'yes',
 					state:'',

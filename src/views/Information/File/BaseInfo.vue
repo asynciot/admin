@@ -72,7 +72,7 @@ div
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 					Row(:gutter="30")
 						Col(span="12")|{{$t('maintenance type')}}:
-							Select(v-model="list.maintenance_type" style="width:50%; margin-left:20px" placeholder="类型" @on-change="search()")
+							Select(v-model="list.maintenance_type" style="width:50%; margin-left:20px" ,:placeholder="$t('maintenance type')" @on-change="search()")
 								Option(key="1", :label="$t('fault')" value='1')
 								Option(key="2", :label="$t('maintain')" value="2")
 								Option(key="3", :label="$t('check')" value="3")
@@ -305,13 +305,13 @@ export default {
 			this.sent=false
 			if (res.data.code == 0){
 				this.$Notice.success({
-					title: '成功',
-					desc: '已提交信息'
+					title: this.$t('success'),
+					desc: ''
 				});
 			}else {
 				this.$Notice.error({
-					title: '失败',
-					desc: '更新信息失败'
+					title: this.$t('error'),
+					desc: ''
 				});
 			}
 		},
@@ -347,7 +347,8 @@ export default {
 						if(time == 0){
 							this.parameter.reporttime=''
 						}else {
-							this.parameter.reporttime=new Date(time*1000+1262275200000)
+							this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
+							
 						}
 						this.parameter.rssi=buffer[4]
 						this.parameter.wavenumber=buffer[14]*256+buffer[15]
@@ -363,13 +364,13 @@ export default {
 						if(time == 0){
 							this.parameter.reporttime=''
 						}else {
-							this.parameter.reporttime=new Date(time*1000+1262275200000)
+							this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
 						}
 						time=buffer[20]*16777216+buffer[21]*65536+buffer[22]*256+buffer[23]
 						if(time == 0) {
 							this.parameter.faulttime=''
 						}else {
-							this.parameter.faulttime=new Date(time*1000+1262275200000)
+							this.parameter.faulttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
 						}
 						this.parameter.rssi=buffer[4]
 						this.parameter.runcount=buffer[10]*16777216+buffer[11]*65536+buffer[12]*256+buffer[13]

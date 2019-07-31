@@ -3,7 +3,7 @@ div.account
 	div.text(align="center")
 	Row(:gutter= 50 style="padding-bottom:15%")
 		Col(span=12)
-			img.img1(src="../assets/logo-menu.png" align="center")
+			img.img1(src="../assets/logo-menu.png" align="center" style="margin-top:50px")
 			h3.account-title(style="text-align:center;font-size:23px;line-height:50px;width:250px" v-if="this.$i18n.locale == 'en-US'")|{{$t("NBSL")}}
 			h3.account-title(style="text-align:center" v-if="this.$i18n.locale == 'zh-CN'")|{{$t("NBSL")}}
 		Col(span=12 style="padding-top:5%")

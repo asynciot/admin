@@ -32,6 +32,7 @@
 					nums:10,
 					number:'',
 				},
+				mygroup:[],
 				dislist:false,
 				list:[],
 				list1:[],
@@ -52,12 +53,18 @@
 					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
+						var disable=false
+						this.mygroup.forEach(item=>{
+							if (parseInt(item) == params.row.id) {
+								disable=true
+							}
+						})
 						return h('div', [
 							h('Button', {
 								props: {
 									type: 'success',
 									size: 'small',
-									disabled:this.username==params.row.leader,
+									disabled: disable,
 									loading: this.loading,
 								},
 								style: {
@@ -150,6 +157,7 @@
 					name:'addOrganize',
 				})
 			},
+			
 			async pageChange(val) {
 				this.query.page = val
 				this.loading = true
@@ -170,13 +178,18 @@
 			async Organize(){
 				this.loading = true
 				const res = await this.$api.readOrganize({
-					username:this.global.username,
+					username:window.localStorage.getItem('username'),
 					nums:10,
 					page:1,
 				})
 				if(res.data.code == 0){
 					this.list = res.data.data.list
 					this.options.total = res.data.data.totalNumber
+				}
+				let gro = await this.$api.people({id:window.localStorage.getItem('id'),num:1,page:1})
+				if (0 === gro.data.code) {
+					this.mygroup=gro.data.data.list[0].organization_id.split(';')
+					console.log(this.mygroup)
 				}
 				this.loading = false
 			},
@@ -206,15 +219,7 @@
 						title: this.$t('success'),
 						desc: this.$t('Successfully delete')
 					});
-					
-						this.loading = true
-							const res = await this.$api.readOrganize(this.query)
-							if(res.data.code == 0){
-								this.list = res.data.data.list
-								this.options.total = res.data.data.totalNumber
-							}
-						this.loading = false
-
+					this.Organize()
 				}else{
 					this.$Notice.error({
 						title: this.$t('error'),

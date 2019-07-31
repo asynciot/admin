@@ -136,6 +136,7 @@ div
 					{
 						title: this.$t('base station'),
 						key: 'cell_address',
+						width: 900,
 						render: (h,params) => {
 							var addr= params.row.cell_address
 							if (params.row.cell_address !=null) {

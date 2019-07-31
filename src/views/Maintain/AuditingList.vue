@@ -24,11 +24,11 @@
 						Button.mr-10(type='primary', icon='ios-search', @click='search()')|{{$t('search')}}
 						Button(type='default', icon='', @click='code()')|{{$t('fault code')}}
 		el-dialog(:title='$t("tip")', :visible.sync='ctrl', width='30%')
-			img#c(width='100%', src='')
+			img#c(width='100%', src='' onerror="src='../../../static/miss.png'")
 			span.dialog-footer(slot='footer')
 				Button(type='primary', @click='ctrl = false') {{$t('OK')}}
 		el-dialog(:title='$t("tip")', :visible.sync='door', width='30%')
-			img#d(width='100%', src='')
+			img#d(width='100%', src='' onerror="src='../../../static/miss.png'")
 			span.dialog-footer(slot='footer')
 				Button(type='primary', @click='door = false') {{$t('OK')}}
 		div(style='min-height: 450px; margin-top: 20px;')
@@ -118,7 +118,7 @@
 						render: (h, params) => {
 							var type = ''
 							var e = ''
-							if ((params.row.code != null)) {
+							if ((params.row.type == '1') && (params.row.code != null)) {
 								type = params.row.code.toString(16)
 								if (type.length == 1) {
 									type = '0' + type
@@ -137,13 +137,13 @@
 									},
 									on: {
 										click: () => {
-											if (params.row.device_type == "ctrl") {
+											if (params.row.device_type == "240") {
 												setTimeout(() => {
 													document.getElementById('c').src = '../../../static/c' + type + '.png'
 												}, 200)
 												this.ctrl = true
 											}
-											if (params.row.device_type == "door") {
+											if (params.row.device_type == "15") {
 												setTimeout(() => {
 													document.getElementById('d').src = '../../../static/d' + type + '.png'
 												}, 200)
@@ -151,8 +151,8 @@
 											}
 										}
 									}
-								},e)
-							],)
+								}, e)
+							], )
 						}
 					},
 					{

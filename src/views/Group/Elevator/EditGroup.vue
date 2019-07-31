@@ -18,7 +18,7 @@
 									Col.ta(span="8")
 										Button(type="success" @click="upGroup()" ,:loading="loading")|{{$t('OK')}}
 									Col.ta(span="8")
-										Button(type="primary" @click="getList2(),dislist=true")|{{$t('Device List')}}
+										Button(type="primary" @click="dislist=true")|{{$t('Device List')}}
 									Col.ta(span="8")
 										Button(@click="$router.back(-1)")|{{$t('cancel')}}
 
@@ -109,6 +109,12 @@
 					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
+						var show=false
+						this.list1.forEach(item=>{
+							if (item.id == params.row.id) {
+								show=true
+							}
+						})
 						return h('div', [
 							h('Button', {
 								props: {
@@ -132,7 +138,8 @@
 							h('Button', {
 								props: {
 									type: 'success',
-									size: 'small'
+									size: 'small',
+									disabled:show
 								},
 								style: {
 									marginRight: '5px'
@@ -142,7 +149,7 @@
 										this.updateLadder(params.row.id)
 									}
 								}
-							}, this.$t('New'))
+							}, this.$t('Add'))
 						]);
 					}
 				}],
@@ -204,6 +211,7 @@
 		created(){
 			this.getList()
 			this.getGroup()
+			this.getList2()
 		},
 		methods:{
 			async search() {
@@ -243,7 +251,9 @@
 			},
 			async upGroup(){
 				this.loading = true
-				this.form.region = this.form.region[0].toString()+','+this.form.region[1].toString()+','+this.form.region[2].toString()
+				if (this.form.region[2] !=null){
+					this.form.region = this.form.region[0].toString()+','+this.form.region[1].toString()+','+this.form.region[2].toString()
+				}
 				const res = await this.$api.updateGroup(this.form)
 				if (res.data.code == 0) {
 					this.loading = false

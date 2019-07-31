@@ -12,7 +12,7 @@
 										Col(span="8" style="margin-top:10px")|{{$t('order ID')}}:{{list.order_id}}
 										Col(span="8" style="margin-top:10px")|{{$t('device name')}}:{{list.device_name}}
 										Col(span="8" style="margin-top:10px")|IMEI:{{list.IMEI}}
-										Col(span="8" style="margin-top:10px" v-if="list.state == 'treated'")|{{$t('state')}}:{{$t('treated')}}--{{list.result}}
+										Col(span="8" style="margin-top:10px" v-if="list.state == 'treated'")|{{$t('state')}}:{{list.result}}
 										Col(span="8" style="margin-top:10px" v-if="list.state == 'untreated'")|{{$t('state')}}:{{$t('treating')}}
 										Col(span="8" style="margin-top:10px")|{{$t('confirm time')}}:{{list.confirm_time}}
 										Col(span='24' style="margin-top:10px")
@@ -39,15 +39,15 @@
 											img(id="after3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
-								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch!= true))" disabled='false')|完成工单
+								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|{{list.result}}
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch!= true))" disabled='false')|{{t('complete')}}
 								Button(type="success",@click="finish('finish')" v-else)|{{$t('complete')}}
 							Col(span=6 align="center")
 								Button(type="primary",@click="examine()",v-if="dispatch != true" disabled='false')|{{$t('reprieve')}}
 								Button(type="primary",@click="examine()",v-else)|{{$t('reprieve')}}
 							Col(span=6 align="center")
-								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|已{{list.result}}
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch != true))" disabled='false')|转办
+								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|{{list.result}}
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch != true))" disabled='false')|{{$t('transfer')}}
 								Button(type="warning",@click="finish('transfer')" v-else)|{{$t('transfer')}}
 							Col(span=6 align='center')
 								Button(@click="$router.back(-1)")|{{$t('cancel')}}
@@ -114,8 +114,8 @@
 					res.data.data.list[0].IMEI = ech.data.data.list[0].IMEI
 					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
 					res.data.data.list[0].cell_address = ech.data.data.list[0].cell_address
-					if (res.data.data.list[0].result == 'transfer') {res.data.data.list[0].result='转办'}
-					else {res.data.data.list[0].result='完成'}
+					if (res.data.data.list[0].result == 'transfer') {res.data.data.list[0].result=this.$t('transferred')}
+					else {res.data.data.list[0].result=this.$t('treated')}
 					this.list = res.data.data.list[0]
 					
 					var before=this.list.before_pic.split(';')
@@ -128,8 +128,8 @@
 					if (after.length > 3) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[2];}
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
 					});
 				}
 			},
@@ -139,8 +139,8 @@
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 					if (file.size>2097000) {
 						this.$Notice.warning({
-							title: '警告',
-							desc: '不能上传2M以上的图片'
+							title: this.$t('warning'),
+							desc: this.$t('File size must be less than 2M')
 						})
 					}
 					else {
@@ -160,15 +160,15 @@
 					}
 					else{
 						this.$Notice.warning({
-							title: '警告',
-							desc: '只能上传图片类型的文件'
+							title: this.$t('warning'),
+							desc: this.$t('File type must be picture')
 						})
 					}
 				}
 				else{
 					this.$Notice.warning({
-						title: '抱歉',
-						desc: '暂不支持补传图片'
+						title: this.$t('warning'),
+						desc: this.$t('Can not supplementary picture.')
 					})
 				}
 			},
@@ -179,8 +179,8 @@
 				this.beforefile2 = new File([file], 'before'+file.name,{type:"image/jpeg"});
 				if (file.size>2097000) {
 					this.$Notice.warning({
-						title: '警告',
-						desc: '不能上传2M以上的图片'
+						title: this.$t('warning'),
+						desc: this.$t('File size must be less than 2M')
 					})
 				}
 				else {
@@ -198,15 +198,15 @@
 				}
 				else{
 					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
+						title: this.$t('warning'),
+						desc: this.$t('File type must be picture')
 					})
 				}
 				}
 				else{
 					this.$Notice.warning({
-						title: '抱歉',
-						desc: '暂不支持补传图片'
+						title: this.$t('warning'),
+						desc: this.$t('Can not supplementary picture.')
 					})
 				}
 			},
@@ -216,8 +216,8 @@
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 						if (file.size>2097000) {
 							this.$Notice.warning({
-								title: '警告',
-								desc: '不能上传2M以上的图片'
+								title: this.$t('warning'),
+								desc: this.$t('File size must be less than 2M')
 							})
 						}else {
 							this.beforefile3 = new File([file], 'before'+file.name,{type:"image/jpeg"});
@@ -234,14 +234,14 @@
 						}
 					}else {
 						this.$Notice.warning({
-							title: '警告',
-							desc: '只能上传图片类型的文件'
+							title: this.$t('warning'),
+							desc: this.$t('File type must be picture')
 						})
 					}
 				}else {
 					this.$Notice.warning({
-						title: '抱歉',
-						desc: '暂不支持补传图片'
+						title: this.$t('warning'),
+						desc: this.$t('Can not supplementary picture.')
 					})
 				}
 			},
@@ -251,8 +251,8 @@
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 						if (file.size>2097000) {
 							this.$Notice.warning({
-								title: '警告',
-								desc: '不能上传2M以上的图片'
+								title: this.$t('warning'),
+								desc: this.$t('File size must be less than 2M')
 							})
 						}else {
 							this.afterfile1 = new File([file], 'after'+file.name,{type:"image/jpeg"});
@@ -269,14 +269,14 @@
 						}
 					}else{
 						this.$Notice.warning({
-							title: '警告',
-							desc: '只能上传图片类型的文件'
+							title: this.$t('warning'),
+							desc: this.$t('File type must be picture')
 						})
 					}
 				}else{
 					this.$Notice.warning({
-						title: '抱歉',
-						desc: '暂不支持补传图片'
+						title: this.$t('warning'),
+						desc: this.$t('Can not supplementary picture.')
 					})
 				}
 			},
@@ -286,8 +286,8 @@
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 						if (file.size>2097000) {
 							this.$Notice.warning({
-								title: '警告',
-								desc: '不能上传2M以上的图片'
+								title: this.$t('warning'),
+								desc: this.$t('File size must be less than 2M')
 							})
 						}else {
 							this.afterfile2 = new File([file], 'after'+file.name,{type:"image/jpeg"});
@@ -304,14 +304,14 @@
 						}
 					}else{
 						this.$Notice.warning({
-							title: '警告',
-							desc: '只能上传图片类型的文件'
+							title: this.$t('warning'),
+							desc: this.$t('File type must be picture')
 						})
 					}
 				}else{
 					this.$Notice.warning({
-						title: '抱歉',
-						desc: '暂不支持补传图片'
+						title: this.$t('warning'),
+						desc: this.$t('Can not supplementary picture.')
 					})
 				}
 			},
@@ -321,8 +321,8 @@
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
 						if (file.size>2097000) {
 							this.$Notice.warning({
-								title: '警告',
-								desc: '不能上传2M以上的图片'
+								title: this.$t('warning'),
+								desc: this.$t('File size must be less than 2M')
 							})
 						}else {
 							this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
@@ -339,14 +339,14 @@
 						}
 					}else{
 						this.$Notice.warning({
-							title: '警告',
-							desc: '只能上传图片类型的文件'
+							title: this.$t('warning'),
+							desc: this.$t('File type must be picture')
 						})
 					}
 				}else{
 					this.$Notice.warning({
-						title: '抱歉',
-						desc: '暂不支持补传图片'
+						title: this.$t('warning'),
+						desc: this.$t('Can not supplementary picture.')
 					})
 				}
 			},
@@ -366,15 +366,15 @@
 				this.sent=false
 				if (res.data.code == 0){
 					this.$Notice.success({
-						title: '成功',
-						desc: '完成工单'
+						title: this.$t('success'),
+						desc: ''
 					});
 					this.$router.back(-1)
 				}
 				else{
 					this.$Notice.error({
-						title: '错误',
-						desc: '发生错误'
+						title: this.$t('error'),
+						desc: ''
 					});
 					this.getList()
 				}
@@ -385,8 +385,8 @@
 					remarks:this.ps,
 				})
 				this.$Notice.success({
-					title: '成功',
-					desc: '已提交，正在审核请等待！'
+					title: this.$t('success'),
+					desc: ''
 				});
 				this.$router.back(-1)
 			}

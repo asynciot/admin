@@ -5,10 +5,10 @@
 				<Row :gutter="5">
 					<Col span='3'>
 						<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
-							<Option key="1" :label="$t('all')" value="all"></Option>
+							<!-- <Option key="1" :label="$t('all')" value="all"></Option> -->
 							<Option key="2" :label="$t('untreated')" value="untreated"></Option>
 							<Option key="3" :label="$t('treating')" value="treating"></Option>
-							<Option key="4" :label="$t('treated')" value="treated"></Option>
+							<Option key="4" :label="$t('finished')" value="treated"></Option>
 						</Select>
 					</Col>
 					<Col span='3'>
@@ -81,7 +81,7 @@
 				counter:0,
 				orders:this.global.functions.work_order,
 				show: {
-					state: 'untreated',
+					state: 'treating',
 					type: 'all',
 					device_type: 'all',
 				},
@@ -101,7 +101,7 @@
 						width: 110,
 						key: 'device_name',
 						render: (h, params) => {
-							var name='该设备已移出系统';
+							var name=this.$t('Removed Device');
 							if (params.row.device_name !=null) {
 								name=params.row.device_name
 							}	

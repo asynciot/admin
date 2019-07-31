@@ -68,7 +68,7 @@ div
 						p()|{{$t('base station')}} : {{device.cell_address}}
 						p()|{{$t('IP location')}} : {{device.ip_country+device.ip_region+device.ip_city}}
 						p()|{{$t('install address')}} : {{device.install_addr}}
-			Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;")
+			<!-- Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;") -->
 </template>
 
 
@@ -126,7 +126,7 @@ div
 				query:{
 					search_info: '',
 					page: 1,
-					num:10,
+					num:1000,
 					device_type: '',
 					state:'online',
 					register: "registered",

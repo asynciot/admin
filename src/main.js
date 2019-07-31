@@ -9,8 +9,8 @@ import base64url from 'base64url';
 import api from './api'
 import moment from 'moment'
 import _ from 'lodash'
-import { format } from 'date-fns'
 import "printthis";
+import { format } from 'date-fns'
 // import vuescroll from 'vuescroll';
 // import 'vuescroll/dist/vuescroll.css';
 import VueResource from 'vue-resource';

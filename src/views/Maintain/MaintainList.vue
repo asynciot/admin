@@ -5,10 +5,10 @@
 		  <Row :gutter="5">
 				<Col span='3'>
 					<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
-						<Option key="1" :label="$t('all')" value="all"></Option>
+						<!-- <Option key="1" :label="$t('all')" value="all"></Option> -->
 						<Option key="2" :label="$t('reprieve')" value="reprieve"></Option>
 						<Option key="3" :label="$t('treating')" value="treating"></Option>
-						<Option key="4" :label="$t('examine finished')" value="examined"></Option>
+						<!-- <Option key="4" :label="$t('examine finished')" value="examined"></Option> -->
 						<Option key="5" :label="$t('finished')" value="treated"></Option>
 					</Select>
 				</Col>
@@ -52,7 +52,7 @@
 				data2:[],
 				counter:0,
 				show:{
-					state:'untreated',
+					state:'treating',
 					order_type:'all',
 				},
 				options:{
@@ -148,7 +148,7 @@
 						var time=''
 						var color='#000'
 						if (params.row.expect_time != null){
-							time='预计 ' + this.$format(parseInt(params.row.expect_time), 'YYYY-MM-DD HH:mm:ss')
+							time=this.$t('About ') + this.$format(parseInt(params.row.expect_time), 'YYYY-MM-DD HH:mm:ss')
 							if (parseInt(params.row.expect_time)+86400000<Date.parse(new Date())){color='#f00'}
 							}
 						if (params.row.finish_time != null){time=this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss');color="#000"}
@@ -164,6 +164,8 @@
 						var state
 						if (params.row.state == "treated") {state = this.$t('treated')}
 						if (params.row.state == "untreated") {state = this.$t('finish')}
+						var show=this.$t('watch')
+						if (this.show.state=="treating"){show=this.$t('confirm')}
 						return h('div', [
 							h('Button', {
 								props: {
@@ -192,7 +194,7 @@
 // 										})
 									}
 								}
-							}, this.$t('watch')+'/'+this.$t('confirm'))
+							}, show)
 						]);
 					}
 				}
@@ -219,15 +221,15 @@
 				let res = await this.$api.finish({id:val.id,result:'finish'})
 				if (res.data.code == 0){
 					this.$Notice.success({
-						title: '成功',
-						desc: '完成工单'
+						title: this.$t('success'),
+						desc: this.$t('complete')
 					});
 					this.getList()
 				}
 				else{
 					this.$Notice.error({
-						title: '错误',
-						desc: '发生错误'
+						title: this.$t('error'),
+						desc: ''
 					});
 					this.getList()
 				}
@@ -252,10 +254,11 @@
 					for (var i=0;i<res.data.data.list.length;i++) {
 						this.getname(i)
 					}
+					if (res.data.data.list.length==0) {this.data=this.data2}
 				} else {
 					this.$Notice.error({
-						title: '错误',
-						desc: '获取列表失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
 					});
 				}
 			},
@@ -323,8 +326,8 @@
 				}
 				else{
 					this.$Notice.warning({
-						title: '警告',
-						desc: '只能上传图片类型的文件'
+						title: this.$t('warning'),
+						desc: this.$t('File type must be picture')
 					})
 				}
 			},

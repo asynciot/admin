@@ -157,7 +157,7 @@ div.layout-content-main
 					position:'',
 					speed:'',
 				},
-				doorWidth: 4096,
+				doorWidth: 1620,
 				interval:'',
 				point:'',
 			}
@@ -168,7 +168,7 @@ div.layout-content-main
 			if(this.$route.params.id){
 				this.getData();
 				setTimeout(() => {
-					this.drawLine();
+					// this.drawLine();
 				},500)
 			}
 			else{
@@ -197,8 +197,6 @@ div.layout-content-main
 					// 上面的值更新时执行的设置
 					document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
 					document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
-					console.log(document.getElementById('leftdoor').style.left)
-					if (AppScrollTopEnd.x != 0) console.log(AppScrollTopEnd.x)
 				})
 				.start();// ================================= 不要忘了合适的时候启动动画
 				if (this.$route.meta.name == '控制器事件'){requestAnimationFrame(this.tweenAni);}
@@ -383,8 +381,7 @@ div.layout-content-main
 					_this.show.current = _this.event.current[i]			//获取电流信号
 					_this.show.speed = _this.event.speed[i]
 					_this.doorposition2=_this.doorposition
-					_this.doorposition=-50+(50*_this.show.position/_this.doorWidth)
-					console.log(_this.doorposition)
+					_this.doorposition=-50+parseInt(50*(_this.event.position[i]/_this.doorWidth))
 				}
 				openIn.on('click',function (params){					
 					var i = params.name;//横坐标的值
@@ -433,6 +430,7 @@ div.layout-content-main
 						this.show.position	= this.event.position[i] = ((buffer[i*8+2]&0x0f)<<8)+(buffer[i*8+3]&0xff)			//获取位置信号
 						this.show.current = this.event.current[i] = (((buffer[i*8+4]&0xff)<<8)+(buffer[i*8+5]&0xff))/1000		//获取电流信号
 						this.show.speed = this.event.speed[i] = (((buffer[i*8+6]&0xff)<<8)+(buffer[i*8+7]&0xff))/1000
+						
 					    if(this.event.speed[i]>32.767){
 							this.show.speed = this.event.speed[i] = (this.event.speed[i]-65.535).toFixed(2)
 						}

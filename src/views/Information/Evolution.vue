@@ -321,21 +321,21 @@ export default {
 			if(success.length == val.length){
 				this.getList()
 				this.$Notice.success({
-					title: '成功',
-					desc: '成功升级'+success
+					title: this.$t('success'),
+					desc: this.$t('Successfully update ')+success
 				});
 			}else{
 				if (error.length == val.length) {
 					this.$Notice.error({
-						title: '错误',
-						desc: '升级失败'
+						title: this.$t('error'),
+						desc: this.$t('Fail to update ')+error
 					});
 				}
 				else{
 					this.getList()
 					this.$Notice.warning({
-						title: '警告',
-						desc: '成功升级'+success+'；但是'+error+'升级失败'
+						title: this.$t('warning'),
+						desc: this.$t('Successfully update ')+success+'；'+this.$t('Fail to update ')+error
 					});
 				}							
 			}
