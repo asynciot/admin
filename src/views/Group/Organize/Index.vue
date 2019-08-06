@@ -8,7 +8,7 @@
 							Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goOrganize()")|{{$t('New')}} {{$t('Member Group')}}
 						Col(span="5")
 							Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,getOrganize()")
-							Input(v-model="query.number",:placeholder="$t('keyword')" style="width:75%;")
+							Input(v-model="query.number",:placeholder="$t('Group ID')" style="width:75%;")
 		div(style="min-height:450px")
 			Table(:columns="columns",:data="list",size="small" stripe)
 		Col(span="24" style="text-align:center;")

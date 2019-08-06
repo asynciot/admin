@@ -44,7 +44,7 @@
 					</template>
 					<template>
 						<MenuItem name="logout" :style="{}" style="font-size:13px">
-							
+							<i class="fa fa-sign-out" size="16" style="margin-left: -15px;"></i>
 							{{$t('Logout')}}
 						</MenuItem >
 					</template>
@@ -373,9 +373,9 @@
 				if(this.menus.user_manage == true){
 					this.menu[5].sub[0].key = true
 				}
-				if(this.menus.inform == true){
-					this.menu[5].sub[1].key = true
-				}
+// 				if(this.menus.inform == true){
+// 					this.menu[5].sub[1].key = true
+// 				}
 				if(this.menus.authority == true){
 					this.menu[5].sub[3].key = true
 				}

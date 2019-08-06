@@ -151,6 +151,7 @@ export default {
 				page: 1,
 				num: 10,
 				total: 1,
+				item: window.localStorage.getItem('item'),
 				search_info: '',
 			}
 		}
@@ -242,7 +243,7 @@ export default {
 		async getList() {
 			this.loading = true
 			let res = await this.$api.devices(this.options)
-			let test = await this.$api.devicess(this.options)
+			// let test = await this.$api.devicess(this.options)
 			this.loading = false
 			if(res.data.code === 0){
 				for (var i=0;i<res.data.data.list.length;i++){

@@ -61,10 +61,11 @@ div()
 					search_info: '',
 					page: 1,
 					num:1000,
-					device_type: 240,
+					// device_type: 240,
 					state:'',
 					register: "registered",
 					tagcolor: '',
+					item: window.localStorage.getItem('item'),
 				},
 				show:{
 					device_type: 'all',
@@ -171,6 +172,7 @@ div()
 			//获取数据
 			async getList() {
 				let res = await this.$api.devices(this.query)
+				// let dev = await this.$api.reLadder(this.query)
 				this.devices=res.data.data.list
 				this.options.total = res.data.data.totalNumber		
 				this.devices.forEach(item => {

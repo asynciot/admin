@@ -19,26 +19,29 @@
 				Col.padding(span=8)
 					Card.card
 						p.clearfix(slot="title")|{{$t('Basic Information')}}
-						Form.status(:model="show",label-position="left",:label-width="100")
+						Form.status(:model="show",label-position="left",:label-width="80")
 							Row(:gutter="16")
-								Col(span="10")
-									Form-item(:label="$t('Door Coordinate')+'：'")
-										p(v-text="show.position ? show.position : $t('None')")
-										p(v-text="show.run ? $t('Operating'):$t('Parking')")
-								Col(span="12")
-									Form-item(:label="$t('Door Current')+'：'")
-										p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
+								Col(span="22")
+									Form-item(:label="$t('install address')+'：'")
+										p(v-text="$t(device.install_addr)")
 							Row(:gutter="16")
-								Col(span="10")
+								Col(span="22")
+									Form-item(:label="$t('device name')+'：'")
+										p(v-text="$t(device.device_name)")
+							Row(:gutter="16")
+								Col(span="11")
 									Form-item(:label="$t('Open Door Signal')+'：'")
 										p(v-text="show.openIn ? $t('Active'):$t('Inactive')")
-								Col(span="10")
+								Col(span="11")
 									Form-item(:label="$t('Close Door Signal')+'：'")
 										p(v-text="show.closeIn ? $t('Active'):$t('Inactive')")
 							Row(:gutter="16")
 								Col(span="22")
 									Form-item(:label="$t('Devices State')+'：'")
 										p(v-text="parseStatus(show)")
+								Col(span="22")
+									Form-item(:label="$t('Door Current')+'：'")
+										p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
 							Row(:gutter="16")
 								Col(span="22")
 									Form-item(:label="$t('Opening Arrival Output')+'：'",:label-width="100")
@@ -49,11 +52,7 @@
 										p(v-text="show.closeToOut ? $t('Active') : $t('Inactive')")
 							Row(:gutter="16")
 								Col(span="22")
-									Form-item(:label="$t('start time')+'：'")
-										p(v-text="formatDate(this.t_start, 'yyyy-MM-dd HH:mm:ss')")
-							Row(:gutter="16")
-								Col(span="22")
-									Form-item(:label="$t('end time')+'：'")
+									Form-item(:label="$t('Last Update Time')+'：'")
 										p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
 							Row(:gutter="16")
 								Col(span="22")
@@ -76,7 +75,7 @@
 								div.doorbox(style="left:-0%" id='leftdoor')
 								section.doorstitle
 									div(:class="show.door?'screen':''")
-									p|{{$t('Light Curtain Signal')}}
+									p(style="width:50px")|{{$t('Light Curtain Signal')}}
 								div.doorbox(style="right:-0%" id='rightdoor')
 								<!-- div.doorbox(:style="{ right: `-${doorposition}%` }" id="rightdoor") -->
 					div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
@@ -171,10 +170,12 @@
 				closeTo:[],
 				speed:[],
 				end: 50,
+				device:[],
 			}
 		},
 		created(){
 			this.initWebsocket();
+			this.deviceinfo()
 		},
 		mounted(){
 // 			setTimeout(()=> {
@@ -235,16 +236,22 @@
 					}
 				}
 			},
+			async deviceinfo(){
+				let res = await this.$api.devices({page: 1,num: 1,IMEI:this.$route.params.IMEI})
+				if (res.data.code == 0){
+				this.device =res.data.data.list[0]
+				}
+			},
 			async initWebsocket(){ //初始化weosocket
 				var buffer
-				if (this.$route.params.device_model == '1') {
+				if (this.$route.params.device_model == '2') {
 					let dor = await this.$api.runtime({page:1,num:20,type: 4101,device_id:this.id})
 					if (dor.data.code == 0) {
 						buffer = base64url.toBuffer(dor.data.data.list[0].data)
 						this.doorWidth=buffer[14]*256+buffer[15]
 					}
 				}
-				if (this.$route.params.device_model == '2') {
+				if (this.$route.params.device_model == '1') {
 					let dor = await this.$api.runtime({page:1,num:20,type: 4100,device_id:this.id})
 					if (dor.data.code == 0) {
 						buffer = base64url.toBuffer(dor.data.data.list[0].data)
@@ -316,7 +323,6 @@
 				}, 4000)
 			},
 			shiftdata(){
-				console.log(this.savedata.length)
 				if (this.savedata.length>0) {
 					this.getData(this.savedata[0])
 				}
@@ -330,8 +336,8 @@
 				// console.log(buffer)
 				// var _this = this
 				this.count= 0
-				if (this.t_start == '') this.t_start = val.time
-				this.t_end = this.t_start+this.$route.params.duration*1000
+// 				if (this.t_start == '') this.t_start = val.time
+// 				this.t_end = this.t_start+this.$route.params.duration*1000
 // 				var inte = setInterval(function () {
 // 					if((_this.count+8) <= buffer.length){
 				this.show.openIn = (buffer[this.count+0]&0x80)>>7
@@ -359,12 +365,12 @@
 				if(this.show.speed>32.767){
 					this.show.speed = this.show.speed-65.535
 				}
-
+				this.t_end=new Date
 				this.drawLine();
-				this.saveposition.push(-50+parseInt(50*(parseInt(this.show.position)/1600)))
+				this.saveposition.push(-parseInt(50*(parseInt(this.show.position)/this.doorWidth)))
 				this.doorposition2=this.doorposition
-				this.doorposition=-50+parseInt(50*(parseInt(this.show.position)/1600))
-
+				this.doorposition=-parseInt(50*(parseInt(this.show.position)/this.doorWidth))
+				
 				this.savedata.shift()
 			},
 			drawLine(){

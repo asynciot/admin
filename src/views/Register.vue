@@ -3,7 +3,7 @@ div.account
 	div.text(align="center")
 	Row(:gutter= 50 style="padding-bottom:15%")
 		Col(span=12)
-			img.img1(src="../assets/logo-menu.png" align="center" style="margin-top:90px")
+			img.img1(src="../assets/logo-menu.png" align="center" style="margin-top:80px")
 			h3.account-title(style="text-align:center;font-size:23px;line-height:50px;width:250px" v-if="this.$i18n.locale == 'en-US'")|{{$t("NBSL")}}
 			h3.account-title(style="text-align:center" v-if="this.$i18n.locale == 'zh-CN'")|{{$t("NBSL")}}
 		Col(span=12 style="padding-top:5%")
@@ -19,9 +19,9 @@ div.account
 						Icon(type="ios-locked-outline",size="18",slot="prepend")
 				Form-item(prop="mobile")
 					Row(:gutter=30)
-						Col(span=5)
-							input(style="width:100%" v-model="add86" readonly)
-						Col(span=19)
+						Col(span=6)
+							Input(style="width:100%" v-model="add86" disabled)
+						Col(span=18)
 							Input(type="text",v-model="form.mobile",:placeholder="$t('phone number')" maxlength=11)
 								icon(name="ios-call-outline",width="14",height="14",slot="prepend")
 				Form-item(prop="verifyCode")

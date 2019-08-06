@@ -8,7 +8,7 @@
 							Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goGroup()")|{{$t('New')}} {{$t('Elevator Group')}}
 						Col(span="5")
 							Button.mr-10(type="primary",icon="ios-search",:loading="loading",@click="options.page=1,search()")
-							Input(v-model="options.username",:placeholder="$t('keyword')" style="width:75%;")
+							Input(v-model="query.name",:placeholder="$t('Group Name')" style="width:75%;")
 		div(style="min-height:450px")
 			Table(:columns="columns",:data="list",size="small" stripe)
 		Col(span="24" style="text-align:center;")
@@ -27,6 +27,7 @@
 				query:{
 					page:1,
 					nums:10,
+					name:'',
 				},
 				list:[],
 				loading:false,
@@ -94,6 +95,13 @@
 		},
 		methods:{
 			async search() {
+				this.loading = true
+				const res = await this.$api.readGroup(this.query)
+				if(res.data.code == 0){
+					this.list = res.data.data.list
+					this.options.total = res.data.data.totalNumber
+					this.loading = false
+				}
 			},
 			goGroup(){
 				this.$router.push({

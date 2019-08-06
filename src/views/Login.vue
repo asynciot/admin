@@ -18,14 +18,16 @@ div.account
 							<!-- div(class="code" @click="refreshCode") s-identify(:identifyCode="identifyCode") -->
 					Form-item
 						Row(:gutter="20")
-							Col(span=12)
+							Col(span=7)
 								Button(type="primary",long,@click="goRegister")|{{$t("register")}}
-							Col(span=12)
+							Col(span=7)
 								Button(type="primary",long,@click="login('form')" ,:loading="loading" )|{{$t("login")}}
+							Col(span=10)
+								Button(type="success",long,@click="bdqs('form')" ,:loading="loading" )|{{$t("BDQS")}}
 							Col(span=12)
-								div(style="cursor: pointer;text-align:center" @click="reset")|{{$t("forget_password?")}}
+								div(style="cursor: pointer;text-align:center;color:#2d8cf0" @click="reset")|{{$t("forget_password?")}}
 							Col(span=12 align="center")
-								checkbox(v-model="rem" @click="rem=!rem")|{{$t("remember")}}
+								checkbox(v-model="rem" @click="rem=!rem" style="color:#2d8cf0")|{{$t("remember")}}
 							Col(span=5)
 								Button(type="text",@click="changelang")|<
 							Col(span=14)
@@ -133,7 +135,51 @@ export default {
 		this.makeCode(this.identifyCodes, 4);
 	},
 	methods: {
+		async bdqs(name) {
+			window.localStorage.setItem('item','bd')
+			this.loading = true
+			this.$refs[name].validate(async (valid) => {
+				if (valid) {
+					let res = await this.$api.login(this.form)
+					if (!res.data.code) {
+						this.global.username = res.data.account.username
+						window.localStorage.setItem('username',this.global.username)
+						window.localStorage.setItem('id',res.data.account.id)
+						window.localStorage.setItem('rem',this.rem)
+						window.localStorage.setItem('u',this.form.username)
+						window.localStorage.setItem('mobile',res.data.account.mobile)
+						if (this.rem) {
+							window.localStorage.setItem('p',this.form.password)
+						}
+						const val = await this.$api.people({id:res.data.account.id,num:1,page:1})
+						const itm = await this.$api.getMenu({
+							page:1,
+							num:1,
+							id:val.data.data.list[0].role,
+						})
+						const obj = JSON.stringify(itm.data.data.list[0])
+						window.localStorage.setItem('menu',obj)
+						this.$Message.success({
+							content: this.$t("Login successfully, going the home page!"),
+							duration: 0.5,
+							onClose: () => {
+								this.$router.push({
+									name: 'dashboard',
+								})
+							}
+						})
+					} else {
+						this.loading = false;
+						this.$Message.error(this.$t("Login failed!"));
+					}
+				} else {
+					this.loading = false;
+					this.$Message.error(this.$t("Please improve login information!"));
+				}
+			})
+		},
 		async login(name) {
+			window.localStorage.setItem('item','')
 			this.loading = true
 			this.$refs[name].validate(async (valid) => {
 				if (valid) {

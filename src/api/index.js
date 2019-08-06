@@ -289,4 +289,7 @@ export default {
 	bindGroup: (data) => {
 		return DeviceApi.update({key1:'Organization',key2:'bind'}, data)
 	},
+	ordercode:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'OrderCode'}, data))
+	},
 }

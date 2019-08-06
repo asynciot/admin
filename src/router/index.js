@@ -89,12 +89,7 @@ const EditOrganize = resolve => require(['@/views/Group/Organize/EditOrganize'],
 const Print = resolve => require(['@/views/System/Print'], resolve)
 const UserManage = resolve => require(['@/views/System/UserManage'], resolve)
 const UserManageDetail = resolve => require(['@/views/System/UserManageDetail'], resolve)
-const Inform = resolve => require(['@/views/System/Inform'], resolve)
-const Notice = resolve => require(['@/views/System/Notice'], resolve)
-const ReadNotice = resolve => require(['@/views/System/ReadNotice'], resolve)
-const ReadInform = resolve => require(['@/views/System/ReadInform'], resolve)
-const WriteNotice = resolve => require(['@/views/System/WriteNotice'], resolve)
-const WriteInform = resolve => require(['@/views/System/WriteInform'], resolve)
+
 const Person = resolve => require(['@/views/System/Person'], resolve)
 const Instructions = resolve => require(['@/views/System/Instructions'], resolve)
 const CtrlCode = resolve => require(['@/views/System/CtrlCode'], resolve)
@@ -260,7 +255,7 @@ export default new Router({
 					},
 					component: LadderInfo
 				}, {
-					path: '/watch/device/doorhistory/:id',
+					path: '/watch/device/doorhistory/:id/:device_model',
 					name: 'doorhistory',
 					meta: {
 						name: '控制器事件'
@@ -646,48 +641,6 @@ export default new Router({
 						name: '更改密码'
 					},
 					component: NewPassword
-				}, {
-					path: '/system/inform',
-					name: 'inform',
-					meta: {
-						name: '通知记录'
-					},
-					component: Inform
-				}, {
-					path: '/system/notice',
-					name: 'notice',
-					meta: {
-						name: '公告记录'
-					},
-					component: Notice
-				}, {
-					path: '/system/readnotice',
-					name: 'readNotice',
-					meta: {
-						name: '查看公告'
-					},
-					component: ReadNotice
-				}, {
-					path: '/system/readinform',
-					name: 'readInform',
-					meta: {
-						name: '查看消息'
-					},
-					component: ReadInform
-				}, {
-					path: '/system/writeinform',
-					name: 'writeInform',
-					meta: {
-						name: '发送消息'
-					},
-					component: WriteInform
-				}, {
-					path: '/system/writenotice',
-					name: 'writeNotice',
-					meta: {
-						name: '发布公告'
-					},
-					component: WriteNotice
 				}, {
 					path: '/system/print',
 					name: 'print',

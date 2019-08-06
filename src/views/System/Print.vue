@@ -61,6 +61,7 @@
 					num: 10,
 					total: 0,
 					tagcolor: '',
+					item: window.localStorage.getItem('item'),
 				},
 				columns: [{
 			          title: this.$t('device name'),

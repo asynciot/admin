@@ -51,23 +51,47 @@
 				doorCode:'',
 				dcode:[
 					{
-						value:'1',
-						label:this.$t('dE1')
+						value:'SC',
+						label:this.$t('SC')
 					},{
-						value:'2',
-						label:this.$t('dE2')
+						value:'OC',
+						label:this.$t('OC')
 					},{
-						value:'16',
-						label:this.$t('dE10')
+						value:'OV',
+						label:this.$t('OV')
 					},{
-						value:'32',
-						label:this.$t('dE20')
+						value:'LV',
+						label:this.$t('LV')
+					},
+				],
+				dcode2:[
+					{
+						value:'02',
+						label:this.$t('02')
 					},{
-						value:'64',
-						label:this.$t('dE40')
+						value:'03',
+						label:this.$t('03')
 					},{
-						value:'128',
-						label:this.$t('dE80')
+						value:'04',
+						label:this.$t('04')
+					},{
+						value:'05',
+						label:this.$t('05')
+					},{
+						value:'07',
+						label:this.$t('07')
+					},{
+						value:'08',
+						label:this.$t('08')
+					},{
+						value:'09',
+						label:this.$t('09')
+					},{
+						value:'0A',
+						label:this.$t('0A')
+					},{
+						value:'0b',
+						label:this.$t('0b')
 					},
 				],
 				list:[],
@@ -136,6 +160,7 @@
 					device_type: device_type,
 					device_id: this.list.device_id,
 					islast: 1,
+					item: this.list.item,
 				})
 				this.id = ret.data.data.list[0].id
 				let thr = await this.$api.orderExamine({id:this.id})

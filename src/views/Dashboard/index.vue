@@ -8,11 +8,11 @@
 			<!-- <div><Checkbox @on-change='showpanel("chart2",chart2)' v-model="chart2">用户组成</Checkbox></div> -->
 			<div><Checkbox @on-change='showpanel("chart3",chart3)' v-model="chart3">{{$t("Common Faults")}}</Checkbox></div>
 			<div><Checkbox @on-change='showpanel("chart4",chart4)' v-model="chart4">{{$t("Active Devices")}}</Checkbox></div>
-			<div><Checkbox @on-change='showpanel("email",email)' v-model="email">{{$t("Notice")}}</Checkbox></div>
+			<!-- <div><Checkbox @on-change='showpanel("email",email)' v-model="email">{{$t("Notice")}}</Checkbox></div> -->
 		</Drawer>
 		<!-- Content Wrapper. Contains page content -->
 			<!-- Main content -->
-			<section class="content" style="padding:25px;padding-top:20px;">
+			<section class="bg" style="padding:25px;padding-top:20px;min-height: 1000px;" id="backgroundimg">
 				<!-- Small boxes (Stat box) -->
 				<div class="row" style="">
 					<div class="ivu-col ivu-col-span-6" id='title1' style="padding-left:10px;padding-right:10px">
@@ -43,7 +43,6 @@
 					</div>
 					<!-- ./col -->
 					<div class="ivu-col ivu-col-span-6" id='title3' style="padding-left:10px;padding-right:10px">
-
 						<!-- small box -->
 						<div class="small-box bg-yellow">
 							<div class="inner" style="text-align:center; padding:4px">
@@ -202,7 +201,7 @@
 								</div> -->
 								<form action="#" method="post" style="margin-top:5px">
 									<div class="input-group">
-										<Col span='18'><textarea type="text" name="message" style="height:40px" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
+										<Col span='18'><textarea type="text" name="message" style="height:40px;resize:none;" :placeholder="reply" class="form-control" v-model="chatoptions.content" :style="'font-size:'+screenheight/55+'px'"></textarea></Col>
 										<Col span='6'>
 										<span class="input-group-btn" style="width: 100%">
 											<button type="button" class="btn btn-primary btn-flat" @click="sentchat()" v-if="chatoptions.follow!=-1" :disabled="btn2" style="height:40px;width:100%">{{$t("respond")}}</button>
@@ -314,7 +313,7 @@
 								<h3 class="box-title" v-if="text3">{{$t("Achievement Chart")}}</h3>
 								
 								<div class="box-tools pull-right">
-									<div class="btn-group" style="margin-right: 5px;">
+									<div class="btn-group" style="margin-right: 0px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
 											<i class="fa fa-bars"></i></button>
 										<div class="dropdown-menu pull-right" role="menu">
@@ -455,7 +454,7 @@
 										<i class="fa fa-th"></i>
 										<h3 class="box-title" v-if="text6">{{$t("Common Faults")}}</h3>
 										<div class="box-tools pull-right">
-											<div class="btn-group" style="margin-right: 5px;">
+											<div class="btn-group" style="margin-right: 0px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth3')">
 													<i class="fa fa-bars"></i></button>
 												<div class="dropdown-menu pull-right" role="menu">
@@ -493,7 +492,7 @@
 										<i class="fa fa-th"></i>
 										<h3 class="box-title" v-if="text7">{{$t("Active Devices")}}</h3>
 										<div class="box-tools pull-right">
-											<div class="btn-group" style="margin-right: 5px;">
+											<div class="btn-group" style="margin-right: 0px;">
 												<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth4')">
 													<i class="fa fa-bars"></i></button>
 												<div class="dropdown-menu pull-right" role="menu">
@@ -587,7 +586,7 @@
 				chart2: false,
 				chart3: true,
 				chart4: true,
-				email: true,
+				email: false,
 				progress: true,
 				mapbody: true,
 				chatbody: true,
@@ -680,17 +679,20 @@
 			if (window.localStorage.getItem('chartwidth2') != null) {this.widthblock3('chartwidth2',window.localStorage.getItem('chartwidth2'))}
 			if (window.localStorage.getItem('chartwidth3') != null) {this.widthblock3('chartwidth3',window.localStorage.getItem('chartwidth3'))}
 			if (window.localStorage.getItem('progresswidth') != null) {this.widthblock3('progresswidth',window.localStorage.getItem('progresswidth'))}
-			if (window.localStorage.getItem('emailwidth') != null) {this.widthblock3('emailwidth',window.localStorage.getItem('emailwidth'))}
+			// if (window.localStorage.getItem('emailwidth') != null) {this.widthblock3('emailwidth',window.localStorage.getItem('emailwidth'))}
 			if (window.localStorage.getItem('map') == 1) {this.map=false}
 			if (window.localStorage.getItem('chat') == 1) {this.chat=false}
 			if (window.localStorage.getItem('chart') == 1) {this.chart=false}
 			if (window.localStorage.getItem('chart2') == 1) {this.chart2=false}
 			if (window.localStorage.getItem('chart3') == 1) {this.chart3=false}
 			if (window.localStorage.getItem('progress') == 1) {this.progress=false}
-			if (window.localStorage.getItem('email') == 1) {this.email=false}
+			// if (window.localStorage.getItem('email') == 1) {this.email=false}
 			
 		},
 		created(){
+			if (window.localStorage.getItem('item') == 'bd'){
+				console.log(document.getElementById('backgroundimg'))
+			}
 			this.screenwidth = document.documentElement.clientWidth-200;
 			this.screenheight = document.documentElement.clientHeight;
 			this.setheight[0]=this.screenheight/9.75 -3
@@ -720,7 +722,7 @@
 	function MouseWheel() {  
 	  if (document.removeEventListener) {  
 		document.removeEventListener('DOMMouseScroll', scrollFunc, false);  
-	  }//W3C  
+	  }//W3C
 	  window.onmousewheel = document.onmousewheel = null;//IE/Opera/Chrome  
 	}  
 	function scrollFunc(evt) {  
@@ -931,6 +933,7 @@
 					page: this.progresspage,
 					num: 8,
 					state: this.prostate,
+					item: window.localStorage.getItem('item'),
 					// user_id:window.localStorage.getItem('id')
 				})
 				
@@ -990,11 +993,11 @@
 				var allorder=0
 				this.faultdevice=0
 				this.allevents=0
-				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'',islast:1})
+				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'',islast:1,item: window.localStorage.getItem('item'),})
 				if (0 === res.data.code) {
 					allorder = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'treated',islast:1})
+				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'treated',islast:1,item: window.localStorage.getItem('item'),})
 				if (0 === res.data.code) {
 					this.allevents = allorder-res.data.data.totalNumber
 				}
@@ -1004,16 +1007,16 @@
 				}
 				res = await this.$api.getRepair({
 					search_info: '',page: 1,num: 4,isreg: "True",state:'treated',order_type:'',result:'',device_id:'',
-					finish_starttime:Date.parse(this.$format(new Date(), 'YYYY-MM-DD')),
+					finish_starttime:Date.parse(this.$format(new Date(), 'YYYY-MM-DD')),item: window.localStorage.getItem('item'),
 				})
 				if (res.data.code == 0){
 				this.today = res.data.data.totalNumber
 				}
-				res = await this.$api.devices({page: 1,num: 10,isreg: ''})
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',item: window.localStorage.getItem('item'),})
 				if (res.data.code == 0){
 				this.alldevice =res.data.data.totalNumber
 				}
-				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online'})
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online',item: window.localStorage.getItem('item'),})
 				if (res.data.code == 0){
 				this.onlinedevice =res.data.data.totalNumber
 				}
@@ -1191,13 +1194,22 @@
 	
 </script>
 <style lang="scss" scoped>
-	.wrapper{
-		background-color: #5A6268;
-	}
+// 	.wrapper{
+// 		background-color: #FF0000;
+// 	}
 	.slide-fade-enter-active {
 		transition: all .3s ease;
 	}
-
+	.bg {
+// 		position: absolute;
+// 		display: flex;
+// 		flex-flow: column nowrap;
+// 		align-items: center;
+// 		justify-content: center;
+		background: url('../../../static/bdqs.png') center center no-repeat;
+		background-size: 200% auto;
+	}
+// 
 	/*这里使用了贝塞尔曲线*/
 	.slide-fade-leave-active {
 		transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);

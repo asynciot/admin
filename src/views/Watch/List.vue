@@ -91,6 +91,7 @@ div
 					tagcolor:"",
 					register: "registered",	
 					install_addr:'',
+					item: window.localStorage.getItem('item'),
 				},
 				show:{
 					state: 'online',

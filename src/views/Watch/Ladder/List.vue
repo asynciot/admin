@@ -62,6 +62,7 @@ div
 					install_addr:'',
 					follow:'yes',
 					state:'',
+					item: window.localStorage.getItem('item'),
 				},
 				show:{
 					state: 'online',

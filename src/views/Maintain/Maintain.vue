@@ -44,17 +44,16 @@
 				</Row>
 			</Form>
 		</div>
-		<el-dialog :title='$t("tip")' :visible.sync="ctrl" width="30%">
-			<img id='c' width="100%" src='' onerror="src='../../../static/miss.png'"></img>
-			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="ctrl = false">{{$t('OK')}}</el-button>
-			</span>
-		</el-dialog>
-		<el-dialog :title='$t("tip")' :visible.sync="door" width="30%">
-			<img id='d' width="100%" src='' onerror="src='../../../static/miss.png'"></img>
-			<span slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="door = false">{{$t('OK')}}</el-button>
-			</span>
+		<el-dialog :title='$t("tip")' :visible.sync="showinfo" width="30%">
+			<table border='1' style="border-color: #000;width:100%;text-align: center;">
+				<tr style="width:100%;height:16px;font-size:12px"><td>{{$t('Possible Reasons')}}</td><td>{{$t('Solution')}}</td></tr>
+				<tr style="width:100%;height:16px;font-size:12px" v-for="item in codeinfo">
+					<td>{{item.reason}}</td>
+					<td style="">
+						<tr v-for="ans in item.answer" style="border-color: #fff;width:100%"><td style="width:99%">{{ans}}</td><td style="width:1%">&nbsp;</td></tr>
+					</td>
+				</tr>
+			</table>
 		</el-dialog>
 		<div style="min-height: 450px; margin-top: 20px;">
 			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
@@ -70,11 +69,11 @@
 	export default {
 		data() {
 			return {
-				ctrl: false,
-				door: false,
+				showinfo: false,
 				last: true,
 				color: [false, false, false, false, false, false],
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
+				codeinfo:[],
 				menu: [],
 				data: [],
 				data2:[],
@@ -95,6 +94,7 @@
 					device_type: '',
 					device_id: '',
 					islast: 1,
+					item: window.localStorage.getItem('item'),
 				},
 				columns: [{
 						title: this.$t('device name'),
@@ -156,11 +156,16 @@
 							var type = ''
 							var e = ''
 							if ((params.row.type == '1') && (params.row.code != null)) {
-								type = params.row.code.toString(16)
-								if (type.length == 1) {
-									type = '0' + type
+								if (params.row.device_type == "ctrl"){
+									type = params.row.code.toString(16)
+									if (type.length == 1) {
+										type = '0' + type
+									}
+									e = 'E' + type
 								}
-								e = 'E' + type
+								else{
+									e=params.row.code
+								}
 							}
 							return h('div', [
 								h('Button', {
@@ -174,18 +179,8 @@
 									},
 									on: {
 										click: () => {
-											if (params.row.device_type == "ctrl") {
-												setTimeout(() => {
-													document.getElementById('c').src = '../../../static/c' + type + '.png'
-												}, 200)
-												this.ctrl = true
-											}
-											if (params.row.device_type == "door") {
-												setTimeout(() => {
-													document.getElementById('d').src = '../../../static/d' + type + '.png'
-												}, 200)
-												this.door = true
-											}
+											this.showinfo=true
+											this.getcode(e)
 										}
 									}
 								}, e)
@@ -265,6 +260,16 @@
 			this.getList()
 		},
 		methods: {
+			async getcode(val){
+				let res= await this.$api.ordercode({code:val})
+				if (res.data.code == 0){
+					this.codeinfo=res.data.list
+					this.codeinfo.forEach(item=>{
+						item.answer=item.answer.split(';')
+					})
+					console.log(this.codeinfo)
+				}
+			},
 			handleSearch1() {
 				this.menu = [];
 				var str;

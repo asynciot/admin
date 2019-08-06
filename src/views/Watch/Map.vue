@@ -132,6 +132,7 @@ div
 					register: "registered",
 					tagcolor: '',
 					install_addr:'',
+					item: window.localStorage.getItem('item'),
 				},
 				show:{
 					device_type: 'all',

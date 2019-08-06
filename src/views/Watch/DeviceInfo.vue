@@ -181,8 +181,8 @@
 								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
 									Row
 										Col(span=22)|  {{$t('event id')}} ： {{item.id}}
-													Col(span=12)|  {{$t('start time')}} ： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
-													Col(span=12)|  {{$t('end time')}} ： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
+											Col(span=12)|  {{$t('start time')}} ： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
+											Col(span=12)|  {{$t('end time')}} ： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
 							div(style='font-size: large;') {{$t('total')}} {{total}} {{$t('events')}}
 </template>
 
@@ -502,6 +502,7 @@
 						name: 'doorhistory',
 						params: {							
 							id: val,
+							device_model: this.data.device_model
 						}
 					})
 				}

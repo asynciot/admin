@@ -104,10 +104,11 @@ div
 				query:{
 					search_info: '',
 					page: 1,
-					num: 10,
+					num: 1000,
 					install_addr:'',
 					// follow:'yes',
 					state:'',
+					item: window.localStorage.getItem('item'),
 				},
 				show:{
 					device_type: 'all',

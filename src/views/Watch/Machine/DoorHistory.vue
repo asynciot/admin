@@ -7,24 +7,28 @@ div.layout-content-main
 					p.clearfix(slot="title")|{{$t('Basic Information')}}
 					Form.status(:model="show",label-position="left",:label-width="100")
 						Row(:gutter="16")
-							Col(span="10")
-								Form-item(:label="$t('Door Coordinate')+'：'")
-									p(v-text="show.position ? show.position : $t('None')")
-									p(v-text="show.run ? $t('Operating'):$t('Parking')")
-							Col(span="12")
-								Form-item(:label="$t('Door Current')+'：'")
-									p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
+							Col(span="22")
+								Form-item(:label="$t('install address')+'：'")
+									p(v-text="$t(device.install_addr)")
 						Row(:gutter="16")
-							Col(span="10")
+							Col(span="22")
+								Form-item(:label="$t('device name')+'：'")
+									p(v-text="$t(device.device_name)")
+							
+						Row(:gutter="16")
+							Col(span="11")
 								Form-item(:label="$t('Open Door Signal')+'：'")
 									p(v-text="show.openIn ? $t('Active'):$t('Inactive')")
-							Col(span="10")
+							Col(span="11")
 								Form-item(:label="$t('Close Door Signal')+'：'")
 									p(v-text="show.closeIn ? $t('Active'):$t('Inactive')")
 						Row(:gutter="16")
 							Col(span="22")
 								Form-item(:label="$t('Devices State')+'：'")
 									p(v-text="parseStatus(show)")
+							Col(span="22")
+								Form-item(:label="$t('Door Current')+'：'")
+									p(v-text="isNaN(show.current) ? $t('None') : `${show.current} A`")
 						Row(:gutter="16")
 							Col(span="22")
 								Form-item(:label="$t('Opening Arrival Output')+'：'",:label-width="100")
@@ -157,18 +161,20 @@ div.layout-content-main
 					position:'',
 					speed:'',
 				},
-				doorWidth: 1620,
+				doorWidth: 0,
 				interval:'',
 				point:'',
+				device:[],
 			}
 		},
 		created(){
 			this.getData();
+			this.deviceinfo();
 			this.getDoorWidth();
 			if(this.$route.params.id){
 				this.getData();
 				setTimeout(() => {
-					// this.drawLine();
+					this.drawLine();
 				},500)
 			}
 			else{
@@ -176,42 +182,48 @@ div.layout-content-main
 			}
 		},
 		mounted(){
-			this.tweenAni();
+			// this.tweenAni();
 		},
 		components: {
 			draggable,
 		},
 		methods: {
-			tweenAni: function () {
-				let doorposition
-				let AppScrollTopNow = {
-					x: this.doorposition2
-				}, // ================================= 定义一个初始位置
-				AppScrollTopEnd = {
-					x: this.doorposition
-				} ;// ================================= 定义一个结束位置
-				new TWEEN.Tween(AppScrollTopNow) // 传入开始位置
-					.to(AppScrollTopEnd, 100) // 指定时间内完成结束位置
-					.easing(TWEEN.Easing.Quadratic.Out) // 缓动方法名
-					.onUpdate(() => {
-					// 上面的值更新时执行的设置
-					document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
-					document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
-				})
-				.start();// ================================= 不要忘了合适的时候启动动画
-				if (this.$route.meta.name == '控制器事件'){requestAnimationFrame(this.tweenAni);}
-				TWEEN.update();
+// 			tweenAni: function () {
+// 				let doorposition
+// 				let AppScrollTopNow = {
+// 					x: this.doorposition2
+// 				}, // ================================= 定义一个初始位置
+// 				AppScrollTopEnd = {
+// 					x: this.doorposition
+// 				} ;// ================================= 定义一个结束位置
+// 				new TWEEN.Tween(AppScrollTopNow) // 传入开始位置
+// 					.to(AppScrollTopEnd, 100) // 指定时间内完成结束位置
+// 					.easing(TWEEN.Easing.Quadratic.Out) // 缓动方法名
+// 					.onUpdate(() => {
+// 					// 上面的值更新时执行的设置
+// 					document.getElementById('leftdoor').style.left=AppScrollTopEnd.x.toString()+'%'
+// 					document.getElementById('rightdoor').style.right=AppScrollTopEnd.x.toString()+'%'
+// 				})
+// 				.start();// ================================= 不要忘了合适的时候启动动画
+// 				if (this.$route.meta.name == '控制器事件'){requestAnimationFrame(this.tweenAni);}
+// 				TWEEN.update();
+// 			},
+			async deviceinfo(){
+				let res = await this.$api.devices({page: 1,num: 1,IMEI:this.$route.params.IMEI})
+				if (res.data.code == 0){
+				this.device =res.data.data.list[0]
+				}
 			},
 			async getDoorWidth(){
 				var buffer
-				if (this.$route.params.device_model == '1') {
+				if (this.$route.params.device_model == '2') {
 					let dor = await this.$api.runtime({page:1,num:20,type: 4101,device_id:this.id})
 					if (dor.data.code == 0) {
 						buffer = base64url.toBuffer(dor.data.data.list[0].data)
 						this.doorWidth=buffer[14]*256+buffer[15]
 					}
 				}
-				if (this.$route.params.device_model == '2') {
+				if (this.$route.params.device_model == '1') {
 					let dor = await this.$api.runtime({page:1,num:20,type: 4100,device_id:this.id})
 					if (dor.data.code == 0) {
 						buffer = base64url.toBuffer(dor.data.data.list[0].data)
@@ -381,7 +393,8 @@ div.layout-content-main
 					_this.show.current = _this.event.current[i]			//获取电流信号
 					_this.show.speed = _this.event.speed[i]
 					_this.doorposition2=_this.doorposition
-					_this.doorposition=-50+parseInt(50*(_this.event.position[i]/_this.doorWidth))
+					console.log(_this.event.position[i]+' '+_this.doorWidth)
+					_this.doorposition=-parseInt(50*(_this.event.position[i]/_this.doorWidth))
 				}
 				openIn.on('click',function (params){					
 					var i = params.name;//横坐标的值

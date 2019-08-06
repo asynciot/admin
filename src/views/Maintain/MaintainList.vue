@@ -64,6 +64,7 @@
 					order_type:'',
 					result:'',
 					device_id:'',
+					item: window.localStorage.getItem('item'),
 				},
 				columns: [ {
 					title: this.$t('order ID'),

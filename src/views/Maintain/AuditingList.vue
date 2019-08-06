@@ -65,6 +65,7 @@
 					device_type: '',
 					device_id: '',
 					islast: 1,
+					item: window.localStorage.getItem('item'),
 				},
 				columns: [{
 						title: this.$t('device name'),
