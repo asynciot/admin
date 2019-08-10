@@ -85,6 +85,7 @@
 					device_id:'',
 					finish_starttime:Date.parse(time+'-'+(i+1).toString()),
 					finish_endtime:Date.parse(time+'-'+(i+2).toString()),
+					follow:'yes'
 				})
 				this.chartrepair.push(rep.data.data.totalNumber)
 				}
@@ -99,6 +100,7 @@
 					device_id:'',
 					starttime:Date.parse(time+'-'+(i+1).toString()),
 					endtime:Date.parse(time+'-'+(i+2).toString()),
+					follow:'yes'
 				})
 				this.chartorder.push(ord.data.data.totalNumber)
 				}

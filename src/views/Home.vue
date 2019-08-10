@@ -37,6 +37,12 @@
 						</Submenu>
 					</template>
 					<template>
+						<MenuItem name="WeChat" :style="{}" style="font-size:13px">
+							<i class="fa fa-wechat" size="16" style="margin-left: -15px;"></i>
+							{{$t('WeChat Follow')}}
+						</MenuItem >
+					</template>
+					<template>
 						<MenuItem name="Fullscreen" :style="{}" style="font-size:13px">
 							<i class="fa fa-arrows-alt" size="16" style="margin-left: -15px;"></i>
 							{{$t('Fullscreen')}}
@@ -499,6 +505,9 @@
 						this.$router.replace({
 							name: 'login'
 						})
+					}
+					else if (name=="WeChat") {
+						this.logout(5)
 					}
 					else if (name=="Fullscreen") {
 						this.fullscreen()

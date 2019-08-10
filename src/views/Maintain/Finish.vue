@@ -40,15 +40,15 @@
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|{{list.result}}
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch!= true))" disabled='false')|{{t('complete')}}
-								Button(type="success",@click="finish('finish')" v-else)|{{$t('complete')}}
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))" disabled='false')|{{$t('complete')}}
+								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(sent))")|{{$t('complete')}}
 							Col(span=6 align="center")
 								Button(type="primary",@click="examine()",v-if="dispatch != true" disabled='false')|{{$t('reprieve')}}
 								Button(type="primary",@click="examine()",v-else)|{{$t('reprieve')}}
 							Col(span=6 align="center")
 								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|{{list.result}}
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent)&&(dispatch != true))" disabled='false')|{{$t('transfer')}}
-								Button(type="warning",@click="finish('transfer')" v-else)|{{$t('transfer')}}
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))" disabled='false')|{{$t('transfer')}}
+								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(sent))")|{{$t('transfer')}}
 							Col(span=6 align='center')
 								Button(@click="$router.back(-1)")|{{$t('cancel')}}
 </template>
@@ -86,7 +86,7 @@
 				file:'',
 				filename:'',
 				ps:'',
-				dispatch:this.global.functions.work_dispatch,
+				// dispatch:this.global.functions.work_dispatch,
 			}
 		},
 		computed: {

@@ -59,6 +59,7 @@
 				let res = await this.$api.orderCount({
 					starttime:val,
 					endtime:item,
+					follow:'yes'
 				})
 				this.Lastlist.monday = res.data.data.monday
 				this.Lastlist.tuesday = res.data.data.tuesday
@@ -72,6 +73,7 @@
 				let res = await this.$api.orderCount({
 					starttime:val,
 					endtime:item,
+					follow:'yes'
 				})
 				this.list.monday = res.data.data.monday
 				this.list.tuesday = res.data.data.tuesday

@@ -162,13 +162,13 @@ div
 					page: 1,
 					num: 10,
 					total: 0,
-					register: "registered",				
+					register: "registered",
+					follow:'yes'
 				}
 			}
 		},
 		mounted() {			
 			this.initMap()
-			this.getList()
 			document.getElementById('list').style.height = (Number(document.documentElement.clientHeight)/1-200) + 'px'
 		},
 		methods: {
@@ -379,13 +379,13 @@ div
 				}						
 			},
 			async centpoint() {
-				let res = await this.$api.devices(this.query)
+				// let res = await this.$api.devices(this.query)
 				var minlat = 500;
 				var minlon = 500;
 				var maxlat = -500;
 				var maxlon = -500;				
-				this.devices= res.data.data.list
-				this.options.total = res.data.data.totalNumber
+				// this.devices= res.data.data.list
+				// this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
 						item.state = this.$t('online')
@@ -486,7 +486,7 @@ div
 		padding-bottom: 1px;
 	}
 	.dv{
-		height: 460px;
+		// height: 460px;
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}

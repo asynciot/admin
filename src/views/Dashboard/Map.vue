@@ -66,6 +66,7 @@ div()
 					register: "registered",
 					tagcolor: '',
 					item: window.localStorage.getItem('item'),
+					follow:'yes'
 				},
 				show:{
 					device_type: 'all',
@@ -103,7 +104,6 @@ div()
 		},
 		mounted() {			
 			this.initMap()
-			this.getList()
 			this.setsize()
 		},
 		methods: {
@@ -326,13 +326,13 @@ div()
 				}						
 			},
 			async centpoint() {
-				let res = await this.$api.devices(this.query)
+				// let res = await this.$api.devices(this.query)
 				var minlat = 500;
 				var minlon = 500;
 				var maxlat = -500;
 				var maxlon = -500;				
-				this.devices= res.data.data.list
-				this.options.total = res.data.data.totalNumber
+// 				this.devices= res.data.data.list
+// 				this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
 						item.state = "在线"

@@ -16,7 +16,7 @@
 							Option(key='3', :label="$t('ctrl')", value='ctrl')
 					Col(span="2")
 						Select.smr(v-model='show.list_type', style='width:100%;', :placeholder='$t("type")', @on-change='getList()')
-							Option(key='2', :label="$t('order auditing')", value='order')
+							<!-- Option(key='2', :label="$t('order auditing')", value='order') -->
 							Option(key='3', :label="$t('dispatch auditing')", value='dispatch')
 					Col(span="4")
 						Input(v-model="options.search_info" ,:data="menu" ,:placeholder='$t("device name")+"、"+$t("install address")' max=15)
@@ -53,7 +53,7 @@
 					state: 'untreated',
 					type: 'all',
 					device_type: 'all',
-					list_type:'order',
+					list_type:'dispatch',
 				},
 				options:{
 					search_info: '',

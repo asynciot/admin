@@ -947,7 +947,6 @@
 					}
 					this.data = res.data.list
 					for (var i=0;i<res.data.list.length;i++) {
-						
 						this.getname(i)
 					}
 				}
@@ -993,11 +992,11 @@
 				var allorder=0
 				this.faultdevice=0
 				this.allevents=0
-				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'',islast:1,item: window.localStorage.getItem('item'),})
+				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'',islast:1,item: window.localStorage.getItem('item'),follow:'yes'})
 				if (0 === res.data.code) {
 					allorder = res.data.data.totalNumber
 				}
-				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'treated',islast:1,item: window.localStorage.getItem('item'),})
+				res = await this.$api.fault({num:1,page:1,device_type:'',type:'1',state:'treated',islast:1,item: window.localStorage.getItem('item'),follow:'yes'})
 				if (0 === res.data.code) {
 					this.allevents = allorder-res.data.data.totalNumber
 				}
@@ -1006,17 +1005,17 @@
 					this.firm = res.data.data.totalNumber
 				}
 				res = await this.$api.getRepair({
-					search_info: '',page: 1,num: 4,isreg: "True",state:'treated',order_type:'',result:'',device_id:'',
+					search_info: '',page: 1,num: 4,isreg: "True",state:'treated',order_type:'',result:'',device_id:'',follow:'yes',
 					finish_starttime:Date.parse(this.$format(new Date(), 'YYYY-MM-DD')),item: window.localStorage.getItem('item'),
 				})
 				if (res.data.code == 0){
 				this.today = res.data.data.totalNumber
 				}
-				res = await this.$api.devices({page: 1,num: 10,isreg: '',item: window.localStorage.getItem('item'),})
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',item: window.localStorage.getItem('item'),follow:'yes'})
 				if (res.data.code == 0){
 				this.alldevice =res.data.data.totalNumber
 				}
-				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online',item: window.localStorage.getItem('item'),})
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online',item: window.localStorage.getItem('item'),follow:'yes'})
 				if (res.data.code == 0){
 				this.onlinedevice =res.data.data.totalNumber
 				}

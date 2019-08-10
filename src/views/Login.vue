@@ -18,12 +18,10 @@ div.account
 							<!-- div(class="code" @click="refreshCode") s-identify(:identifyCode="identifyCode") -->
 					Form-item
 						Row(:gutter="20")
-							Col(span=7)
+							Col(span=12)
 								Button(type="primary",long,@click="goRegister")|{{$t("register")}}
-							Col(span=7)
+							Col(span=12)
 								Button(type="primary",long,@click="login('form')" ,:loading="loading" )|{{$t("login")}}
-							Col(span=10)
-								Button(type="success",long,@click="bdqs('form')" ,:loading="loading" )|{{$t("BDQS")}}
 							Col(span=12)
 								div(style="cursor: pointer;text-align:center;color:#2d8cf0" @click="reset")|{{$t("forget_password?")}}
 							Col(span=12 align="center")
