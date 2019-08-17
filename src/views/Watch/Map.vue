@@ -350,6 +350,8 @@ div
 						}
 					}
 				})
+				var point = new BMap.Point(106.27720032,29.41174431)
+				this.map.panTo(point)
 				this.markerClusterer.addMarkers(this.markers)
 			},
 			goDevice(data) {
