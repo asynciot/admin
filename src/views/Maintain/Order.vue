@@ -31,7 +31,7 @@
 	export default{	
 		data(){
 			return{
-				username:this.global.username,
+				username:window.localStorage.getItem('username'),
 				id:window.localStorage.getItem('id'),
 				mobile:window.localStorage.getItem('mobile'),
 				fault:[0,0,0,0,0,0,0,0],
@@ -41,7 +41,7 @@
 				faultcode:false,
 				list:[],
 				query:{
-					username:this.global.username,
+					username:window.localStorage.getItem('username'),
 					name:'',
 				},
 				ladList:[],
@@ -106,8 +106,18 @@
 					res.data.data.list[0].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
 					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
 					if((res.data.data.list[0].type == this.$t('fault'))&&(res.data.data.list[0].code != null)){
-						if (res.data.data.list[0].device_type=='15') {res.data.data.list[0].code=this.$t('dE'+res.data.data.list[0].code.toString(16))}
-						if (res.data.data.list[0].device_type=='240') {res.data.data.list[0].code=this.$t('E'+res.data.data.list[0].code.toString(16))}
+						if (res.data.data.list[0].device_type=='15') {
+							var code=res.data.data.list[0].code.toString(16)
+							if (code == '1') code='04'
+							if (code == '2') code='07'
+							if (code == '10') code='08'
+							if (code == '20') code='03'
+							if (code == '40') code='LV'
+							if (code == '80') code='OV'
+							if (code == 'b3') code='MO'
+							res.data.data.list[0].code=code+'   '+this.$t(code)
+						}
+						if (res.data.data.list[0].device_type=='240') {res.data.data.list[0].code='E'+res.data.data.list[0].code.toString(16)+'   '+this.$t('E'+res.data.data.list[0].code.toString(16))}
 					}
 					this.list = res.data.data.list[0]
 				}

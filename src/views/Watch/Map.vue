@@ -19,7 +19,7 @@ div
 					Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="search()")
 						Option(key="1", :label="$t('all')" value='all')
 						Option(key="2", :label="$t('online')" value="online")
-						Option(key="3", :label="$t('offline')" value="offline")
+						<!-- Option(key="3", :label="$t('offline')" value="offline") -->
 						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
 					AutoComplete(name="inpSer" v-model="query.search_info" ,:data="menu" ,@on-search="handleSearch1()", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
@@ -47,7 +47,7 @@ div
 			div#map
 		Col(span="4")
 			div.dv(id='list')
-				Poptip(word-wrap v-for="device in devices" ,:data="devices" trigger="hover" placement="left" v-bind:key="devices.id" )
+				Poptip(word-wrap v-for="device in list" ,:data="list" trigger="hover" placement="left" v-bind:key="list.id" )
 					Card.text(v-on:click.native="cardClick(device.cell_lat,device.cell_lon)" style="cursor: pointer;")
 						Row(:gutter="10")
 							div(style="margin-top:-20px")
@@ -68,7 +68,7 @@ div
 						p()|{{$t('base station')}} : {{device.cell_address}}
 						p()|{{$t('IP location')}} : {{device.ip_country+device.ip_region+device.ip_city}}
 						p()|{{$t('install address')}} : {{device.install_addr}}
-			<!-- Page(simple,:total="options.total",:page-size="options.num",:current="options.page",@on-change="pageChange" style="text-align:center;") -->
+			Page(simple,:total="options.total",page-size="10",:current="page",@on-change="pageChange" style="text-align:center;")
 </template>
 
 
@@ -123,6 +123,7 @@ div
 				color:[false,false,false,false,false,false],
 				col:['green','red','yellow','blue','gray','black'],
 				menu: [],
+				page:1,
 				query:{
 					search_info: '',
 					page: 1,
@@ -160,7 +161,7 @@ div
 				options: {
 					name:'',
 					page: 1,
-					num: 10,
+					num: 1000,
 					total: 0,
 					register: "registered",
 					follow:'yes'
@@ -230,6 +231,8 @@ div
 			async getList() {
 				let res = await this.$api.devices(this.query)
 				this.devices=res.data.data.list
+				this.list=this.devices.slice(0,10)
+				this.page=1
 				this.options.total = res.data.data.totalNumber		
 				this.devices.forEach(item => {
 					if(item.state == "online"){
@@ -305,6 +308,8 @@ div
 						}
 					})
 					this.devices = dev.data.data.list
+					this.list=this.devices.slice(0,10)
+					this.page=1
 					this.addMark()
 					await this.centpoint()
 				}
@@ -340,7 +345,9 @@ div
 							});
 						}
 						marker.addEventListener('click', () => this.goDevice(item));
-						this.markers.push(marker)
+						if ((item.device_type != this.$t('door'))||(item.ladder_id == null)){
+							this.markers.push(marker)
+						}
 					}
 				})
 				this.markerClusterer.addMarkers(this.markers)
@@ -416,9 +423,11 @@ div
 				cenlon = (minlon+maxlon)/2
 			},
 			pageChange(val) {
-				this.query.page = val
-				this.search()
-				this.addMark()
+				// this.query.page = val
+				this.list=this.devices.slice(10*(val-1)+0,10*(val-1)+10)
+				this.page=val
+// 				this.search()
+// 				this.addMark()
 			},
 			getlist(val){
 				return val.split(';')

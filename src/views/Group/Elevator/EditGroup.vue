@@ -8,13 +8,13 @@
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
 								Col(span=22)
 									Form-item(:label="$t('Elevator Group Name')" v-model="form.name")
-										Input(:value="form.name")
+										Input(v-model="form.name")
 									Form-item(:label="$t('Group Creator')" v-model="form.leader")
-										Input(:value="form.leader" disabled)
+										Input(v-model="form.leader" disabled)
 									Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
 										Cascader(:data="region" v-model="form.region")
-									Form-item(:label="$t('phone number')" v-model="form.phone")
-										Input(:value="form.mobile")
+									Form-item(:label="$t('phone number')" v-model="form.mobile")
+										Input(v-model="form.mobile")
 									Col.ta(span="8")
 										Button(type="success" @click="upGroup()" ,:loading="loading")|{{$t('OK')}}
 									Col.ta(span="8")
@@ -109,10 +109,12 @@
 					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
-						var show=false
+						var show='Add'
+						var type='success'
 						this.list1.forEach(item=>{
 							if (item.id == params.row.id) {
-								show=true
+								show='delete'
+								type='error'
 							}
 						})
 						return h('div', [
@@ -137,19 +139,23 @@
 							}, this.$t('watch')),
 							h('Button', {
 								props: {
-									type: 'success',
+									type: type,
 									size: 'small',
-									disabled:show
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click:()=>{
-										this.updateLadder(params.row.id)
+										if (type=='success'){
+											this.updateLadder(params.row.id)
+										}
+										else {
+											this.rmLadder(params.row.id)
+										}
 									}
 								}
-							}, this.$t('Add'))
+							}, this.$t(show))
 						]);
 					}
 				}],
@@ -280,6 +286,7 @@
 						title: this.$t('success'),
 						desc: ''
 					});
+					this.getList2()
 				}else{
 					this.loading = false
 					this.$Notice.error({

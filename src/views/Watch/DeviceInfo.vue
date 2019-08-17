@@ -59,12 +59,13 @@
 								Form.status(label-position="left",:label-width="140")
 									Col(span="23")
 										Form-item(:label="$t('Monitoring Duration')+'(s):'")
-											Select(v-model='realtime.duration')
-												Option(key="1" label="10" value='10')
-												Option(key="2" label="30" value='30')
-												Option(key="3" label="60" value='60')
-												Option(key="4" label="120" value='120')
-												Option(key="5" label="300" value='300')
+											Input(v-model="realtime.duration" disabled)
+												<!-- Select(v-model='realtime.duration') -->
+												<!-- Option(key="1" label="10" value='10') -->
+												<!-- Option(key="2" label="30" value='30') -->
+												<!-- Option(key="3" label="60" value='60') -->
+												<!-- Option(key="4" label="120" value='120') -->
+												<!-- Option(key="5" label="300" value='300') -->
 									Col(span="23" align='center' style="margin-top: 50px;margin-left: 10px")
 										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|{{$t('Status Monitoring')}}
 										Button(type="success" @click="monitor('1')" v-else style="width:100%")|{{$t('Status Monitoring')}}

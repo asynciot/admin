@@ -24,6 +24,14 @@
 						p.clearfix(slot="title")|{{$t('Basic Information')}}
 						Form.status(:model="show",label-position="left",:label-width="100")
 							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('install address')+'：'")
+										p(v-text="device.install_addr")
+							Row(:gutter="16")
+								Col(span="22")
+									Form-item(:label="$t('device name')+'：'")
+										p(v-text="device.device_name")
+							Row(:gutter="16")
 								Col(span="12")
 									Form-item(:label="$t('Operation State')+'：'")
 										p(v-text="show.run ? $t('Operating'):$t('Parking')")
@@ -64,6 +72,9 @@
 								Col(span="22")
 									Form-item(:label="$t('end time')+'：'")
 										p(v-text="formatDate(this.t_end, 'yyyy-MM-dd HH:mm:ss')")
+								Col(span="22")
+									Form-item(:label="$t('Monitor Remaining Time')+'：'")
+										p(v-text="resttime+' s'")
 					Card.card.animate
 						p(slot="title")|{{$t('ctrl')}}
 						div.doors
@@ -174,16 +185,41 @@
 				lock:[],
 				close:[],
 				end:50,
+				device:[],
+				resttime:0,
+				submittime:0,
 			}
 		},
 		created(){
 			this.base();
 			this.initWebsocket();
+			this.deviceinfo();
 		},
 		components: {
 			draggable,
 		},
 		methods: {
+			async getrest(){
+				let res =await this.$api.getMonitor({num:1,page:1,IMEI:this.device.IMEI})
+				this.submittime=res.data.list[0].submit
+				this.rest()
+			},
+			async rest(){
+				this.resttime=parseInt((300000+this.submittime-Date.parse(new Date()))/1000)
+				if (this.resttime<=0) {this.resttime=0}
+				else{
+					setTimeout(()=> {
+						this.rest();
+					}, 1000)
+				}
+			},
+			async deviceinfo(){
+				let res = await this.$api.devices({page: 1,num: 1,IMEI:this.$route.params.IMEI})
+				if (res.data.code == 0){
+				this.device =res.data.data.list[0]
+				console.log('device'+this.device)
+				}
+			},
 			async base(){
 				var buffer
 				let num =await this.$api.runtime({page:1,num:20,type: 8211,device_id:this.id})
@@ -224,6 +260,7 @@
 			},
 			websocketonopen() {
 				console.log("WebSocket连接成功");
+				this.getrest()
 				this.loading=this.$t('WebSocket connection successful,please wait for data')
 			},
 			websocketonerror(e) {//错误
@@ -266,6 +303,8 @@
 					threshold: threshold,
 					interval: interval,
 				});
+				this.websock.close()
+				this.submittime=this.submittime-300000
 				this.loading=this.$t('The monitoring data is over')
 			},
 			//电梯数据展示

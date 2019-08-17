@@ -128,7 +128,10 @@ export default {
 	},
 	setdevices: (data) => {
 		return DeviceApi.update({key1:'Device'}, data)
-	},	
+	},
+	getMonitor: (data) => {
+		return DeviceApi.query(Object.assign({key1:'Command'}, data))
+	},
  	deldevices: (data) => {
 		return DeviceApi.remove(Object.assign({key1:'Device'}, data))
 	},

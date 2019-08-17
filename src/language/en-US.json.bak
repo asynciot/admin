@@ -105,8 +105,9 @@
 	"08" : "Motor Overheating",
 	"09" : "Door Width Self-learning Overtime",
 	"0A" : "Magnetic Pole Position Learning Fault",
-	"0b" : "Opening Loop",
+	"0b" : "Opening Loop Running Overtime",
 	
+	"long offline" : "offline",
     "refresh" : "Refresh",
     "array": [
         1,2,3,4

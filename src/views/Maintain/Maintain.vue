@@ -156,15 +156,22 @@
 							var type = ''
 							var e = ''
 							if ((params.row.type == '1') && (params.row.code != null)) {
-								if (params.row.device_type == "ctrl"){
-									type = params.row.code.toString(16)
+								type = params.row.code.toString(16)
+								if (params.row.device_type == "door"){
+									if (type == '1') type='04'
+									if (type == '2') type='07'
+									if (type == '10') type='08'
+									if (type == '20') type='03'
+									if (type == '40') type='LV'
+									if (type == '80') type='OV'
+									if (type == 'b3') type='MO'
+									e=type
+								}
+								else{
 									if (type.length == 1) {
 										type = '0' + type
 									}
 									e = 'E' + type
-								}
-								else{
-									e=params.row.code
 								}
 							}
 							return h('div', [
@@ -311,6 +318,7 @@
 					for (var i = 0; i < res.data.data.list.length; i++) {
 						this.getname(i)
 					}
+					if (res.data.data.list.length == 0) {this.data=this.data2}
 				} else {
 					this.$Notice.error({
 						title: this.$t('error'),

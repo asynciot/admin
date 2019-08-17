@@ -20,7 +20,7 @@
 				<Select class="smr" v-model="show.state" style="width:100%;" :placeholder="$t('state')" @on-change="search()">
 					<Option key="1" :label="$t('all')" value="all"></Option>
 					<Option key="2" :label="$t('online')" value="online"></Option>
-					<Option key="3" :label="$t('offline')" value="offline"></Option>
+					<!-- <Option key="3" :label="$t('offline')" value="offline"></Option> -->
 					<Option key="4" :label="$t('long offline')" value="longoffline"></Option>
 				</Select>
 				</Col>

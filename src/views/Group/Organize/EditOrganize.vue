@@ -7,11 +7,11 @@
 						Col(span=22)
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
 								Form-item(:label="$t('Group Name')" v-model="form.name")
-									Input(:value="form.name")
+									Input(v-model="form.name")
 								Form-item(:label="$t('Leader')" v-model="form.leader")
-									Input(:value="form.leader" disabled)
+									Input(v-model="form.leader" disabled)
 								Form-item(:label="$t('Region')",prop="location",data-toggle="distpicker")
-									Cascader(:data="region" v-model="value2")
+									Cascader(:data="region" v-model="form.region")
 						Col(span=12)
 							Form(ref="form",:data="form",:rules="rules",:label-width="80")
 								Col(span=22)
@@ -21,9 +21,9 @@
 										ColorPicker(v-model="color2")
 									Form-item(:label="$t('Background')+'3'")
 										RadioGroup(v-model="color3")
-											Radio(label="light")
-											Radio(label="dark")
-											Radio(label="primary")
+											Radio(:label="$t('light')")
+											Radio(:label="$t('dark')")
+											Radio(:label="$t('primary')")
 						Col(span=12)
 							upload(:before-upload='handleUpload' action='')
 								img(:src="logo" onerror="src='../../static/logo-menu.png'" style="padding-left: 30%;cursor: pointer;width: 200px;height:150px")
@@ -209,7 +209,7 @@
 					page:1,
 				})
 				this.form = res.data.data.list[0]
-				this.form.value2 = this.form.region.split(',')
+				this.form.region = this.form.region.split(',')
 				this.logo='http://server.asynciot.com/getfile?filePath='+res.data.data.list[0].logo
 				delete this.form.t_create
 			},
@@ -271,8 +271,9 @@
 				this.loading = true
 				console.log('value2')
 				console.log(this.form.region)
-				this.form.region = this.value2[0]+','+this.value2[1]+','+this.value2[2]
-				
+				if (this.form.region[2] !=null){
+					this.form.region = this.form.region[0].toString()+','+this.form.region[1].toString()+','+this.form.region[2].toString()
+				}
 				var formData = new FormData()
 				var formData = new window.FormData()
 				formData.append('logo',this.file)

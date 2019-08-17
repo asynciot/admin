@@ -23,11 +23,11 @@
 							Row(:gutter="16")
 								Col(span="22")
 									Form-item(:label="$t('install address')+'：'")
-										p(v-text="$t(device.install_addr)")
+										p(v-text="device.install_addr")
 							Row(:gutter="16")
 								Col(span="22")
 									Form-item(:label="$t('device name')+'：'")
-										p(v-text="$t(device.device_name)")
+										p(v-text="device.device_name")
 							Row(:gutter="16")
 								Col(span="22")
 									Form-item(:label="$t('Open Door Signal')+'：'")
@@ -58,6 +58,9 @@
 								Col(span="22")
 									Form-item(:label="$t('Alert')+'：'")
 										p(v-text="alertName(show)")
+								Col(span="22")
+									Form-item(:label="$t('Monitor Remaining Time')+'：'")
+										p(v-text="resttime+' s'")
 					Card.card.animate
 						p(slot="title")
 							div.shaft()
@@ -171,6 +174,8 @@
 				speed:[],
 				end: 50,
 				device:[],
+				resttime:0,
+				submittime:0,
 			}
 		},
 		created(){
@@ -236,6 +241,20 @@
 					}
 				}
 			},
+			async getrest(){
+				let res =await this.$api.getMonitor({num:1,page:1,IMEI:this.device.IMEI})
+				this.submittime=res.data.list[0].submit
+				this.rest()
+			},
+			async rest(){
+				this.resttime=parseInt((300000+this.submittime-Date.parse(new Date()))/1000)
+				if (this.resttime<=0) {this.resttime=0}
+				else{
+					setTimeout(()=> {
+						this.rest();
+					}, 1000)
+				}
+			},
 			async deviceinfo(){
 				let res = await this.$api.devices({page: 1,num: 1,IMEI:this.$route.params.IMEI})
 				if (res.data.code == 0){
@@ -275,6 +294,7 @@
 			}, 
 			websocketonopen() {
 				console.log("WebSocket连接成功");
+				this.getrest()
 				this.shiftdata()
 				this.mytween(0,0,0,0)
 				this.loading=this.$t('WebSocket connection successful,please wait for data')
@@ -286,7 +306,7 @@
 			websocketonmessage(e){ //数据接收
 			this.loading=this.$t('Getting data')
 				if(e.data=="closed"){
-					if(this.openIn<=15) this.loading=this.$t('The monitoring data is over')
+					this.loading=this.$t('The monitoring data is over')
 				}else{
 					var redata = JSON.parse(e.data)
 					this.savedata.push(redata)
@@ -310,7 +330,9 @@
 					threshold: threshold,
 					interval: interval,
 				});
-				// this.loading=this.$t('The monitoring data is over')
+				this.websock.close()
+				this.submittime=this.submittime-300000
+				this.loading=this.$t('The monitoring data is over')
 			},
 			websocketclosed(){},
 			//电梯数据展示
