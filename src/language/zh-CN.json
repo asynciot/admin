@@ -617,6 +617,7 @@
 	"The signal is too weak":"信号太弱",
 	"follow":"关注",
 	"No longer follow the device":"不再关注此设备",
+	"Successfully follow":"已关注此设备",
 	"remove follow":"取消关注",
 	"new order":"添加工单",
 	"Order Type":"工单类型",
