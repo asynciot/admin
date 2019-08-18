@@ -248,6 +248,7 @@
 				this.loading = false
 			},
 			async getGroup(val){
+				if (val == null) val=-1
 				const res = await this.$api.reLadder({
 					num:1000,
 					page:1,

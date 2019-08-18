@@ -25,10 +25,11 @@
 						Button(type='default', icon='', @click='code()')|{{$t('fault code')}}
 
 		el-dialog(:title='$t("tip")',:visible.sync="showinfo",width="30%")
+			div(style="margin-top:-30px")|{{showcode}}
 			table(border='1' style="border-color: #000;width:100%;text-align: center;")
 				tr(style="width:100%;height:16px;font-size:12px")
-					td(){{$t('Possible Reasons')}}
-					td(){{$t('Solution')}}
+					td(style="color:#FF0000"){{$t('Possible Reasons')}}
+					td(style="color:#0000FF"){{$t('Solution')}}
 				tr(style="width:100%;height:16px;font-size:12px" v-for="item in codeinfo")
 					td(){{item.reason}}
 					td()
@@ -47,6 +48,7 @@
 			return {
 				last: true,
 				showinfo:false,
+				showcode:'',
 				codeinfo:[],
 				color: [false, false, false, false, false, false],
 				col: ['green', 'red', 'yellow', 'blue', 'gray', 'black'],
@@ -155,6 +157,7 @@
 									},
 									on: {
 										click: () => {
+											this.showcode=e+' '+this.$t(e)
 											this.showinfo=true
 											this.getcode(e)
 										}

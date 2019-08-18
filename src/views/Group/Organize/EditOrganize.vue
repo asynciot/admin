@@ -123,6 +123,12 @@
 					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
+						var type='success'
+						var bind='Bind'
+						if (params.row.id == this.form.organize_id){
+							type='error'
+							bind="Unbind"
+						}
 						return h('div', [
 							h('Button', {
 								props: {
@@ -145,7 +151,7 @@
 							}, this.$t('watch')),
 							h('Button', {
 								props: {
-									type: 'success',
+									type: type,
 									size: 'small'
 								},
 								style: {
@@ -153,10 +159,15 @@
 								},
 								on: {
 									click:()=>{
-										this.bindGroup(params.row.id)
+										if (params.row.id == this.form.organize_id){
+											this.bindGroup('-1')
+										}
+										else{
+											this.bindGroup(params.row.id)
+										}
 									}
 								}
-							}, this.$t('Bind'))
+							}, this.$t(bind))
 						]);
 					}
 				}],
@@ -324,11 +335,27 @@
 					id:this.$route.params.id,
 					group_id:val,
 				})
-				if (res.data.code == 0) {
+				if (val=='-1'){
+					if (res.data.code == 870){
+						this.$Notice.success({
+							title: this.$t('success'),
+							desc: this.$t('Successfully unbind')
+						});
+						this.getOrganize()
+						this.getList2()
+					}else{
+						this.$Notice.error({
+						title: this.$t('error'),
+						desc: this.$t('Fail to unbind')
+						});
+					}
+				}
+				else if (res.data.code == 0) {
 					this.$Notice.success({
 						title: this.$t('success'),
 						desc: this.$t('successfully bind')
 					});
+					this.getOrganize()
 					this.getList2()
 				}else{
 					this.$Notice.error({

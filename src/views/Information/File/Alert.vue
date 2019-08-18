@@ -20,7 +20,7 @@
 												Radio(key="3", :label="$t('check')" value='3')
 										Form-item(:label="$t('fault code')" v-if="(form.type == $t('fault'))&&(list.device_type==15)" prop="door")
 											Select(v-model="doorCode" style="width:200px")
-												Option(v-for="item in dcode" ,:value="item.value" ,:key="item.value")|{{item.label}}
+												Option(v-for="item in dcode" ,:value="item.value" ,:key="item.value",:label="item.label")|{{item.label}}
 										Form-item(:label="$t('fault code')" v-if="(form.type != $t('fault'))&&(list.device_type==15)")
 											Select(v-model="doorCode" style="width:200px" disabled)
 												Option(v-for="item in dcode" ,:value="item.value" ,:key="item.value")|{{item.label}}
@@ -51,17 +51,26 @@
 				doorCode:'',
 				dcode:[
 					{
-						value:'SC',
-						label:this.$t('SC')
+						value:32,
+						label:this.$t('03')
 					},{
-						value:'OC',
-						label:this.$t('OC')
+						value:1,
+						label:this.$t('04')
 					},{
-						value:'OV',
+						value:2,
+						label:this.$t('07')
+					},{
+						value:16,
+						label:this.$t('08')
+					},{
+						value:64,
+						label:this.$t('LV')
+					},{
+						value:128,
 						label:this.$t('OV')
 					},{
-						value:'LV',
-						label:this.$t('LV')
+						value:179,
+						label:this.$t('MO')
 					},
 				],
 				dcode2:[
@@ -162,6 +171,7 @@
 					islast: 1,
 					item: this.list.item,
 				})
+				if (ret.data.data.list.length>0)
 				this.id = ret.data.data.list[0].id
 				let thr = await this.$api.orderExamine({id:this.id})
 				if(res.data == 'ok'){
