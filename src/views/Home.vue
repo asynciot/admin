@@ -563,7 +563,7 @@
 						nums:1,
 						page:1,
 					})
-					console.log(res.data)
+					//console.log(res.data)
 					if (res.data.data.list.length>0){
 						if (res.data.data.list[0].bg1 !=null) {
 							this.bg1=res.data.data.list[0].bg1
