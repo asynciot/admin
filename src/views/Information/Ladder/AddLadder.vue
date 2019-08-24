@@ -54,7 +54,7 @@
 											Select.smr(v-model="show.state" style="width:100%", :placeholder="$t('state')" @on-change="getList()")
 												Option(key="1", :label="$t('all')" value='all')
 												Option(key="2", :label="$t('online')" value="online")
-												Option(key="3", :label="$t('offline')" value="offline")
+												<!-- Option(key="3", :label="$t('offline')" value="offline") -->
 												Option(key="4", :label="$t('long offline')" value="longoffline")
 										Col(span=6)
 											AutoComplete(name="inpSer" v-model="query.search_info", :placeholder="$t('keyword')" max=15 style="width:100%" class="handle-input mr10" id="serch1")
