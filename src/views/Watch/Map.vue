@@ -83,10 +83,18 @@ div
 	import error from '@/assets/error.gif';
 	import lost from '@/assets/lost.gif';
 	import open from '@/assets/open.gif';
+	// const createMark = (img) => {
+	// 	return new BMap.Icon(img, new BMap.Size(25, 25), {
+	// 		anchor: new BMap.Size(10, 26),
+	// 		imageSize: new BMap.Size(25, 25),
+	// 	});
+	// };
 	const createMark = (img) => {
-		return new BMap.Icon(img, new BMap.Size(25, 25), {
-			anchor: new BMap.Size(10, 26),
-			imageSize: new BMap.Size(25, 25),
+		return new AMap.Icon({
+			size:new AMap.Size(25, 25),
+			image:img, 
+			//anchor: new BMap.Size(10, 26),
+			imageSize: new AMap.Size(25, 25),
 		});
 	};
 	const redMark = createMark(r);
@@ -134,6 +142,7 @@ div
 					tagcolor: '',
 					install_addr:'',
 					item: window.localStorage.getItem('item'),
+					follow:'yes',
 				},
 				show:{
 					device_type: 'all',
@@ -195,30 +204,49 @@ div
 			async initMap() {
 				this.getList();
 				await this.centpoint()
-				let point = new BMap.Point(cenlon, cenlat);
-				let map = new BMap.Map('map', {
-					enableMapClick: false
+				//let point = new BMap.Point(cenlon, cenlat);
+				// let map = new BMap.Map('map', {
+				// 	enableMapClick: false
+				// });
+				let map = new AMap.Map('map', {
+					enableMapClick: false,
+					resizeEnable: true,
+					lang:"zh_en"
 				});
-				map.centerAndZoom(point, 7);
-				map.enableScrollWheelZoom();
-				map.addControl(new BMap.NavigationControl({
-					anchor: BMAP_ANCHOR_TOP_RIGHT,
-					enableGeolocation: true, 
-				}));
-				map.addEventListener('tilesloaded', () => {
-					this.eventHandler();
-				});
-				map.addControl(new BMap.ScaleControl({
-					anchor: BMAP_ANCHOR_TOP_RIGHT
-				}));
-				map.addControl(new BMap.OverviewMapControl());
+				if(this.$i18n.locale == 'en-US'){
+					map.setLang("en");
+				}else{
+					map.setLang("zh_cn");
+				}
+				map.setZoomAndCenter(5, [cenlon, cenlat]);
+				//map.centerAndZoom(point, 7);
+				//map.enableScrollWheelZoom();
+				//map.addControl(new BMap.NavigationControl({
+				//	anchor: BMAP_ANCHOR_TOP_RIGHT,
+				//	enableGeolocation: true, 
+				//}));
+				//map.addEventListener('tilesloaded', () => {
+				//	this.eventHandler();
+				//});
+				//map.addControl(new BMap.ScaleControl({
+				//	anchor: BMAP_ANCHOR_TOP_RIGHT
+				//}));
+				//map.addControl(new BMap.OverviewMapControl());
 				this.map = map
-				this.markerClusterer = new BMapLib.MarkerClusterer(this.map, {
-					markers: this.markers
-				});
-				this.markerClusterer.setGridSize(90);
-				this.markerClusterer.setMinClusterSize(1);
-				this.markerClusterer.setMaxZoom(12)
+				// this.markerClusterer = new BMapLib.MarkerClusterer(this.map, {
+				// 	markers: this.markers
+				// });
+				// this.markerClusterer.setGridSize(90);
+				var that=this;
+				this.map.plugin(["AMap.MarkerClusterer"],function(){
+					that.markerClusterer=new AMap.MarkerClusterer(
+						that.map,
+						that.markers,
+						{gridSize:80}
+					)
+				})
+				 this.markerClusterer.setMinClusterSize(1);
+				 this.markerClusterer.setMaxZoom(12)
 			},
 			eventHandler() {
 				const center = this.map.getCenter();
@@ -315,8 +343,14 @@ div
 				}
 			},
 			async addMark() {
-				this.map.clearOverlays();
-				this.markerClusterer.removeMarkers(this.markers)
+				var that=this
+				//this.map.clearOverlays();
+				if(this.map!=null){
+					this.map.plugin(["AMap.MarkerClusterer"],function(){
+						that.markerClusterer.removeMarkers(that.markers)
+					})
+					this.map.clearMap();
+				}
 				this.markers = []
 				this.devices.forEach(item => {
 					if (item.cellocation_id != null)
@@ -326,7 +360,11 @@ div
 						if (item.state  == this.$t('online')) {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
-							marker = new BMap.Marker(point, {
+							// marker = new BMap.Marker(point, {
+							// 	icon: greenMark
+							// });
+							marker = new AMap.Marker({
+								position:new AMap.LngLat(point.lng,point.lat),
 								icon: greenMark
 							});
 						}
@@ -340,19 +378,27 @@ div
 						if (item.state  == this.$t('long offline')) {
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
-							marker = new BMap.Marker(point, {
+							// marker = new BMap.Marker(point, {
+							// 	icon: lostMark
+							// });
+							marker = new AMap.Marker({
+								position:new AMap.LngLat(point.lng,point.lat),
 								icon: lostMark
 							});
 						}
-						marker.addEventListener('click', () => this.goDevice(item));
+						marker.on('click', () => this.goDevice(item));
 						if ((item.device_type != this.$t('door'))||(item.ladder_id == null)){
 							this.markers.push(marker)
 						}
 					}
 				})
-				var point = new BMap.Point(106.27720032,29.41174431)
-				this.map.panTo(point)
-				this.markerClusterer.addMarkers(this.markers)
+				// var point = new BMap.Point(106.27720032,29.41174431)
+				// this.map.panTo(point)
+				if(this.map!=null){
+					this.map.plugin(["AMap.MarkerClusterer"],function(){
+						that.markerClusterer.addMarkers(that.markers)
+					})
+				}
 			},
 			goDevice(data) {
 				this.$router.push({
@@ -388,13 +434,13 @@ div
 				}						
 			},
 			async centpoint() {
-				// let res = await this.$api.devices(this.query)
+			    let res = await this.$api.devices(this.query)
 				var minlat = 500;
 				var minlon = 500;
 				var maxlat = -500;
 				var maxlon = -500;				
-				// this.devices= res.data.data.list
-				// this.options.total = res.data.data.totalNumber
+				this.devices= res.data.data.list
+				this.options.total = res.data.data.totalNumber
 				this.devices.forEach(item => {
 					if(item.state == "online"){
 						item.state = this.$t('online')
