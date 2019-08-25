@@ -374,7 +374,8 @@ div
 						desc: this.$t('This device has no address record'),
 					})
 				}else{
-					this.map.panTo(new BMap.Point(vd, val))
+					//this.map.panTo(new BMap.Point(vd, val))
+					this.map.setZoomAndCenter(14,[vd,val]);
 				}
 			},
 			angleChange(){

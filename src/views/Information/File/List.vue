@@ -380,6 +380,7 @@
 					this.options.state = this.show.state
 				}
 				let res = await this.$api.devices(this.options)
+				console.log(this.options);
 				let fol = await this.$api.follow({
 					num: 100,
 					page: 1

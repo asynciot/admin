@@ -422,7 +422,10 @@ div
 						desc: this.$t('This device has no address record'),
 					})
 				}
-				else {this.map.panTo(new BMap.Point(vd, val))}
+				else {
+					//this.map.panTo(new BMap.Point(vd, val))
+					this.map.setZoomAndCenter(14,[vd,val]);
+				}
 			},
 			angleChange(){
 				if(document.getElementById("1").className == "fa fa-angle-up fa-3x"){

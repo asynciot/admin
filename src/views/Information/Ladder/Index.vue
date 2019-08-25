@@ -9,17 +9,17 @@
 						Option(key="3", :label="$t('offline')" value="offline")
 						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
-					AutoComplete.handle-input(v-model="options.search_info" ,:data="menu" @on-search="handleSearch1"
+					AutoComplete.handle-input(v-model="query.search_info" ,:data="menu" @on-search="handleSearch1"
 					 :placeholder="$t('keyword')" style="width:100%;" id="serch1")
 				Col( span=2)
-					Input( v-model="options.install_addr", :placeholder="$t('install address')" max=10)
+					Input( v-model="query.install_addr", :placeholder="$t('install address')" max=10)
 				Col( span='10')
 					Button(type="primary" icon="ios-search" @click="search()")|{{$t('search')}}
 					Button.mr-10(type="success",icon="md-add",:loading="loading",@click="goLadder()")|{{$t('new elevator')}}
 		div( style="min-height: 450px; margin-top: 5px;")
 			Table.mb-10( stripe :columns="columns" ,:data="list" size="small")
 		Col( span="24" style="text-align: center;")
-			Page( show-elevator :total="total" ,:page-size="options.num" ,:current="options.page" @on-change="pageChange"
+			Page( show-elevator :total="total" ,:page-size="query.num" ,:current="query.page" @on-change="pageChange"
 			 show-total)
 </template>
 
@@ -164,6 +164,8 @@
 				refreshNum: 0,
 				data: [],
 				query:{
+					install_addr:"",
+					search_info:"",
 					state:"online",
 					page: 1,
 					num: 10,
@@ -203,6 +205,7 @@
 					this.query.state = this.show.state
 				}
 				let res = await this.$api.reLadder(this.query)
+				
 				let fol = await this.$api.followladder({
 					num: 100,
 					page: 1,
