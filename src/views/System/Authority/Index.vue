@@ -11,7 +11,7 @@ div.layout-content-main
 							Option(key="3" label="普通用户" value="all")
 							Option(key="4" label="超级管理员" value="all")
 					Col(span="17")
-						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="newRole()" v-if="newRoles!=true" disabled="false")|添加角色
+						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="newRole()" v-if="newRoles!=true" disabled=true)|添加角色
 						Button.mr-10(type="success",icon="md-add",:loading="loading",@click="newRole()" v-else)|添加角色
 						Button.mr-10(type="primary",:loading="loading",@click="goRole()")|角色管理
 					Col(span="5")
@@ -81,7 +81,7 @@ export default {
 								props: {
 									type: 'primary',
 									size: 'small',
-									disabled:this.roles != true,
+									disabled:!this.roles,
 								},
 								style: {
 									marginRight: '5px'

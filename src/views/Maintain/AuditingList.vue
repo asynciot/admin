@@ -28,14 +28,13 @@
 			div(style="margin-top:-30px")|{{showcode}}
 			table(border='1' style="border-color: #000;width:100%;text-align: center;")
 				tr(style="width:100%;height:16px;font-size:12px")
-					td(style="color:#FF0000"){{$t('Possible Reasons')}}
-					td(style="color:#0000FF"){{$t('Solution')}}
+					td(style="color:#FF0000")|{{$t('Possible Reasons')}}
+					td(style="color:#0000FF")|{{$t('Solution')}}
 				tr(style="width:100%;height:16px;font-size:12px" v-for="item in codeinfo")
-					td(){{item.reason}}
+					td()|{{item.reason}}
 					td()
 						tr(v-for="ans in item.answer" style="border-color: #fff;width:100%")
-							td(style="width:99%"){{ans}}
-							td(style="width:1%")&nbsp;
+							td(style="width:99%")|{{ans}}
 		div(style='min-height: 450px; margin-top: 20px;')
 			Table.mb-10(:columns='columns', :data='list2' stripe, size='small')
 		Col(span="24" style="text-align:center;")
@@ -230,7 +229,6 @@
 					this.codeinfo.forEach(item=>{
 						item.answer=item.answer.split(';')
 					})
-					console.log(this.codeinfo)
 				}
 			},
 			getList(){

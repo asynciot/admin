@@ -43,9 +43,9 @@
 									Checkbox(v-model="show.print")|打印二维码
 				div.box-footer
 					div.col-sm-offset-2
-						Button(@click='submit()', type='success' v-if="uprole != true" disabled="false")|编辑
+						Button(@click='submit()', type='success' v-if="uprole != true" disabled=true)|编辑
 						Button(@click='submit()', type='success' v-else)|编辑
-						Button.ml-5(@click='delRoles()', type='error' v-if="delrole != true" disabled="false")|删除
+						Button.ml-5(@click='delRoles()', type='error' v-if="delrole != true" disabled=true)|删除
 						Button.ml-5(@click='delRoles()', type='error' v-else)|删除
 						Button.ml-5(@click="$router.back(-1)")|返回
 </template>
