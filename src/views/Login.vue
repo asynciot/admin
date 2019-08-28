@@ -223,13 +223,13 @@ export default {
 			if (this.$i18n.locale == 'en-US'){
 				this.$i18n.locale = 'zh-CN';
 				localStorage.setItem('language',this.$i18n.locale)
-				this.$router.push(0)
+				this.$router.go(0)
 				// Vue.config.lang = 'zh-CN'
 			}
 			else{
 				this.$i18n.locale = 'en-US';
 				localStorage.setItem('language',this.$i18n.locale)
-				this.$router.push(0)
+				this.$router.go(0)
 				// Vue.config.lang = 'en-US'
 			}
 		},

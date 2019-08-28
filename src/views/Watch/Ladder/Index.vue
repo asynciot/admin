@@ -61,10 +61,18 @@ div
 	import error from '@/assets/error.gif';
 	import lost from '@/assets/lost.gif';
 	import open from '@/assets/open.gif';
+	// const createMark = (img) => {
+	// 	return new BMap.Icon(img, new BMap.Size(25, 25), {
+	// 		anchor: new BMap.Size(10, 26),
+	// 		imageSize: new BMap.Size(25, 25),
+	// 	});
+	// };
 	const createMark = (img) => {
-		return new BMap.Icon(img, new BMap.Size(25, 25), {
-			anchor: new BMap.Size(10, 26),
-			imageSize: new BMap.Size(25, 25),
+		return new AMap.Icon({
+			size:new AMap.Size(25, 25),
+			image:img, 
+			//anchor: new BMap.Size(10, 26),
+			imageSize: new AMap.Size(25, 25),
 		});
 	};
 	const redMark = createMark(r);
@@ -107,7 +115,7 @@ div
 					page: 1,
 					num: 1000,
 					install_addr:'',
-					// follow:'yes',
+					follow:'yes',
 					state:'',
 					item: window.localStorage.getItem('item'),
 				},
@@ -140,6 +148,7 @@ div
 					num: 10,
 					total: 0,
 					register: "registered",
+					follow:'yes'
 				},
 				selc:{
 					search_info: '',
@@ -151,7 +160,6 @@ div
 		},
 		mounted() {
 			this.initMap()
-			this.getList()
 			document.getElementById('list').style.height = (Number(document.documentElement.clientHeight)/1-200) + 'px'
 		},
 		methods: {
@@ -175,29 +183,49 @@ div
 			},
 			//绘图
 			async initMap() {
+				this.getList()
 				await this.centpoint()
-				let point = new BMap.Point(cenlon, cenlat);
-				let map = new BMap.Map('map', {
-					enableMapClick: false
+				// let point = new BMap.Point(cenlon, cenlat);
+				// let map = new BMap.Map('map', {
+				// 	enableMapClick: false
+				// });
+				let map = new AMap.Map('map', {
+					enableMapClick: false,
+					resizeEnable: true,
+					lang:"zh_en"
 				});
-				map.centerAndZoom(point, 7);
-				map.enableScrollWheelZoom();
-				map.addControl(new BMap.NavigationControl({
-					anchor: BMAP_ANCHOR_TOP_RIGHT,
-					enableGeolocation: true,
-				}));
-				map.addEventListener('tilesloaded', () => {
-					this.eventHandler();
-				});
-				map.addControl(new BMap.ScaleControl({
-					anchor: BMAP_ANCHOR_TOP_RIGHT
-				}));
-				map.addControl(new BMap.OverviewMapControl());
+				if(this.$i18n.locale == 'en-US'){
+					map.setLang("en");
+				}else{
+					map.setLang("zh_cn");
+				}
+				map.setZoomAndCenter(5, [cenlon, cenlat]);
+				//map.centerAndZoom(point, 7);
+				//map.enableScrollWheelZoom();
+				//map.addControl(new BMap.NavigationControl({
+				//	anchor: BMAP_ANCHOR_TOP_RIGHT,
+				//	enableGeolocation: true,
+				//}));
+				//map.addEventListener('tilesloaded', () => {
+				//	this.eventHandler();
+				//});
+				//map.addControl(new BMap.ScaleControl({
+				//	anchor: BMAP_ANCHOR_TOP_RIGHT
+				//}));
+				//map.addControl(new BMap.OverviewMapControl());
 				this.map = map
-				this.markerClusterer = new BMapLib.MarkerClusterer(this.map, {
-					markers: this.markers
-				});
-				this.markerClusterer.setGridSize(90);
+				// this.markerClusterer = new BMapLib.MarkerClusterer(this.map, {
+				// 	markers: this.markers
+				// });
+				// this.markerClusterer.setGridSize(90);
+				var that=this;
+				this.map.plugin(["AMap.MarkerClusterer"],function(){
+					that.markerClusterer=new AMap.MarkerClusterer(
+						that.map,
+						that.markers,
+						{gridSize:80}
+					)
+				})
 				this.markerClusterer.setMinClusterSize(1);
 				this.markerClusterer.setMaxZoom(12)
 			},
@@ -225,8 +253,8 @@ div
 					}
 					return item;
 				})
-				this.addMark()
-				this.centpoint()
+				await this.addMark()
+				await this.centpoint()
 			},
 			async search() {
 				if(this.query.search_info.length > 15){
@@ -263,9 +291,16 @@ div
 					await this.centpoint()
 				}
 			},
-			addMark() {
-				this.map.clearOverlays();
-				this.markerClusterer.removeMarkers(this.markers)
+			async addMark() {
+				//this.map.clearOverlays();
+				//this.markerClusterer.removeMarkers(this.markers)
+				var that=this;
+				if(this.map!=null){
+					this.map.plugin(["AMap.MarkerClusterer"],function(){
+						that.markerClusterer.removeMarkers(that.markers)
+					})
+					this.map.clearMap();
+				}
 				this.markers = []
 				this.devices.forEach(item => {
 					if (item.cellocation_id != null){
@@ -274,7 +309,11 @@ div
 						if(item.state == this.$t('online')){
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
-							marker = new BMap.Marker(point, {
+							// marker = new BMap.Marker(point, {
+							// 	icon: greenMark
+							// });
+							marker = new AMap.Marker({
+								position:new AMap.LngLat(point.lng,point.lat),
 								icon: greenMark
 							});
 						}else if(item.state == this.$t('offline')){
@@ -286,15 +325,23 @@ div
 						}else if(item.state == this.$t('long offline')){
 							labelStyle.color = '#55BC52';
 							labelStyle.borderColor = '#55BC52';
-							marker = new BMap.Marker(point, {
+							// marker = new BMap.Marker(point, {
+							// 	icon: lostMark
+							// });
+							marker = new AMap.Marker({
+								position:new AMap.LngLat(point.lng,point.lat),
 								icon: lostMark
 							});
 						}
-						marker.addEventListener('click', () => this.goDevice(item));
+						marker.on('click', () => this.goDevice(item));
 						this.markers.push(marker)
 					}
 				})
-				this.markerClusterer.addMarkers(this.markers)
+				if(this.map!=null){
+					this.map.plugin(["AMap.MarkerClusterer"],function(){
+						that.markerClusterer.addMarkers(that.markers)
+					})
+				}
 			},
 			goDevice(val) {
 				let imei
@@ -327,7 +374,8 @@ div
 						desc: this.$t('This device has no address record'),
 					})
 				}else{
-					this.map.panTo(new BMap.Point(vd, val))
+					//this.map.panTo(new BMap.Point(vd, val))
+					this.map.setZoomAndCenter(14,[vd,val]);
 				}
 			},
 			angleChange(){
@@ -440,7 +488,7 @@ div
 		padding-bottom: 1px;
 	}
 	.dv{
-		height: 460px;
+		height: 769px;
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}
