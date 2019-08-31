@@ -85,13 +85,14 @@ div
 					search_info: '',
 					page: 1,
 					num: 10,
-					isreg: "True",
+					isreg: "",
 					state: 'online',
 					device_type:"",
 					tagcolor:"",
 					register: "registered",	
 					install_addr:'',
 					item: window.localStorage.getItem('item'),
+					follow:'yes'
 				},
 				show:{
 					state: 'online',
@@ -341,6 +342,7 @@ div
 						this.query.state = this.show.state
 					}
 					let dev = await this.$api.devices(this.query)
+					console.log(dev.data);
 					this.list=dev.data.data.list;
 					this.options.total = dev.data.data.totalNumber
 				}

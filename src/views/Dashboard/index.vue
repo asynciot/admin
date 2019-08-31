@@ -112,7 +112,7 @@
 							</div>
 							<transition name="bounce">
 							<div style="background:#f5f3f0;border: 0;" :style="'height:'+screenheight/2.55+'px'" v-if="mapbody">
-								<Map style="margin-top:0px;margin:0"></Map>
+								<amap style="margin-top:0px;margin:0"></amap>
 							</div>
 							</transition>
 							<!-- /.box-body-->
@@ -543,6 +543,7 @@
 <script>
 	import draggable from 'vuedraggable'
 	import Map from '@/views/Dashboard/Map'
+	import amap from '@/views/Dashboard/amap'
 	import test1 from '@/views/Dashboard/Order'
 	import faultfreq from '@/views/Dashboard/faultfreq'
 	import activedoor from '@/views/Dashboard/activedoor'
@@ -553,6 +554,7 @@
 		name: 'HelloWorld',
 		components: {
 			draggable,
+			'amap':amap,
 			'Map': Map,
 			'test1':test1,
 			'faultfreq':faultfreq,
@@ -1011,11 +1013,11 @@
 				if (res.data.code == 0){
 				this.today = res.data.data.totalNumber
 				}
-				res = await this.$api.devices({page: 1,num: 10,isreg: '',item: window.localStorage.getItem('item'),follow:'yes'})
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',item: window.localStorage.getItem('item'),follow:'yes',register: "registered"})
 				if (res.data.code == 0){
 				this.alldevice =res.data.data.totalNumber
 				}
-				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online',item: window.localStorage.getItem('item'),follow:'yes'})
+				res = await this.$api.devices({page: 1,num: 10,isreg: '',state:'online',item: window.localStorage.getItem('item'),follow:'yes',register: "registered"})
 				if (res.data.code == 0){
 				this.onlinedevice =res.data.data.totalNumber
 				}
