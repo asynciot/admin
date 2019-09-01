@@ -47,7 +47,8 @@
 									Button.lp(v-for="role in roleList" ,:data="roleList" v-bind:key="role.id" type="primary" @click="goRole(role.id)")|{{role.name}}
 				div.box-footer
 					div.col-sm-offset-2
-						Button(@click='submit()', type='success')|添加
+						Button(@click='submit()', type='success' v-if="new_roles != true" disabled=true)|添加
+						Button(@click='submit()', type='success' v-else )|添加
 						Button.ml-5(@click="$router.back(-1)")|取消
 </template>
 
@@ -149,9 +150,11 @@
 					num: 10,
 				},
 				roleList:[],
+				new_roles: this.global.functions.new_roles,
 			}
 		},
 		created() {
+			console.log(this.new_roles)
 			this.getMenus()
 			this.getRole()
 		},

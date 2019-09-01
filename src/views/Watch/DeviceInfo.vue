@@ -67,7 +67,7 @@
 												<!-- Option(key="4" label="120" value='120') -->
 												<!-- Option(key="5" label="300" value='300') -->
 									Col(span="23" align='center' style="margin-top: 50px;margin-left: 10px")
-										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled="false" style="width:100%")|{{$t('Status Monitoring')}}
+										Button(type="success" @click="monitor('1')" v-if="monitors != true" disabled=true style="width:100%")|{{$t('Status Monitoring')}}
 										Button(type="success" @click="monitor('1')" v-else style="width:100%")|{{$t('Status Monitoring')}}
 				Col(span='12')
 					card.card(align='left' style='height: 505px',v-if='data.device_type == 240')
@@ -159,7 +159,7 @@
 								input.iv(style="width:66%" ,:maxlength=2 v-model='res[7]' readonly)
 						Row(style="margin-top:35px")
 							Col(span="20" align='right' style="margin-top: 10px;margin-left: 10px")
-								Button(type="success" @click="monitor('2')" v-if="memory != true" disabled="false" style="width:25%")|{{$t('Memory Debugging')}}
+								Button(type="success" @click="monitor('2')" v-if="memory != true" disabled=true style="width:25%")|{{$t('Memory Debugging')}}
 								Button(type="success" @click="monitor('2')" v-else style="width:25%")|{{$t('Memory Debugging')}}
 					card.card(align='center',v-if='data.device_type == 15' style="height: 505px")
 						Row
@@ -247,14 +247,12 @@
 					title: ' ',
 					key: 'IMEI',
 				}],
-				monitors: true,
-				memory:true,
+				monitors: this.global.functions.monitor,
+				memory:this.global.functions.memory,
 			}
 		},
 		created() {
-			console.log(1)
 			this.getData()
-			console.log(1)
 		},
 		watch:{
 			'segment': function(val){
