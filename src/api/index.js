@@ -231,7 +231,7 @@ export default {
 		return DeviceApi.query(Object.assign({key1:'Offline'}, data))
 	},
 	singleoffline:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Offline',key2:'Single'}, data))
+		return DeviceApi.query(Object.assign({key1:'Offline',key2:'SingleOff'}, data))
 	},
 	progress:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Order',key2:'Progress'}, data))

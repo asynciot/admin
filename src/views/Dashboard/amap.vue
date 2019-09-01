@@ -311,9 +311,9 @@ div()
 							enableMessage:true	//设置允许信息窗发送短息
 						};
 						var info = [];
-						info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+this.$t('Device info')+"</b>");
+						info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+this.$t('Device Info')+"</b>");
 						info.push(this.$t('device ID')+" : "+item.device_id+"  "+this.$t('device name')+" : "+item.device_name);
-						info.push(this.$t('Base station address')+":"+item.cell_address+"</div></div>");
+						info.push(this.$t('Base Station Address')+":"+item.cell_address+"</div></div>");
 						var infoWindow=new AMap.InfoWindow({content: info.join("<br/>")});
 						var that=this;
 						//marker.addEventListener('mouseover',function () {this.openInfoWindow(new BMap.InfoWindow(steelContent, steelOpts))})

@@ -258,6 +258,7 @@ div
 			//获取数据
 			async getList() {
 				let res = await this.$api.devices(this.query)
+				console.log(res.data.data)
 				this.devices=res.data.data.list
 				this.list=this.devices.slice(0,10)
 				this.page=1
