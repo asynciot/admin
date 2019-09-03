@@ -291,8 +291,8 @@
 			},
 			async getoffline(){			
 				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:20,page:1})
-				if (off.data.code == 0) {
-					this.data=off.data.list
+				if (off.data.data.code == 0) {
+					this.data=off.data.data.list
 					for (var i=0;i<this.data.length;i++){
 						this.singleoffline(this.data[i].id,i)
 					}

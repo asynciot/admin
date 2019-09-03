@@ -89,10 +89,9 @@
 				options: {
 					search_info: '',
 					device_type: '',
-					register: 'unregistered',
+					register: '',
 					page: 1,
 					num: 10,
-					isreg: '',
 					tagcolor: '',
 					install_addr:'',
 					item: window.localStorage.getItem('item'),
