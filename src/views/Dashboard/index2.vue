@@ -240,7 +240,7 @@
 				prostate:'6',
 				time:'',
 				maxpro:'',
-				locate:[               
+				locate:[
 				  {name: '北京',value: 0 },
 				  {name: '天津',value: 0 },
 				  {name: '上海',value: 0 },
@@ -303,7 +303,7 @@
 				this.menu=[];
 				var str;
 				for (var i=0;i<this.data.length;i++){
-					str=this.data[i].device_name;		  	    	
+					str=this.data[i].device_name;
 					if ((str != null)&&(this.offlinedevicename != null)){
 						if (str.indexOf(this.offlinedevicename)>=0)
 							this.menu.push(str)
@@ -325,7 +325,7 @@
 				this.offlinepage=val
 				this.getoffline()
 			},
-			async getoffline(){			
+			async getoffline(){
 				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:this.offlinenum,page:this.offlinepage,search_info:this.offlinedevicename})
 				if (off.data.code == 0) {
 					this.data=off.data.data.list
