@@ -11,10 +11,10 @@
 				<Row :gutter='20' style="padding-top: 20px;margin-left: 35px;">
 					<Col span="24">
 						<div style="width:100%;text-align: center;font-family:'楷体'">
-							<h2 style="font-size:30px;text-align: left;font-family:'楷体'">今天    {{time}}</h2>
+							<h2 style="font-size:30px;text-align: left;font-family:'楷体'">{{$t("Today")}}    {{time}}</h2>
 						</div>
 						<div class="box10" style="height:640px">
-							<p style="text-align: center;font-size:15px">最容易掉线的设备</p>
+							<p style="text-align: center;font-size:15px">{{$t("The easiest device to lose connection")}}</p>
 							<Row>
 								<Col span="4">
 									<AutoComplete class="handle-input mr10" v-model="offlinedevicename" :data="menu"
@@ -33,7 +33,7 @@
 							</Col>
 							<Col span='24' style="margin-top:5px">
 								<table border='1' style="border-color: #fff;width:100%;text-align: center;"></tr>
-									<tr style="width:100%;height:16px;font-size:12px;"><td style="width:20%;border: 1px solid #0094ff;">设备名称</td><td style="border: 1px solid #0094ff;">掉线时间</td></tr>
+									<tr style="width:100%;height:16px;font-size:12px;"><td style="width:20%;border: 1px solid #0094ff;">{{$t('device name')}}</td><td style="border: 1px solid #0094ff;">{{$t('掉线时间')}}</td></tr>
 									<tr style="width:100%;height:16px;font-size:12px;" v-for="item in data">
 										<td style="border: 1px solid #0094ff;">{{item.device_name}}</td>
 										<td style="border: 1px solid #0094ff;">
@@ -59,7 +59,7 @@
 		 props: {
 		  title: {
 		    type: String,
-		    default: '审核列表'
+		    default:'',
 		  }
 		},
 		data() {

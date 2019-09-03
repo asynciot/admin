@@ -86,7 +86,7 @@ div
 							input(v-model="list.install_addr" style="border: 0" @input="" maxlength='18')
 							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|{{$t('install date')}}:
-							input(v-model="options.install_date" style="border: 0" readonly)
+							input(v-model="list.t_create" style="border: 0" readonly)
 			Col(span="7" )
 				Card()
 					img(src="../../../assets/ladder.jpg" width="100%")

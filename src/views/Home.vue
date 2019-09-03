@@ -196,7 +196,11 @@
 						name:'laddermap',
 						label:'Ladder State',
 						key:false,
-					},]
+					},{
+						name:'offline',
+						label:'Offline Situation',
+						key:true,
+					}]
 				},{
 					name: 'maintain',
 					icon: 'fa fa-cogs',
@@ -342,6 +346,9 @@
 				}
 				if(this.menus.laddermap == true){
 					this.menu[1].sub[1].key = true
+				}
+				if(this.menus.offline == true){
+					this.menu[1].sub[2].key = true
 				}
 				if(this.menus.auditinglist== true){
 					this.menu[2].sub[0].key = true
