@@ -6,7 +6,7 @@
 					Select.smr(v-model="show.state" style="width:100%;", :placeholder="$t('state')" @on-change="search()")
 						Option(key="1", :label="$t('all')" value="all")
 						Option(key="2", :label="$t('online')" value="online")
-						Option(key="3", :label="$t('offline')" value="offline")
+						<!-- Option(key="3", :label="$t('offline')" value="offline") -->
 						Option(key="4", :label="$t('long offline')" value="longoffline")
 				Col(span=4)
 					AutoComplete.handle-input(v-model="query.search_info" ,:data="menu" @on-search="handleSearch1"
@@ -63,10 +63,10 @@
 						title: this.$t('door'),
 						key: 'door1',
 					},
-					{
+					 {
 						title: this.$t('door'),
 						key: 'door2',
-					},
+					}, 
 					{
 						title: this.$t('IP location'),
 						key: 'ipaddr',

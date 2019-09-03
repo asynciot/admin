@@ -20,8 +20,18 @@
 						</Col>
 					</div>
 				</div>
-				<div class="box10" style="height:570px">
+				<div class="box10" style="height:640px">
 					<p style="text-align: center;font-size:15px">最容易掉线的设备</p>
+					<Row>
+						<Col span="14">
+							<AutoComplete class="handle-input mr10" v-model="offlinedevicename" :data="menu"
+							 @on-search="handleSearch1()" :placeholder="$t('keyword')" style="width:100%;" id="serch1"></AutoComplete>
+						</Col>
+						<Col span="10">
+							<Button type="primary" icon="ios-search" @click="search()" style="margin-left:1px">{{$t('search')}}</Button>
+						</Col>
+					</Row>
+						
 					<Col span='12' style="margin-top:5px">
 					<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" v-model="starttime" style='color:#000' @on-change="getoffline()"></DatePicker>
 					</Col>
@@ -29,19 +39,20 @@
 					<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="endtime" style='color:#000' @on-change="getoffline()"></DatePicker>
 					</Col>
 					<Col span='24' style="margin-top:5px">
-						<table border='1' style="border-color: #fff;width:100%;text-align: center;">
+						<table border='1' style="border-color: #fff;width:100%;text-align: center;"></tr>
 							<tr style="width:100%;height:16px;font-size:12px;"><td style="width:20%;border: 1px solid #0094ff;">设备名称</td><td style="border: 1px solid #0094ff;">掉线时间</td></tr>
 							<tr style="width:100%;height:16px;font-size:12px;" v-for="item in data">
 								<td style="border: 1px solid #0094ff;">{{item.device_name}}</td>
 								<td style="border: 1px solid #0094ff;">
-									<div style="background:#0000EE;height:20px;width:335px">
-										<div style="width:2px;background:rgba(255,80,0,0.33);height:20px;position:absolute;" :style="'margin-left:'+single.left+'px'" v-for="single in item.singlelist"></div>
+									<div style="background:#0000EE;height:20px;width:332px">
+										<div style="background:rgba(255,255,0,1);height:20px;position:absolute;" :style="'margin-left:'+single.left+'px;width:'+single.widt+'px;'" v-for="single in item.singlelist"></div>
 									</div>
 								</td>
 							</tr>
 						</table>
 						<div v-for="item in day" style="position:absolute;" :style="'margin-left:'+item.left+'%'">{{item.value}}</div>
 						<Col span='4'>&nbsp;</Col>
+						<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
 					</Col>
 				</div>
 
@@ -96,6 +107,11 @@
 		},
 		data() {
 			return {
+				menu:[],
+				offlinedevicename:'',
+				offlinetotal:0,
+				offlinenum:20,
+				offlinepage:1,
 				faultdevice: 0,
 				size1: '#ffffff',
 				size2: '#ffffff',
@@ -224,7 +240,7 @@
 				prostate:'6',
 				time:'',
 				maxpro:'',
-				locate:[               
+				locate:[
 				  {name: '北京',value: 0 },
 				  {name: '天津',value: 0 },
 				  {name: '上海',value: 0 },
@@ -283,16 +299,37 @@
 
 		},
 		methods: {
+			async handleSearch1 () {
+				this.menu=[];
+				var str;
+				for (var i=0;i<this.data.length;i++){
+					str=this.data[i].device_name;
+					if ((str != null)&&(this.offlinedevicename != null)){
+						if (str.indexOf(this.offlinedevicename)>=0)
+							this.menu.push(str)
+					} 
+				}
+				 // this.offlinepage=1;
+				 // let off=await this.$api.singleoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),device_name:this.offlinedevicename})
+				 // console.log(off.data)
+				// console.log(this.offlinedevicename)
+				
+			},
 			showtime(){
 				setTimeout(()=>{
 					this.time=this.$format(new Date(),'YYYY-MM-DD HH:mm:ss')
 					this.showtime()
 				}, 1000)
 			},
-			async getoffline(){			
-				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:20,page:1})
-				if (off.data.data.code == 0) {
+			pageChange(val){
+				this.offlinepage=val
+				this.getoffline()
+			},
+			async getoffline(){
+				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:this.offlinenum,page:this.offlinepage,search_info:this.offlinedevicename})
+				if (off.data.code == 0) {
 					this.data=off.data.data.list
+					this.offlinetotal=off.data.data.totalNumber
 					for (var i=0;i<this.data.length;i++){
 						this.singleoffline(this.data[i].id,i)
 					}
@@ -322,11 +359,39 @@
 					var left=Date.parse(this.starttime)
 					var right=Date.parse(this.endtime)-Date.parse(this.starttime)+86400000
 					singlelist.forEach(item=>{
-						item.left=parseInt((item.t_logout-left)*332/right)
+						var logout = new Date(item.t_logout).getTime();
+						// if(logout<left&&logout+item.duration>left){
+						// 	logout=left;
+						// }
+						item.left=parseInt((logout-left)*332/right)
+						if(item.duration!=null){
+							if(logout-left+parseInt(item.duration)<right){
+								item.widt=parseInt(item.duration)*332/right
+								if(item.widt<1){
+									item.widt=1
+								}
+							}
+							else{
+								item.widt=(right-(logout-left))*332/right
+							}
+						}
+						else{
+							item.widt=0;
+						}
 					})
 					// alert(typeof(this.singlelist[0].t_logout))
 				}
-				this.data[val2].singlelist=singlelist
+				 this.data[val2].singlelist=singlelist
+				 console.log(this.data[val2])
+				// this.data.forEach(item=>{
+				// 	item.singlelist.forEach(lec=>{
+				// 		console.log(lec.widt)
+				// 	})
+				// })
+				
+			},
+			async search(){
+				this.getoffline()
 			},
 			async getinfo(){
 				var res
@@ -365,7 +430,7 @@
 								}
 						}
 					}
-					console.log(this.locate)
+					//console.log(this.locate)
 				}
 				this.Chart1()
 			},
@@ -375,7 +440,7 @@
 			function randomData() {  
                 return Math.round(Math.random()*500);  
             } 
-							activedoor.setOption({
+			activedoor.setOption({
 								tooltip: {},
                  legend: {
                             orient: 'vertical',
