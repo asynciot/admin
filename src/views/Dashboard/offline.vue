@@ -33,7 +33,7 @@
 							</Col>
 							<Col span='24' style="margin-top:5px">
 								<table border='1' style="border-color: #fff;width:100%;text-align: center;"></tr>
-									<tr style="width:100%;height:16px;font-size:12px;"><td style="width:20%;border: 1px solid #0094ff;">{{$t('device name')}}</td><td style="border: 1px solid #0094ff;">{{$t('掉线时间')}}</td></tr>
+									<tr style="width:100%;height:16px;font-size:12px;"><td style="width:20%;border: 1px solid #0094ff;">{{$t('device name')}}</td><td style="border: 1px solid #0094ff;">{{$t('Offline time')}}</td></tr>
 									<tr style="width:100%;height:16px;font-size:12px;" v-for="item in data">
 										<td style="border: 1px solid #0094ff;">{{item.device_name}}</td>
 										<td style="border: 1px solid #0094ff;">

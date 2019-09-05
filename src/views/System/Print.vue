@@ -145,11 +145,23 @@
 		},
 		created() {
 			this.getList()
+			
 		},
 		mounted() {
-			this.print=this.global.functions.print
+			this.getFunction()
 		},
 		methods: {
+			async getFunction(){
+				const res = await this.$api.getFunction({
+					page:1,
+					num:1,
+					id:this.global.roles,
+				})
+				if(res.data.code == 0){
+					this.global.functions = res.data.data.list[0]
+				}
+				this.print=this.global.functions.print
+			},
 		  	handleSearch1 (selectword) {
 		  		this.menu=[];
 		  		var str;
