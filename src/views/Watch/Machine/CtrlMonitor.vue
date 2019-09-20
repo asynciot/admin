@@ -44,14 +44,14 @@
 										p(v-text="show.close ? $t('Active'):$t('Inactive')")
 								Col(span="12")
 									Form-item(:label="$t('Close Door Button Signal')+'：'",:label-width="100")
-										p(v-text="show.closeBtn ? $t('Existing'):$t('None')")
+										i(v-bind:class="show.closeBtn ? styles.signal1 : styles.signal2")
 							Row(:gutter="16")
 								Col(span="12")
 									Form-item(:label="$t('Elevator Mode')+'：'")
 										p(v-text="parseModel(show)")
 								Col(span="10")
 									Form-item(:label="$t('Open Door Button Signal')+'：'",:label-width="100")
-										p(v-text="show.openBtn ? $t('Existing'):$t('None')")
+										i(v-bind:class="show.openBtn ? styles.signal1 : styles.signal2")
 							Row(:gutter="16")
 								Col(span="24")
 									Form-item(:label="$t('Devices State')+'：'")
@@ -103,10 +103,65 @@
 							p.drag(slot="title")|{{$t('Close Door Signal')}}
 							div.ss(id="close" draggable=false)
 						div(style="color:#f00")|{{$t('Note:Can not try again when monitoring end until 1 minute ago.')}}
+						div
+							Row
+								Col(span="12" style="text-align:center")
+									label|{{$t(state.tips)}}
+								Col(span="12" style="text-align:center")
+									i-switch(v-model="state.isIO" @on-change="change" size="large")
+										span(slot="open")|切换
+										span(slot="close")|切换
+							div(class="Menu")
+								div(v-if="state.isIO")
+									Row
+										Col(span="24" class="stylesdoor")
+											Row(style="text-align:center")
+												Col(span="5")|{{$t('Interface')}}
+												Col(span="11")|{{$t('Signal Name')}}
+												Col(span="4")|{{$t('Polarity')}}
+												Col(span="4")|{{$t('State')}}
+											div(v-for="item in IOMenu")
+												div(v-for="prop in item.children")
+													Row(style="text-align:center")
+														Col(span="5")|{{prop.label}}
+														Col(span="11")|{{$t(prop.value)}}
+														Col(span="4")|{{$t(polarity(prop.Polarity))}}
+														Col(span="4")
+															i(class="signal")
+								div(v-else)
+									Row
+										Col(span="24" class="stylesdoor")
+											Row(style="text-align:center")
+												Col(span="12")|{{$t('Signal Name')}}
+												Col(span="8")|{{$t('Polarity')}}
+												Col(span="4")|{{$t('State')}}
+											div(v-for="item in Board")
+												div(v-for="prop in item.children")
+													div(v-if="item.value==0")
+														Row(style="text-align:center")
+															Col(span="12")|{{$t(prop.label)}}
+															Col(span="8")|{{$t(polarity(prop.value))}}
+															Col(span="4")
+																i(class="signal")
+													div(v-else)
+														Row(style="text-align:center")
+															Col(span="12")|{{$t(prop.label)}}
+															Col(span="8")|{{$t(prop.value)}}
+															Col(span="4")
+																i(class="signal")
 </template>
 <script>
+	const polarity =(val)=>{
+		if(val==0)
+			return "Normally open";
+		else if(val==1)
+			return "Normally closed";
+		else
+			return "None";
+	}
 	import echarts from 'echarts'
 	import draggable from 'vuedraggable'
+	import { IOMenu, Board } from './ctrlMenu.js';
 	import {
 		api,
 		ladderApi,
@@ -121,6 +176,13 @@
 	export default {
 		data () {
 			return {
+				polarity:polarity,
+				IOMenu:IOMenu,
+				Board:Board,
+				state:{
+					isIO:true,
+					tips:'IO Watch',
+				},
 				loading:this.$t('Please wait patiently in connection equipment'),
 				count: 0,
 				pernum: 0,
@@ -166,6 +228,10 @@
 					openBtn:'',
 					closeBtn:'',
 					floor:1,
+				},
+				styles:{
+					signal1:'signal1',
+					signal2:'signal2'
 				},
 				doorWidth: 4096,
 				direction: {
@@ -518,6 +584,9 @@
 					this.options[i] = i
 				}
 			},
+			change (status) {
+                //开关事件，有用
+            }
 		}
 	}
 </script>
@@ -845,5 +914,111 @@
 	}
 	.layout-content-main{
 		overflow-y: scroll;
+	}
+	.Menu{
+		height: 287px;
+		overflow: auto;
+	}
+	.shishi{
+		margin: 5px;
+	}
+	.signal1 {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		margin-right: 7px;
+		margin-top: -3px;
+		background: #21B923;
+		vertical-align: middle;
+		border-radius: 50%;
+	}
+	.signal2 {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		margin-right: 7px;
+		margin-top: -3px;
+		background: #828081;
+		vertical-align: middle;
+		border-radius: 50%;
+	}
+	.stylesdoor {
+		// background: #FEFCFD;
+		// border-top: 1px solid #eaeaea;
+		border-bottom: 1px solid #eaeaea;
+		// border-radius: 5px;
+		padding: 0 20px 10px;
+		section {
+			display: flex;
+			flex-flow: row wrap;
+			// justify-content: space-between;
+			// align-items: center;
+		}
+		i {
+			font-style: normal;
+			display: inline-block;
+			text-align: right;
+			padding-right: 14px;
+		}
+		.pd{
+			width: 100%;
+		}
+		.pd1{
+			width: 100%;
+		}
+		p {
+			width: 50%;
+			font-size: 12px;
+			vertical-align: middle;
+			margin: 0;
+			text-align: left;
+			line-height: 24px;
+			height: 24px;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+		}
+		.status {
+			font-size: 12px;
+			color: #289EFC;
+		}
+		.status1 {
+			width: 100%;
+			font-size: 12px;
+			color: #289EFC;
+		}
+		.signal {
+			display: inline-block;
+			width: 14px;
+			height: 14px;
+			margin-right: 7px;
+			margin-bottom: 5px;
+			background: #828081;
+			vertical-align: middle;
+			border-radius: 50%;
+		}
+	  .signal1 {
+	  	display: inline-block;
+	  	width: 14px;
+	  	height: 14px;
+	  	margin-right: 7px;
+	  	margin-top: -3px;
+	  	background: #21B923;
+	  	vertical-align: middle;
+	  	border-radius: 50%;
+	  }
+	  .signal2 {
+	  	display: inline-block;
+	  	width: 14px;
+	  	height: 14px;
+	  	margin-right: 7px;
+	  	margin-top: -3px;
+	  	background: #828081;
+	  	vertical-align: middle;
+	  	border-radius: 50%;
+	  }
+		.ready {
+			background: #21B923;
+		}
 	}
 </style>

@@ -38,7 +38,7 @@
 										<td style="border: 1px solid #0094ff;">{{item.device_name}}</td>
 										<td style="border: 1px solid #0094ff;">
 											<div style="background:#0000EE;height:20px;width:100%">
-												<div style="background:rgba(255,255,0,1);height:20px;position:absolute;" :style="'margin-left:'+single.left+';width:'+single.widt" v-for="single in item.singlelist"></div>
+													<div style="background:rgba(255,255,0,1);height:20px;position:absolute;" :style="'margin-left:'+single.left+';width:'+single.widt" v-for="single in item.singlelist"></div>					
 											</div>
 										</td>
 									</tr>
@@ -46,6 +46,9 @@
 								<div v-for="item in day" style="position:absolute;" :style="'margin-left:'+item.left+'%'">{{item.value}}</div>
 								<Col span='4'>&nbsp;</Col>
 								<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
+							</Col>
+							<Col span='24' style="margin-top:5px">
+								<Gantt></Gantt>
 							</Col>
 						</div>
 					</Col>
@@ -55,7 +58,11 @@
 	</div>
 </template>
 <script>
+	import Gantt from '@/views/Dashboard/gantt'
 	export default {
+		components: {
+			'Gantt':Gantt,
+		},
 		 props: {
 		  title: {
 		    type: String,
