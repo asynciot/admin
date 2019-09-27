@@ -53,9 +53,12 @@
 									Col(span="24")
 										Form-item(:label="$t('base station')+':'")
 											p()|{{data.cell_address}}
-									Col(span="20")
-										Form-item(:label="$t('install address')+':'")
-											p()|{{data.install_addr}}
+									Row		
+										Col(span="12")
+											Form-item(:label="$t('install address')+':'")
+												p()|{{data.install_addr}}
+										Col(span="12")
+											Button.mb(type="primary" @click="gohistory" style="width:40%")|{{$t('history fault')}}
 				Col(span=12)
 					card.card(align='center')
 						Row
@@ -74,13 +77,14 @@
 								Col(span=6)
 									DatePicker(type="date", :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
 							div(style='font-size: large;margin-top:40px;', v-if='total==0')| {{$t('This device has no event record')}}
-							Scroll(:on-reach-bottom='handleReachBottom', :distance-to-edge="0" , style="margin-top: 30px")
+							div(style="margin-top: 30px")
 								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
 									Row
 										Col(span=22)|  {{$t('event id')}} ： {{item.id}}
 										Col(span=12)|  {{$t('start time')}} ： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
 										Col(span=12)|  {{$t('end time')}} ： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
 							div(style='font-size: large;') {{$t('total')}} {{total}} {{$t('events')}}
+							<Page simple :total="total" :page-size="eventnum" :current="eventpage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
 </template>
 
 <script>
@@ -90,6 +94,8 @@
 	export default {
 		data() {
 			return {
+				eventnum:10,
+				eventpage:1,
 				sign:[false,false,false,false,false,false],
 				ctn: false,
 				a:'',
@@ -208,7 +214,7 @@
 				if(!res.data.code){
 					this.data = res.data.data.list[0]
 					this.data.ipaddr = res.data.data.list[0].ip_country+res.data.data.list[0].ip_region+res.data.data.list[0].ip_city
-					this.options.device_id=this.data.id
+					//this.options.device_id=this.data.id
 					this.options.IMEI = this.data.door1
 					if(this.data.door2 == null){
 						this.judge.door2 = true
@@ -235,7 +241,10 @@
 							this.sign[5]=true
 						}
 					}
-					let eve = await this.$api.event(this.options)
+					//let eve = await this.$api.event(this.options)
+					this.options.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
+					this.options.endtime=this.$format(Date.parse(new Date())+86400000,'YYYY-MM-DD')
+					let eve = await this.$api.readLadderEvent({id:this.data.id,page:1,num:10,start:this.options.starttime,end:this.options.endtime})
 					if(!eve.data.code){
 						this.list = eve.data.data.list
 						this.list2 = this.list
@@ -275,10 +284,22 @@
 							desc: this.$t('The closing date must be later than the from date'),
 						})
 					}
-					let res = await this.$api.event(this.options)
+					//let res = await this.$api.event(this.options)
+					console.log(this.options.starttime,this.options.endtime)
+					let res = await this.$api.readLadderEvent({id:this.data.id,page:1,num:10,start:this.options.starttime,end:this.options.endtime})
+					console.log(res.data)
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
 				}
+			},
+			gohistory(){
+				let imei
+				this.$router.push({
+					name: 'History',
+					params: {
+						IMEI: this.data.ctrl,
+					}
+				})
 			},
 			godevice(val){
 				let imei 
@@ -301,6 +322,19 @@
 					return null
 				}else{
 					return val.split(';')
+				}
+			},
+			async pageChange(val){
+				this.offlinepage=val
+				let eve = await this.$api.readLadderEvent({id:this.data.id,page:this.offlinepage,num:10,start:this.options.starttime,end:this.options.endtime})
+				if(!eve.data.code){
+					this.list = eve.data.data.list
+					this.list2 = this.list
+				}else{
+					this.$Notice.error({
+						title:  this.$t('error'),
+						desc:  this.$t('Fail to gain event information')
+					})
 				}
 			},
 			async handleReachBottom () {

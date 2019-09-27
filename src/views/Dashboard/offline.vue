@@ -15,7 +15,7 @@
 						</div>
 						<div class="box10" style="height:640px">
 							<p style="text-align: center;font-size:15px">{{$t("The easiest device to lose connection")}}</p>
-							<Row>
+							<!-- <Row>
 								<Col span="4">
 									<AutoComplete class="handle-input mr10" v-model="offlinedevicename" :data="menu"
 									 @on-search="handleSearch1()" :placeholder="$t('keyword')" style="width:100%;" id="serch1"></AutoComplete>
@@ -46,7 +46,7 @@
 								<div v-for="item in day" style="position:absolute;" :style="'margin-left:'+item.left+'%'">{{item.value}}</div>
 								<Col span='4'>&nbsp;</Col>
 								<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
-							</Col>
+							</Col> -->
 							<Col span='24' style="margin-top:5px">
 								<Gantt></Gantt>
 							</Col>
@@ -90,9 +90,9 @@
 			
 		},
 		created(){
-			this.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
-			this.endtime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
-			this.getoffline()
+			// this.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
+			// this.endtime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
+			// this.getoffline()
 		},
 		methods: {
 			async handleSearch1 () {

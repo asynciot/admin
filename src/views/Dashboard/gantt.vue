@@ -1,8 +1,29 @@
 <template>
 	<div>
-		<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" v-model="starttime"  style='color:#000' @on-change="getoffline()"></DatePicker>
-		<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="endtime" style='color:#000' @on-change="getoffline()"></DatePicker>
-		<div id="container" :style="{'min-width': '1280px', height: '400px'}"></div>
+		<Modal
+        title="查询时间"
+        v-model="modal"
+		@on-ok="ok"
+        :mask-closable="false">
+        <p>
+			<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="getofflineofday()"></DatePicker>
+			~
+			<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="getofflineofday()"></DatePicker>
+		</p>
+		</Modal>
+		<Tabs value="today" :animated="false" @on-click="changetabs">
+			<TabPane label="当天" name="today">
+			</TabPane>
+			<TabPane label="七天" name="week">
+			</TabPane>
+			<TabPane label="一个月" name="month">
+			</TabPane>
+			<TabPane label="自定义" name="customize">
+			</TabPane>
+			<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime" @on-change="getoffline()"></DatePicker>
+		</Tabs>
+		<div id="container" :style="{'min-width': '900px', height: '400px'}"></div>
+		<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
 	</div>
 </template>
 
@@ -126,26 +147,29 @@
 				],
 				// start_:"2018-08-02 00:00:00",
 				// end_:"2018-11-05 24:00:00",
+				modal:false,
 				mylist:[],
-				offlinetotal:"",
+				offlinetotal:0,
 				start_:"",
 				end_:"",
 				seriesData:[],
 				yAxisData_plant:[],
-				starttime:'',
+				timetabs:'today',
+				start_time:'',
+				end_time:'',
 				endtime:'',
 				offlinedevicename:'',
-				offlinenum:20,
+				offlinenum:10,
 				offlinepage:1,
 			}
 		},
 		mounted(){
-			this.gettoday()
+			this.getday()
 			this.draw()
 		},
 		methods:{
-			gettoday(){
-				this.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
+			getday(){
+				//this.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
 				this.endtime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
 				var todayd=new Date();
 				todayd.setDate(todayd.getDate());
@@ -161,24 +185,87 @@
 				this.end_=this.$format(Date.parse(tomorrowd),'YYYY-MM-DD HH:mm:ss')
 			},
 			getoffline(){
-				const d=new Date(this.starttime)
-				const resDate=d.getFullYear()+'-'+this.p((d.getMonth()+1))+'-'+this.p(d.getDate())+' '+this.p(d.getHours()+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds()));
-				this.start_=resDate
-				
 				const t=new Date(this.endtime)
-				const resTime=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours()+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds()));
-				this.end_=resTime
+				switch(this.timetabs){
+					case 'today':
+						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						break;
+					case 'week':
+						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()-6)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						break;
+					case 'month':
+						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						break;
+				}
 				this.draw()
+			},
+			getofflineofday(){
+				if((this.start_time>=this.end_time)&&(this.end_time!="")){
+					this.end_time=this.$format(Date.parse(this.start_time)+8640000,'yyyy-MM-dd')
+					this.$Notice.warning({
+						title:this.$t('tip'),
+						desc:this.$t('The closing date must be later than the from date'),
+					})
+				}
 			},
 			p(s){
 				return s<10 ? '0'+ s: s
+			},
+			pageChange(val){
+				this.offlinepage=val
+				this.draw()
+			},
+			changetabs(val){
+				this.timetabs=val
+				var d
+				const t=new Date(this.endtime)
+				this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+				switch(val){
+					case 'today':
+						d= new Date(this.endtime)
+						this.start_=d.getFullYear()+'-'+this.p((d.getMonth()+1))+'-'+this.p(d.getDate())+' '+this.p(d.getHours())+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds());
+						this.draw()
+						break;
+					case 'week':
+						d= new Date(this.endtime)
+						this.start_=d.getFullYear()+'-'+this.p((d.getMonth()+1))+'-'+this.p(d.getDate()-6)+' '+this.p(d.getHours())+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds());
+						this.draw()
+						break;
+					case 'month':
+						d= new Date(this.endtime)
+						this.start_=d.getFullYear()+'-'+this.p((d.getMonth()))+'-'+this.p(d.getDate())+' '+this.p(d.getHours())+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds());
+						this.draw()
+						break;
+					case 'customize':
+						this.start_time=''
+						this.end_time=''
+						this.modal=true
+						break;
+				}
+			},
+			ok(){
+				if(this.start_time!=''&&this.end_time!='')
+				{
+					this.start_=this.start_time
+					this.end_=this.end_time
+					this.draw()
+				}
+				else{
+					this.$Notice.warning({
+						title: this.$t('tip'),
+						desc: '必须输入完整日期',
+					})
+				}
 			},
 			async draw(){
 				this.mylist=[]
 				this.yAxisData_plant=[]
 				this.seriesData=[]
 				var that=this
-				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:this.offlinenum,page:this.offlinepage,search_info:this.offlinedevicename})
+				let off = await this.$api.getoffline({starttime:this.$format(this.start_,'YYYY-MM-DD'),endtime:this.$format(this.end_,'YYYY-MM-DD'),num:this.offlinenum,page:this.offlinepage,search_info:this.offlinedevicename})
 				off.data.data.list.forEach((item,index)=>{
 					that.mylist.push({["plant"]:item.device_name,["id"]:item.id})
 				})
@@ -188,8 +275,6 @@
 						await this.singleoffline(this.mylist[i].id,i)
 					}
 				}
-				console.log(this.mylist)
-				console.log(this.data)
 				this.mylist.forEach((item, index) => {
 					that.yAxisData_plant.push(item.plant)
 					let bgColor;
@@ -255,8 +340,8 @@
 						height: 10,
 						top: 370,
 						startValue:new Date(that.start_).getTime(),
-						endValue:new Date(that.start_).getTime() + 3600 * 24 * 1000 * 7,
-						minValueSpan: 3600 * 24 * 1000 * 7,
+						endValue:new Date(that.start_).getTime() + 3600 * 24 *  1000,
+						minValueSpan: this.timetabs=='today' ? 3600*1000:3600*24*1000,
 						handleIcon: 'path://path://M100, 100m -75, 0a75,75 0 1,0 150,0a75,75 0 1,0 -150,0',
 						handleSize: '120%',
 						handleStyle: {
@@ -302,7 +387,7 @@
 							fontSize: 14,
 							formatter:function (value, index) {
 								var date = new Date(value);
-								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"  "+date.getHours()+":00";
+								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"  "+date.getHours()+":"+that.p(date.getMinutes());
 								return texts;
 							}
 						},
@@ -325,7 +410,7 @@
 						axisLabel: {
 							show: true,
 							textStyle: {color: '#ffffff'},
-							fontSize: 14
+							fontSize: 11
 						},
 						splitLine: {
 							show: true,
@@ -370,20 +455,20 @@
 			},
 			async singleoffline(val,val2){
 				var that=this
-				let off = await this.$api.singleoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),id:val})
+				let off = await this.$api.singleoffline({starttime:this.$format(this.start_,'YYYY-MM-DD'),endtime:this.$format(this.end_,'YYYY-MM-DD'),id:val})
 				var singlelist=[]
 				var starttime
 				var endtime
 				var fakeendtime
 				off.data.list.forEach((item,index)=>{
-					if(item.duration<=0){
-						item.duration=1
+					if(item.duration<0){
+						item.duration=0
 					}
 					starttime=this.$format(Date.parse(new Date(item.t_logout)),'YYYY-MM-DD HH:mm:ss')
 					endtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration),'YYYY-MM-DD HH:mm:ss')
-					//为了能看清掉线时刻，持续时间宽度最少为三分钟
-					fakeendtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration),'YYYY-MM-DD HH:mm:ss')
-					singlelist.push({["item"]:starttime+"————"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
+					//为了能看清掉线时刻，时间宽度最少为20秒
+					fakeendtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration)+20000,'YYYY-MM-DD HH:mm:ss')
+					singlelist.push({["item"]:starttime+"——"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
 					
 				})
 				that.mylist[val2].list=singlelist

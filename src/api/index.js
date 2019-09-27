@@ -246,6 +246,9 @@ export default {
 	reLadder:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadMore'}, data))
 	},
+	readLadderEvent:(data)=>{
+		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'Event'}, data))
+	},
 	removeLadder:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'Ladder'}, data))
 	},
