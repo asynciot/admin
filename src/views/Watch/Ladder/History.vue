@@ -2,6 +2,7 @@
 	<div class="layout-content-main">
 		<div style="min-height: 450px; margin-top: 20px;">
 			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
+			<Page show-total :total="total" :page-size="num" :current="page" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
 		</div>
 	</div>
 </template>
@@ -9,7 +10,14 @@
 <script>
 	export default{
 		data(){
+			const type = {
+				15: this.$t('door'),
+				240: this.$t('ctrl'),
+			};
 			return{
+				total:0,
+				num:10,
+				page:1,
 				columns: [
 					{
 						title: this.$t('order ID'),
@@ -40,18 +48,24 @@
 					{
 						title: this.$t('state'),
 						key: 'state',
-						width:80,
+						width:140,
 						render: (h, params) => {
 							var state
 							if (params.row.state == "treated") {state = this.$t('finished')}
-							if (params.row.state == "untreated") {state = this.$t('treating')}
+							if (params.row.state == "treating"){state = this.$t('treating')}
+							if (params.row.state == "untreated") {state = this.$t('untreated')}
+							if (params.row.state == "examined") {state = this.$t('examined')}
+							if (params.row.state == "prepare") {state = this.$t('reprieve')}
 							return h('div', state)
 						}
 					},
 					{
-						title: this.$t('phone'),
-						key: 'phone',
-						width: 140,
+						title: this.$t('type'),
+						key: 'device_type',
+						width: 80,
+						render:(h,params)=>{
+							return h('p',type[params.row.device_type])
+						}
 					},
 					{
 						title: this.$t('install address'),
@@ -112,58 +126,55 @@
 						}
 					}
 				],
-				total:'',
                 data: [],
 				mydata:[],
 				counter:0,
-				ctrl:'',
-				door1:'',
-				door2:'',
 			}
 		},
 		created(){
 			this.getList()
 		},
 		methods:{
+			pageChange(val) {
+				this.page = val
+				this.getList()
+			},
 			async getList(){
-				let res = await this.$api.reLadder({num:1,page:1,search_info:this.$route.params.IMEI})
-				if(!res.data.code){
-					this.ctrl=res.data.data.list[0].ctrl
-					this.door1=res.data.data.list[0].door1
-					this.door2=res.data.data.list[0].door2
-				}
 				this.counter=0
-				let kongzhigui = await this.$api.getRepair({page:1,num:10,imei:this.ctrl,state:''})
-				this.mydata=kongzhigui.data.data.list
-				console.log(this.mydata)
-				this.total=kongzhigui.data.data.totalNumber
-				if(kongzhigui.data.code===0){
-					for(var i=0;i<kongzhigui.data.data.list.length;i++){
+				let res = await this.$api.dispatchhistory({num:this.num,page:this.page,id:this.$route.params.id})
+				this.mydata=res.data.data.list
+				this.total = res.data.data.totalNumber
+				console.log(this.total)
+				if(res.data.code===0){
+					for(var i=0;i<res.data.data.list.length;i++){
+						
 						this.getname(i)
 					}
-				}else{
+				}else {
 					this.$Notice.error({
-						title:this.$t('error'),
-						desc:this.$t('Fail to get List')
-					})
+						title: this.$t('error'),
+						desc: this.$t('Fail to get List')
+					});
 				}
 			},
-			async getname(val){
-				var ech= await this.$api.devices({
-					device_id:this.mydata[val].device_id,
-					num:1,
-					page:1
+			async getname(val) {
+				var ech = await this.$api.devices({
+					device_id: this.mydata[val].device_id,
+					num: 1,
+					page: 1
 				})
-				if(ech.data.data.list.length==1){
-					this.mydata[val].device_name= ech.data.data.list[0].device_name
-					this.mydata[val].IMEI=ech.data.data.list[0].IMEI
-					this.mydata[val].cell_address=ech.data.data.list[0].cell_address
-					this.mydata[val].ipaddr=ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data.list[0].ip_city
+				if (ech.data.data.list.length == 1) {
+					this.mydata[val].device_name = ech.data.data.list[0].device_name
+					this.mydata[val].IMEI = ech.data.data.list[0].IMEI
+					this.mydata[val].cell_address = ech.data.data.list[0].cell_address
+					this.mydata[val].ipaddr = ech.data.data.list[0].ip_country + ech.data.data.list[0].ip_region + ech.data.data.list[0].ip_city
+					this.mydata[val].install_addr = ech.data.data.list[0].install_addr
+					this.mydata[val].device_type=ech.data.data.list[0].device_type
 				}
 				this.counter++
-				if(this.counter == this.mydata.length){
+				if (this.counter == this.mydata.length) {
 					this.data=this.mydata
-				}
+					}
 			}
 		}
 	}

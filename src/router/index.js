@@ -264,7 +264,7 @@ export default new Router({
 					},
 					component: LadderInfo
 				}, {
-					path: '/watch/history/:IMEI',
+					path: '/watch/history/:id',
 					name: 'History',
 					meta: {
 						name: '历史事件'

@@ -32,119 +32,119 @@
 	export default {
 		data(){
 			return{
-				data:[
-					{
-                "list": [
-							{
-								"colorNum":2,
-								"endTime":"2019-09-17 14:00:00",
-								"item":"item1",
-								"quantity":1960,
-								"startTime":"2019-09-17 8:00:00",
-							},
-							{
-								"colorNum":1,
-								"endTime":"2018-08-04 12:00:00",
-								"item":"item2",
-								"quantity":492,
-								"startTime":"2018-08-04 08:00:00",
-							},
-							{
-								"colorNum":2,
-								"endTime":"2018-08-04 18:00:00",
-								"item":"item3",
-								"quantity":20837,
-								"startTime":"2018-08-04 14:00:00",
-							},
-							{
-								"colorNum":3,
-								"endTime":"2018-08-05 12:00:00",
-								"item":"item4",
-								"quantity":3620,
-								"startTime":"2018-08-04 20:00:00",
-							},
-							{
-								"colorNum":0,
-								"endTime":"2018-08-05 24:00:00",
-								"item":"item5",
-								"quantity":7200,
-								"startTime":"2018-08-05 14:00:00",
-							},
-						],
-						"plant": "工厂1"
-					},
-					{
-						"list": [
-							{
-								"startTime": "2018-08-03 12:00:00",
-								"endTime": "2018-08-04 12:00:00",
-								"quantity": 20,
-								'colorNum':0,
-								'item':'item6',
-							}
-						],
-						"plant": "工厂2"
-					},
-					{
-						"list": [
-							{
-								"startTime": "2018-08-04 12:00:00",
-								"endTime": "2018-08-06 00:00:00",
-								"quantity": 30,
-								'colorNum':0,
-								'item':'item7',
-							},
-							{
-								"startTime": "2018-08-06 08:00:00",
-								"endTime": "2018-08-06 12:00:00",
-								"quantity": 20,
-								'colorNum':1,
-								'item':'item8',
-							},
-							{
-								"startTime": "2018-08-06 14:00:00",
-								"endTime": "2018-08-08 12:00:00",
-								"quantity": 10,
-								'colorNum':2,
-								'item':'item9',
-							},
-							{
-								"startTime": "2018-08-08 20:00:00",
-								"endTime": "2018-08-10 12:00:00",
-								"quantity": 10,
-								'colorNum':3,
-								'item':'item10',
-							}
-						],
-						"plant": "工厂3"
-					},
-					{
-						"list": [
-							{
-								"startTime": "2018-08-02 20:00:00",
-								"endTime": "2018-08-03 12:00:00",
-								"quantity": 20,
-								'colorNum':1,
-								'item':'item11',
-							},
-							{
-								"startTime": "2018-08-03 20:00:00",
-								"endTime": "2018-08-04 12:00:00",
-								"quantity": 15,
-								'colorNum':2,
-								'item':'item12',
-							},
-							{
-								"startTime": "2018-08-04 20:00:00",
-								"endTime": "2018-08-05 12:00:00",
-								"quantity": 15,
-								'colorNum':3,
-								'item':'item13',
-							},
-						],
-						"plant": "工厂4"
-					},
-				],
+				// data:[
+				// 	{
+    //             "list": [
+				// 			{
+				// 				"colorNum":2,
+				// 				"endTime":"2019-09-17 14:00:00",
+				// 				"item":"item1",
+				// 				"quantity":1960,
+				// 				"startTime":"2019-09-17 8:00:00",
+				// 			},
+				// 			{
+				// 				"colorNum":1,
+				// 				"endTime":"2018-08-04 12:00:00",
+				// 				"item":"item2",
+				// 				"quantity":492,
+				// 				"startTime":"2018-08-04 08:00:00",
+				// 			},
+				// 			{
+				// 				"colorNum":2,
+				// 				"endTime":"2018-08-04 18:00:00",
+				// 				"item":"item3",
+				// 				"quantity":20837,
+				// 				"startTime":"2018-08-04 14:00:00",
+				// 			},
+				// 			{
+				// 				"colorNum":3,
+				// 				"endTime":"2018-08-05 12:00:00",
+				// 				"item":"item4",
+				// 				"quantity":3620,
+				// 				"startTime":"2018-08-04 20:00:00",
+				// 			},
+				// 			{
+				// 				"colorNum":0,
+				// 				"endTime":"2018-08-05 24:00:00",
+				// 				"item":"item5",
+				// 				"quantity":7200,
+				// 				"startTime":"2018-08-05 14:00:00",
+				// 			},
+				// 		],
+				// 		"plant": "工厂1"
+				// 	},
+				// 	{
+				// 		"list": [
+				// 			{
+				// 				"startTime": "2018-08-03 12:00:00",
+				// 				"endTime": "2018-08-04 12:00:00",
+				// 				"quantity": 20,
+				// 				'colorNum':0,
+				// 				'item':'item6',
+				// 			}
+				// 		],
+				// 		"plant": "工厂2"
+				// 	},
+				// 	{
+				// 		"list": [
+				// 			{
+				// 				"startTime": "2018-08-04 12:00:00",
+				// 				"endTime": "2018-08-06 00:00:00",
+				// 				"quantity": 30,
+				// 				'colorNum':0,
+				// 				'item':'item7',
+				// 			},
+				// 			{
+				// 				"startTime": "2018-08-06 08:00:00",
+				// 				"endTime": "2018-08-06 12:00:00",
+				// 				"quantity": 20,
+				// 				'colorNum':1,
+				// 				'item':'item8',
+				// 			},
+				// 			{
+				// 				"startTime": "2018-08-06 14:00:00",
+				// 				"endTime": "2018-08-08 12:00:00",
+				// 				"quantity": 10,
+				// 				'colorNum':2,
+				// 				'item':'item9',
+				// 			},
+				// 			{
+				// 				"startTime": "2018-08-08 20:00:00",
+				// 				"endTime": "2018-08-10 12:00:00",
+				// 				"quantity": 10,
+				// 				'colorNum':3,
+				// 				'item':'item10',
+				// 			}
+				// 		],
+				// 		"plant": "工厂3"
+				// 	},
+				// 	{
+				// 		"list": [
+				// 			{
+				// 				"startTime": "2018-08-02 20:00:00",
+				// 				"endTime": "2018-08-03 12:00:00",
+				// 				"quantity": 20,
+				// 				'colorNum':1,
+				// 				'item':'item11',
+				// 			},
+				// 			{
+				// 				"startTime": "2018-08-03 20:00:00",
+				// 				"endTime": "2018-08-04 12:00:00",
+				// 				"quantity": 15,
+				// 				'colorNum':2,
+				// 				'item':'item12',
+				// 			},
+				// 			{
+				// 				"startTime": "2018-08-04 20:00:00",
+				// 				"endTime": "2018-08-05 12:00:00",
+				// 				"quantity": 15,
+				// 				'colorNum':3,
+				// 				'item':'item13',
+				// 			},
+				// 		],
+				// 		"plant": "工厂4"
+				// 	},
+				// ],
 				// start_:"2018-08-02 00:00:00",
 				// end_:"2018-11-05 24:00:00",
 				modal:false,
@@ -275,6 +275,7 @@
 						await this.singleoffline(this.mylist[i].id,i)
 					}
 				}
+				
 				this.mylist.forEach((item, index) => {
 					that.yAxisData_plant.push(item.plant)
 					let bgColor;
@@ -468,7 +469,7 @@
 					endtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration),'YYYY-MM-DD HH:mm:ss')
 					//为了能看清掉线时刻，时间宽度最少为20秒
 					fakeendtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration)+20000,'YYYY-MM-DD HH:mm:ss')
-					singlelist.push({["item"]:starttime+"——"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
+					singlelist.push({["item"]:starttime+"—"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
 					
 				})
 				that.mylist[val2].list=singlelist

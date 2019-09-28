@@ -285,9 +285,7 @@
 						})
 					}
 					//let res = await this.$api.event(this.options)
-					console.log(this.options.starttime,this.options.endtime)
 					let res = await this.$api.readLadderEvent({id:this.data.id,page:1,num:10,start:this.options.starttime,end:this.options.endtime})
-					console.log(res.data)
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
 				}
@@ -297,7 +295,7 @@
 				this.$router.push({
 					name: 'History',
 					params: {
-						IMEI: this.data.ctrl,
+						id: this.data.id,
 					}
 				})
 			},

@@ -196,6 +196,9 @@ export default {
 	getRepair:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Dispatch'}, data))
 	},
+	dispatchhistory:(data)=>{
+		return DeviceApi.query(Object.assign({key1:'Dispatch',key2:'ladder'}, data))
+	},
 	dispatchExamine:(data)=> {
 		return DeviceApi.save({key1:'Dispatch',key2:'examine'}, data)
 	},
