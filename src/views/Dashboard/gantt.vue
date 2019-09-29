@@ -22,7 +22,14 @@
 			</TabPane>
 			<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime" @on-change="getoffline()"></DatePicker>
 		</Tabs>
-		<div id="container" :style="{'min-width': '900px', height: '400px'}"></div>
+		<Row>
+			<Col span="22">
+				<div id="container" :style="{'min-width': '900px', height: '600px'}"></div>
+			</Col>
+			<Col span="2">
+				<Table border :row-class-name="rowClassName" :columns="columns1" :data="data1" style="height: 550px;"></Table>
+			</Col>
+		</Row>
 		<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
 	</div>
 </template>
@@ -147,6 +154,14 @@
 				// ],
 				// start_:"2018-08-02 00:00:00",
 				// end_:"2018-11-05 24:00:00",
+				columns1: [
+                    {
+                        title: '掉线次数统计',
+                        key: 'times'
+                    },
+                ],
+                data1: [
+                ],
 				modal:false,
 				mylist:[],
 				offlinetotal:0,
@@ -261,6 +276,7 @@
 				}
 			},
 			async draw(){
+				this.data1=[]
 				this.mylist=[]
 				this.yAxisData_plant=[]
 				this.seriesData=[]
@@ -275,7 +291,6 @@
 						await this.singleoffline(this.mylist[i].id,i)
 					}
 				}
-				
 				this.mylist.forEach((item, index) => {
 					that.yAxisData_plant.push(item.plant)
 					let bgColor;
@@ -331,7 +346,7 @@
 						left: 100,
 						right: 50,
 						bottom: 50,
-						height:300,
+						height:500,
 					},
 					dataZoom: [{
 						show: true,
@@ -339,7 +354,7 @@
 						filterMode: 'none',
 						realtime: false,
 						height: 10,
-						top: 370,
+						top: 570,
 						startValue:new Date(that.start_).getTime(),
 						endValue:new Date(that.start_).getTime() + 3600 * 24 *  1000,
 						minValueSpan: this.timetabs=='today' ? 3600*1000:3600*24*1000,
@@ -453,10 +468,20 @@
 						data: that.seriesData
 					}]
 				})
+				console.log(this.data1.length)
+				//统计次数的表格
+				var tr=document.getElementsByClassName("ivu-table-row")
+				var trheight=520/tr.length+'px'
+				for(var i=0;i<tr.length;i++){
+					tr[i].style.height=trheight
+					console.log(tr[i].style.height)
+				}
+				
 			},
 			async singleoffline(val,val2){
 				var that=this
 				let off = await this.$api.singleoffline({starttime:this.$format(this.start_,'YYYY-MM-DD'),endtime:this.$format(this.end_,'YYYY-MM-DD'),id:val})
+				this.data1.push({times:off.data.list.length})
 				var singlelist=[]
 				var starttime
 				var endtime
@@ -474,9 +499,16 @@
 				})
 				that.mylist[val2].list=singlelist
 			},
+			rowClassName (row, index) {
+                return 'demo-table-info-row';
+            }
 		}
 	}
 </script>
 
 <style>
+	.ivu-table .demo-table-info-row td{
+        background-color: #26263c;
+        color: #fff;
+    }
 </style>
