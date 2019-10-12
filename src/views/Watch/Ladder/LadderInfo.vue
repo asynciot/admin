@@ -53,7 +53,7 @@
 									Col(span="24")
 										Form-item(:label="$t('base station')+':'")
 											p()|{{data.cell_address}}
-									Row		
+									Row
 										Col(span="12")
 											Form-item(:label="$t('install address')+':'")
 												p()|{{data.install_addr}}

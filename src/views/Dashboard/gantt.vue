@@ -1,15 +1,15 @@
 <template>
 	<div>
 		<Modal
-        title="查询时间"
-        v-model="modal"
+		title="查询时间"
+		v-model="modal"
 		@on-ok="ok"
-        :mask-closable="false">
-        <p>
-			<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="getofflineofday()"></DatePicker>
-			~
-			<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="getofflineofday()"></DatePicker>
-		</p>
+		:mask-closable="false">
+			<p>
+				<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="getofflineofday()"></DatePicker>
+				~
+				<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="getofflineofday()"></DatePicker>
+			</p>
 		</Modal>
 		<Tabs value="today" :animated="false" @on-click="changetabs">
 			<TabPane label="当天" name="today">
@@ -20,7 +20,7 @@
 			</TabPane>
 			<TabPane label="自定义" name="customize">
 			</TabPane>
-			<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime" @on-change="getoffline()"></DatePicker>
+			<DatePicker type="date" :options="options1" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime" @on-change="getoffline()"></DatePicker>
 		</Tabs>
 		<Row>
 			<Col span="22">
@@ -39,129 +39,18 @@
 	export default {
 		data(){
 			return{
-				// data:[
-				// 	{
-    //             "list": [
-				// 			{
-				// 				"colorNum":2,
-				// 				"endTime":"2019-09-17 14:00:00",
-				// 				"item":"item1",
-				// 				"quantity":1960,
-				// 				"startTime":"2019-09-17 8:00:00",
-				// 			},
-				// 			{
-				// 				"colorNum":1,
-				// 				"endTime":"2018-08-04 12:00:00",
-				// 				"item":"item2",
-				// 				"quantity":492,
-				// 				"startTime":"2018-08-04 08:00:00",
-				// 			},
-				// 			{
-				// 				"colorNum":2,
-				// 				"endTime":"2018-08-04 18:00:00",
-				// 				"item":"item3",
-				// 				"quantity":20837,
-				// 				"startTime":"2018-08-04 14:00:00",
-				// 			},
-				// 			{
-				// 				"colorNum":3,
-				// 				"endTime":"2018-08-05 12:00:00",
-				// 				"item":"item4",
-				// 				"quantity":3620,
-				// 				"startTime":"2018-08-04 20:00:00",
-				// 			},
-				// 			{
-				// 				"colorNum":0,
-				// 				"endTime":"2018-08-05 24:00:00",
-				// 				"item":"item5",
-				// 				"quantity":7200,
-				// 				"startTime":"2018-08-05 14:00:00",
-				// 			},
-				// 		],
-				// 		"plant": "工厂1"
-				// 	},
-				// 	{
-				// 		"list": [
-				// 			{
-				// 				"startTime": "2018-08-03 12:00:00",
-				// 				"endTime": "2018-08-04 12:00:00",
-				// 				"quantity": 20,
-				// 				'colorNum':0,
-				// 				'item':'item6',
-				// 			}
-				// 		],
-				// 		"plant": "工厂2"
-				// 	},
-				// 	{
-				// 		"list": [
-				// 			{
-				// 				"startTime": "2018-08-04 12:00:00",
-				// 				"endTime": "2018-08-06 00:00:00",
-				// 				"quantity": 30,
-				// 				'colorNum':0,
-				// 				'item':'item7',
-				// 			},
-				// 			{
-				// 				"startTime": "2018-08-06 08:00:00",
-				// 				"endTime": "2018-08-06 12:00:00",
-				// 				"quantity": 20,
-				// 				'colorNum':1,
-				// 				'item':'item8',
-				// 			},
-				// 			{
-				// 				"startTime": "2018-08-06 14:00:00",
-				// 				"endTime": "2018-08-08 12:00:00",
-				// 				"quantity": 10,
-				// 				'colorNum':2,
-				// 				'item':'item9',
-				// 			},
-				// 			{
-				// 				"startTime": "2018-08-08 20:00:00",
-				// 				"endTime": "2018-08-10 12:00:00",
-				// 				"quantity": 10,
-				// 				'colorNum':3,
-				// 				'item':'item10',
-				// 			}
-				// 		],
-				// 		"plant": "工厂3"
-				// 	},
-				// 	{
-				// 		"list": [
-				// 			{
-				// 				"startTime": "2018-08-02 20:00:00",
-				// 				"endTime": "2018-08-03 12:00:00",
-				// 				"quantity": 20,
-				// 				'colorNum':1,
-				// 				'item':'item11',
-				// 			},
-				// 			{
-				// 				"startTime": "2018-08-03 20:00:00",
-				// 				"endTime": "2018-08-04 12:00:00",
-				// 				"quantity": 15,
-				// 				'colorNum':2,
-				// 				'item':'item12',
-				// 			},
-				// 			{
-				// 				"startTime": "2018-08-04 20:00:00",
-				// 				"endTime": "2018-08-05 12:00:00",
-				// 				"quantity": 15,
-				// 				'colorNum':3,
-				// 				'item':'item13',
-				// 			},
-				// 		],
-				// 		"plant": "工厂4"
-				// 	},
-				// ],
-				// start_:"2018-08-02 00:00:00",
-				// end_:"2018-11-05 24:00:00",
+				options1: {
+					disabledDate (date) {
+						return date && date.valueOf() > Date.now() ;
+					}
+				},
 				columns1: [
-                    {
-                        title: '掉线次数统计',
-                        key: 'times'
-                    },
-                ],
-                data1: [
-                ],
+					{
+						title: '掉线次数统计',
+						key: 'times'
+					},
+				],
+				data1: [],
 				modal:false,
 				mylist:[],
 				offlinetotal:0,
@@ -500,15 +389,15 @@
 				that.mylist[val2].list=singlelist
 			},
 			rowClassName (row, index) {
-                return 'demo-table-info-row';
-            }
+				return 'demo-table-info-row';
+			}
 		}
 	}
 </script>
 
 <style>
 	.ivu-table .demo-table-info-row td{
-        background-color: #26263c;
-        color: #fff;
-    }
+		background-color: #26263c;
+		color: #fff;
+	}
 </style>

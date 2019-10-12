@@ -69,9 +69,11 @@
 						desc: this.$t('The deadline must be greater than the start date'),
 						})
 					}
-				let res = await this.$api.activedoor({starttime: this.$format(this.starttime.toString(),'YYYY-MM-DD'),
-													endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),
-													item: window.localStorage.getItem('item')})
+				let res = await this.$api.activedoor({
+					starttime: this.$format(this.starttime.toString(),'YYYY-MM-DD'),
+					endtime: this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),
+					item: window.localStorage.getItem('item')
+				})
 				this.topdevice=res.data.list
 				if (res.data.code == 0){
 					this.topdevice=res.data.list
