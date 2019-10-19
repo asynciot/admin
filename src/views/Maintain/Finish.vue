@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	export default{	
+	export default{
 		data(){
 			return{
 				sent:true,
@@ -103,10 +103,6 @@
 						res.data.data.list[0].result=this.$t('treated')
 					}
 					this.list = res.data.data.list[0]
-<<<<<<< HEAD
-=======
-					
->>>>>>> parent of 67680db... 1111
 					var before=this.list.before_pic.split(';')
 					var after=this.list.after_pic.split(';')
 					document.getElementById('before').src='http://server.asynciot.com/getfile?filePath='+before[0];
@@ -226,7 +222,7 @@
 				this.$router.back(-1)
 			}
 		}
-	}	
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -243,5 +239,5 @@
 		color: #999;
 		display: inline-block;
 	}
-	
+
 </style>
