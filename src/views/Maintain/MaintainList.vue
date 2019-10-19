@@ -35,7 +35,7 @@
 			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
 		<Col span='24' style="text-align: center;">
-		<Page  show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
+		<Page  show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  
 		</Col>
 	</div>
 </template>
@@ -88,7 +88,7 @@
 								if (params.row.IMEI.substring(j,j+1).charCodeAt()>1)
 								sub=sub+params.row.IMEI.substring(j,j+1)
 							}
-						}
+						}	
 						return h('div', sub)
 					}
 				},
@@ -113,6 +113,28 @@
 					key: 'install_addr',
 
 				},
+<<<<<<< HEAD
+				// {
+	 		// 		title: '基站定位',
+				// 	width: 260,
+				// 	key: 'cell_address',
+				// 	render: (h,params) => {
+				// 		var addr= params.row.cell_address
+				// 		if (params.row.cell_address !=null) {
+				// 			if(params.row.cell_address.length>=38){
+				// 				addr=item.cell_address.substring(0,38)+"…"
+				// 			}
+				// 		}
+				// 		return  h('Poptip',{
+				// 			props: {
+				// 				trigger:"hover",
+				// 				placement:"top-start",
+				// 				content:params.row.cell_address
+				// 			},
+				// 		},addr)
+				// 	}
+				// },
+=======
 // 				{
 // 				title: '基站定位',
 // 				// width: 260,
@@ -126,13 +148,14 @@
 // 				}
 // 				return  h('Poptip',{
 // 						props: {
-// 							trigger:"hover",
+// 							trigger:"hover",										
 // 							placement:"top-start",
 // 							content:params.row.cell_address
 // 						},
 // 					},addr)
 // 				}
 // 				},
+>>>>>>> parent of 67680db... 1111
 				{
 					title: this.$t('accept time'),
 					key: 'create_time',
@@ -173,15 +196,26 @@
 									type: 'primary',
 									size: 'small',
 									// disabled: (params.row.state == "treated"),
-								},
+								},			
 								on: {
 									click: () => {
-										this.$router.push({
-											name: 'finish',
-											params: {
-												id: params.row.id
-											}
-										})
+											this.$router.push({
+												name: 'finish',
+												params: {
+													id: params.row.id										
+												}
+											})
+// 										this.$Modal.confirm({
+// 											title: '是否完成？',
+// 											content: '<p>请确保设备功能恢复正常</p>',
+// 											onOk: () => {
+// 												params.row.state="treated"
+// 												state='已修复'
+// 												this.finish(params.row)											
+// 											},
+// 											onCancel: () => {
+// 											}
+// 										})
 									}
 								}
 							}, show)
@@ -190,7 +224,7 @@
 				}
 				],
 			}
-
+			
 		},
 		created() {
 			this.getList()
@@ -284,7 +318,7 @@
 			async search() {
 				this.options.page = 1
 				this.getList()
-			},
+			},	
 			async checkcolor(c) {
 				this.color[c]=!this.color[c]
 				if (this.color[c]) {
@@ -439,7 +473,7 @@
 	.schart {
 		width: 95%;
 		height: 300px;
-	}
+	}	
 	.pagination {
 	position: absolute;
 	margin-left: 30%;
