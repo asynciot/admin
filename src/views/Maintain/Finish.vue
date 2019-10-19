@@ -17,26 +17,14 @@
 										Col(span="8" style="margin-top:10px")|{{$t('confirm time')}}:{{list.confirm_time}}
 										Col(span='24' style="margin-top:10px")
 											textarea(v-model='ps' style="width:100%;height:60px", :placeholder="$t('Description of maintenance')")
-									Col(span=24 style="margin-top:10px")|{{$t('photo before treating')}}:
-									Col(span='8' style='height: 160px')
+									Col(span=12 style="margin-top:10px")|{{$t('photo before treating')}}:
+									Col(span=12 style="margin-top:10px")|{{$t('photo after treating')}}:
+									Col(span=12 style='height: 160px')
 										upload(:before-upload='before1')
 											img(id="before1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span='8' style='height: 160px')
-										upload(:before-upload='before2')
-											img(id="before2" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span='8' style='height: 160px')
-										upload(:before-upload='before3')
-											img(id="before3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span=24 style="margin-top:0px")|{{$t('photo after treating')}}:
-									Col(span='8' style='height: 160px')
+									Col(span=12 style='height: 160px')
 										upload(:before-upload='after1')
 											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span='8' style='height: 160px')
-										upload(:before-upload='after2')
-											img(id="after2" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
-									Col(span='8' style='height: 160px')
-										upload(:before-upload='after3')
-											img(id="after3" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|{{list.result}}
@@ -120,12 +108,8 @@
 					
 					var before=this.list.before_pic.split(';')
 					var after=this.list.after_pic.split(';')
-					if (before.length > 1) {document.getElementById('before1').src='http://server.asynciot.com/getfile?filePath='+before[0];}
-					if (before.length > 2) {document.getElementById('before2').src='http://server.asynciot.com/getfile?filePath='+before[1];}
-					if (before.length > 3) {document.getElementById('before3').src='http://server.asynciot.com/getfile?filePath='+before[2];}
-					if (after.length > 1) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[0];}
-					if (after.length > 2) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[1];}
-					if (after.length > 3) {document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[2];}
+					document.getElementById('before1').src='http://server.asynciot.com/getfile?filePath='+before[0];
+					document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[0];
 				} else {
 					this.$Notice.error({
 						title: this.$t('error'),

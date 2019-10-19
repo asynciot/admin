@@ -167,10 +167,24 @@
 				var _this = this
 				let res = await this.$api.reLadder({num:1,page:1,search_info:this.$route.params.IMEI})
 				// let eve = await this.$api.readLadderEvent({id:id,page:1,num:10,start:this.$format(this.start_,'YYYY-MM-DD'),end:this.$format(this.end_,'YYYY-MM-DD')})
+				if(res.data.code ==0){
+					if(res.data.data.list[0].ctrl!=null){
+						this.mylist.push({["plant"]:item.ctrl,["id"]:item.ctrl})
+					}
+					if (res.data.data.list[0].door1!=null) {
+						this.mylist.push({["plant"]:item.door1,["id"]:item.door1})
+					}
+					if (res.data.data.list[0].door2!=null) {
+						this.mylist.push({["plant"]:item.door2,["id"]:item.door2})
+					}
+				}
+				for (var i=0;i<this.mylist.length;i++){
+					await this.readEvent(this.mylist[i].id,i)
+				}
 				// eve.data.data.list.forEach((item,index)=>{
 				// 	this.mylist.push({["plant"]:item.device_id,["id"]:item.device_id})
 				// })
-				// this.readEvent()
+				
 				// this.mylist.forEach((item, index) => {
 				// 	this.yAxisData_plant.push(item.plant)
 				// 	console.log(item)
@@ -332,13 +346,11 @@
 								width: params.coordSys.width,
 								height: params.coordSys.height
 							});
-
 							return rectShape && {
 								type: 'rect',
 								shape: rectShape,
 								style: api.style()
 							};
-
 						},
 						encode: {
 							x: [1, 2],
@@ -348,9 +360,8 @@
 					}]
 				})
 			},
-			async readEvent(){
-				const id = this.$route.params.id;
-				let eve = await this.$api.readLadderEvent({id:id,start:this.$format(this.start_,'YYYY-MM-DD'),end:this.$format(this.end_,'YYYY-MM-DD')})
+			async readEvent(imei,i){
+				let eve = await this.$api.event({imei:imei,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
 				this.data.push({times:eve.data.list.length})
 				var singlelist=[]
 				var starttime
@@ -364,7 +375,7 @@
 					fakeendtime=this.$format(Date.parse(new Date(item.time))+parseInt(duration),'YYYY-MM-DD HH:mm:ss')
 					singlelist.push({["item"]:starttime+"—"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
 				})
-				this.mylist[0].list=singlelist
+				this.mylist[i].list=singlelist
 			},
 		},
 	}
