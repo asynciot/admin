@@ -12,8 +12,8 @@
 										Col(span="8" style="margin-top:10px")|{{$t('order ID')}}:{{list.order_id}}
 										Col(span="8" style="margin-top:10px")|{{$t('device name')}}:{{list.device_name}}
 										Col(span="8" style="margin-top:10px")|IMEI:{{list.IMEI}}
-										Col(span="8" style="margin-top:10px" v-if="list.state == 'treated'")|{{$t('state')}}:{{list.result}}
-										Col(span="8" style="margin-top:10px" v-if="list.state == 'untreated'")|{{$t('state')}}:{{$t('treating')}}
+										Col(span="8" style="margin-top:10px" v-show="list.state == 'treated'")|{{$t('state')}}:{{list.result}}
+										Col(span="8" style="margin-top:10px" v-show="list.state == 'untreated'")|{{$t('state')}}:{{$t('treating')}}
 										Col(span="8" style="margin-top:10px")|{{$t('confirm time')}}:{{list.confirm_time}}
 										Col(span='24' style="margin-top:10px")
 											textarea(v-model='ps' style="width:100%;height:60px", :placeholder="$t('Description of maintenance')")
@@ -27,25 +27,25 @@
 											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
-								Button(type="success",@click="finish('finish')" disabled v-if="list.state == 'treated'")|{{list.result}}
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(!sent))" disabled='false')|{{$t('complete')}}
-								Button(type="success",@click="finish('finish')" v-if="((list.state != 'treated')&&(sent))")|{{$t('complete')}}
+								Button(type="success",@click="finish('finish')" disabled v-show="list.state == 'treated'")|{{list.result}}
+								Button(type="success",@click="finish('finish')" v-show="((list.state != 'treated')&&(!sent))" disabled='false')|{{$t('complete')}}
+								Button(type="success",@click="finish('finish')" v-show="((list.state != 'treated')&&(sent))")|{{$t('complete')}}
 							Col(span=6 align="center")
 								Button(type="primary",@click="examine()",v-if="dispatch != true" disabled='false')|{{$t('reprieve')}}
 								Button(type="primary",@click="examine()",v-else)|{{$t('reprieve')}}
 							Col(span=6 align="center")
-								Button(type="warning",@click="finish('transfer')" disabled v-if="list.state == 'treated'")|{{list.result}}
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(!sent))" disabled='false')|{{$t('transfer')}}
-								Button(type="warning",@click="finish('transfer')" v-if="((list.state != 'treated')&&(sent))")|{{$t('transfer')}}
+								Button(type="warning",@click="finish('transfer')" disabled v-show="list.state == 'treated'")|{{list.result}}
+								Button(type="warning",@click="finish('transfer')" v-show="((list.state != 'treated')&&(!sent))" disabled='false')|{{$t('transfer')}}
+								Button(type="warning",@click="finish('transfer')" v-show="((list.state != 'treated')&&(sent))")|{{$t('transfer')}}
 							Col(span=6 align='center')
 								Button(@click="$router.back(-1)")|{{$t('cancel')}}
 </template>
 
 <script>
-	export default{	
+	export default{
 		data(){
 			return{
-				sent:false,
+				sent:true,
 				username:this.global.username,
 				id:window.localStorage.getItem('id'),
 				fault:[0,0,0,0,0,0,0,0],
@@ -74,7 +74,7 @@
 				file:'',
 				filename:'',
 				ps:'',
-				// dispatch:this.global.functions.work_dispatch,
+				dispatch:this.global.functions.work_dispatch,
 			}
 		},
 		computed: {
@@ -89,8 +89,7 @@
 			code(){
 				if (this.form.type == '1'){
 					this.faultcode=false;
-				}
-				else {
+				}else {
 					this.faultcode=true;
 				}
 			},
@@ -102,10 +101,12 @@
 					res.data.data.list[0].IMEI = ech.data.data.list[0].IMEI
 					res.data.data.list[0].install_addr = ech.data.data.list[0].install_addr
 					res.data.data.list[0].cell_address = ech.data.data.list[0].cell_address
-					if (res.data.data.list[0].result == 'transfer') {res.data.data.list[0].result=this.$t('transferred')}
-					else {res.data.data.list[0].result=this.$t('treated')}
+					if (res.data.data.list[0].result == 'transfer') {
+						res.data.data.list[0].result=this.$t('transferred')
+					}else {
+						res.data.data.list[0].result=this.$t('treated')
+					}
 					this.list = res.data.data.list[0]
-					
 					var before=this.list.before_pic.split(';')
 					var after=this.list.after_pic.split(';')
 					document.getElementById('before1').src='http://server.asynciot.com/getfile?filePath='+before[0];
@@ -158,36 +159,33 @@
 			},
 			before2 (file) {
 				if (this.list.state != "treated"){
-				var type = file.name.split('.')
-				if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-				this.beforefile2 = new File([file], 'before'+file.name,{type:"image/jpeg"});
-				if (file.size>2097000) {
-					this.$Notice.warning({
-						title: this.$t('warning'),
-						desc: this.$t('File size must be less than 2M')
-					})
-				}
-				else {
-				let url = null;
-				if (window.createObjectURL!=undefined) { // basic
-					url = window.createObjectURL(this.beforefile2) ;
-				}else if (window.webkitURL!=undefined) { // webkit or chrome
-					url = window.webkitURL.createObjectURL(this.beforefile2) ;
-				}else if (window.URL!=undefined) { // mozilla(firefox)
-					url = window.URL.createObjectURL(this.beforefile2) ;
-				}
-				document.getElementById('before2').src=url;
-				return false;
-				}
-				}
-				else{
-					this.$Notice.warning({
-						title: this.$t('warning'),
-						desc: this.$t('File type must be picture')
-					})
-				}
-				}
-				else{
+					var type = file.name.split('.')
+					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
+						this.beforefile2 = new File([file], 'before'+file.name,{type:"image/jpeg"});
+						if (file.size>2097000) {
+							this.$Notice.warning({
+								title: this.$t('warning'),
+								desc: this.$t('File size must be less than 2M')
+							})
+						}else {
+							let url = null;
+							if (window.createObjectURL!=undefined) { // basic
+								url = window.createObjectURL(this.beforefile2) ;
+							}else if (window.webkitURL!=undefined) { // webkit or chrome
+								url = window.webkitURL.createObjectURL(this.beforefile2) ;
+							}else if (window.URL!=undefined) { // mozilla(firefox)
+								url = window.URL.createObjectURL(this.beforefile2) ;
+							}
+							document.getElementById('before2').src=url;
+							return false;
+						}
+					}else {
+						this.$Notice.warning({
+							title: this.$t('warning'),
+							desc: this.$t('File type must be picture')
+						})
+					}
+				}else {
 					this.$Notice.warning({
 						title: this.$t('warning'),
 						desc: this.$t('Can not supplementary picture.')
@@ -335,7 +333,7 @@
 				}
 			},
 			async finish(val){
-				this.sent=true
+				this.sent=false
 				var formData = new FormData()
 				var formData = new window.FormData()
 				formData.append('file1',this.beforefile1)
@@ -347,7 +345,7 @@
 				formData.append('id',this.$route.params.id)
 				formData.append('result',val)
 				let res = await this.$api.finish(formData)
-				this.sent=false
+				this.sent=true
 				if (res.data.code == 0){
 					this.$Notice.success({
 						title: this.$t('success'),
