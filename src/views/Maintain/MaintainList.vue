@@ -35,7 +35,7 @@
 			<Table stripe class="mb-10" :columns="columns" :data="data" size="small"></Table>
 		</div>
 		<Col span='24' style="text-align: center;">
-		<Page  show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>	  
+		<Page  show-elevator :total="options.total" :page-size="options.num" :current="options.page" @on-change="pageChange" show-total></Page>
 		</Col>
 	</div>
 </template>
@@ -88,7 +88,7 @@
 								if (params.row.IMEI.substring(j,j+1).charCodeAt()>1)
 								sub=sub+params.row.IMEI.substring(j,j+1)
 							}
-						}	
+						}
 						return h('div', sub)
 					}
 				},
@@ -126,7 +126,7 @@
 // 				}
 // 				return  h('Poptip',{
 // 						props: {
-// 							trigger:"hover",										
+// 							trigger:"hover",
 // 							placement:"top-start",
 // 							content:params.row.cell_address
 // 						},
@@ -173,26 +173,24 @@
 									type: 'primary',
 									size: 'small',
 									// disabled: (params.row.state == "treated"),
-								},			
+								},
 								on: {
 									click: () => {
+										if(params.row.state == "treated"){
+											this.$router.push({
+												name: 'treated',
+												params: {
+													id: params.row.id
+												}
+											})
+										}else{
 											this.$router.push({
 												name: 'finish',
 												params: {
-													id: params.row.id										
+													id: params.row.id
 												}
 											})
-// 										this.$Modal.confirm({
-// 											title: '是否完成？',
-// 											content: '<p>请确保设备功能恢复正常</p>',
-// 											onOk: () => {
-// 												params.row.state="treated"
-// 												state='已修复'
-// 												this.finish(params.row)											
-// 											},
-// 											onCancel: () => {
-// 											}
-// 										})
+										}
 									}
 								}
 							}, show)
@@ -201,7 +199,7 @@
 				}
 				],
 			}
-			
+
 		},
 		created() {
 			this.getList()
@@ -295,7 +293,7 @@
 			async search() {
 				this.options.page = 1
 				this.getList()
-			},	
+			},
 			async checkcolor(c) {
 				this.color[c]=!this.color[c]
 				if (this.color[c]) {
@@ -450,7 +448,7 @@
 	.schart {
 		width: 95%;
 		height: 300px;
-	}	
+	}
 	.pagination {
 	position: absolute;
 	margin-left: 30%;
