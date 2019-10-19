@@ -113,6 +113,28 @@
 					key: 'install_addr',
 
 				},
+<<<<<<< HEAD
+				// {
+	 		// 		title: '基站定位',
+				// 	width: 260,
+				// 	key: 'cell_address',
+				// 	render: (h,params) => {
+				// 		var addr= params.row.cell_address
+				// 		if (params.row.cell_address !=null) {
+				// 			if(params.row.cell_address.length>=38){
+				// 				addr=item.cell_address.substring(0,38)+"…"
+				// 			}
+				// 		}
+				// 		return  h('Poptip',{
+				// 			props: {
+				// 				trigger:"hover",
+				// 				placement:"top-start",
+				// 				content:params.row.cell_address
+				// 			},
+				// 		},addr)
+				// 	}
+				// },
+=======
 // 				{
 // 				title: '基站定位',
 // 				// width: 260,
@@ -133,6 +155,7 @@
 // 					},addr)
 // 				}
 // 				},
+>>>>>>> parent of 67680db... 1111
 				{
 					title: this.$t('accept time'),
 					key: 'create_time',
