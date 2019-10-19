@@ -58,7 +58,6 @@ const MaintainList = resolve => require(['@/views/Maintain/MaintainList'], resol
 const FaultRank = resolve => require(['@/views/Maintain/FaultRank'], resolve)
 const Maintain = resolve => require(['@/views/Maintain/Maintain'], resolve)
 const Finish = resolve => require(['@/views/Maintain/Finish'], resolve)
-const Treated = resolve => require(['@/views/Maintain/Treated'], resolve)
 const Order = resolve => require(['@/views/Maintain/Order'], resolve)
 const AuditingList = resolve => require(['@/views/Maintain/AuditingList'], resolve)
 const OrderAdopt = resolve => require(['@/views/Maintain/OrderAdopt'], resolve)
@@ -353,14 +352,6 @@ export default new Router({
 					},
 					component: Finish
 				},
-				{
-					path: '/maintain/treated/:id',
-					name: 'treated',
-					meta: {
-						name: '完成工单'
-					},
-					component: Treated
-				},
 				//单位管理
 				//维保单位
 				{
@@ -518,7 +509,7 @@ export default new Router({
 						name: '版本更新'
 					},
 					component: Evolution
-				},
+				}, 
 				{
 					path: '/information/list',
 					name: 'alList',
