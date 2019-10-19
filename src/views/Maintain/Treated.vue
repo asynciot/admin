@@ -378,7 +378,7 @@ div.layout-content-main
 				this.$router.back(-1)
 			},
             async printpdf(){
-                href = window.location.href;
+                var href = window.location.href;
                 document.body.innerHTML = document.getElementById('test').innerHTML + '<br/>';
                 window.print();
                 window.location.href = href;

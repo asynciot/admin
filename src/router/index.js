@@ -353,7 +353,7 @@ export default new Router({
 					},
 					component: Finish
 				}, {
-					path: '/maintain/finish/:id',
+					path: '/maintain/treated/:id',
 					name: 'treated',
 					meta: {
 						name: '完成工单'
