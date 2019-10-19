@@ -1,99 +1,78 @@
 <template lang="jade">
-	div.layout-content-main
-		div.form
-			Row(:gutter=5)
-				Col(span=12)
-					card()
-						Row
-							Col(span="24" style="height: 35px;font-size:20px")|{{$t('Basic Information')}}
-								i(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(data.tagcolor)" style="margin-left: 10px")
-							Form.status(label-position="left",:label-width="110")
-								Row
-									Col(span="12")
-										Form-item.fontsize(:label="$t('device name')+':'")
-											p()|{{data.name}}
-									Col(span="12")
-										Form-item(:label="$t('RSSI')+':'")
-											div()
-												icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign[0]")
-												icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign[1]")
-												icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign[2]")
-												icon(name="sign3",width="24",height="24",slot="prepend" v-if="sign[3]")
-												icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign[4]")
-												icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign[5]")
-									Col(span="24")
-										Form-item(:label="$t('state')+':'")
-											p()|{{data.state}}
+	div.table
+		div.layout-content-main
+			div.form
+				Row(:gutter=5)
+					Col(span=18)
+						card()
+							Row
+								Col(span="24" style="height: 35px;font-size:20px")|{{$t('Basic Information')}}
+									i(class="fa fa-bookmark" ,:style="{color:cardcolor}" v-for="cardcolor in getlist(data.tagcolor)" style="margin-left: 10px")
+								Form.status(label-position="left",:label-width="110")
 									Row
 										Col(span="12")
-											Form-item(:label="$t('ctrl')+':'")
-												p()|{{data.ctrl}}
+											Form-item.fontsize(:label="$t('device name')+':'")
+												p()|{{data.name}}
 										Col(span="12")
-											Button.mb(type="primary" @click="godevice(1)" style="width:40%" ,:disabled="judge.ctrl")|{{$t('Details')}}
-									Row
+											Form-item(:label="$t('RSSI')+':'")
+												div()
+													icon(name="sign0",width="24",height="24",slot="prepend" v-if="sign[0]")
+													icon(name="sign1",width="24",height="24",slot="prepend" v-if="sign[1]")
+													icon(name="sign2",width="24",height="24",slot="prepend" v-if="sign[2]")
+													icon(name="sign3",width="24",height="24",slot="prepend" v-if="sign[3]")
+													icon(name="sign4",width="24",height="24",slot="prepend" v-if="sign[4]")
+													icon(name="sign5",width="24",height="24",slot="prepend" v-if="sign[5]")
+										Col(span="24")
+											Form-item(:label="$t('state')+':'")
+												p()|{{data.state}}
+										Row
+											Col(span="12")
+												Form-item(:label="$t('ctrl')+':'")
+													p()|{{data.ctrl}}
+											Col(span="12")
+												Button.mb(type="primary" @click="godevice(1)" style="width:40%" ,:disabled="judge.ctrl")|{{$t('Details')}}
+										Row
+											Col(span="12")
+												Form-item(:label="$t('door')+':'")
+													p()|{{data.door1}}
+											Col(span="12")
+												Button.mb(type="primary" @click="godevice(2)" style="width:40%" ,:disabled="judge.door1")|{{$t('Details')}}
+										Row
+											Col(span="12")
+												Form-item(:label="$t('door')+':'")
+													p()|{{data.door2}}
+											Col(span="12")
+												Button(type="primary" @click="godevice(3)" style="width:40%" disabled="judge.door2")|{{$t('Details')}}
 										Col(span="12")
-											Form-item(:label="$t('door')+':'")
-												p()|{{data.door1}}
-										Col(span="12")
-											Button.mb(type="primary" @click="godevice(2)" style="width:40%" ,:disabled="judge.door1")|{{$t('Details')}}
-									Row
-										Col(span="12")
-											Form-item(:label="$t('door')+':'")
-												p()|{{data.door2}}
-										Col(span="12")
-											Button(type="primary" @click="godevice(3)" style="width:40%" disabled="judge.door2")|{{$t('Details')}}
-									Col(span="12")
-										Form-item(:label="$t('IP location')+':'")
-											p()|{{data.ipaddr}}
-									Col(span="12" v-if="data.device_type=='15'")
-										Form-item(:label="$t('model')+':'" v-if="data.device_model == '1' ")
-											p()|NSFC01-01B
-										Form-item(:label="$t('model')+':'" v-if="data.device_model == '2' ")
-											p()|NSFC01-02T
-									Col(span="24")
-										Form-item(:label="$t('base station')+':'")
-											p()|{{data.cell_address}}
-									Row
-										Col(span="12")
-											Form-item(:label="$t('install address')+':'")
-												p()|{{data.install_addr}}
-										Col(span="12")
-											Button.mb(type="primary" @click="gohistory" style="width:40%")|{{$t('history fault')}}
-				Col(span=12)
-					card.card(align='center')
-						Row
-							Col(span=24 style="font-size:20px;text-align:left;")|{{$t('Event Record')}}
-							div( style="height: 35px;")
-								Col(span=4)
-									Select(v-model="keyword" , :placeholder="$t('type')" style="width:75%")
-										Option(key="1" label="ID" value='id')
-										Option(key="2", :label="$t('length')" value="length")
-										Option(key="3", :label="$t('interval')" value="interval")
-								Col(span=7)
-									AutoComplete.mg(name="inpSer" v-model="search_info" ,:data="menu" , :placeholder="$t('keyword')" max=15 style="width: 80%" class="handle-input mr10" id="serch1" @on-change="search()")
-								Col(span=6)
-									DatePicker(type="date", :placeholder="$t('from date')" format="yyyy-MM-dd" v-model="options.starttime" style='width: 100%;' @on-change="search()")
-								Col(span=1)|→
-								Col(span=6)
-									DatePicker(type="date", :placeholder="$t('closing date')" format="yyyy-MM-dd" v-model="options.endtime" style='width: 100%;' @on-change="search()")
-							div(style='font-size: large;margin-top:40px;', v-if='total==0')| {{$t('This device has no event record')}}
-							div(style="margin-top: 30px")
-								card(v-bind:padding='4',v-for='item in list', :key='item.id', align='left', style='font-size: 12px; cursor: pointer;margin-top:3px;', @click.native='history(item.id)')
-									Row
-										Col(span=22)|  {{$t('event id')}} ： {{item.id}}
-										Col(span=12)|  {{$t('start time')}} ： {{formatDate(item.time,'yyyy-MM-dd HH:mm:ss')}}
-										Col(span=12)|  {{$t('end time')}} ： {{formatDate(item.time+item.interval*item["length"],'yyyy-MM-dd HH:mm:ss')}}
-							div(style='font-size: large;') {{$t('total')}} {{total}} {{$t('events')}}
-							<Page simple :total="total" :page-size="eventnum" :current="eventpage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
+											Form-item(:label="$t('IP location')+':'")
+												p()|{{data.ipaddr}}
+										Col(span="12" v-if="data.device_type=='15'")
+											Form-item(:label="$t('model')+':'" v-if="data.device_model == '1' ")
+												p()|NSFC01-01B
+											Form-item(:label="$t('model')+':'" v-if="data.device_model == '2' ")
+												p()|NSFC01-02T
+										Col(span="24")
+											Form-item(:label="$t('base station')+':'")
+												p()|{{data.cell_address}}
+										Row
+											Col(span="12")
+												Form-item(:label="$t('install address')+':'")
+													p()|{{data.install_addr}}
+											Col(span="12")
+												Button.mb(type="primary" @click="gohistory" style="width:40%")|{{$t('history fault')}}
+			div
+				Gantt(:psMsg='id')
 </template>
 
 <script>
 	import {
 		formatDate
-	} from '../../../utils.js'
+	} from '../../../utils.js';
+	import Gantt from './gantt.vue';
 	export default {
 		data() {
 			return {
+				id:"",
 				eventnum:10,
 				eventpage:1,
 				sign:[false,false,false,false,false,false],
@@ -149,6 +128,9 @@
 					key: 'IMEI',
 				}],
 			}
+		},
+		components: {
+			Gantt,
 		},
 		created() {
 			this.getData()
@@ -213,6 +195,8 @@
 				let res = await this.$api.reLadder({num:1,page:1,search_info:this.$route.params.IMEI})
 				if(!res.data.code){
 					this.data = res.data.data.list[0]
+					this.id = this.data.id
+					console.log(this.id)
 					this.data.ipaddr = res.data.data.list[0].ip_country+res.data.data.list[0].ip_region+res.data.data.list[0].ip_city
 					//this.options.device_id=this.data.id
 					this.options.IMEI = this.data.door1
@@ -365,6 +349,11 @@
 </script>
 
 <style lang="scss">
+	.table{
+		min-height: 800px;
+		position: relative;
+		overflow: scroll;
+	}
 	.mg{
 		margin-left: 20px;
 	}

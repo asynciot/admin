@@ -6,13 +6,13 @@
 		@on-ok="ok"
 		:mask-closable="false">
 			<p>
-				<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="getofflineofday()"></DatePicker>
+				<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="changeDay()"></DatePicker>
 				~
-				<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="getofflineofday()"></DatePicker>
+				<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="changeDay()"></DatePicker>
 			</p>
 		</Modal>
 		<Tabs value="today" :animated="false" @on-click="changetabs">
-			<TabPane label="当天" name="today">
+			<TabPane label="一天" name="day">
 			</TabPane>
 			<TabPane label="七天" name="week">
 			</TabPane>
@@ -20,14 +20,11 @@
 			</TabPane>
 			<TabPane label="自定义" name="customize">
 			</TabPane>
-			<DatePicker type="date" :options="options1" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime" @on-change="getoffline()"></DatePicker>
+			<DatePicker type="date" :options="options" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime" @on-change="getoffline()"></DatePicker>
 		</Tabs>
 		<Row>
 			<Col span="22">
 				<div id="container" :style="{'min-width': '900px', height: '600px'}"></div>
-			</Col>
-			<Col span="2">
-				<Table border :row-class-name="rowClassName" :columns="columns1" :data="data1" style="height: 550px;"></Table>
 			</Col>
 		</Row>
 		<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
@@ -39,18 +36,13 @@
 	export default {
 		data(){
 			return{
-				options1: {
+				options: {
 					disabledDate (date) {
 						return date && date.valueOf() > Date.now() ;
 					}
 				},
-				columns1: [
-					{
-						title: '掉线次数统计',
-						key: 'times'
-					},
-				],
-				data1: [],
+				data: [],
+				event:[],
 				modal:false,
 				mylist:[],
 				offlinetotal:0,
@@ -62,10 +54,12 @@
 				start_time:'',
 				end_time:'',
 				endtime:'',
-				offlinedevicename:'',
 				offlinenum:10,
 				offlinepage:1,
 			}
+		},
+		props:{
+			psMsg: String,
 		},
 		mounted(){
 			this.getday()
@@ -106,7 +100,7 @@
 				}
 				this.draw()
 			},
-			getofflineofday(){
+			changeDay(){
 				if((this.start_time>=this.end_time)&&(this.end_time!="")){
 					this.end_time=this.$format(Date.parse(this.start_time)+8640000,'yyyy-MM-dd')
 					this.$Notice.warning({
@@ -124,23 +118,23 @@
 			},
 			changetabs(val){
 				this.timetabs=val
-				var d
+				var time
 				const t=new Date(this.endtime)
 				this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 				switch(val){
-					case 'today':
-						d= new Date(this.endtime)
-						this.start_=d.getFullYear()+'-'+this.p((d.getMonth()+1))+'-'+this.p(d.getDate())+' '+this.p(d.getHours())+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds());
+					case 'day':
+						time= new Date(this.endtime)
+						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
 						this.draw()
 						break;
 					case 'week':
-						d= new Date(this.endtime)
-						this.start_=d.getFullYear()+'-'+this.p((d.getMonth()+1))+'-'+this.p(d.getDate()-6)+' '+this.p(d.getHours())+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds());
+						time= new Date(this.endtime)
+						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate()-6)+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
 						this.draw()
 						break;
 					case 'month':
-						d= new Date(this.endtime)
-						this.start_=d.getFullYear()+'-'+this.p((d.getMonth()))+'-'+this.p(d.getDate())+' '+this.p(d.getHours())+':'+this.p(d.getMinutes())+':'+this.p(d.getSeconds());
+						time= new Date(this.endtime)
+						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
 						this.draw()
 						break;
 					case 'customize':
@@ -165,61 +159,57 @@
 				}
 			},
 			async draw(){
-				this.data1=[]
+				const id = this.$route.params.id;
+				this.data=[]
 				this.mylist=[]
 				this.yAxisData_plant=[]
 				this.seriesData=[]
-				var that=this
-				let off = await this.$api.getoffline({starttime:this.$format(this.start_,'YYYY-MM-DD'),endtime:this.$format(this.end_,'YYYY-MM-DD'),num:this.offlinenum,page:this.offlinepage,search_info:this.offlinedevicename})
-				off.data.data.list.forEach((item,index)=>{
-					this.mylist.push({["plant"]:item.device_name,["id"]:item.id})
-				})
-				if (off.data.code == 0) {
-					this.offlinetotal=off.data.data.totalNumber
-					for (var i=0;i<this.mylist.length;i++){
-						await this.singleoffline(this.mylist[i].id,i)
-					}
-				}
-				this.mylist.forEach((item, index) => {
-					this.yAxisData_plant.push(item.plant)
-					console.log(item)
-					let bgColor;
-					item.list.forEach((listItem, listIndex) => {
-						switch (listItem.colorNum) {
-							case 0:
-								bgColor = 'rgba(0,187,255,.4)';
-								break;
-							case 1:
-								bgColor = 'rgba(80,227,194,.4)';
-								break;
-							case 2:
-								bgColor = 'rgba(255,255,255,1)';
-								break;
-							case 3:
-								bgColor = 'rgba(255,207,107,.4)';
-								break;
-							default:
-								bgColor = 'rgba(0,187,255,.4)'
-						}
-						let startTime = new Date(listItem.startTime).getTime();
-						let endTime = new Date(listItem.endTime).getTime();
-						that.seriesData.push({
-							name: listItem.item,
-							value: [
-								index,
-								startTime,
-								endTime,
-								listItem.quantity,
-							],
-							itemStyle: {
-								normal: {
-									color: bgColor
-								}
-							}
-						});
-					})
-
-				});
+				var _this = this
+				let res = await this.$api.reLadder({num:1,page:1,search_info:this.$route.params.IMEI})
+				// let eve = await this.$api.readLadderEvent({id:id,page:1,num:10,start:this.$format(this.start_,'YYYY-MM-DD'),end:this.$format(this.end_,'YYYY-MM-DD')})
+				// eve.data.data.list.forEach((item,index)=>{
+				// 	this.mylist.push({["plant"]:item.device_id,["id"]:item.device_id})
+				// })
+				// this.readEvent()
+				// this.mylist.forEach((item, index) => {
+				// 	this.yAxisData_plant.push(item.plant)
+				// 	console.log(item)
+				// 	let bgColor;
+				// 	item.list.forEach((listItem, listIndex) => {
+				// 		switch (listItem.colorNum) {
+				// 			case 0:
+				// 				bgColor = 'rgba(0,187,255,.4)';
+				// 				break;
+				// 			case 1:
+				// 				bgColor = 'rgba(80,227,194,.4)';
+				// 				break;
+				// 			case 2:
+				// 				bgColor = 'rgba(255,255,255,1)';
+				// 				break;
+				// 			case 3:
+				// 				bgColor = 'rgba(255,207,107,.4)';
+				// 				break;
+				// 			default:
+				// 				bgColor = 'rgba(0,187,255,.4)'
+				// 		}
+				// 		let startTime = new Date(listItem.startTime).getTime();
+				// 		let endTime = new Date(listItem.endTime).getTime();
+				// 		this.seriesData.push({
+				// 			name: listItem.item,
+				// 			value: [
+				// 				index,
+				// 				startTime,
+				// 				endTime,
+				// 				listItem.quantity,
+				// 			],
+				// 			itemStyle: {
+				// 				normal: {
+				// 					color: bgColor
+				// 				}
+				// 			}
+				// 		});
+				// 	})
+				// });
 
 				let myCharts=this.$echarts.init(document.getElementById('container'));
 				myCharts.resize()
@@ -244,8 +234,8 @@
 						realtime: false,
 						height: 10,
 						top: 570,
-						startValue:new Date(that.start_).getTime(),
-						endValue:new Date(that.start_).getTime() + 3600 * 24 *  1000,
+						startValue:new Date(this.start_).getTime(),
+						endValue:new Date(this.start_).getTime() + 3600 * 24 *  1000,
 						minValueSpan: this.timetabs=='today' ? 3600*1000:3600*24*1000,
 						handleIcon: 'path://path://M100, 100m -75, 0a75,75 0 1,0 150,0a75,75 0 1,0 -150,0',
 						handleSize: '120%',
@@ -279,8 +269,8 @@
 					}],
 					xAxis: {
 						type: 'time',
-						min: new Date(that.start_).getTime(),
-						max: new Date(that.end_).getTime(),
+						min: new Date(this.start_).getTime(),
+						max: new Date(this.end_).getTime(),
 						scale: true,
 						position: 'top',
 						splitNumber: 7,
@@ -290,9 +280,9 @@
 							interval: 0,
 							margin: 15,
 							fontSize: 14,
-							formatter:function (value, index) {
+							formatter: (value, index) => {
 								var date = new Date(value);
-								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"  "+date.getHours()+":"+that.p(date.getMinutes());
+								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"  "+date.getHours()+":"+this.p(date.getMinutes());
 								return texts;
 							}
 						},
@@ -322,7 +312,7 @@
 							lineStyle: {color: 'rgba(233,233,233,0.1)'}
 						},
 						inverse: true,
-						data: that.yAxisData_plant
+						data: this.yAxisData_plant
 					},
 					series: [{
 						type: 'custom',
@@ -354,42 +344,29 @@
 							x: [1, 2],
 							y: 0
 						},
-						data: that.seriesData
+						data: this.seriesData
 					}]
 				})
-				//统计次数的表格
-				var tr=document.getElementsByClassName("ivu-table-row")
-				var trheight=520/tr.length+'px'
-				for(var i=0;i<tr.length;i++){
-					tr[i].style.height=trheight
-				}
-				
 			},
-			async singleoffline(val,val2){
-				var that=this
-				let off = await this.$api.singleoffline({starttime:this.$format(this.start_,'YYYY-MM-DD'),endtime:this.$format(this.end_,'YYYY-MM-DD'),id:val})
-				this.data1.push({times:off.data.list.length})
+			async readEvent(){
+				const id = this.$route.params.id;
+				let eve = await this.$api.readLadderEvent({id:id,start:this.$format(this.start_,'YYYY-MM-DD'),end:this.$format(this.end_,'YYYY-MM-DD')})
+				this.data.push({times:eve.data.list.length})
 				var singlelist=[]
 				var starttime
 				var endtime
 				var fakeendtime
-				off.data.list.forEach((item,index)=>{
-					if(item.duration<0){
-						item.duration=0
-					}
-					starttime=this.$format(Date.parse(new Date(item.t_logout)),'YYYY-MM-DD HH:mm:ss')
-					endtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration),'YYYY-MM-DD HH:mm:ss')
+				eve.data.list.forEach((item,index)=>{
+					const duration = item.interval*item.length
+					starttime=this.$format(Date.parse(new Date(item.time)),'YYYY-MM-DD HH:mm:ss')
+					endtime=this.$format(Date.parse(new Date(item.time))+parseInt(duration),'YYYY-MM-DD HH:mm:ss')
 					//为了能看清掉线时刻，时间宽度最少为20秒
-					fakeendtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration)+20000,'YYYY-MM-DD HH:mm:ss')
+					fakeendtime=this.$format(Date.parse(new Date(item.time))+parseInt(duration),'YYYY-MM-DD HH:mm:ss')
 					singlelist.push({["item"]:starttime+"—"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
-					
 				})
-				that.mylist[val2].list=singlelist
+				this.mylist[0].list=singlelist
 			},
-			rowClassName (row, index) {
-				return 'demo-table-info-row';
-			}
-		}
+		},
 	}
 </script>
 
