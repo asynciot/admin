@@ -20,11 +20,11 @@
 									Col(span=12 style="margin-top:10px")|{{$t('photo before treating')}}:
 									Col(span=12 style="margin-top:10px")|{{$t('photo after treating')}}:
 									Col(span=12 style='height: 160px')
-										upload(:before-upload='before1')
-											img(id="before1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+										upload(:before-upload='before')
+											img(id="before" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
 									Col(span=12 style='height: 160px')
-										upload(:before-upload='after1')
-											img(id="after1" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
+										upload(:before-upload='after')
+											img(id="after" src='../../assets/add.jpg' style="height:130px; width:80%; cursor: pointer;")
 						Col(span=24 style="margin-top: 10px")
 							Col(span=6 align="center")
 								Button(type="success",@click="finish('finish')" disabled v-show="list.state == 'treated'")|{{list.result}}
@@ -53,11 +53,7 @@
 					type:'1',
 				},
 				beforefile1:'',
-				beforefile2:'',
-				beforefile3:'',
 				afterfile1:'',
-				afterfile2:'',
-				afterfile3:'',
 				faultcode:false,
 				list:[],
 				query:{
@@ -109,8 +105,8 @@
 					this.list = res.data.data.list[0]
 					var before=this.list.before_pic.split(';')
 					var after=this.list.after_pic.split(';')
-					document.getElementById('before1').src='http://server.asynciot.com/getfile?filePath='+before[0];
-					document.getElementById('after1').src='http://server.asynciot.com/getfile?filePath='+after[0];
+					document.getElementById('before').src='http://server.asynciot.com/getfile?filePath='+before[0];
+					document.getElementById('after').src='http://server.asynciot.com/getfile?filePath='+after[0];
 				} else {
 					this.$Notice.error({
 						title: this.$t('error'),
@@ -118,65 +114,27 @@
 					});
 				}
 			},
-			before1 (file) {
+			before (file) {
 				if (this.list.state != "treated"){
 					var type = file.name.split('.')
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-					if (file.size>2097000) {
-						this.$Notice.warning({
-							title: this.$t('warning'),
-							desc: this.$t('File size must be less than 2M')
-						})
-					}
-					else {
-
-					this.beforefile1 = new File([file], 'before'+file.name,{type:"image/jpeg"});
-					let url = null;
-					if (window.createObjectURL!=undefined) { // basic
-						url = window.createObjectURL(this.beforefile1) ;
-					}else if (window.webkitURL!=undefined) { // webkit or chrome
-						url = window.webkitURL.createObjectURL(this.beforefile1) ;
-					}else if (window.URL!=undefined) { // mozilla(firefox)
-						url = window.URL.createObjectURL(this.beforefile1) ;
-					}
-					document.getElementById('before1').src=url;
-					return false;
-					}
-					}
-					else{
-						this.$Notice.warning({
-							title: this.$t('warning'),
-							desc: this.$t('File type must be picture')
-						})
-					}
-				}
-				else{
-					this.$Notice.warning({
-						title: this.$t('warning'),
-						desc: this.$t('Can not supplementary picture.')
-					})
-				}
-			},
-			before2 (file) {
-				if (this.list.state != "treated"){
-					var type = file.name.split('.')
-					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-						this.beforefile2 = new File([file], 'before'+file.name,{type:"image/jpeg"});
 						if (file.size>2097000) {
 							this.$Notice.warning({
 								title: this.$t('warning'),
 								desc: this.$t('File size must be less than 2M')
 							})
-						}else {
+						}
+						else {
+							this.beforefile1 = new File([file], 'before'+file.name,{type:"image/jpeg"});
 							let url = null;
 							if (window.createObjectURL!=undefined) { // basic
-								url = window.createObjectURL(this.beforefile2) ;
+								url = window.createObjectURL(this.beforefile1) ;
 							}else if (window.webkitURL!=undefined) { // webkit or chrome
-								url = window.webkitURL.createObjectURL(this.beforefile2) ;
+								url = window.webkitURL.createObjectURL(this.beforefile1) ;
 							}else if (window.URL!=undefined) { // mozilla(firefox)
-								url = window.URL.createObjectURL(this.beforefile2) ;
+								url = window.URL.createObjectURL(this.beforefile1) ;
 							}
-							document.getElementById('before2').src=url;
+							document.getElementById('before').src=url;
 							return false;
 						}
 					}else {
@@ -192,42 +150,7 @@
 					})
 				}
 			},
-			before3 (file) {
-				if (this.list.state != "treated"){
-					var type = file.name.split('.')
-					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-						if (file.size>2097000) {
-							this.$Notice.warning({
-								title: this.$t('warning'),
-								desc: this.$t('File size must be less than 2M')
-							})
-						}else {
-							this.beforefile3 = new File([file], 'before'+file.name,{type:"image/jpeg"});
-							let url = null;
-							if (window.createObjectURL!=undefined) { // basic
-								url = window.createObjectURL(this.beforefile3) ;
-							}else if (window.webkitURL!=undefined) { // webkit or chrome
-								url = window.webkitURL.createObjectURL(this.beforefile3) ;
-							}else if (window.URL!=undefined) { // mozilla(firefox)
-								url = window.URL.createObjectURL(this.beforefile3) ;
-							}
-							document.getElementById('before3').src=url;
-							return false;
-						}
-					}else {
-						this.$Notice.warning({
-							title: this.$t('warning'),
-							desc: this.$t('File type must be picture')
-						})
-					}
-				}else {
-					this.$Notice.warning({
-						title: this.$t('warning'),
-						desc: this.$t('Can not supplementary picture.')
-					})
-				}
-			},
-			after1 (file) {
+			after (file) {
 				if (this.list.state != "treated"){
 					var type = file.name.split('.')
 					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
@@ -246,77 +169,7 @@
 							}else if (window.URL!=undefined) { // mozilla(firefox)
 								url = window.URL.createObjectURL(this.afterfile1) ;
 							}
-							document.getElementById('after1').src=url;
-							return false;
-						}
-					}else{
-						this.$Notice.warning({
-							title: this.$t('warning'),
-							desc: this.$t('File type must be picture')
-						})
-					}
-				}else{
-					this.$Notice.warning({
-						title: this.$t('warning'),
-						desc: this.$t('Can not supplementary picture.')
-					})
-				}
-			},
-			after2 (file) {
-				if (this.list.state != "treated"){
-					var type = file.name.split('.')
-					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-						if (file.size>2097000) {
-							this.$Notice.warning({
-								title: this.$t('warning'),
-								desc: this.$t('File size must be less than 2M')
-							})
-						}else {
-							this.afterfile2 = new File([file], 'after'+file.name,{type:"image/jpeg"});
-							let url = null;
-							if (window.createObjectURL!=undefined) { // basic
-								url = window.createObjectURL(this.afterfile2) ;
-							}else if (window.webkitURL!=undefined) { // webkit or chrome
-								url = window.webkitURL.createObjectURL(this.afterfile2) ;
-							}else if (window.URL!=undefined) { // mozilla(firefox)
-								url = window.URL.createObjectURL(this.afterfile2) ;
-							}
-							document.getElementById('after2').src=url;
-							return false;
-						}
-					}else{
-						this.$Notice.warning({
-							title: this.$t('warning'),
-							desc: this.$t('File type must be picture')
-						})
-					}
-				}else{
-					this.$Notice.warning({
-						title: this.$t('warning'),
-						desc: this.$t('Can not supplementary picture.')
-					})
-				}
-			},
-			after3 (file) {
-				if (this.list.state != "treated"){
-					var type = file.name.split('.')
-					if ((type[1] == 'png')||(type[1] == 'gif')||(type[1] == 'jpg')||(type[1] == 'bmp')||(type[1] == 'jpeg')){
-						if (file.size>2097000) {
-							this.$Notice.warning({
-								title: this.$t('warning'),
-								desc: this.$t('File size must be less than 2M')
-							})
-						}else {
-							this.afterfile3 = new File([file], 'after'+file.name,{type:"image/jpeg"});
-							let url = null;
-							if (window.createObjectURL!=undefined) { // basic
-								url = window.createObjectURL(this.afterfile3) ;
-							}else if (window.webkitURL!=undefined) { // webkit or chrome
-								url = window.webkitURL.createObjectURL(this.afterfile3) ;
-							}else if (window.URL!=undefined) { // mozilla(firefox)
-								url = window.URL.createObjectURL(this.afterfile3) ;
-							}
-							document.getElementById('after3').src=url;
+							document.getElementById('after').src=url;
 							return false;
 						}
 					}else{
@@ -337,11 +190,7 @@
 				var formData = new FormData()
 				var formData = new window.FormData()
 				formData.append('file1',this.beforefile1)
-				formData.append('file2',this.beforefile2)
-				formData.append('file3',this.beforefile3)
-				formData.append('file4',this.afterfile1)
-				formData.append('file5',this.afterfile2)
-				formData.append('file6',this.afterfile3)
+				formData.append('file2',this.afterfile1)
 				formData.append('id',this.$route.params.id)
 				formData.append('result',val)
 				let res = await this.$api.finish(formData)

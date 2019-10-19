@@ -173,7 +173,7 @@
 									type: 'primary',
 									size: 'small',
 									// disabled: (params.row.state == "treated"),
-								},			
+								},
 								on: {
 									click: () => {
 										this.$router.push({
