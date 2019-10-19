@@ -4,8 +4,8 @@ div.layout-content-main
         Row(:gutter=30)
             Col(span=5)| &nbsp;
             Col(span=14)
-                Div(id="test")
-                    Card(style="height:600px")
+                Card(style="min-height:420px")
+                    Div(id="test")
                         Col(span=24)
                             Form(ref="form",:model="form",:label-width="120")
                                 Row(:gutter="0")

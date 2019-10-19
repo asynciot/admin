@@ -4,7 +4,7 @@
 			Row(:gutter=30)
 				Col(span=5)| &nbsp;
 				Col(span=14)
-					Card(style="height:600px")
+					Card(style="min-height:420px")
 						Col(span=24)
 							Form(ref="form",:model="form",:label-width="120")
 								Row(:gutter="0")
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	export default{	
+	export default{
 		data(){
 			return{
 				sent:false,
@@ -105,7 +105,7 @@
 					if (res.data.data.list[0].result == 'transfer') {res.data.data.list[0].result=this.$t('transferred')}
 					else {res.data.data.list[0].result=this.$t('treated')}
 					this.list = res.data.data.list[0]
-					
+
 					var before=this.list.before_pic.split(';')
 					var after=this.list.after_pic.split(';')
 					document.getElementById('before1').src='http://server.asynciot.com/getfile?filePath='+before[0];
@@ -375,7 +375,7 @@
 				this.$router.back(-1)
 			}
 		}
-	}	
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -392,5 +392,5 @@
 		color: #999;
 		display: inline-block;
 	}
-	
+
 </style>
