@@ -672,10 +672,10 @@ export default new Router({
 					},
 					component: Authority,
 				},{
-					path: '/system/role',
+					path: '/system/addrole',
 					name: 'addrole',
 					meta: {
-						name: '角色管理'
+						name: '角色编辑'
 					},
 					component: AddRole,
 				},{
