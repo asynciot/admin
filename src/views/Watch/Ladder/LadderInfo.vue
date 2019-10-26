@@ -188,7 +188,7 @@
 						if (str.indexOf(selectword)>=0){
 						this.menu.push(str)
 						}
-					} 
+					}
 				}
 			},
 			async getData() {
@@ -284,7 +284,7 @@
 				})
 			},
 			godevice(val){
-				let imei 
+				let imei
 				if(val==1){
 					imei = this.data.ctrl
 				}else if (val == 2){
@@ -337,7 +337,7 @@
 					})
 				}
 				this.total = eve.data.data.totalNumber
-					return new Promise(resolve => {			
+					return new Promise(resolve => {
 						resolve();
 					});
 				},

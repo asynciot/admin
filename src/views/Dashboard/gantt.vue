@@ -363,11 +363,12 @@
 				for(var i=0;i<tr.length;i++){
 					tr[i].style.height=trheight
 				}
-				
+
 			},
 			async singleoffline(val,val2){
 				var that=this
 				let off = await this.$api.singleoffline({starttime:this.$format(this.start_,'YYYY-MM-DD'),endtime:this.$format(this.end_,'YYYY-MM-DD'),id:val})
+				console.log(off)
 				this.data1.push({times:off.data.list.length})
 				var singlelist=[]
 				var starttime
@@ -382,9 +383,10 @@
 					//为了能看清掉线时刻，时间宽度最少为20秒
 					fakeendtime=this.$format(Date.parse(new Date(item.t_logout))+parseInt(item.duration)+20000,'YYYY-MM-DD HH:mm:ss')
 					singlelist.push({["item"]:starttime+"—"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
-					
+
 				})
 				that.mylist[val2].list=singlelist
+				console.log(singlelist)
 			},
 			rowClassName (row, index) {
 				return 'demo-table-info-row';
