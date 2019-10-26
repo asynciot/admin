@@ -24,7 +24,7 @@
 		</Tabs>
 		<Row>
 			<Col span="22">
-				<div id="container" :style="{'min-width': '900px', height: '600px'}"></div>
+				<div id="container" :style="{'min-width': '1050px', height: '600px'}"></div>
 			</Col>
 			<Col span="2">
 				<Table border :row-class-name="rowClassName" :columns="columns1" :data="data1" style="height: 550px;"></Table>
@@ -292,7 +292,7 @@
 							fontSize: 14,
 							formatter:function (value, index) {
 								var date = new Date(value);
-								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"  "+date.getHours()+":"+that.p(date.getMinutes());
+								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"\n"+date.getHours()+":"+that.p(date.getMinutes());
 								return texts;
 							}
 						},

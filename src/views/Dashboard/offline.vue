@@ -1,5 +1,5 @@
 <template>
-	<div class="layout-content-main" style='background:#f5f3f0'>
+	<div class="layout-content-main" style='overflow: scroll;background:#f5f3f0'>
 		<div class="panel">
 			<section class="panel-title">
 				<b v-text="title"></b>
@@ -61,11 +61,11 @@
 				this.menu=[];
 				var str;
 				for (var i=0;i<this.data.length;i++){
-					str=this.data[i].device_name;		  	    	
+					str=this.data[i].device_name;
 					if ((str != null)&&(this.offlinedevicename != null)){
 						if (str.indexOf(this.offlinedevicename)>=0)
 							this.menu.push(str)
-					} 
+					}
 				}
 			},
 			showtime(){
@@ -78,7 +78,7 @@
 				this.offlinepage=val
 				this.getoffline()
 			},
-			async getoffline(){			
+			async getoffline(){
 				let off = await this.$api.getoffline({starttime:this.$format(this.starttime,'YYYY-MM-DD'),endtime:this.$format(Date.parse(this.endtime)+86400000,'YYYY-MM-DD'),num:this.offlinenum,page:this.offlinepage,search_info:this.offlinedevicename})
 				if (off.data.code == 0) {
 					this.data=off.data.data.list
@@ -145,14 +145,14 @@
 			},
 		}
 	}
-	
+
 </script>
 <style lang="scss" scoped>
 	.panel {
 		background: #ffffff;
 		padding: 18px 30px 18px 18px;
 		box-shadow: 0 0 4px rgba(232, 237, 250, .6);
-		height: 37.5rem;
+		min-height: 37.5rem;
 		overflow: scroll;
 	}
 	.panel-title {
