@@ -168,23 +168,25 @@
 				let res = await this.$api.reLadder({num:1,page:1,search_info:this.$route.params.IMEI})
 				// let eve = await this.$api.readLadderEvent({id:id,page:1,num:10,start:this.$format(this.start_,'YYYY-MM-DD'),end:this.$format(this.end_,'YYYY-MM-DD')})
 				if(res.data.code ==0){
-					if(res.data.data.list[0].ctrl!=null){
-						this.mylist.push({["plant"]:item.ctrl,["id"]:item.ctrl})
+					if(res.data.data.list[0].ctrl!=null && res.data.data.list[0].crtl != ''){
+						this.mylist.push({["plant"]:res.data.data.list[0].ctrl,["id"]:res.data.data.list[0].ctrl})
 					}
-					if (res.data.data.list[0].door1!=null) {
-						this.mylist.push({["plant"]:item.door1,["id"]:item.door1})
+					if (res.data.data.list[0].door1!=null && res.data.data.list[0].door1 != '') {
+						this.mylist.push({["plant"]:res.data.data.list[0].door1,["id"]:res.data.data.list[0].door1})
 					}
-					if (res.data.data.list[0].door2!=null) {
-						this.mylist.push({["plant"]:item.door2,["id"]:item.door2})
+					if (res.data.data.list[0].door2!=null && res.data.data.list[0].door2 != '') {
+						this.mylist.push({["plant"]:res.data.data.list[0].door2,["id"]:res.data.data.list[0].door2})
 					}
 				}
+				console.log(this.mylist.length)
 				for (var i=0;i<this.mylist.length;i++){
 					await this.readEvent(this.mylist[i].id,i)
 				}
+				console.log(this.mylist)
 				// eve.data.data.list.forEach((item,index)=>{
 				// 	this.mylist.push({["plant"]:item.device_id,["id"]:item.device_id})
 				// })
-				
+
 				// this.mylist.forEach((item, index) => {
 				// 	this.yAxisData_plant.push(item.plant)
 				// 	console.log(item)
@@ -361,21 +363,32 @@
 				})
 			},
 			async readEvent(imei,i){
-				let eve = await this.$api.event({imei:imei,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
-				this.data.push({times:eve.data.list.length})
-				var singlelist=[]
-				var starttime
-				var endtime
-				var fakeendtime
-				eve.data.list.forEach((item,index)=>{
-					const duration = item.interval*item.length
-					starttime=this.$format(Date.parse(new Date(item.time)),'YYYY-MM-DD HH:mm:ss')
-					endtime=this.$format(Date.parse(new Date(item.time))+parseInt(duration),'YYYY-MM-DD HH:mm:ss')
-					//为了能看清掉线时刻，时间宽度最少为20秒
-					fakeendtime=this.$format(Date.parse(new Date(item.time))+parseInt(duration),'YYYY-MM-DD HH:mm:ss')
-					singlelist.push({["item"]:starttime+"—"+endtime,["startTime"]:starttime,["endTime"]:fakeendtime,["quantity"]:item.id,["colorNum"]:2})
-				})
-				this.mylist[i].list=singlelist
+				let eve = await this.$api.eventImei({imei:imei,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
+				//console.log(eve)
+				if(eve.data.code == 0) {
+					this.data.push({times: eve.data.data.list.length})
+					var singlelist = []
+					var starttime
+					var endtime
+					var fakeendtime
+					eve.data.data.list.forEach((item, index) => {
+						const duration = item.interval * item.length
+						starttime = this.$format(Date.parse(new Date(item.time)), 'YYYY-MM-DD HH:mm:ss')
+						endtime = this.$format(Date.parse(new Date(item.time)) + parseInt(duration), 'YYYY-MM-DD HH:mm:ss')
+						//为了能看清掉线时刻，时间宽度最少为20秒
+						fakeendtime = this.$format(Date.parse(new Date(item.time)) + parseInt(duration), 'YYYY-MM-DD HH:mm:ss')
+						singlelist.push({
+							["item"]: starttime + "—" + endtime,
+							["startTime"]: starttime,
+							["endTime"]: fakeendtime,
+							["quantity"]: item.id,
+							["colorNum"]: 2
+						})
+					})
+					this.mylist[i].list = singlelist
+					console.log(singlelist)
+				}
+				else console.log("error data")
 			},
 		},
 	}

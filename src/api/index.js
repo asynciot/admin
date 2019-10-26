@@ -10,7 +10,7 @@ import {
 export default {
 	ws: (data) => `${root.replace('http', 'ws')}/v1/devices/socket?${stringify(data)}`,
 	debug: (data) => `${root.replace('http', 'ws')}/v1/devices/socketDebug?${stringify(data)}`,
-  
+
 	logoutdevices: (data) => {
 		return RootApi.save({key1:'Command',key2:'Logout'}, data)
 	},
@@ -144,6 +144,9 @@ export default {
 	//event
 	event: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Event'}, data))
+	},
+	eventImei: (data) => {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'IMEI'}, data))
 	},
 	delevent: (data) => {
 		return DeviceApi.remove(Object.assign({key1:'Event'}, data))
