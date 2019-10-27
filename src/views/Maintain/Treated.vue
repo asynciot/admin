@@ -378,15 +378,23 @@ div.layout-content-main
 				this.$router.back(-1)
 			},
             async printpdf(){
-                var href = window.location.href;
+                /*var href = window.location.href;
                 window.document.body.innerHTML = document.getElementById('test').innerHTML + '<br/>';
                 window.print();
-                window.location.href = href;
+                window.location.href = href;*/
                 /*window.history.back(-1);*/
                 /*var data = document.getElementById('test').innerHTML + '<br/>';
                 var wind = window.open("", 'newwindow', 'height=700, width=1000, top=100, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
                 wind.document.body.innerHTML = data;
                 wind.print();*/
+                //let _this = this
+                const {href} = this.$router.resolve({
+                    name: 'printPdf',
+                    params: {
+                        id: this.$route.params.id
+                    }
+                })
+                window.open(href, "_blank")
             }
 		}
 	}

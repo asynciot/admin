@@ -6,9 +6,9 @@
 		@on-ok="ok"
 		:mask-closable="false">
 			<p>
-				<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="changeDay()"></DatePicker>
+				<DatePicker type="date" :options="options" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="changeDay()"></DatePicker>
 				~
-				<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="changeDay()"></DatePicker>
+				<DatePicker type="date" :options="options" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="changeDay()"></DatePicker>
 			</p>
 		</Modal>
 		<Tabs value="today" :animated="false" @on-click="changetabs">
@@ -25,6 +25,11 @@
 		<Row>
 			<Col span="22">
 				<div id="container" :style="{'min-width': '900px', height: '600px'}"></div>
+				<br/>
+				<br/>
+			</Col>
+			<Col span="2">
+				<Table border :row-class-name="rowClassName" :columns="columns1" :data="data" style="height: 550px;"></Table>
 			</Col>
 		</Row>
 		<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
@@ -41,6 +46,12 @@
 						return date && date.valueOf() > Date.now() ;
 					}
 				},
+				columns1: [
+					{
+						title: '事件次数统计',
+						key: 'times'
+					},
+				],
 				data: [],
 				event:[],
 				modal:false,
@@ -178,54 +189,58 @@
 						this.mylist.push({["plant"]:res.data.data.list[0].door2,["id"]:res.data.data.list[0].door2})
 					}
 				}
-				console.log(this.mylist.length)
+				//console.log(this.mylist.length)
 				for (var i=0;i<this.mylist.length;i++){
 					await this.readEvent(this.mylist[i].id,i)
 				}
-				console.log(this.mylist)
-				// eve.data.data.list.forEach((item,index)=>{
-				// 	this.mylist.push({["plant"]:item.device_id,["id"]:item.device_id})
-				// })
-
-				// this.mylist.forEach((item, index) => {
-				// 	this.yAxisData_plant.push(item.plant)
-				// 	console.log(item)
-				// 	let bgColor;
-				// 	item.list.forEach((listItem, listIndex) => {
-				// 		switch (listItem.colorNum) {
-				// 			case 0:
-				// 				bgColor = 'rgba(0,187,255,.4)';
-				// 				break;
-				// 			case 1:
-				// 				bgColor = 'rgba(80,227,194,.4)';
-				// 				break;
-				// 			case 2:
-				// 				bgColor = 'rgba(255,255,255,1)';
-				// 				break;
-				// 			case 3:
-				// 				bgColor = 'rgba(255,207,107,.4)';
-				// 				break;
-				// 			default:
-				// 				bgColor = 'rgba(0,187,255,.4)'
-				// 		}
-				// 		let startTime = new Date(listItem.startTime).getTime();
-				// 		let endTime = new Date(listItem.endTime).getTime();
-				// 		this.seriesData.push({
-				// 			name: listItem.item,
-				// 			value: [
-				// 				index,
-				// 				startTime,
-				// 				endTime,
-				// 				listItem.quantity,
-				// 			],
-				// 			itemStyle: {
-				// 				normal: {
-				// 					color: bgColor
-				// 				}
-				// 			}
-				// 		});
-				// 	})
-				// });
+				//console.log(this.mylist)
+				for(var i=0;i<this.mylist.length;i++) {
+					let res = await this.$api.devices({IMEI:this.mylist[i].id})
+					console.log(res)
+					this.mylist[i].plant = res.data.data.list[0].device_name
+				}
+				//console.log(this.mylist)
+				this.mylist.forEach((item, index) => {
+					this.yAxisData_plant.push(item.plant)
+					console.log(this.yAxisData_plant)
+					console.log(item)
+					let bgColor;
+					item.list.forEach((listItem, listIndex) => {
+						switch (listItem.colorNum) {
+							case 0:
+								bgColor = 'rgba(0,187,255,.4)';
+								break;
+							case 1:
+								bgColor = 'rgba(80,227,194,.4)';
+								break;
+							case 2:
+								bgColor = 'rgba(255,255,255,1)';
+								break;
+							case 3:
+								bgColor = 'rgba(255,207,107,.4)';
+								break;
+							default:
+								bgColor = 'rgba(0,187,255,.4)'
+						}
+						let startTime = new Date(listItem.startTime).getTime();
+						let endTime = new Date(listItem.endTime).getTime();
+						console.log(listItem.item);
+						this.seriesData.push({
+							name: listItem.item,
+							value: [
+								index,
+								startTime,
+								endTime,
+								listItem.quantity,
+							],
+							itemStyle: {
+								normal: {
+									color: bgColor
+								}
+							}
+						});
+					})
+				});
 
 				let myCharts=this.$echarts.init(document.getElementById('container'));
 				myCharts.resize()
@@ -298,7 +313,7 @@
 							fontSize: 14,
 							formatter: (value, index) => {
 								var date = new Date(value);
-								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"  "+date.getHours()+":"+this.p(date.getMinutes());
+								var texts = [date.getFullYear(),(date.getMonth() + 1), date.getDate()].join('/')+"\n"+date.getHours()+":"+this.p(date.getMinutes());
 								return texts;
 							}
 						},
@@ -361,6 +376,12 @@
 						data: this.seriesData
 					}]
 				})
+				//统计次数的表格
+				var tr=document.getElementsByClassName("ivu-table-row")
+				var trheight=520/tr.length+'px'
+				for(var i=0;i<tr.length;i++){
+					tr[i].style.height=trheight
+				}
 			},
 			async readEvent(imei,i){
 				let eve = await this.$api.eventImei({imei:imei,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
@@ -390,7 +411,10 @@
 				}
 				else console.log("error data")
 			},
-		},
+			rowClassName (row, index) {
+				return 'demo-table-info-row';
+			}
+		}
 	}
 </script>
 
