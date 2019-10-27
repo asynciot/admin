@@ -63,6 +63,7 @@ const Order = resolve => require(['@/views/Maintain/Order'], resolve)
 const AuditingList = resolve => require(['@/views/Maintain/AuditingList'], resolve)
 const OrderAdopt = resolve => require(['@/views/Maintain/OrderAdopt'], resolve)
 const DispatchAdopt = resolve => require(['@/views/Maintain/DispatchAdopt'], resolve)
+const PrintPDF = resolve => require(['@/views/Maintain/PrintPDF'], resolve)
 
 //Information
 const FileIndex = resolve => require(['@/views/Information/File/BaseInfo'], resolve)
@@ -360,6 +361,14 @@ export default new Router({
 					},
 					component: Treated
 				},
+				/*{
+					path: '/maintain/printPdf/:id',
+					name: 'printPdf',
+					meta:{
+						name: '打印工单'
+					},
+					component: PrintPDF
+				},*/
 				//单位管理
 				//维保单位
 				{
@@ -705,6 +714,14 @@ export default new Router({
 		{
 			path: '*',
 			redirect: '/'
+		},
+		{
+			path: '/printPdf/:id',
+			name: 'printPdf',
+			meta:{
+				name: '打印工单'
+			},
+			component: PrintPDF
 		}
 	]
 })

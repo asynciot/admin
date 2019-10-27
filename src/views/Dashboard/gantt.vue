@@ -6,9 +6,9 @@
 		@on-ok="ok"
 		:mask-closable="false">
 			<p>
-				<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="getofflineofday()"></DatePicker>
+				<DatePicker type="date" :options="options1" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="getofflineofday()"></DatePicker>
 				~
-				<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="getofflineofday()"></DatePicker>
+				<DatePicker type="date" :options="options1" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="getofflineofday()"></DatePicker>
 			</p>
 		</Modal>
 		<Tabs value="today" :animated="false" @on-click="changetabs">

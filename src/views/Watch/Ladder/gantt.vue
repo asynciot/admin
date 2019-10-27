@@ -6,9 +6,9 @@
 		@on-ok="ok"
 		:mask-closable="false">
 			<p>
-				<DatePicker type="date" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="changeDay()"></DatePicker>
+				<DatePicker type="date" :options="options" :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time" @on-change="changeDay()"></DatePicker>
 				~
-				<DatePicker type="date" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="changeDay()"></DatePicker>
+				<DatePicker type="date" :options="options" :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time" @on-change="changeDay()"></DatePicker>
 			</p>
 		</Modal>
 		<Tabs value="today" :animated="false" @on-click="changetabs">
@@ -28,6 +28,9 @@
 				<br/>
 				<br/>
 			</Col>
+			<Col span="2">
+				<Table border :row-class-name="rowClassName" :columns="columns1" :data="data" style="height: 550px;"></Table>
+			</Col>
 		</Row>
 		<Page simple :total="offlinetotal" :page-size="offlinenum" :current="offlinepage" @on-change="pageChange" style="text-align:center;margin-top: 20px;"></Page>
 	</div>
@@ -43,6 +46,12 @@
 						return date && date.valueOf() > Date.now() ;
 					}
 				},
+				columns1: [
+					{
+						title: '事件次数统计',
+						key: 'times'
+					},
+				],
 				data: [],
 				event:[],
 				modal:false,
@@ -215,6 +224,7 @@
 						}
 						let startTime = new Date(listItem.startTime).getTime();
 						let endTime = new Date(listItem.endTime).getTime();
+						console.log(listItem.item);
 						this.seriesData.push({
 							name: listItem.item,
 							value: [
@@ -366,6 +376,12 @@
 						data: this.seriesData
 					}]
 				})
+				//统计次数的表格
+				var tr=document.getElementsByClassName("ivu-table-row")
+				var trheight=520/tr.length+'px'
+				for(var i=0;i<tr.length;i++){
+					tr[i].style.height=trheight
+				}
 			},
 			async readEvent(imei,i){
 				let eve = await this.$api.eventImei({imei:imei,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
@@ -395,7 +411,10 @@
 				}
 				else console.log("error data")
 			},
-		},
+			rowClassName (row, index) {
+				return 'demo-table-info-row';
+			}
+		}
 	}
 </script>
 
