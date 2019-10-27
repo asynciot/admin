@@ -371,46 +371,44 @@ div.layout-content-main
 					}]
 				});
 				function ss(i){
-					_this.show.openIn  = _this.event.openIn[i]					//获取开门信号
+					_this.show.openIn  = _this.event.openIn[i]				//获取开门信号
 					_this.show.closeIn = _this.event.closeIn[i]				//获取关门信号
-					_this.show.openToOut = _this.event.openToOut[i]				//获取开到位输出信号
-					_this.show.closeToOut = _this.event.closeToOut[i]				//获取关到位输出信号
+					_this.show.openToOut = _this.event.openToOut[i]			//获取开到位输出信号
+					_this.show.closeToOut = _this.event.closeToOut[i]		//获取关到位输出信号
 					_this.show.closeTo = _this.event.closeTo[i]				//获取关到位输入信号				
 					_this.show.openTo =	_this.event.openTo[i]				//获取开到位输入信号
 					_this.show.door	= _this.event.door[i]					//门光幕信号
 					_this.show.open	= _this.event.open[i]					//正在开门信号
 					_this.show.close =	_this.event.close[i]				//正在关门信号
-					_this.show.openKeep	= _this.event.openKeep[i]				//开门到位维持信号
-					_this.show.closeKeep = _this.event.closeKeep[i]				//关门到位维持信号
+					_this.show.openKeep	= _this.event.openKeep[i]			//开门到位维持信号
+					_this.show.closeKeep = _this.event.closeKeep[i]			//关门到位维持信号
 					_this.show.stop	= _this.event.stop[i]					//停止输出信号
-					_this.show.inHigh = _this.event.inHigh[i]					//输入电压过高
+					_this.show.inHigh = _this.event.inHigh[i]				//输入电压过高
 					_this.show.inLow = _this.event.inLow[i]					//输入电压过低
 					_this.show.outHigh = _this.event.outHigh[i]				//输出过流
-					_this.show.motorHigh = _this.event.motorHigh[i]				//电机过载
+					_this.show.motorHigh = _this.event.motorHigh[i]			//电机过载
 					_this.show.flySafe = _this.event.flySafe[i]				//飞车保护
-					_this.show.position	= _this.event.position[i]				//获取位置信号
-					_this.show.closeStop = _this.event.closeStop[i]				//开关门受阻
-					_this.show.current = _this.event.current[i]			//获取电流信号
+					_this.show.position	= _this.event.position[i]			//获取位置信号
+					_this.show.closeStop = _this.event.closeStop[i]			//开关门受阻
+					_this.show.current = _this.event.current[i]				//获取电流信号
 					_this.show.speed = _this.event.speed[i]
-					_this.doorposition2=_this.doorposition
-					console.log(_this.event.position[i]+' '+_this.doorWidth)
-					_this.doorposition=-parseInt(50*(_this.event.position[i]/_this.doorWidth))
+					_this.doorposition2 = _this.doorposition
+					_this.doorposition = -parseInt(50*(_this.event.position[i]/_this.doorWidth))
 				}
-				openIn.on('click',function (params){					
+				openIn.on('click', (params)=>{
 					var i = params.name;//横坐标的值
 					ss(i)
 				});
-				current.on('click',function (params){					
+				current.on('click',(params)=>{
 					var i = params.name;//横坐标的值
 					ss(i)
 				});
-				closeIn.on('click',function (params){					
+				closeIn.on('click',(params)=>{
 					var i = params.name;//横坐标的值
 					ss(i)	
 				});
 			},
 			//电梯数据展示
-
 			async getData(val = false) {
 				let response = await this.$api.event(this.query)
 				if (response.data.code === 0) {
