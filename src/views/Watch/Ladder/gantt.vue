@@ -24,7 +24,7 @@
 		</Tabs>
 		<Row>
 			<Col span="22">
-				<div id="container" :style="{'min-width': '900px', height: '600px'}"></div>
+				<div id="container" :style="{ 'overflow': 'auto', 'overflow-x': 'auto', 'overflow-y': 'auto', 'min-width': '900px', height: '600px'}"></div>
 				<br/>
 				<br/>
 			</Col>
