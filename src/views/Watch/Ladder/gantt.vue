@@ -95,14 +95,16 @@
 			},
 			getoffline(){
 				const t=new Date(this.endtime)
+				console.log(this.endtime)
 				switch(this.timetabs){
 					case 'today':
 						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						break;
 					case 'week':
+						t.setDate(t.getDate() - 6);
 						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
-						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()-6)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						break;
 					case 'month':
 						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
@@ -131,7 +133,9 @@
 				this.timetabs=val
 				var time
 				const t=new Date(this.endtime)
-				this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+				t.setDate(t.getDate() + 1);
+				this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+				console.log(this.end_)
 				switch(val){
 					case 'day':
 						time= new Date(this.endtime)
@@ -140,12 +144,16 @@
 						break;
 					case 'week':
 						time= new Date(this.endtime)
-						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate()-6)+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
+						time.setDate(time.getDate() - 6);
+						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
+						console.log(time)
+						console.log(this.start_)
 						this.draw()
 						break;
 					case 'month':
 						time= new Date(this.endtime)
-						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
+						time.setMonth(time.getMonth() - 1);
+						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
 						this.draw()
 						break;
 					case 'customize':
@@ -199,12 +207,13 @@
 					console.log(res)
 					this.mylist[i].plant = res.data.data.list[0].device_name
 				}
-				//console.log(this.mylist)
+				console.log(this.mylist)
 				this.mylist.forEach((item, index) => {
-					this.yAxisData_plant.push(item.plant)
+					_this.yAxisData_plant.push(item.plant)
 					console.log(this.yAxisData_plant)
 					console.log(item)
 					let bgColor;
+					console.log(item.list)
 					item.list.forEach((listItem, listIndex) => {
 						switch (listItem.colorNum) {
 							case 0:
@@ -223,9 +232,13 @@
 								bgColor = 'rgba(0,187,255,.4)'
 						}
 						let startTime = new Date(listItem.startTime).getTime();
-						let endTime = new Date(listItem.endTime).getTime();
+						console.log(listItem.endTime)
+						let itemEndTime = new Date(listItem.endTime);
+						//itemEndTime.setSeconds(itemEndTime.getMinutes() + 1);
+						console.log(itemEndTime)
+						let endTime = itemEndTime.getTime();
 						console.log(listItem.item);
-						this.seriesData.push({
+						_this.seriesData.push({
 							name: listItem.item,
 							value: [
 								index,
@@ -239,6 +252,7 @@
 								}
 							}
 						});
+						console.log(_this.seriesData)
 					})
 				});
 
@@ -265,9 +279,9 @@
 						realtime: false,
 						height: 10,
 						top: 570,
-						startValue:new Date(this.start_).getTime(),
-						endValue:new Date(this.start_).getTime() + 3600 * 24 *  1000,
-						minValueSpan: this.timetabs=='today' ? 3600*1000:3600*24*1000,
+						startValue:new Date(_this.start_).getTime(),
+						endValue:new Date(_this.start_).getTime() + 3600 * 24 *  1000,
+						minValueSpan: this.timetabs=='today' ? 3600*1000:3600*1000,
 						handleIcon: 'path://path://M100, 100m -75, 0a75,75 0 1,0 150,0a75,75 0 1,0 -150,0',
 						handleSize: '120%',
 						handleStyle: {
@@ -300,8 +314,8 @@
 					}],
 					xAxis: {
 						type: 'time',
-						min: new Date(this.start_).getTime(),
-						max: new Date(this.end_).getTime(),
+						min: new Date(_this.start_).getTime(),
+						max: new Date(_this.end_).getTime(),
 						scale: true,
 						position: 'top',
 						splitNumber: 7,
@@ -393,20 +407,22 @@
 					var endtime
 					var fakeendtime
 					eve.data.data.list.forEach((item, index) => {
-						const duration = item.interval * item.length
-						starttime = this.$format(Date.parse(new Date(item.time)), 'YYYY-MM-DD HH:mm:ss')
-						endtime = this.$format(Date.parse(new Date(item.time)) + parseInt(duration), 'YYYY-MM-DD HH:mm:ss')
-						//为了能看清掉线时刻，时间宽度最少为20秒
-						fakeendtime = this.$format(Date.parse(new Date(item.time)) + parseInt(duration), 'YYYY-MM-DD HH:mm:ss')
+						//const duration = item.interval * item.length
+						starttime = this.$format(Date.parse(new Date(item.start_time)), 'YYYY-MM-DD HH:mm:ss')
+						endtime = this.$format(Date.parse(new Date(item.end_time)), 'YYYY-MM-DD HH:mm:ss')
 						singlelist.push({
 							["item"]: starttime + "—" + endtime,
 							["startTime"]: starttime,
-							["endTime"]: fakeendtime,
+							["endTime"]: endtime,
 							["quantity"]: item.id,
 							["colorNum"]: 2
 						})
 					})
-					this.mylist[i].list = singlelist
+					console.log(singlelist.length)
+					if(singlelist.length == 0)
+						this.mylist[i].list = []
+					else
+						this.mylist[i].list = singlelist
 					console.log(singlelist)
 				}
 				else console.log("error data")
