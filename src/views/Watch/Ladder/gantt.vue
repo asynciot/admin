@@ -95,20 +95,24 @@
 			},
 			getoffline(){
 				const t=new Date(this.endtime)
-				console.log(this.endtime)
+				//console.log(this.endtime)
 				switch(this.timetabs){
 					case 'today':
-						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						t.setDate(t.getDate() + 1);
+						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						break;
 					case 'week':
-						t.setDate(t.getDate() - 6);
-						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						t.setDate(t.getDate() + 1);
+						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						t.setDate(t.getDate() - 7);
 						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						break;
 					case 'month':
-						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate()+1)+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
-						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						t.setDate(t.getDate() + 1);
+						this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
+						t.setMonth(t.getMonth() - 1)
+						this.start_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
 						break;
 				}
 				this.draw()
@@ -135,19 +139,20 @@
 				const t=new Date(this.endtime)
 				t.setDate(t.getDate() + 1);
 				this.end_=t.getFullYear()+'-'+this.p((t.getMonth()+1))+'-'+this.p(t.getDate())+' '+this.p(t.getHours())+':'+this.p(t.getMinutes())+':'+this.p(t.getSeconds());
-				console.log(this.end_)
+				//console.log(this.end_)
 				switch(val){
 					case 'day':
 						time= new Date(this.endtime)
 						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
+						//console.log(this.start_)
 						this.draw()
 						break;
 					case 'week':
 						time= new Date(this.endtime)
 						time.setDate(time.getDate() - 6);
 						this.start_=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
-						console.log(time)
-						console.log(this.start_)
+						//console.log(time)
+						//console.log(this.start_)
 						this.draw()
 						break;
 					case 'month':
