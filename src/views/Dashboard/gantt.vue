@@ -218,9 +218,7 @@
 							}
 						});
 					})
-
 				});
-
 				let myCharts=this.$echarts.init(document.getElementById('container'));
 				myCharts.resize()
 				myCharts.setOption({
