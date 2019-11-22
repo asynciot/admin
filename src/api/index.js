@@ -163,6 +163,12 @@ export default {
 	updat: (data) => {
 		return DeviceApi.save({key1:'Update'}, data)
 	},
+	readLadderEvent:(data)=>{
+		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'Event'}, data))
+	},
+	readLadderSimple:(data)=>{
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadLadderEvent'}, data))
+	},
 	//monitor
 	monitor: (data) => {
 		return DeviceApi.save({key1:'Monitor'}, data)
@@ -251,9 +257,6 @@ export default {
 	},
 	reLadder:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadMore'}, data))
-	},
-	readLadderEvent:(data)=>{
-		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'Event'}, data))
 	},
 	removeLadder:(data)=> {
 		return DeviceApi.remove(Object.assign({key1:'Ladder'}, data))

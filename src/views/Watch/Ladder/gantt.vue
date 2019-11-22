@@ -190,7 +190,6 @@
 				this.seriesData=[]
 				var _this = this
 				let res = await this.$api.reLadder({num:1,page:1,search_info:this.$route.params.IMEI})
-				// let eve = await this.$api.readLadderEvent({id:id,page:1,num:10,start:this.$format(this.start_,'YYYY-MM-DD'),end:this.$format(this.end_,'YYYY-MM-DD')})
 				if(res.data.code ==0){
 					if(res.data.data.list[0].ctrl!=null && res.data.data.list[0].crtl != ''){
 						this.mylist.push({["plant"]:res.data.data.list[0].ctrl,["id"]:res.data.data.list[0].ctrl})
@@ -209,16 +208,11 @@
 				//console.log(this.mylist)
 				for(var i=0;i<this.mylist.length;i++) {
 					let res = await this.$api.devices({IMEI:this.mylist[i].id})
-					console.log(res)
 					this.mylist[i].plant = res.data.data.list[0].device_name
 				}
-				console.log(this.mylist)
 				this.mylist.forEach((item, index) => {
-					_this.yAxisData_plant.push(item.plant)
-					console.log(this.yAxisData_plant)
-					console.log(item)
+					this.yAxisData_plant.push(item.plant)
 					let bgColor;
-					console.log(item.list)
 					item.list.forEach((listItem, listIndex) => {
 						switch (listItem.colorNum) {
 							case 0:

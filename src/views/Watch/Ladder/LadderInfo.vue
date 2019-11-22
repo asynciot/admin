@@ -61,7 +61,7 @@
 											Col(span="12")
 												Button.mb(type="primary" @click="gohistory" style="width:40%")|{{$t('history fault')}}
 			div
-				Gantt(:psMsg='id')
+				EventLine(:psMsg='LadderInfo')
 </template>
 
 <script>
@@ -69,6 +69,7 @@
 		formatDate
 	} from '../../../utils.js';
 	import Gantt from './gantt.vue';
+	import EventLine from './EventLine.vue';
 	export default {
 		data() {
 			return {
@@ -89,6 +90,11 @@
 				search_info: '',
 				door:true,
 				now:[],
+				LadderInfo:{
+					name:'',
+					id1:'',
+					id2:'',
+				},
 				time:'',
 				data:[],
 				menu:[],
@@ -130,7 +136,7 @@
 			}
 		},
 		components: {
-			Gantt,
+			EventLine,
 		},
 		created() {
 			this.getData()
@@ -196,10 +202,11 @@
 				if(!res.data.code){
 					this.data = res.data.data.list[0]
 					this.id = this.data.id
-					console.log(this.id)
 					this.data.ipaddr = res.data.data.list[0].ip_country+res.data.data.list[0].ip_region+res.data.data.list[0].ip_city
-					//this.options.device_id=this.data.id
 					this.options.IMEI = this.data.door1
+					this.LadderInfo.name = this.data.name
+					this.LadderInfo.id1 = this.data.ctrl_id
+					this.LadderInfo.id2 = this.data.door_id1
 					if(this.data.door2 == null){
 						this.judge.door2 = true
 					}
@@ -225,20 +232,19 @@
 							this.sign[5]=true
 						}
 					}
-					//let eve = await this.$api.event(this.options)
 					this.options.starttime=this.$format(Date.parse(new Date()),'YYYY-MM-DD')
 					this.options.endtime=this.$format(Date.parse(new Date())+86400000,'YYYY-MM-DD')
-					let eve = await this.$api.readLadderEvent({id:this.data.id,page:1,num:10,start:this.options.starttime,end:this.options.endtime})
-					if(!eve.data.code){
-						this.list = eve.data.data.list
-						this.list2 = this.list
-						this.total = eve.data.data.totalNumber
-					}else{
-						this.$Notice.error({
-							title:  this.$t('error'),
-							desc:  this.$t('Fail to gain event information')
-						})
-					}
+					// let eve = await this.$api.readLadderEvent({id:this.data.id,page:1,num:10,start:this.options.starttime,end:this.options.endtime})
+					// if(!eve.data.code){
+					// 	this.list = eve.data.data.list
+					// 	this.list2 = this.list
+					// 	this.total = eve.data.data.totalNumber
+					// }else{
+					// 	this.$Notice.error({
+					// 		title:  this.$t('error'),
+					// 		desc:  this.$t('Fail to gain event information')
+					// 	})
+					// }
 				}else(
 					this.$Notice.error({
 						title:  this.$t('error'),
@@ -268,7 +274,6 @@
 							desc: this.$t('The closing date must be later than the from date'),
 						})
 					}
-					//let res = await this.$api.event(this.options)
 					let res = await this.$api.readLadderEvent({id:this.data.id,page:1,num:10,start:this.options.starttime,end:this.options.endtime})
 					this.total = res.data.data.totalNumber
 					this.list = res.data.data.list
@@ -337,10 +342,10 @@
 					})
 				}
 				this.total = eve.data.data.totalNumber
-					return new Promise(resolve => {
-						resolve();
-					});
-				},
+				return new Promise(resolve => {
+					resolve();
+				});
+			},
 			formatDate(val, format) {
 				return formatDate(val, format)
 			},
