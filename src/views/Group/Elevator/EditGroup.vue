@@ -148,10 +148,10 @@
 								on: {
 									click:()=>{
 										if (type=='success'){
-											this.updateLadder(params.row.id)
+											this.updateLadder(params)
 										}
 										else {
-											this.rmLadder(params.row.id)
+											this.rmLadder(params)
 										}
 									}
 								}
@@ -278,7 +278,8 @@
 			async updateLadder(val){
 				let res = await this.$api.upLadderGroup({
 					id:this.$route.params.id,
-					ladder_id:val,
+					ladder_id:val.row.id,
+                    imei : val.row.ctrl
 				})
 				if (res.data.code == 0) {
 					this.loading = false
@@ -297,7 +298,8 @@
 			},
 			async rmLadder(val){
 				let res = await this.$api.rmLadderGroup({
-					ladder_id:val,
+					ladder_id:val.row.id,
+                    imei : val.row.ctrl
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
@@ -313,7 +315,7 @@
 				}
 			}
 		}
-	}	
+	}
 </script>
 
 <style lang="scss" scoped>
