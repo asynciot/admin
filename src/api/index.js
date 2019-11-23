@@ -166,7 +166,7 @@ export default {
 	readLadderEvent:(data)=>{
 		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'Event'}, data))
 	},
-	readLadderSimple:(data)=>{
+	readSimpleEvent:(data)=>{
 		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadLadderEvent'}, data))
 	},
 	//monitor
@@ -269,6 +269,12 @@ export default {
 	},
 	rmLadderGroup: (data) => {
 		return DeviceApi.update({key1:'Ladder',key2:'RemoveGroup'}, data)
+	},
+	readLadderSimple:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadSimple'}, data))
+	},
+	readLadderSimpleS:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadSimpleS'}, data))
 	},
 	//company
 	newGroup:(data)=> {

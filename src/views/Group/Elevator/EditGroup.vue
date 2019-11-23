@@ -18,7 +18,7 @@
 									Col.ta(span="8")
 										Button(type="success" @click="upGroup()" ,:loading="loading")|{{$t('OK')}}
 									Col.ta(span="8")
-										Button(type="primary" @click="dislist=true")|{{$t('Device List')}}
+										Button(type="primary" @click="dislist=true,getList2()")|{{$t('Device List')}}
 									Col.ta(span="8")
 										Button(@click="$router.back(-1)")|{{$t('cancel')}}
 
@@ -60,16 +60,17 @@
 				total:'',
 				total2:'',
 				options:{
+					group_id:this.$route.params.id,
 					install_addr:'',
 					search_info:'',
-					total:10,
 					num:10,
 					page:1,
-					state:'',
 				},
 				query:{
 					group_id:this.$route.params.id,
-					num:1000,
+					install_addr:'',
+					search_info:'',
+					num:10,
 					page:1,
 				},
 				form:{},
@@ -109,14 +110,15 @@
 					title: this.$t('handle'),
 					key: 'IMEI',
 					render: (h, params) => {
-						var show='Add'
-						var type='success'
-						this.list1.forEach(item=>{
-							if (item.id == params.row.id) {
-								show='delete'
-								type='error'
-							}
-						})
+						var show=''
+						var type=''
+						if (params.row.follow=="yes") {
+							show='delete'
+							type='error'
+						}else{
+							show='Add'
+							type='success'
+						}
 						return h('div', [
 							h('Button', {
 								props: {
@@ -217,7 +219,6 @@
 		created(){
 			this.getList()
 			this.getGroup()
-			this.getList2()
 		},
 		methods:{
 			async search() {
@@ -239,12 +240,12 @@
 				delete this.form.t_create
 			},
 			async getList() {
-				const res = await this.$api.reLadder(this.options)
+				const res = await this.$api.readLadderSimple(this.options)
 				this.list = res.data.data.list
 				this.total = res.data.data.totalNumber
 			},
 			async getList2() {
-				const res = await this.$api.reLadder(this.query)
+				const res = await this.$api.readLadderSimpleS(this.query)
 				if (res.data.code === 0) {
 					this.list1 = res.data.data.list
 					this.total2 = res.data.data.totalNumber

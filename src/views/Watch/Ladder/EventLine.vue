@@ -103,7 +103,7 @@
 				this.Echart.TimeList=[];
 				const id1 = this.$props.psMsg.id1
 				const id2 = this.$props.psMsg.id2
-				const res = await this.$api.readLadderSimple({id1:id1,id2:id2,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
+				const res = await this.$api.readSimpleEvent({id1:id1,id2:id2,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
 				if (res.data.code ==0) {
 					if(res.data.data.totalNumber==0){
 						this.$Notice.warning({
