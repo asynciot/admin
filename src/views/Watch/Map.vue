@@ -473,6 +473,10 @@ div
 				})
 				cenlat = (minlat+maxlat)/2			
 				cenlon = (minlon+maxlon)/2
+				if(cenlat==0&&cenlon==0){
+					cenlat = 116.46
+					cenlon = 39.92
+				}
 			},
 			pageChange(val) {
 				// this.query.page = val
