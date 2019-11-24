@@ -497,13 +497,14 @@
 			},
 			history(val) {
 				if (this.data.device_type=='15'){
+					console.log("val"+val+"device_model"+this.data.device_model);
 					this.$router.push({
 						name: 'doorhistory',
 						params: {							
 							id: val,
 							device_model: this.data.device_model
 						}
-					})
+					});
 				}
 				if (this.data.device_type=='240'){
 					this.$router.push({

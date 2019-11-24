@@ -25,6 +25,9 @@
 				Echart:{
 					TimeList:[],
 					TypeList:[],
+					idList:[],
+					InfoList:[],
+					DataList:[],
 				},
 				modal:false,
 				start_time:'',
@@ -39,18 +42,33 @@
 		created(){
 			setTimeout(()=> {
 				this.changetabs("day")
-			}, 200);
+			}, 1000);
 		},
 		methods:{
 			async Draw(){
+				console.log(this.Echart.TypeList)
+				console.log(this.Echart.TimeList)
+				console.log(this.Echart.DataList)
 				const option= document.getElementById("test");
 				const Mychart = this.$echarts.init(option);
+				//const id=this.$echarts.init(document.getElementById('id'));
+				//const device_model=this.$echarts.init(document.getElementById('device_type'));
+				/* Mychart.on('click',function (param){
+					window.location.href="/watch/device/doorhistory/:id/:device_model";
+				});	 */
 				Mychart.setOption({
 					title: {
 							text: this.$props.psMsg.name
 						},
-						tooltip: {
-							trigger: 'axis'
+					tooltip: {
+							trigger: 'axis',
+						    formatter:  (params)=> {
+							// console.log(params)
+							// console.log(this.Echart.InfoList)
+							var res='<div><p>'+params[0].data[0]+'</p></div>' 
+							res+='<p>'+this.Echart.InfoList[params[0].dataIndex]+'</p>'
+							return res;
+							}
 						},
 						legend: {
 							data:[this.$props.psMsg.name,]
@@ -66,8 +84,8 @@
 							}
 						},
 						xAxis: {
-							type: 'category',
-							data: this.Echart.TimeList
+							type: 'time',
+							//data: this.Echart.TimeList
 						},
 						yAxis: {
 							data:[0,1]
@@ -92,11 +110,25 @@
 							{
 								name:this.$props.psMsg.name,
 								type:'line',
-								step: 'start',
-								data:this.Echart.TypeList
+								// step: 'start',
+								//data:this.Echart.TypeList
+								data : this.Echart.DataList
 							},
 						]
-				})
+				});
+				Mychart.on('click', (params)=>{
+					// console.log("dddd");
+					console.log(params);
+					// var i = params.id;//横坐标的值
+					// var d = params.device_type;
+					// this.$router.push({
+					// 	name:'doorhistory',
+					// 	params:{
+					// 		id:i,
+					// 		device_model:d,
+					// 	}
+					// });
+				});
 			},
 			async getSimpleEvent(){
 				this.Echart.TypeList=[];
@@ -113,12 +145,26 @@
 					}
 					res.data.data.list.forEach((item,index)=>{
 						item.start_time = this.$format(item.start_time,'YYYY-MM-DD HH:mm:ss')
+						item.end_time = this.$format(item.end_time,'YYYY-MM-DD HH:mm:ss')
 						this.Echart.TimeList.push(item.start_time)
+						this.Echart.TimeList.push(item.end_time)
+						this.Echart.idList.push(item.id)
 						if (item.event_type == "open") {
+							this.Echart.DataList.push([item.start_time,0])
+							this.Echart.DataList.push([item.end_time,1])
 							this.Echart.TypeList.push(0)
-						} else if (item.event_type == "close") {
 							this.Echart.TypeList.push(1)
+							this.Echart.InfoList.push(this.$t('open door'))
+							this.Echart.InfoList.push(this.$t('open door arrived'))
+						} else if (item.event_type == "close") {
+							this.Echart.DataList.push([item.start_time,1])
+							this.Echart.DataList.push([item.end_time,0])
+							this.Echart.TypeList.push(1)
+							this.Echart.TypeList.push(0)
+							this.Echart.InfoList.push(this.$t('close door'))
+							this.Echart.InfoList.push(this.$t('close door arrived'))
 						}
+						
 					})
 				}
 				this.Draw()
