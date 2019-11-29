@@ -246,26 +246,22 @@
 							}, addr)
 						}
 					},
-					//              {
-					//                title: '更新时间',
-					//                key: 't_create',
-					//                render: (h, params) => {
-					//                  return h('p',this.$format(params.row.t_update, 'YYYY-MM-DD HH:mm:ss'))
-					//                }
-					//              },
-					//              {
-					//                title: '创建时间',
-					//                key: 't_create',
-					//                render: (h, params) => {
-					//                  return h('p',this.$format(params.row.t_create, 'YYYY-MM-DD HH:mm:ss'))
-					//                }
-					//              },
 					{
 						title: this.$t('handle'),
 						width: 300,
 						render: (h, params) => {
 							var follow = this.$t('follow')
 							this.follow.forEach(item => {
+								if(item.imei.length!=15){
+									item.imei.substring(0,12)
+									if (params.row.IMEI == item.imei) {
+										follow = this.$t('remove follow')
+									}
+								}else{
+									if (params.row.IMEI == item.imei) {
+										follow = this.$t('remove follow')
+									}
+								}
 								if (params.row.IMEI == item.imei) {
 									follow = this.$t('remove follow')
 								}
@@ -281,6 +277,7 @@
 									},
 									on: {
 										click: () => {
+											console.log(params.row.IMEI)
 											if (follow == this.$t('follow'))
 												this.addfl(params.row.IMEI)
 											if (follow == this.$t('remove follow'))

@@ -46,29 +46,23 @@
 		},
 		methods:{
 			async Draw(){
-				console.log(this.Echart.TypeList)
-				console.log(this.Echart.TimeList)
-				console.log(this.Echart.DataList)
 				const option= document.getElementById("test");
 				const Mychart = this.$echarts.init(option);
-				//const id=this.$echarts.init(document.getElementById('id'));
-				//const device_model=this.$echarts.init(document.getElementById('device_type'));
-				/* Mychart.on('click',function (param){
-					window.location.href="/watch/device/doorhistory/:id/:device_model";
-				});	 */
+				console.log(this.Echart.InfoList)
 				Mychart.setOption({
 					title: {
 							text: this.$props.psMsg.name
 						},
 					tooltip: {
 							trigger: 'axis',
-						    formatter:  (params)=> {
-							// console.log(params)
-							// console.log(this.Echart.InfoList)
-							var res='<div><p>'+params[0].data[0]+'</p></div>' 
-							res+='<p>'+this.Echart.InfoList[params[0].dataIndex]+'</p>'
-							return res;
-							}
+						 //    formatter:  (params)=> {
+							// 	console.log(params)
+							// 	let list = [];
+							// 	var res='';
+							// 	// res='<div><p>'+params[].data[0]+'</p></div>'
+							// 	// res+='<p>'+params[i].data[2]+'</p>')
+							// 	return res;
+							// }
 						},
 						legend: {
 							data:[this.$props.psMsg.name,]
@@ -78,14 +72,8 @@
 							right: '4%',
 							containLabel: true
 						},
-						toolbox: {
-							feature: {
-								saveAsImage: {}
-							}
-						},
 						xAxis: {
 							type: 'time',
-							//data: this.Echart.TimeList
 						},
 						yAxis: {
 							data:[0,1]
@@ -110,7 +98,6 @@
 							{
 								name:this.$props.psMsg.name,
 								type:'line',
-								// step: 'start',
 								//data:this.Echart.TypeList
 								data : this.Echart.DataList
 							},
@@ -131,8 +118,10 @@
 				});
 			},
 			async getSimpleEvent(){
+				this.Echart.DataList=[];
 				this.Echart.TypeList=[];
 				this.Echart.TimeList=[];
+				this.Echart.InfoList=[];
 				const id1 = this.$props.psMsg.id1
 				const id2 = this.$props.psMsg.id2
 				const res = await this.$api.readSimpleEvent({id1:id1,id2:id2,startTime:this.$format(this.start_,'YYYY-MM-DD'),endTime:this.$format(this.end_,'YYYY-MM-DD')})
@@ -144,25 +133,26 @@
 						})
 					}
 					res.data.data.list.forEach((item,index)=>{
+						item.end_time = this.$format(item.end_time-(item.end_time-item.start_time)/2,'YYYY-MM-DD HH:mm:ss')
 						item.start_time = this.$format(item.start_time,'YYYY-MM-DD HH:mm:ss')
-						item.end_time = this.$format(item.end_time,'YYYY-MM-DD HH:mm:ss')
+						console.log("st:"+item.start_time+"ed:"+item.end_time)
 						this.Echart.TimeList.push(item.start_time)
 						this.Echart.TimeList.push(item.end_time)
 						this.Echart.idList.push(item.id)
 						if (item.event_type == "open") {
-							this.Echart.DataList.push([item.start_time,0])
-							this.Echart.DataList.push([item.end_time,1])
-							this.Echart.TypeList.push(0)
-							this.Echart.TypeList.push(1)
-							this.Echart.InfoList.push(this.$t('open door'))
-							this.Echart.InfoList.push(this.$t('open door arrived'))
+							this.Echart.DataList.push([item.start_time,0,this.$t('open door')])
+							this.Echart.DataList.push([item.end_time,1,this.$t('open door arrived')])
+							// this.Echart.TypeList.push(0)
+							// this.Echart.TypeList.push(1)
+							// this.Echart.InfoList.push(this.$t('open door'))
+							// this.Echart.InfoList.push(this.$t('open door arrived'))
 						} else if (item.event_type == "close") {
-							this.Echart.DataList.push([item.start_time,1])
-							this.Echart.DataList.push([item.end_time,0])
-							this.Echart.TypeList.push(1)
-							this.Echart.TypeList.push(0)
-							this.Echart.InfoList.push(this.$t('close door'))
-							this.Echart.InfoList.push(this.$t('close door arrived'))
+							this.Echart.DataList.push([item.start_time,1,this.$t('close door')])
+							this.Echart.DataList.push([item.end_time,0,this.$t('close door arrived')])
+							// this.Echart.TypeList.push(1)
+							// this.Echart.TypeList.push(0)
+							// this.Echart.InfoList.push(this.$t('close door'))
+							// this.Echart.InfoList.push(this.$t('close door arrived'))
 						}
 						
 					})
