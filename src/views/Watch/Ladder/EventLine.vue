@@ -2,7 +2,7 @@
 	div
 		Modal(title="查询时间" v-model="modal" @on-ok="ok" ,:mask-closable="false")
 			DatePicker(type="date" ,:options="options" ,:placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time")
-			
+
 			DatePicker(type="date" ,:options="options" ,:placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time")
 		Tabs(value="day" ,:animated="false" @on-click="changetabs" )
 			TabPane(label="一天" name="day")
@@ -54,15 +54,15 @@
 							text: this.$props.psMsg.name
 						},
 					tooltip: {
-							trigger: 'axis',
-						 //    formatter:  (params)=> {
-							// 	console.log(params)
-							// 	let list = [];
-							// 	var res='';
-							// 	// res='<div><p>'+params[].data[0]+'</p></div>'
-							// 	// res+='<p>'+params[i].data[2]+'</p>')
-							// 	return res;
-							// }
+							//trigger: 'axis',
+						    formatter:  (params)=> {
+								//console.log(params)
+								let list = [];
+								var res="";
+                                //res='<div><p>'+params.seriesName+'</p></div>'
+								res ='<p>'+params.data[0]+" "+params.data[2]+'</p>'
+								return res;
+							}
 						},
 						legend: {
 							data:[this.$props.psMsg.name,]
@@ -105,16 +105,16 @@
 				});
 				Mychart.on('click', (params)=>{
 					// console.log("dddd");
-					console.log(params);
+					//console.log(params);
 					// var i = params.id;//横坐标的值
 					// var d = params.device_type;
-					// this.$router.push({
-					// 	name:'doorhistory',
-					// 	params:{
-					// 		id:i,
-					// 		device_model:d,
-					// 	}
-					// });
+					this.$router.push({
+						name:'doorhistory',
+						params:{
+							id:params.data[3],
+							device_model:params.data[4],
+						}
+					});
 				});
 			},
 			async getSimpleEvent(){
@@ -140,21 +140,21 @@
 						this.Echart.TimeList.push(item.end_time)
 						this.Echart.idList.push(item.id)
 						if (item.event_type == "open") {
-							this.Echart.DataList.push([item.start_time,0,this.$t('open door')])
-							this.Echart.DataList.push([item.end_time,1,this.$t('open door arrived')])
+							this.Echart.DataList.push([item.start_time,0,this.$t('open door'),item.id,item.device_model])
+							this.Echart.DataList.push([item.end_time,1,this.$t('open door arrived'),item.id,item.device_model])
 							// this.Echart.TypeList.push(0)
 							// this.Echart.TypeList.push(1)
 							// this.Echart.InfoList.push(this.$t('open door'))
 							// this.Echart.InfoList.push(this.$t('open door arrived'))
 						} else if (item.event_type == "close") {
-							this.Echart.DataList.push([item.start_time,1,this.$t('close door')])
-							this.Echart.DataList.push([item.end_time,0,this.$t('close door arrived')])
+							this.Echart.DataList.push([item.start_time,1,this.$t('close door'),item.id,item.device_model])
+							this.Echart.DataList.push([item.end_time,0,this.$t('close door arrived'),item.id,item.device_model])
 							// this.Echart.TypeList.push(1)
 							// this.Echart.TypeList.push(0)
 							// this.Echart.InfoList.push(this.$t('close door'))
 							// this.Echart.InfoList.push(this.$t('close door arrived'))
 						}
-						
+
 					})
 				}
 				this.Draw()
