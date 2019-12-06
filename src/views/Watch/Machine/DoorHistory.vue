@@ -82,6 +82,9 @@ div.layout-content-main
 					Card(style="margin-bottom:10px")
 						p(slot="title")|{{$t('Door Speed')}} m/s
 						div.ss1(id="speed")
+					Card(style="margin-bottom:10px")
+						p(slot="title")|{{$t('Door Position')}}
+						div.ss1(id="position")
 </template>
 <script>
 	import echarts from 'echarts'
@@ -236,6 +239,7 @@ div.layout-content-main
 				let closeIn = this.$echarts.init(document.getElementById('closeIn'))
 				let current = this.$echarts.init(document.getElementById('current'))
 				let speed = this.$echarts.init(document.getElementById('speed'))
+				let position = this.$echarts.init(document.getElementById('position'))
 				var _this=this
 				openIn.setOption({
 					tooltip: {
@@ -345,7 +349,7 @@ div.layout-content-main
 					tooltip: {
 						trigger: 'axis'
 					},
-					grid: {					
+					grid: {
 						left: '3%',
 						right: '4%',
 						top: '3%',
@@ -356,7 +360,7 @@ div.layout-content-main
 						type: 'category',
 						data: _this.options,
 					},
-					yAxis: {						
+					yAxis: {
 					},
 					dataZoom: [{
 						startValue: formatDate(_this.t_start,'HH:mm:ss'),
@@ -368,6 +372,35 @@ div.layout-content-main
 						type: 'line',
 						smooth: true,
 						data:_this.event.speed
+					}]
+				});
+				position.setOption({
+					tooltip: {
+						trigger: 'axis'
+					},
+					grid: {					
+						left: '3%',
+						right: '4%',
+						top: '3%',
+						bottom:'20px',
+						containLabel: true
+					},
+					xAxis: {
+						type: 'category',
+						data: _this.options,
+					},
+					yAxis: {
+					},
+					dataZoom: [{
+						startValue: formatDate(_this.t_start,'HH:mm:ss'),
+						top: '110px',
+					}, {
+						type: 'inside'
+					}],
+					series: [{
+						type: 'line',
+						smooth: true,
+						data:_this.event.position
 					}]
 				});
 				function ss(i){
@@ -445,7 +478,14 @@ div.layout-content-main
 					    if(this.event.speed[i]>32.767){
 							this.show.speed = this.event.speed[i] = (this.event.speed[i]-65.535).toFixed(2)
 						}
-					}				
+					}
+					this.event.current.forEach((item,index)=>{
+						if(index==0){
+						  item =item
+						}else{
+						  item = this.event.current[index-1]*0.8+item*0.2
+						}
+					})
 					this.t_start = res.time
 					this.t_end = this.t_start+this.nums*this.interval
 					this.getX()

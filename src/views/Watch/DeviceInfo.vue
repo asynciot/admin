@@ -502,7 +502,8 @@
 						name: 'doorhistory',
 						params: {							
 							id: val,
-							device_model: this.data.device_model
+							device_model: this.data.device_model,
+							IMEI: this.data.IMEI,
 						}
 					});
 				}
@@ -510,7 +511,8 @@
 					this.$router.push({
 						name: 'ctrlhistory',
 						params: {
-							id: val
+							id: val,
+							IMEI: this.data.IMEI,
 						}
 					})
 				}
