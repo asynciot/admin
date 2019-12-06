@@ -53,7 +53,7 @@
 	"Signal Name" : "信号名称",
 	"Polarity" : "极性",
 	"State" : "状态",
-	
+
 	"I/O Board input configuration":"I/O 板输入配置",
 	"I/O Board output configuration":"I/O 板输出配置",
 	"Polarity of Frontdoor Light Curtain Switch":"前门光幕开关极性",
@@ -68,7 +68,7 @@
 	"Overload input":"超载输入",
 	"Serial Function Expansion of Car Top":"轿顶串行功能扩展",
 	"LCD":"真彩液晶",
-	
+
 	"7.01-000":"未使用",
 	"7.01-011":"检修信号",
 	"7.01-020":"检修上行信号",
@@ -86,7 +86,7 @@
 	"7.01-141":"下终端减速开关 1",
 	"7.01-151":"上终端减速开关 2",
 	"7.01-161":"下终端减速开关 2",
-	
+
 	"7.04-00":"未使用",
 	"7.04-01":"运行接触器",
 	"7.04-02":"封星继电器",
@@ -341,7 +341,7 @@
 	"dE80" : "输入电压过高",
 	"E64" : "输入电压过低",
 	"E128" : "输入电压过高",
-	
+
 	"51" : "开关门受阻",
 	"52" : "飞车保护",
 	"66" : "电机过载",
@@ -357,10 +357,10 @@
 	"05" : "开关门受阻",
 	"04" : "开关门受阻",
 	"03" : "输出过流",
-	
+
 	"Normal Operation" : "运行正常",
 	"Removed Device" : "该设备已移出系统",
-	
+
 	"Closing Start-up Speed": "关门启动速度",
   "Closing High Speed": "关门高速",
   "Allowed Tolerance Frequency at Stable Speed": "速度稳定时允许误差频率",
@@ -371,13 +371,13 @@
   "Opening High Speed": "开门高速",
   "Opening Low Speed 1": "开门低速 1",
   "Opening Low Speed 2": "开门低速 2",
-  "Self-learning and Power-up Speed": "自学习及上电运行速度", 
-  "Opening Limit Position Torque Coefficient": "开门限位时保持速度", 
-  "Closing Low Speed Torque Coefficient": "关门限位时保持速度", 
-  "Run Speed for Start at Low Speed Area": "低速区启动时运行速度", 
-  "Run Speed during power-up of Synchronous Motor": "同步电机上电时运行速度", 
-  "Allowed Tolerance frequency during Acceleration and Deceleration": "加减速时允许误差频率", 
-  "Maximum Output Frequency": "最大输出频率", 
+  "Self-learning and Power-up Speed": "自学习及上电运行速度",
+  "Opening Limit Position Torque Coefficient": "开门限位时保持速度",
+  "Closing Low Speed Torque Coefficient": "关门限位时保持速度",
+  "Run Speed for Start at Low Speed Area": "低速区启动时运行速度",
+  "Run Speed during power-up of Synchronous Motor": "同步电机上电时运行速度",
+  "Allowed Tolerance frequency during Acceleration and Deceleration": "加减速时允许误差频率",
+  "Maximum Output Frequency": "最大输出频率",
   "Reference Frequency": "基准频率",
   "Acceleration Time": "加速时间",
   "Deceleration Time": "减速时间",
@@ -482,7 +482,7 @@
   "Closing Auto Detection Stop Position Setting": "关门自动检测停止位置设置",
   "Light Curtain connection selection": "光幕连接选择",
   "Light Curtain Signal": "光幕信号",
-  
+
   "Operation enable setting":"操作使能设置",
 	"Low speed torque lifting":"低速力矩提升",
 	"High speed torque lifting":"高速力矩提升",
@@ -539,8 +539,8 @@
 	"Opening accelerate 1 period speed":"开门加速1段速度",
 	"Closing accelerate 1 period speed":"关门加速1段速度",
 	"Closing overtime reverse opening delay":"关门超时反开延时",
-	
-	
+
+
 	"Motor rated power":"01. 电机额定功率",
 	"Motor rated voltage":"02. 电机额定电压",
 	"Motor rated current":"03. 电机额定电流",
@@ -565,7 +565,7 @@
 	"Dead zone time setting":"10. 死区时间设置",
 	"Exciting current setting":"11. 励磁电流设置",
 	"Integral coefficient of starting brake distance":"12. 启动制动力矩积分系数/模拟量称重增益系数",
-	
+
 	"X1 Function selection":"01. X1 功能选择",
 	"X2 Function selection":"02. X2 功能选择",
 	"X3 Function selection":"03. X3 功能选择",
@@ -737,7 +737,7 @@
 	"Group":"群组",
 	"Elevator Group":"电梯组",
 	"Member Group":"人员组",
-	
+
 	"Normally Open":"常开",
 	"Normally Closed":"常闭",
 	"Other":"其他",
@@ -819,7 +819,7 @@
 	"Detection of Right Brake Trip Switch":"检测右抱闸行程开关",
 	"Not Detect if Closing Arrival When Start Operation":"启动运行不检测关门到位",
 	"Detect if Closing Arrival When Start Operation,Forbid Operation Unless Closing Arrival":"启动运行检测关门到位，关门不到位禁止电梯运行",
-	
+
 	"Group Name":"组名",
 	"Create order":"创建工单",
 	"Group Creator":"群组创建人",
@@ -884,8 +884,10 @@
 	"Opening the Door":"正在开门",
 	"open door" : "开门事件",
 	"open door arrived" : "开门到位",
+	"open door finished" : "开门结束",
 	"close door" : "关门事件",
 	"close door arrived" : "关门到位",
+	"close door finished" : "关门结束",
 	"Closing the Door":"正在关门",
 	"Stop Output":"停止输出",
 	"File type should be bin":"只能上传bin类型的文件",
