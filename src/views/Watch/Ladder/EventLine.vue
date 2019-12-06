@@ -76,7 +76,6 @@
 							type: 'time',
 						},
 						yAxis: {
-							data:[0,1]
 						},
 						dataZoom: [{
 							type: 'inside',
