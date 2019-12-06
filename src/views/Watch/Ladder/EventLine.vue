@@ -56,11 +56,11 @@
 					tooltip: {
 							//trigger: 'axis',
 						    formatter:  (params)=> {
-								//console.log(params)
+								 console.log(params)
 								let list = [];
 								var res="";
                                 //res='<div><p>'+params.seriesName+'</p></div>'
-								res ='<p>'+params.data[0]+" "+params.data[2]+'</p>'
+								res ='<p>'+params.data[0]+" "+params.data[2]+"<br/>当前位置:"+ params.data[1]*100 + "%<br/>最大门宽:" + params.data[5] +'</p>'
 								return res;
 							}
 						},
@@ -76,7 +76,6 @@
 							type: 'time',
 						},
 						yAxis: {
-							data:[0,1]
 						},
 						dataZoom: [{
 							type: 'inside',
@@ -140,15 +139,25 @@
 						this.Echart.TimeList.push(item.end_time)
 						this.Echart.idList.push(item.id)
 						if (item.event_type == "open") {
-							this.Echart.DataList.push([item.start_time,0,this.$t('open door'),item.id,item.device_model])
-							this.Echart.DataList.push([item.end_time,1,this.$t('open door arrived'),item.id,item.device_model])
-							// this.Echart.TypeList.push(0)
+						    if(index == 0){
+                                this.Echart.DataList.push([item.start_time,0,this.$t('open door'),item.id,item.device_model,item.max_door])
+                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('open door finished'),item.id,item.device_model,item.max_door])
+                            }else{
+                                this.Echart.DataList.push([item.start_time,res.data.data.list[index - 1].door/item.max_door,this.$t('open door'),item.id,item.device_model,item.max_door])
+                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('open door finished'),item.id,item.device_model,item.max_door])
+                            }
+						    // this.Echart.TypeList.push(0)
 							// this.Echart.TypeList.push(1)
 							// this.Echart.InfoList.push(this.$t('open door'))
 							// this.Echart.InfoList.push(this.$t('open door arrived'))
 						} else if (item.event_type == "close") {
-							this.Echart.DataList.push([item.start_time,1,this.$t('close door'),item.id,item.device_model])
-							this.Echart.DataList.push([item.end_time,0,this.$t('close door arrived'),item.id,item.device_model])
+						    if(index == 0){
+                                this.Echart.DataList.push([item.start_time,1,this.$t('close door'),item.id,item.device_model,item.max_door])
+                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('close door finished'),item.id,item.device_model,item.max_door])
+                            }else{
+                                this.Echart.DataList.push([item.start_time,res.data.data.list[index - 1].door/item.max_door,this.$t('close door'),item.id,item.device_model,item.max_door])
+                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('close door finished'),item.id,item.device_model,item.max_door])
+                            }
 							// this.Echart.TypeList.push(1)
 							// this.Echart.TypeList.push(0)
 							// this.Echart.InfoList.push(this.$t('close door'))
