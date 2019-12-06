@@ -220,9 +220,9 @@
 					thr:false,
 				},
 				realtime: {
-					threshold:'1',
+					threshold:'40',
 					duration:'300',
-					interval:'500',
+					interval:'50',
 				},
 				options: {
 					id:'',
