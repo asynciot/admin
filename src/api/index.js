@@ -276,6 +276,9 @@ export default {
 	readLadderSimpleS:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadSimpleS'}, data))
 	},
+	getOrderList:(data)=> {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'LadderEvents'}, data))
+	},
 	//company
 	newGroup:(data)=> {
 		return DeviceApi.save({key1:'Group'}, data)

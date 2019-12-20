@@ -30,6 +30,7 @@ const DeviceInfo = resolve => require(['@/views/Watch/DeviceInfo'], resolve)
 const LadderInfo = resolve => require(['@/views/Watch/Ladder/LadderInfo'], resolve)
 const LadderHistory = resolve => require(['@/views/Watch/Ladder/History'],resolve)
 const LadderList = resolve => require(['@/views/Watch/Ladder/List'], resolve)
+const Events = resolve => require(['@/views/Watch/Ladder/Events'], resolve)
 const List = resolve => require(['@/views/Watch/List'], resolve)
 const AlertTake = resolve => require(['@/views/Watch/Alert'], resolve)
 const AlertInfo = resolve => require(['@/views/Watch/AlertInfo'], resolve)
@@ -259,6 +260,13 @@ export default new Router({
 						name: '设备'
 					},
 					component: LadderInfo
+				}, {
+					path: '/watch/ladder/events',
+					name: 'events',
+					meta: {
+						name: '前十事件'
+					},
+					component: Events
 				}, {
 					path: '/watch/history/:id',
 					name: 'History',

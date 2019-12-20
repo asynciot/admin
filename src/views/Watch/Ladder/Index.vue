@@ -22,6 +22,8 @@ div
 					Input(v-model="query.install_addr" , :placeholder="$t('install address')" max=10)
 				Col(span=3)
 					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|{{$t('search')}}
+				Col(span=3)
+					Button.mr-10(type="primary",icon="ios-search",@click="gogogo()" style="margin-left:1px" )|Enter
 	Row(:gutter="8")
 		Col.map(span="20")
 			div#map
@@ -65,7 +67,7 @@ div
 	const createMark = (img) => {
 		return new AMap.Icon({
 			size:new AMap.Size(25, 25),
-			image:img, 
+			image:img,
 			//anchor: new BMap.Size(10, 26),
 			imageSize: new AMap.Size(25, 25),
 		});
@@ -173,7 +175,7 @@ div
 					if ((str != null)&&(this.query.search_info != null)){
 						if (str.indexOf(this.query.search_info)>=0)
 							this.menu.push(str)
-					} 
+					}
 				}
 			},
 			//绘图
@@ -293,7 +295,7 @@ div
 								position:new AMap.LngLat(point.lng,point.lat),
 								icon: lostMark
 							});
-							
+
 						}
 						marker.on('click', () => this.goDevice(item));
 						this.markers.push(marker)
@@ -412,6 +414,13 @@ div
 				}
 				this.search()
 			},
+
+            gogogo()
+            {
+                this.$router.push({
+                    name: 'events',
+                })
+            }
 		}
 	}
 </script>
@@ -430,7 +439,7 @@ div
 	}
 	.text{
 		margin-top: 5px;
-		font-size: small;		
+		font-size: small;
 		bordered: true;
 		border-width: 3px;
 	}
