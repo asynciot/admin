@@ -22,8 +22,7 @@ div
 					Input(v-model="query.install_addr" , :placeholder="$t('install address')" max=10)
 				Col(span=3)
 					Button.mr-10(type="primary",icon="ios-search",@click="search()" style="margin-left:1px" )|{{$t('search')}}
-				Col(span=3)
-					Button.mr-10(type="primary",icon="ios-search",@click="gogogo()" style="margin-left:1px" )|Enter
+					Button.mr-10(type="success",icon="ios-add",@click="gogogo()" style="margin-left:1px" )|{{$t('evnetsList')}}
 	Row(:gutter="8")
 		Col.map(span="20")
 			div#map
@@ -415,12 +414,12 @@ div
 				this.search()
 			},
 
-            gogogo()
-            {
-                this.$router.push({
-                    name: 'events',
-                })
-            }
+			gogogo()
+			{
+				this.$router.push({
+					name: 'events',
+				})
+			}
 		}
 	}
 </script>

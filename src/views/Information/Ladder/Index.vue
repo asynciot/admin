@@ -19,8 +19,7 @@
 		div( style="min-height: 450px; margin-top: 5px;")
 			Table.mb-10( stripe :columns="columns" ,:data="list" size="small")
 		Col( span="24" style="text-align: center;")
-			Page( show-elevator :total="total" ,:page-size="query.num" ,:current="query.page" @on-change="pageChange"
-			 show-total)
+			Page( show-elevator :total="total" ,:page-size="query.num" ,:current="query.page" @on-change="pageChange" show-total)
 </template>
 
 <script>

@@ -798,7 +798,7 @@
 	.layout-content-main{
 		width:100%;
 		background-color: white;
-		overflow-y: hidden;
+		overflow-y: auto;
 	}
 	.test{
 		margin-top: -1px;

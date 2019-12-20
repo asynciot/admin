@@ -188,6 +188,7 @@
 	"RSSI" : "信号强度",
 	"model" : "型号",
 	"Event Record" : "事件记录",
+	"evnetsList" : "电梯事件",
 	"Fail to gain event information" : "获取事件信息失败",
 	"Fail to gain elevator data" : "获取电梯数据失败",
 	"tip" : "提示",

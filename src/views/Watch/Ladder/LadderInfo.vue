@@ -68,7 +68,6 @@
 	import {
 		formatDate
 	} from '../../../utils.js';
-	import Gantt from './gantt.vue';
 	import EventLine from './EventLine.vue';
 	export default {
 		data() {
