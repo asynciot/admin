@@ -229,7 +229,7 @@
 					IMEI:'',
 					name:'',
 					page: 1,
-					num: 9,
+					num: 10,
 					total: 0,
 					isreg: "True",
 					duration:'',
@@ -302,7 +302,7 @@
 						if (str.indexOf(selectword)>=0)
 						this.menu.push(str)
 					}
-					str=this.list[i].device_name;		  	    	
+					str=this.list[i].device_name;
 					if (str != null){
 						if (str.indexOf(selectword)>=0){
 						this.menu.push(str)
@@ -340,7 +340,7 @@
 							this.sign[5]=true
 						}
 					}
-					let eve = await this.$api.event(this.options)
+					let eve = await this.$api.SimpleEvents(this.options)
 					if(!eve.data.code){
 						this.list = eve.data.data.list
 						this.list2 = this.list
@@ -350,7 +350,7 @@
 							title: this.$t('error'),
 							desc: this.$t('Fail to gain event information')
 						})
-					}									
+					}
 				}else(
 					this.$Notice.error({
 						title: this.$t('error'),
@@ -362,11 +362,18 @@
 			async search() {
 				this.options.page=1
 				this.time=new Date(this.options.time)
-				if (this.keyword=="id") {this.options.id=this.search_info}
-				if (this.keyword=="length") {this.options["length"]=this.search_info}
-				if (this.keyword=="interval") {this.options.interval=this.search_info}			
-				if (this.options.search_info == "") {this.list=this.list2}
-				else {
+				if (this.keyword=="id") {
+					this.options.id=this.search_info
+				}
+				if (this.keyword=="length") {
+					this.options["length"]=this.search_info
+				}
+				if (this.keyword=="interval") {
+					this.options.interval=this.search_info
+				}
+				if (this.options.search_info == "") {
+					this.list=this.list2
+				}else {
 					this.starttime=formatDate(this.starttime,'yyyy-MM-dd')
 					this.endtime=formatDate(this.endtime,'yyyy-MM-dd')
 					if ((this.starttime>this.endtime)&&(this.endtime !="")) {
@@ -375,7 +382,7 @@
 							title: this.$t('tip'),
 							desc: this.$t('The deadline must be greater than the start date'),
 							})
-						}	
+					}
 					this.options.starttime=this.starttime
 					this.options.endtime=formatDate(Date.parse(this.endtime)+86400000,'yyyy-MM-dd')
 					let res = await this.$api.event(this.options)
@@ -394,7 +401,6 @@
 							device_model:this.data.device_model,
 						}
 				})}
-				
 				if (this.data.device_type == '240') {
 					this.$router.push({
 						name: 'ctrlparameter',
@@ -406,8 +412,11 @@
 				})}
 			},
 			getlist(val){
-				if (val==null) {return null}
-				else {return val.split(';')}
+				if (val==null) {
+					return null
+				}else {
+					return val.split(';')
+				}
 			},
 			async handleReachBottom () {
 				if ( this.list.length<this.total ) {
@@ -429,7 +438,7 @@
 					})
 				}
 				this.total = eve.data.data.totalNumber
-					return new Promise(resolve => {			
+					return new Promise(resolve => {
 						resolve();
 					});
 				},
@@ -500,7 +509,7 @@
 					console.log("val"+val+"device_model"+this.data.device_model);
 					this.$router.push({
 						name: 'doorhistory',
-						params: {							
+						params: {
 							id: val,
 							device_model: this.data.device_model,
 							IMEI: this.data.IMEI,
@@ -513,7 +522,7 @@
 						params: {
 							id: val,
 							IMEI: this.data.IMEI,
-						}
+						},
 					})
 				}
 			},
@@ -549,7 +558,7 @@
 				this.websock.onopen = this.websocketonopen;
 				this.websock.onerror = this.websocketonerror;
 				this.websock.onmessage = this.websocketonmessage;
-			}, 
+			},
 			websocketonopen() {
 				console.log("WebSocket连接成功");
 				this.loading=this.$t('WebSocket connection successful,please wait for data')
@@ -614,17 +623,17 @@
 	}
 	.iv{
 		display: inline-block;
-    width: 100%;
-    height: 32px;
-    line-height: 1.5;
-    padding: 4px 7px;
-    font-size: 12px;
-    border: 1px solid #dddee1;
-    border-radius: 4px;
-    color: #495060;
-    background-color: #fff;
-    background-image: none;
-    position: relative;
-    cursor: text;
+	width: 100%;
+	height: 32px;
+	line-height: 1.5;
+	padding: 4px 7px;
+	font-size: 12px;
+	border: 1px solid #dddee1;
+	border-radius: 4px;
+	color: #495060;
+	background-color: #fff;
+	background-image: none;
+	position: relative;
+	cursor: text;
 	}
 </style>
