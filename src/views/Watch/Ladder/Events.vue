@@ -4,13 +4,13 @@ div
 		Row
 			Col(span="3")
 				div
-					DatePicker(type="date"  ,:placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time")
+					DatePicker(type="date", :placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time")
 			Col(span="3")
 				div
-					DatePicker(type="date"  ,:placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time")
+					DatePicker(type="date", :placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time")
 			Col(span="4")
 				Button(type="primary" @click="getOrderList()")|{{$t('OK')}}
-	div
+	divi
 		EventLine(v-for="order in orderList" ,:key="order.id1",:psMsg = 'order')
 </template>
 
@@ -28,7 +28,7 @@ div
 			EventLine,
 		},
 		created(){
-			var time= new Date(this.end_time)
+			let time= new Date(this.end_time)
 			time.setDate(time.getDate() - 1)
 			this.start_time=time.getFullYear()+'-'+this.p((time.getMonth()+1))+'-'+this.p(time.getDate())+' '+this.p(time.getHours())+':'+this.p(time.getMinutes())+':'+this.p(time.getSeconds());
 			this.getOrderList()
