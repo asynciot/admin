@@ -145,6 +145,9 @@ export default {
 	event: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Event'}, data))
 	},
+	SimpleEvents: (data) => {
+		return DeviceApi.query(Object.assign({key1:'Event',key2:'Simple'}, data))
+	},
 	eventImei: (data) => {
 		return DeviceApi.query(Object.assign({key1:'Event',key2:'ReadSimple'}, data))
 	},

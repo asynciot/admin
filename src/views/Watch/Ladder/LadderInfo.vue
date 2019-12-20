@@ -78,7 +78,6 @@
 				eventpage:1,
 				sign:[false,false,false,false,false,false],
 				ctn: false,
-				a:'',
 				loading:'',
 				websock:'',
 				test:'',

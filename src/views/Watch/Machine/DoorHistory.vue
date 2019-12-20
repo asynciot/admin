@@ -340,6 +340,7 @@ div.layout-content-main
 						type: 'inside'
 					}],
 					series: [{
+						symbol:'none',
 						type: 'line',
 						smooth: true,
 						data:_this.event.current

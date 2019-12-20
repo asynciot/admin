@@ -2,7 +2,6 @@
 	div
 		Modal(title="查询时间" v-model="modal" @on-ok="ok" ,:mask-closable="false")
 			DatePicker(type="date" ,:options="options" ,:placeholder="$t('from date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="start_time")
-
 			DatePicker(type="date" ,:options="options" ,:placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="end_time")
 		Tabs(value="day" ,:animated="false" @on-click="changetabs" )
 			TabPane(label="一天" name="day")
@@ -10,7 +9,7 @@
 			TabPane(label="一个月" name="month")
 			TabPane(label="自定义" name="customize")
 			DatePicker(type="date" ,:options="options" ,:placeholder="$t('closing date')" format="yyyy-MM-dd" slot="extra" transfer style='color:#000' v-model="endtime")
-		div(id="test" ,:style="{ 'width': '100%', height: '200px'}")
+		div(id="test" ,:style="{ 'width': '100%', height: '250px'}")
 </template>
 
 <script>
@@ -48,18 +47,16 @@
 			async Draw(){
 				const option= document.getElementById("test");
 				const Mychart = this.$echarts.init(option);
-				console.log(this.Echart.InfoList)
 				Mychart.setOption({
 					title: {
 							text: this.$props.psMsg.name
 						},
 					tooltip: {
 							//trigger: 'axis',
-						    formatter:  (params)=> {
-								 console.log(params)
+							formatter:  (params)=> {
 								let list = [];
 								var res="";
-                                //res='<div><p>'+params.seriesName+'</p></div>'
+								//res='<div><p>'+params.seriesName+'</p></div>'
 								res ='<p>'+params.data[0]+" "+params.data[2]+"<br/>当前位置:"+ params.data[1]*100 + "%<br/>最大门宽:" + params.data[5] +'</p>'
 								return res;
 							}
@@ -134,36 +131,26 @@
 					res.data.data.list.forEach((item,index)=>{
 						item.end_time = this.$format(item.end_time-(item.end_time-item.start_time)/2,'YYYY-MM-DD HH:mm:ss')
 						item.start_time = this.$format(item.start_time,'YYYY-MM-DD HH:mm:ss')
-						console.log("st:"+item.start_time+"ed:"+item.end_time)
 						this.Echart.TimeList.push(item.start_time)
 						this.Echart.TimeList.push(item.end_time)
 						this.Echart.idList.push(item.id)
 						if (item.event_type == "open") {
-						    if(index == 0){
-                                this.Echart.DataList.push([item.start_time,0,this.$t('open door'),item.id,item.device_model,item.max_door])
-                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('open door finished'),item.id,item.device_model,item.max_door])
-                            }else{
-                                this.Echart.DataList.push([item.start_time,res.data.data.list[index - 1].door/item.max_door,this.$t('open door'),item.id,item.device_model,item.max_door])
-                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('open door finished'),item.id,item.device_model,item.max_door])
-                            }
-						    // this.Echart.TypeList.push(0)
-							// this.Echart.TypeList.push(1)
-							// this.Echart.InfoList.push(this.$t('open door'))
-							// this.Echart.InfoList.push(this.$t('open door arrived'))
+							if(index == 0){
+								this.Echart.DataList.push([item.start_time,0,this.$t('open door'),item.id,item.device_model,item.max_door])
+								this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('open door finished'),item.id,item.device_model,item.max_door])
+							}else{
+								this.Echart.DataList.push([item.start_time,res.data.data.list[index - 1].door/item.max_door,this.$t('open door'),item.id,item.device_model,item.max_door])
+								this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('open door finished'),item.id,item.device_model,item.max_door])
+							}
 						} else if (item.event_type == "close") {
-						    if(index == 0){
-                                this.Echart.DataList.push([item.start_time,1,this.$t('close door'),item.id,item.device_model,item.max_door])
-                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('close door finished'),item.id,item.device_model,item.max_door])
-                            }else{
-                                this.Echart.DataList.push([item.start_time,res.data.data.list[index - 1].door/item.max_door,this.$t('close door'),item.id,item.device_model,item.max_door])
-                                this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('close door finished'),item.id,item.device_model,item.max_door])
-                            }
-							// this.Echart.TypeList.push(1)
-							// this.Echart.TypeList.push(0)
-							// this.Echart.InfoList.push(this.$t('close door'))
-							// this.Echart.InfoList.push(this.$t('close door arrived'))
+							if(index == 0){
+								this.Echart.DataList.push([item.start_time,1,this.$t('close door'),item.id,item.device_model,item.max_door])
+								this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('close door finished'),item.id,item.device_model,item.max_door])
+							}else{
+								this.Echart.DataList.push([item.start_time,res.data.data.list[index - 1].door/item.max_door,this.$t('close door'),item.id,item.device_model,item.max_door])
+								this.Echart.DataList.push([item.end_time,item.door/item.max_door,this.$t('close door finished'),item.id,item.device_model,item.max_door])
+							}
 						}
-
 					})
 				}
 				this.Draw()
@@ -201,13 +188,11 @@
 				this.getSimpleEvent()
 			},
 			ok(){
-				if(this.start_time!=''&&this.end_time!='')
-				{
+				if(this.start_time!=''&&this.end_time!=''){
 					this.start_=this.start_time
 					this.end_=this.end_time
 					this.draw()
-				}
-				else{
+				}else{
 					this.$Notice.warning({
 						title: this.$t('tip'),
 						desc: '必须输入完整日期',
