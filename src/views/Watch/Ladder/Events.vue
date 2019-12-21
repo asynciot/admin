@@ -54,7 +54,6 @@ div
 			}
 		}
 	}
-
 </script>
 
 <style lang="scss">
