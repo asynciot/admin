@@ -515,28 +515,28 @@
 			parseStatus(event) {//状态
 				let statusName = '';
 				if ((event.status&(0x01)) == 1) {
-					statusName+= this.$t('Automatic')+';';
+					statusName+= this.$t('Automatic')+' ';
 				}
 				if ((event.status&(0x02))>>1 == 1) {
-					statusName+= this.$t('Overhaul')+';';
+					statusName+= this.$t('Overhaul')+' ';
 				}
 				if ((event.status&(0x04))>>2 == 1) {
-					statusName+= this.$t('Driver')+';';
+					statusName+= this.$t('Driver')+' ';
 				}
 				if ((event.status&(0x08))>>3 == 1) {
-					statusName+= this.$t('Firefighting')+';';
+					statusName+= this.$t('Firefighting')+' ';
 				}
 				if ((event.status&(0x10))>>4 == 1) {
-					statusName+= this.$t('Lock body')+';';
+					statusName+= this.$t('Lock body')+' ';
 				}
 				if ((event.status&(0x20))>>5 == 1) {
-					statusName+= this.$t('Broken')+';';
+					statusName+= this.$t('Broken')+' ';
 				}
 				if ((event.status&(0x40))>>6 == 1) {
-					statusName+= this.$t('Overload')+';';
+					statusName+= this.$t('Overload')+' ';
 				}
 				if ((event.status&(0x80))>>7 == 1) {
-					statusName+= this.$t('Full load')+';';
+					statusName+= this.$t('Full load')+' ';
 				}
 				return statusName
 			},

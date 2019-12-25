@@ -1,7 +1,7 @@
 {
-  "lang" : "English",
-  "register" : "Register",
-  "Username" : "Username",
+	"lang" : "English",
+	"register" : "Register",
+	"Username" : "Username",
 	"login" : "Login",
 	"Reset Password":"Reset",
 	"forget_password?" : "Forgot password?",

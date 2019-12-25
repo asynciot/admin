@@ -56,6 +56,7 @@
 					order_type:'all',
 				},
 				options:{
+					follow:"yes",
 					search_info: '',
 					page: 1,
 					num: 10,

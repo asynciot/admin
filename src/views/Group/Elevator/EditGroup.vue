@@ -285,14 +285,14 @@
 				if (res.data.code == 0) {
 					this.loading = false
 					this.$Notice.success({
-						title: this.$t('success'),
+						title: this.$t('Successfully add'),
 						desc: ''
 					});
 					this.getList2()
 				}else{
 					this.loading = false
 					this.$Notice.error({
-					title: this.$t('error'),
+					title: this.$t('Fail to add'),
 					desc: ''
 					});
 				}
@@ -304,13 +304,13 @@
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({
-						title: this.$t('success'),
+						title: this.$t('Successfully delete'),
 						desc: ''
 					});
 					this.getList2()
 				}else{
 					this.$Notice.error({
-					title: this.$t('error'),
+					title: this.$t('Fail to delete'),
 					desc: ''
 					});
 				}

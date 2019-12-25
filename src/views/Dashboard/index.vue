@@ -309,9 +309,7 @@
 						<div class="box box-primary" v-if="chart">
 							<div class="box-header">
 								<i class="fa fa-th"></i>
-
 								<h3 class="box-title" v-if="text3">{{$t("Achievement Chart")}}</h3>
-								
 								<div class="box-tools pull-right">
 									<div class="btn-group" style="margin-right: 0px;">
 										<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" @click="widthblock1('chartwidth')">
@@ -333,30 +331,30 @@
 								</div>
 							</div>
 							<transition name="bounce">
-							<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
-								<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
-									<swiper-slide>
-										<div class='' :style="'height:'+screenheight/2.7+'px'">
-										<compare></compare>
-										</div>
-										<div class="swiper-button-next"></div>
-									</swiper-slide>
-									<!-- <swiper-slide>
-										<div class="swiper-button-prev"></div>
-										<div class='' style="height:370px">
-											<freq></freq>
-										</div>
-										<div class="swiper-button-next"></div>
-									</swiper-slide> -->
-									<swiper-slide>
-										<div class="swiper-button-prev"></div>
-										<div class='' :style="'height:'+screenheight/2.7+'px'">
-											<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
-											<test1></test1>
-										</div>
-									</swiper-slide>
-								</swiper>
-							</div>
+								<div class="box-body border-radius-none" v-if="chartbody" :style="'height:'+screenheight/2.55+'px'">
+									<swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
+										<swiper-slide>
+											<div class='' :style="'height:'+screenheight/2.7+'px'">
+											<compare></compare>
+											</div>
+											<div class="swiper-button-next"></div>
+										</swiper-slide>
+										<!-- <swiper-slide>
+											<div class="swiper-button-prev"></div>
+											<div class='' style="height:370px">
+												<freq></freq>
+											</div>
+											<div class="swiper-button-next"></div>
+										</swiper-slide> -->
+										<swiper-slide>
+											<div class="swiper-button-prev"></div>
+											<div class='' :style="'height:'+screenheight/2.7+'px'">
+												<!-- <div id="test1" style="height:300px;width:100%"> </div> -->
+												<test1></test1>
+											</div>
+										</swiper-slide>
+									</swiper>
+								</div>
 							</transition>
 						</div>
 						<!-- /.box -->

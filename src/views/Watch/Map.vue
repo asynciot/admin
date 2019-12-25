@@ -551,7 +551,7 @@ div
 		padding-bottom: 1px;
 	}
 	.dv{
-		// height: 460px;
+		min-height: 770px;
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}

@@ -1,5 +1,5 @@
 {
-    "lang" : "简体中文",
+	"lang" : "简体中文",
 	"register" : "注册",
 	"login" : "登录",
 	"Base Station Address":"基站地址",
@@ -182,7 +182,7 @@
 	"This device is in alert" : "该设备已经告警",
 	"start clear" : "开始清除",
 	"fail to clear" : "清除失败",
-	"fail to get list" : "清除失败",
+	"fail to get list" : "列表获取失败",
 	"Fail to register" : "注册失败",
 	"This device has no address record" : "这台设备没有地址记录",
 	"RSSI" : "信号强度",
@@ -291,6 +291,7 @@
 	"Fail to register,but it marked as unregistered" : "清除异常，但已将该设备标为未注册",
 	"Information on this device has been reset" : "此设备的信息已重置",
 	"Fail to reset" : "重置失败",
+	"Fail to follow" : "关注失败",
 	"reset" : "重置",
 	"E1" : "过流",
 	"E2" : "母线过压",
@@ -350,8 +351,8 @@
 	"82" : "输出过流",
 	"114" : "输入电压过低",
 	"178" : "输入电压过高",
-  "229" : "电机负载过重",
-  "MO" : "电机负载过重",
+	"229" : "电机负载过重",
+	"MO" : "电机负载过重",
 	"OV" : "输入电压过高",
 	"LV" : "输入电压过低",
 	"08" : "电机过载",
@@ -904,6 +905,8 @@
 	"Fail to edit":"编辑失败",
 	"Successfully delete":"删除成功",
 	"Fail to delete":"删除失败",
+	"Successfully add":"添加成功",
+	"Fail to add":"添加失败",
 	"Successfully join":"加入成功",
 	"Fail to join":"加入失败",
 	"Join":"加入",
@@ -918,7 +921,7 @@
 	"Please input keyword!":"请输入搜索内容!",
 	"Please fill in the true verification code.":"请填写正确的验证码",
 	"Login successfully, going the home page!":"登录成功，正在跳转!",
-	"Logon failed!":"登录失败!",
+	"Login failed!":"登录失败!",
 	"Please improve login information!":"请完善登录信息!",
 	"The deadline must be greater than the start date":"截至日期必须大于开始日期",
 	"Monitoring has been activated":"监控已开启",
@@ -963,8 +966,8 @@
 	"Solution":"解决方法",
 	"Solution":"解决方法",
 	"refresh" : "刷新",
-    "array": [
-        1,2,3,4
-    ],
+	"array": [
+		1,2,3,4
+	],
 	"No data" : "暂无数据"
 }

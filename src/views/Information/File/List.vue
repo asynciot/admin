@@ -281,7 +281,7 @@
 											if (follow == this.$t('follow'))
 												this.addfl(params.row.IMEI)
 											if (follow == this.$t('remove follow'))
-												this.delfl(params.row.id)
+												this.delfl(params.row.IMEI)
 										},
 									}
 								}, follow),
@@ -445,7 +445,7 @@
 			},
 			async delfl(val) {
 				let res = await this.$api.delfollow({
-					device_id: val
+					imei: val
 				})
 				if (res.data.code == 0) {
 					this.$Notice.success({

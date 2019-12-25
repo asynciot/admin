@@ -28,7 +28,7 @@ div
 			div#map
 		Col(span="4")
 			div.dv(id='list')
-				Poptip(v-for="device in list" ,:data="list" trigger="hover" placement="left" v-bind:key="list.id" word-wrap="true")
+				Poptip(word-wrap v-for="device in list" ,:data="list" trigger="hover" placement="left" v-bind:key="list.id" )
 					Card.text(v-on:click.native="cardClick(device.cell_lat,device.cell_lon)" style="cursor: pointer;")
 						Row(:gutter="10")
 							div(style="margin-top:-20px")
@@ -37,6 +37,8 @@ div
 							Col(span="24" style="margin-top:5px")
 								p.tt()|{{device.name}}
 								Row(:gutter="10" style="margin-top:5px")
+									Col(span="12")
+										p.tt1()| 
 									Col(span="12")
 										p.tt1()|{{device.state}}
 					div.api(slot="title" @click="goDevice(device)" style="width: 400px; cursor: pointer;")
