@@ -2,7 +2,7 @@
 	div
 		div.box
 			div.box-header.with-border
-				p.box-title {{$t('add to existing elevator')}}
+				p.box-title {{$t('Add to existing elevator')}}
 			div.form
 				Row(:gutter="30")
 					Col(span="8")
@@ -159,7 +159,7 @@
 		},
 		methods: {
 			async getList() {
-				let res = await this.$api.readLadder(this.query);
+				let res = await this.$api.reLadder(this.query);
 				this.list=res.data.data.list;
 				this.options.total = res.data.data.totalNumber
 			},

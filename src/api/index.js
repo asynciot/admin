@@ -255,9 +255,6 @@ export default {
 	newLadder:(data)=> {
 		return DeviceApi.save({key1:'Ladder'}, data)
 	},
-	readLadder:(data)=> {
-		return DeviceApi.query(Object.assign({key1:'Ladder'}, data))
-	},
 	reLadder:(data)=> {
 		return DeviceApi.query(Object.assign({key1:'Ladder',key2:'ReadMore'}, data))
 	},

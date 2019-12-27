@@ -63,7 +63,7 @@
 				},{
 					id: 1,
 					pId: 0,
-					label: '运行监控',
+					label: 'Operation Monitor',
 					key:false,
 					val:1,
 					sub: [{
@@ -320,7 +320,7 @@
 					nodes.push({
 						id: item.id,
 						pId: item.pId,
-						title: item.label,
+						title: this.$t(item.label),
 						key: item.key,
 						val:item.val,
 					})

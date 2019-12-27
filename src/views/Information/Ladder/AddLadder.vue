@@ -107,6 +107,11 @@
 						key: 'IMEI',
 					},
 					{
+						title: this.$t('install address'),
+						key: 'install_addr',
+						width:'280px',
+					},
+					{
 						title: this.$t('device type'),
 						key: 'device_type',
 						render: (h, params) => {
@@ -221,10 +226,27 @@
 					});
 					this.$router.back(-1)
 				}else{
-					this.$Notice.error({
-						title: this.$t('error'),
-						desc: this.$t('fail to bind')
-					});
+					if (this.ladder.name==null||this.ladder.name=="") {
+						this.$Notice.error({
+							title: this.$t('error'),
+							desc: this.$t('Please input Ladder name')
+						});
+					} else if (this.ladder.install_addr==null||this.ladder.install_addr=="") {
+						this.$Notice.error({
+							title: this.$t('error'),
+							desc: this.$t('Please input Install address')
+						});
+					}else if (this.ladder.ctrl==null && this.ladder.door1==null){
+						this.$Notice.error({
+							title: this.$t('error'),
+							desc: this.$t('Please bind devices')
+						});
+					}else{
+						this.$Notice.error({
+							title: this.$t('error'),
+							desc: this.$t('fail to bind')
+						});
+					}
 				}
 			},
 		}

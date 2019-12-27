@@ -2,7 +2,7 @@
 	div.layout-content-main
 		div.box
 			div.box-header.with-border
-				p.box-title 新建角色
+				p.box-title {{$t("New Role")}}
 			form.form-horizontal
 				div.box-body
 					Row(:gutter="10")
@@ -10,16 +10,16 @@
 							Card
 								div.form-group
 									Card()
-										p(slot="title")|角色名称
+										p(slot="title"){{$t("RoleName")}}
 										div.col-sm-8.col-md-6
 											Input(type='text'  v-model="list.name" placeholder='请输入角色名称')
 								div.form-group
 									Card
-										p(slot="title")|菜单名称
+										p(slot="title"){{$t("Menu")}}
 										Tree(ref="tree" ,:data='menus' show-checkbox)
 						Col(span="16")
 							Card()
-								p(slot="title")|可执行功能
+								p(slot="title")|{{$t("Fuction")}}
 								div()
 									Checkbox(v-model="show.monitor")|实时监控
 									Checkbox(v-model="show.memory")|内存查看
@@ -162,14 +162,14 @@
 			getMenus(){
 				nodes.forEach((item,index)=>{
 					let menus = []
-					menus.title = item.title
+					menus.title = this.$t(item.title)
 					menus.val = item.val
 					menus.expend = true
 					menus.children = []
 					child.forEach(res=>{
 						if(res.pId==item.id){
 							menus.children.push({
-								title:	res.title,
+								title:	this.$t(res.title),
 								val:	res.val,
 								checked: res.checked,
 							})

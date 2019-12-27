@@ -99,7 +99,7 @@
 						render: (h, params) => {
 							var follow = this.$t('follow')
 							this.follow.forEach(item => {
-								if (params.row.ctrl == item.ctrl) {
+								if (params.row.id == item.ladder_id) {
 									follow = this.$t('remove follow')
 								}
 							})
@@ -172,6 +172,7 @@
 			}
 		},
 		created() {
+			this.getFollow()
 			this.getList()
 		},
 		methods: {
@@ -197,14 +198,7 @@
 				this.query.page = val
 				this.getList()
 			},
-			async getList() {
-				if(this.show.state == 'all'){
-					this.query.state = ''
-				}else{
-					this.query.state = this.show.state
-				}
-				let res = await this.$api.reLadder(this.query)
-				
+			async getFollow() {
 				let fol = await this.$api.followladder({
 					num: 100,
 					page: 1,
@@ -213,6 +207,15 @@
 				if (fol.data.code == 0) {
 					this.follow = fol.data.data.list
 				}
+			},
+			async getList() {
+				if(this.show.state == 'all'){
+					this.query.state = ''
+				}else{
+					this.query.state = this.show.state
+				}
+				let res = await this.$api.reLadder(this.query)
+				
 				this.list = res.data.data.list
 				this.total = res.data.data.totalNumber
 			},
@@ -227,6 +230,24 @@
 					door2:inx,
 				})
 				if(res.data.code==0){
+					this.getFollow()
+					this.$Notice.success({
+						title: this.$t('success'),
+						desc: ''
+					});
+				}else{
+					this.$Notice.error({
+						title: this.$t('error'),
+						desc: ''
+					});
+				}
+			},
+			async delfl(val){
+				const res = await this.$api.removefollow({
+					ladder_id:val,
+				})
+				if(res.data.code==0){
+					this.getFollow()
 					this.$Notice.success({
 						title: this.$t('success'),
 						desc: ''

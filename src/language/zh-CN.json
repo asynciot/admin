@@ -52,6 +52,7 @@
 	"Interface" : "串口号",
 	"Signal Name" : "信号名称",
 	"Polarity" : "极性",
+	"Fuction" : "功能",
 	"State" : "状态",
 
 	"I/O Board input configuration":"I/O 板输入配置",
@@ -727,13 +728,15 @@
 	"fail to bind":"绑定失败",
 	"ladder name":"电梯名称",
 	"Add to existing elevator":"添加到已有电梯",
+	"Please input Ladder name" : "请输入设备名称",
+	"Please input Install address" : "请输入设备地址",
+	"Please bind devices" : "请绑定设备",
 	"Device Replace":"设备替换",
 	"Please select the equipment to replace":"请选择要替换的设备",
 	"Are you sure replace ":"你确定要将",
 	" with ":"替换成",
 	"Edit elevator":"电梯编辑",
-	"Elevator Information":"电梯信息",
-	"Elevator Group":"电梯组",
+	"Elevator Information":"电梯管理",
 	"Elevator Group Name":"电梯组名",
 	"order auditing":"工单审核",
 	"dispatch auditing":"维保审核",
@@ -969,5 +972,7 @@
 	"array": [
 		1,2,3,4
 	],
-	"No data" : "暂无数据"
+	"No data" : "暂无数据",
+	"New Role" : "新建角色",
+	"RoleName" : "角色名字"
 }
