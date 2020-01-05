@@ -42,6 +42,9 @@ export default {
 	getcode:(data) => {
 		return CommonApi.query(Object.assign({key1:'wechat',key2:'getqrcode'}, data))
 	},
+	cellocation:(data) => {
+		return DeviceApi.save({key1:'cellocation',}, data)
+	},
 	//account
 	register:(data)=>{
 		return AccountApi.save({key1:'register'},data)

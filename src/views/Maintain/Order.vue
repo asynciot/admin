@@ -19,7 +19,6 @@
 										Form-item(:label="$t('install address')+':'")|{{list.install_addr}}
 										Form-item(:label="$t('Expect time')+':'")
 											DatePicker(type="date", :placeholder="$t('Expect time')" format="yyyy-MM-dd" v-model="expect" style='' @on-change="check()")
-
 						Col(span=24)
 							Col(span=12 align="center")
 								Button(type="success",icon="plus",@click="order()")|{{$t('receive')}}
@@ -87,7 +86,7 @@
 				}
 			},
 			async getData(){
-				let res = await this.$api.fault({num:1,page:1,id:this.$route.params.id})
+				let res = await this.$api.fault({num:1,page:1,id:this.$route.params.id,follow:"yes"})
 				if (0 === res.data.code) {
 					let ech = await this.$api.devices({device_id:res.data.data.list[0].device_id,num:10,page:1})
 					res.data.data.list[0].device_name = ech.data.data.list[0].device_name

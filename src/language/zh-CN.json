@@ -180,6 +180,7 @@
 	"try keyword within 15 bytes" : "关键词请不要超过15字",
 	"success" : "成功",
 	"error" : "错误",
+	"As location address" : "作为定位地址",
 	"This device is in alert" : "该设备已经告警",
 	"start clear" : "开始清除",
 	"fail to clear" : "清除失败",

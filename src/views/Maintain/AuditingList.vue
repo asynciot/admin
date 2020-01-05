@@ -62,6 +62,7 @@
 					list_type:'dispatch',
 				},
 				options:{
+					follow:'yes',
 					search_info: '',
 					page: 1,
 					num: 10,

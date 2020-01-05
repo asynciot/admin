@@ -177,7 +177,7 @@ div
 				}
 			}
 		},
-		mounted() {			
+		mounted() {
 			this.initMap()
 			document.getElementById('list').style.height = (Number(document.documentElement.clientHeight)/1-200) + 'px'
 		},

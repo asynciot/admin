@@ -8,7 +8,7 @@ div
 					Row(:gutter="30")
 						Col(span="12")|{{$t('device name')}}:
 							input(v-model="list.device_name" style="border: 0" @input="" maxlength='10')
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+							span(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|{{$t('device ID')}}:
 							input(v-model="list.device_id" style="border: 0" readonly)
 					Row(:gutter="30" style="padding-top:10px")
@@ -66,43 +66,43 @@ div
 					Row(:gutter="30")
 						Col(span="12")|{{$t('next maintenance')}}:
 							DatePicker(type="date", :placeholder="$t('next maintenance')" format="yyyy-MM-dd" v-model="options.maintenance_nexttime" style='width: 50%; margin-left:20px')
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+							span(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|{{$t('remind in advance(Days)')}}:
 							input( style="border: 0" v-model="options.maintenance_remind")
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+							span(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 					Row(:gutter="30")
 						Col(span="12")|{{$t('maintenance type')}}:
 							Select(v-model="list.maintenance_type" style="width:50%; margin-left:20px" ,:placeholder="$t('maintenance type')" @on-change="search()")
 								Option(key="1", :label="$t('fault')" value='1')
 								Option(key="2", :label="$t('maintain')" value="2")
 								Option(key="3", :label="$t('check')" value="3")
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
+							span(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
 						Col(span="12")|{{$t('last maintenance')}}:{{options.maintenance_lasttime}}
 				Card(style="margin-top:5px")
 					p(slot="title")|{{$t('System')}}
-
 					Row(:gutter="30" style="padding-top:10px")
 						Col(span="12")|{{$t('install address')}}:
 							input(v-model="list.install_addr" style="border: 0" @input="" maxlength='18')
-							span.pd(style="color:gray;margin-left:5px" class="fa fa-pencil fa-1x")
-						Col(span="12")|{{$t('install date')}}:
-							input(v-model="list.t_create" style="border: 0" readonly)
+							span(style="color:gray" class="fa fa-pencil fa-1x")
+						Col(span="12")|{{$t('base station')}}:
+							p(style="margin-left:5px;text-indent: 2em"){{list.cell_address}}
+							span(style="color:gray" class="fa fa-pencil fa-1x" v-if="(list.cellular == 1)" @click="maps=true,click()")
 			Col(span="7" )
 				Card()
 					img(src="../../../assets/ladder.jpg" width="100%")
 				Col(span = 12 style="margin-top:5px")
 					Col(span=4)
-						span.pd(id="green" style="color:green;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(0)")
+						span(id="green" style="color:green;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(0)")
 					Col(span=4)
-						span.pd(id="red" style="color:red;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(1)")
+						span(id="red" style="color:red;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(1)")
 					Col(span=4)
-						span.pd(id="yellow" style="color:yellow;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(2)")
+						span(id="yellow" style="color:yellow;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(2)")
 					Col(span=4)
-						span.pd(id="blue" style="color:blue;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(3)")
+						span(id="blue" style="color:blue;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(3)")
 					Col(span=4)
-						span.pd(id="gray" style="color:gray;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(4)")
+						span(id="gray" style="color:gray;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(4)")
 					Col(span=4)
-						span.pd(id="black" style="color:black;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(5)")
+						span(id="black" style="color:black;cursor: pointer;" class="fa fa-tag fa-2x",@click="checkcolor(5)")
 				Col(span=24)
 					Col(span=12)
 						Button(@click="burnn()" type="primary" v-if="(list.register != 'registered')&&(list.commond !='contract')" style="margin-top: 20px; width: 92%" ,:disabled='upsuccess')|{{$t('register device')}}
@@ -125,6 +125,7 @@ div
 						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-else)|{{$t('new elevator')}}
 					Col(span=12)
 						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|{{$t('bind to an elevator')}}
+				
 	el-dialog(:title="$t('history fault')", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		span(slot="footer" class="dialog-footer")
@@ -133,6 +134,12 @@ div
 					Page(show-elevator :total="total", :page-size="fault.num",:current="fault.page" @on-change="pageChange" show-total style="margin-left:60px;margin-top:10px" simple)
 				Col(span='18')
 					el-button(type="primary" @click="history = false")|{{$t('OK')}}
+	el-dialog(:title="$t('Map')", :visible.sync="maps" width="80%")
+		Card(style="height:calc(100vh - 200px)")
+			Col.map(span=24)
+				div#map
+				Modal.test(v-model='modal' @on-ok="ok()" @on-cancel="cancel()")
+					p{{text}}
 </template>
 
 <script>
@@ -140,483 +147,515 @@ div
 		api,
 		ladderApi,
 		formatDate,
-		array2obj,
-		buffer2hex,
-		parseBuffer,
-		parseEvent,
-		parseInfo,
-		parseMsg
 	} from '@/utils'
-export default {
-	data() {
-		const type= {
-		15: '控制器',
-		240: '控制柜',
-		};
-		return {
-			column: [
-				{
-					title: this.$t('order ID'),
-					key: 'order_id',
-					width:90,
-					render: (h, params) => {
-						h('div',[
-							h('Button', {
-								props: {
-									type: 'text',
-									size: "small",
-								},
-								style: {
-									paddingRight: '4px',
-									paddingLeft: '4px',
-								},
-								on: {
-									click: () => {
-										this.$router.push({
-											name: 'finish',
-											params: {
-												id: params.row.id
-											}
-										})
+	export default {
+		data() {
+			const type= {
+			15: '控制器',
+			240: '控制柜',
+			};
+			return {
+				column: [
+					{
+						title: this.$t('order ID'),
+						key: 'order_id',
+						width:90,
+						render: (h, params) => {
+							return h('div',[
+								h('Button', {
+									props: {
+										type: 'text',
+										size: "small",
+									},
+									style: {
+										paddingRight: '4px',
+										paddingLeft: '4px',
+									},
+									on: {
+										click: () => {
+											this.$router.push({
+												name: 'finish',
+												params: {
+													id: params.row.id
+												}
+											})
+										}
 									}
-								}
-							}, params.row.order_id)],
-						)
-					}
-				},{
-					title: this.$t('phone'),
-					key: 'phone',
-					width: 140,
-				},{
-					title: this.$t('accept time'),
-					key: 'create_time',
-					// width:150,
-					render: (h, params) => {
-						return h('p',this.$format(parseInt(params.row.create_time), 'YYYY-MM-DD HH:mm:ss'))
-					}
-				},{
-					title: this.$t('finish time'),
-					key: 'finish_time',
-					// width:150,
-					render: (h, params) => {
-						return h('p',this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss'))
-					}
+								}, params.row.order_id),
+							]
+							)
+						}
+					},{
+						title: this.$t('phone'),
+						key: 'phone',
+						width: 140,
+					},{
+						title: this.$t('accept time'),
+						key: 'create_time',
+						// width:150,
+						render: (h, params) => {
+							return h('p',this.$format(parseInt(params.row.create_time), 'YYYY-MM-DD HH:mm:ss'))
+						}
+					},{
+						title: this.$t('finish time'),
+						key: 'finish_time',
+						// width:150,
+						render: (h, params) => {
+							return h('p',this.$format(parseInt(params.row.finish_time), 'YYYY-MM-DD HH:mm:ss'))
+						}
+					},
+					],
+					
+				history:false,
+				maps:false,
+				sent:false,
+				color:[false,false,false,false,false,false],
+				col:['green','red','yellow','blue','gray','black'],
+				options: {
+					page: 1,
+					num: 10,
+					total: 0,
+					id:'',
+					deviceName:'',
+					typeId:'',
+					maintenance_lasttime:'',
+					maintenance_nexttime:'',
+					maintenance_remind:'',
+					install_date:'',
 				},
-				],
-				
-			history:false,
-			sent:false,
-			color:[false,false,false,false,false,false],
-			col:['green','red','yellow','blue','gray','black'],
-			options: {
-				page: 1,
-				num: 10,
-				total: 0,
-				id:'',
-				deviceName:'',
-				typeId:'',
-				maintenance_lasttime:'',
-				maintenance_nexttime:'',
-				maintenance_remind:'',
-				install_date:'',
-			},
-			total:'',
-			fault:{
-				page: 1,
-				num: 1,
-				state:'',
-				device_id:'',
-			},
-			parameter:{
-				reporttime: '',
-				rssi: '',
-				moment: '',
-				wavenumber: '',
-				waveid: '',	
-				runcount: '',
-				uptime: '',
-				faultcode: '',
-				faultfloor: '',
-				faulttime: '',
-			},
-			refreshNum: 0,
-			list: '',
-			data: '',
-			sign:'',
-			maintain:[],
-			loading: false,
-			updevices:this.global.functions.update_devices,
-			rmdevices:this.global.functions.rem_devices,
-			addladder:this.global.functions.new_ladder,
-			columns: [
-			{
-				title: this.$t('device type'),
-				key: 'typeId',
-				render: (h, params) => {
-					return h('p',type[params.row.typeId]||'')
-				}
-			}]	
-		}
-	},
-	created(){
-		this.getData()
-		this.getList()
-		if(this.username=="demo"){
-			this.upsuccess = true 
-		}
-	},
-	methods: {
-		pageChange(val) {
-			this.fault.page = val
-			this.getList()
-		},
-		async getList() {
-			this.fault.device_id=this.list.device_id
-			let res = await this.$api.getRepair(this.fault)
-			var length=res.data.data.list.length
-			if (res.data.code === 0) {
-				for (var i=0;i<length;i++) {
-					const ech = await this.$api.devices({device_id:res.data.data.list[i].device_id,num:10,page:1})
-					res.data.data.list[i].device_name = ech.data.data.list[0].device_name
-					res.data.data.list[i].IMEI = ech.data.data.list[0].IMEI
-					res.data.data.list[i].install_addr = ech.data.data.list[0].install_addr
-					res.data.data.list[i].cell_address = ech.data.data.list[0].cell_address
-					res.data.data.list[i].ipaddr = ech.data.data.list[0].ip_country+ech.data.data.list[0].ip_region+ech.data.data.list[0].ip_city
-				}
-				this.data = res.data.data.list
-				this.total = res.data.data.totalNumber
-			} else {
-				this.$Notice.error({
-					title: this.$t('error'),
-					desc: this.$t('Fail to gain elevator data')
-				});
+				total:0,
+				upsuccess:false,
+				fault:{
+					page: 1,
+					num: 10,
+					state:'',
+					device_id:'',
+				},
+				parameter:{
+					reporttime: '',
+					rssi: '',
+					moment: '',
+					wavenumber: '',
+					waveid: '',	
+					runcount: '',
+					uptime: '',
+					faultcode: '',
+					faultfloor: '',
+					faulttime: '',
+				},
+				refreshNum: 0,
+				list:[],
+				data:[],
+				sign:'',
+				maintain:[],
+				loading: false,
+				updevices:this.global.functions.update_devices,
+				rmdevices:this.global.functions.rem_devices,
+				addladder:this.global.functions.new_ladder,
+				text:"",
+				modal:false,
 			}
 		},
-		async update(){
-			this.sent=true
-			if(this.options.maintenance_nexttime!=null){
-				this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)
-			}else{
-				this.list.maintenance_nexttime=null
-			}
-			this.list.maintenance_remind=this.options.maintenance_remind*86400000
+		mounted() {
+			this.initMap()
 			
-			let res =await this.$api.setdevices(this.list)
-			this.sent=false
-			if (res.data.code == 0){
-				this.$Notice.success({
-					title: this.$t('success'),
-					desc: ''
-				});
-			}else {
-				this.$Notice.error({
-					title: this.$t('error'),
-					desc: ''
-				});
+		},
+		created(){
+			this.getData()
+			if(this.username=="demo"){
+				this.upsuccess = true 
 			}
 		},
-		async getData() {
-			var buffer;
-			var time;
-			let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
-			this.list = res.data.data.list[0]
-			setTimeout(()=>{
-				this.showcolor()
-			}, 300)
-			if (this.list.rssi != ''){
-				if (this.list.rssi==0) {
-					this.sign=0
-				}else if(this.list.rssi<=2){
-					this.sign=1
-				}else if (this.list.rssi<=4) {
-					this.sign=2
-				}else if (this.list.rssi<=8) {
-					this.sign=3
-				}else if (this.list.rssi<=16) {
-					this.sign=4
-				}else if (this.list.rssi<=32) {
-					this.sign=5
-				}
-			}
-			let run =await this.$api.runtime({page:1,num:20,device_id:this.list.id})
-			if (this.list.device_type == 15) {
-				run.data.data.list.forEach(item=>{
-					if (item.type == 4096) {
-						buffer = base64url.toBuffer(item.data)
-						time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
-						if(time == 0){
-							this.parameter.reporttime=''
-						}else {
-							this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
-							
-						}
-						this.parameter.rssi=buffer[4]
-						this.parameter.wavenumber=buffer[14]*256+buffer[15]
-						this.parameter.waveid=buffer[16]*256+buffer[17]
-					}
+		methods: {
+			pageChange(val) {
+				this.fault.page = val
+				this.getList()
+			},
+			click() {
+				setTimeout(()=>{
+					this.initMap()
+				},500)
+			},
+			async ok () {
+				var res = await this.$api.cellocation({
+					lon:this.lon,
+					lat:this.lat,
+					device_id:this.list.device_id
 				})
-			}
-			if (this.list.device_type == 240) {
-				run.data.data.list.forEach(item=>{
-					if(item.type == 8192) {
-						buffer = base64url.toBuffer(item.data)
-						time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
-						if(time == 0){
-							this.parameter.reporttime=''
-						}else {
-							this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
-						}
-						time=buffer[20]*16777216+buffer[21]*65536+buffer[22]*256+buffer[23]
-						if(time == 0) {
-							this.parameter.faulttime=''
-						}else {
-							this.parameter.faulttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
-						}
-						this.parameter.rssi=buffer[4]
-						this.parameter.runcount=buffer[10]*16777216+buffer[11]*65536+buffer[12]*256+buffer[13]
-						this.parameter.uptime=buffer[14]*16777216+buffer[15]*65536+buffer[16]*256+buffer[17]
-						this.parameter.faultfloor=buffer[19]
-					}
+				this.getList()
+			},
+			cancel () {
+				this.$Message.info(this.$t('cancel'));
+			},
+			initMap() {
+				var map = new AMap.Map('map', {
+					enableMapClick: false,
+					resizeEnable: true,
+					lang:"zh_cn",
+					zoom:8,
+					center:[121.46, 31.23]
+				});
+				if(this.$i18n.locale == 'en-US'){
+					map.setLang("en");
+				}else{
+					map.setLang("zh_cn");
+				}
+				map.on('click', (e)=> {
+					this.modal = true
+					var text = '[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]'+this.$t('As location address')
+					this.lon = e.lnglat.getLng()
+					this.lat = e.lnglat.getLat()
+					this.text = text
 				})
-			}
-			this.options.install_date=this.$format(this.list.install_date, 'YYYY-MM-DD')
-			this.list.maintenance_nexttime=parseInt(this.list.maintenance_nexttime)
-			this.list.maintenance_lasttime=parseInt(this.list.maintenance_lasttime)
-			this.options.maintenance_nexttime=this.$format(this.list.maintenance_nexttime, 'YYYY-MM-DD')
-			this.options.maintenance_lasttime=this.$format(this.list.maintenance_lasttime, 'YYYY-MM-DD')
-			this.options.maintenance_remind=this.list.maintenance_remind/86400000
-		},
-		showcolor(){
-			var getcolor=this.list.tagcolor.split(';')
-			for (var i=0;i<getcolor.length;i++){
-				for (var j=0;j<6;j++){
-					if (getcolor[i]==this.col[j]) {
-						this.color[j]=true
-						document.getElementById(this.col[j]).className="fa fa-bookmark fa-2x"
+			},
+			async getList() {
+				this.fault.device_id=this.list.device_id
+				let res = await this.$api.getRepair(this.fault)
+				let length=res.data.data.list.length
+				if (res.data.code === 0) {
+					for (var i=0;i<length;i++) {
+						res.data.data.list[i].device_name = this.list.device_name
+						res.data.data.list[i].IMEI = this.list.IMEI
+						res.data.data.list[i].install_addr = this.list.install_addr
+						res.data.data.list[i].cell_address = this.list.cell_address
 					}
+					this.data = res.data.data.list
+					this.total = res.data.data.totalNumber
+				} else {
+					this.$Notice.error({
+						title: this.$t('error'),
+						desc: this.$t('Fail to gain elevator data')
+					});
 				}
-			}
-		},
-		async checkcolor(c) {
-			this.color[c]=!this.color[c]
-			if (this.color[c]) {
-				document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
-			}else {
-				document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
-			}
-			this.list.tagcolor=''
-			for (var i=0;i<6;i++) {
-				if (this.color[i]) {
-					if (this.list.tagcolor!='') {
-						this.list.tagcolor=this.list.tagcolor+';'
-					}
-					this.list.tagcolor=this.list.tagcolor+this.col[i]
+			},
+			async addCellStation(){
+				
+			},
+			async update(){
+				this.sent=true
+				if(this.options.maintenance_nexttime!=null){
+					this.list.maintenance_nexttime=Date.parse(this.options.maintenance_nexttime)
+				}else{
+					this.list.maintenance_nexttime=null
 				}
-			}
-		},
-		newladder(){
-			this.$Modal.confirm({
-				title: this.$t('new elevator'),
-				content:this.$t('Do you want to create a new elevator?'),
-				onOk: () => {
-					this.$router.push({
-						name: 'addladder',
-						params: {
-							IMEI: this.list.IMEI,
-							type: this.list.device_type,
-						}
-					})
-				},
-				onCancel: () => {}
-			})
-		},
-		adladder(){
-			this.$Modal.confirm({
-				title: this.$t('bind to an elevator'),
-				content:this.$t('Bind this device to an existing elevator?'),
-				onOk: () => {
-					this.$router.push({
-						name: 'coverladder',
-						params: {
-							IMEI: this.list.IMEI,
-							type: this.list.device_type,
-						}
-					})
-				},
-				onCancel: () => {
-				}
-			})
-		},
-		burnn() {
-			this.$Modal.confirm({
-				title: this.$t('register device'),
-				content:'',
-				onOk: () => {
-					this.toburnn()
-				},
-				onCancel: () => {
-				}
-			})
-		},
-		burn() {
-			this.$Modal.confirm({
-				title: this.$t('Are you sure to marked as registered?'),
-				content:this.$t('Error messages may be generated!'),
-				onOk: () => {
-					this.toburn()
-				},
-				onCancel: () => {
-				}
-			})
-		},
-		clearr() {
-			this.$Modal.confirm({
-				title: this.$t('deregister device'),
-				content:'',
-				onOk: () => {
-					this.toclearr()
-				},
-				onCancel: () => {
-				}
-			})	
-		},
-		clear() {
-			this.$Modal.confirm({
-				title: this.$t('Are you sure to marked as unregistered?'),
-				content:this.$t('Error messages may be generated!'),
-				onOk: () => {
-					this.toclear()
-				},
-				onCancel: () => {
-				}
-			})	
-		},
-		async toburnn() {
-			this.list.commond = "contract"
-			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"register"})
-			if (res.data.code === 0) {
-				this.refreshNum = 2
-				this.refresh()
-				this.$Notice.success({
-					title: this.$t('success'),
-					desc: this.$t('Start to register!Show the device later in the Operations Interface')
-				});
-			} else {
-				this.list.commond = "ok"
-				this.$Notice.error({
-					title: this.$t('error'),
-					desc: this.$t('Fail to register')
-				});
-			}
-		},
-		async toburn() {
-			this.list.commond = "contract"
-			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"register"})
-			if (res.data.code === 0) {
-				this.refreshNum = 2
-				this.refresh()
-				this.$Notice.success({
-					title: this.$t('success'),
-					desc: this.$t('Start to register!Show the device later in the Operations Interface')
-				});
-			}else {
-				let ress=await this.$api.setdevices
-				({id: this.list.id,IMEI: this.list.IMEI,isreg: True})
-				if (ress.data.code === 0){
+				this.list.maintenance_remind=this.options.maintenance_remind*86400000
+				
+				let res =await this.$api.setdevices(this.list)
+				this.sent=false
+				if (res.data.code == 0){
 					this.$Notice.success({
 						title: this.$t('success'),
-						desc: this.$t('Fail to register,but it marked as registered')
+						desc: ''
 					});
 				}else {
+					this.$Notice.error({
+						title: this.$t('error'),
+						desc: ''
+					});
+				}
+			},
+			async getData() {
+				var buffer;
+				var time;
+				let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
+				this.list = res.data.data.list[0]
+				setTimeout(()=>{
+					this.showcolor()
+				}, 300)
+				if (this.list.rssi != ''){
+					if (this.list.rssi==0) {
+						this.sign=0
+					}else if(this.list.rssi<=2){
+						this.sign=1
+					}else if (this.list.rssi<=4) {
+						this.sign=2
+					}else if (this.list.rssi<=8) {
+						this.sign=3
+					}else if (this.list.rssi<=16) {
+						this.sign=4
+					}else if (this.list.rssi<=32) {
+						this.sign=5
+					}
+				}
+				let run =await this.$api.runtime({page:1,num:20,device_id:this.list.id})
+				if (this.list.device_type == 15) {
+					run.data.data.list.forEach(item=>{
+						if (item.type == 4096) {
+							buffer = base64url.toBuffer(item.data)
+							time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
+							if(time == 0){
+								this.parameter.reporttime=''
+							}else {
+								this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
+								
+							}
+							this.parameter.rssi=buffer[4]
+							this.parameter.wavenumber=buffer[14]*256+buffer[15]
+							this.parameter.waveid=buffer[16]*256+buffer[17]
+						}
+					})
+				}
+				if (this.list.device_type == 240) {
+					run.data.data.list.forEach(item=>{
+						if(item.type == 8192) {
+							buffer = base64url.toBuffer(item.data)
+							time=buffer[0]*16777216+buffer[1]*65536+buffer[2]*256+buffer[3]
+							if(time == 0){
+								this.parameter.reporttime=''
+							}else {
+								this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
+							}
+							time=buffer[20]*16777216+buffer[21]*65536+buffer[22]*256+buffer[23]
+							if(time == 0) {
+								this.parameter.faulttime=''
+							}else {
+								this.parameter.faulttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
+							}
+							this.parameter.rssi=buffer[4]
+							this.parameter.runcount=buffer[10]*16777216+buffer[11]*65536+buffer[12]*256+buffer[13]
+							this.parameter.uptime=buffer[14]*16777216+buffer[15]*65536+buffer[16]*256+buffer[17]
+							this.parameter.faultfloor=buffer[19]
+						}
+					})
+				}
+				this.options.install_date=this.$format(this.list.install_date, 'YYYY-MM-DD')
+				this.list.maintenance_nexttime=parseInt(this.list.maintenance_nexttime)
+				this.list.maintenance_lasttime=parseInt(this.list.maintenance_lasttime)
+				this.options.maintenance_nexttime=this.$format(this.list.maintenance_nexttime, 'YYYY-MM-DD')
+				this.options.maintenance_lasttime=this.$format(this.list.maintenance_lasttime, 'YYYY-MM-DD')
+				this.options.maintenance_remind=this.list.maintenance_remind/86400000
+			},
+			showcolor(){
+				var getcolor=this.list.tagcolor.split(';')
+				for (var i=0;i<getcolor.length;i++){
+					for (var j=0;j<6;j++){
+						if (getcolor[i]==this.col[j]) {
+							this.color[j]=true
+							document.getElementById(this.col[j]).className="fa fa-bookmark fa-2x"
+						}
+					}
+				}
+			},
+			async checkcolor(c) {
+				this.color[c]=!this.color[c]
+				if (this.color[c]) {
+					document.getElementById(this.col[c]).className="fa fa-bookmark fa-2x"
+				}else {
+					document.getElementById(this.col[c]).className="fa fa-tag fa-2x"
+				}
+				this.list.tagcolor=''
+				for (var i=0;i<6;i++) {
+					if (this.color[i]) {
+						if (this.list.tagcolor!='') {
+							this.list.tagcolor=this.list.tagcolor+';'
+						}
+						this.list.tagcolor=this.list.tagcolor+this.col[i]
+					}
+				}
+			},
+			newladder(){
+				this.$Modal.confirm({
+					title: this.$t('new elevator'),
+					content:this.$t('Do you want to create a new elevator?'),
+					onOk: () => {
+						this.$router.push({
+							name: 'addladder',
+							params: {
+								IMEI: this.list.IMEI,
+								type: this.list.device_type,
+							}
+						})
+					},
+					onCancel: () => {}
+				})
+			},
+			adladder(){
+				this.$Modal.confirm({
+					title: this.$t('bind to an elevator'),
+					content:this.$t('Bind this device to an existing elevator?'),
+					onOk: () => {
+						this.$router.push({
+							name: 'coverladder',
+							params: {
+								IMEI: this.list.IMEI,
+								type: this.list.device_type,
+							}
+						})
+					},
+					onCancel: () => {
+					}
+				})
+			},
+			burnn() {
+				this.$Modal.confirm({
+					title: this.$t('register device'),
+					content:'',
+					onOk: () => {
+						this.toburnn()
+					},
+					onCancel: () => {
+					}
+				})
+			},
+			burn() {
+				this.$Modal.confirm({
+					title: this.$t('Are you sure to marked as registered?'),
+					content:this.$t('Error messages may be generated!'),
+					onOk: () => {
+						this.toburn()
+					},
+					onCancel: () => {
+					}
+				})
+			},
+			clearr() {
+				this.$Modal.confirm({
+					title: this.$t('deregister device'),
+					content:'',
+					onOk: () => {
+						this.toclearr()
+					},
+					onCancel: () => {
+					}
+				})	
+			},
+			clear() {
+				this.$Modal.confirm({
+					title: this.$t('Are you sure to marked as unregistered?'),
+					content:this.$t('Error messages may be generated!'),
+					onOk: () => {
+						this.toclear()
+					},
+					onCancel: () => {
+					}
+				})	
+			},
+			async toburnn() {
+				this.list.commond = "contract"
+				let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"register"})
+				if (res.data.code === 0) {
+					this.refreshNum = 2
+					this.refresh()
+					this.$Notice.success({
+						title: this.$t('success'),
+						desc: this.$t('Start to register!Show the device later in the Operations Interface')
+					});
+				} else {
 					this.list.commond = "ok"
 					this.$Notice.error({
 						title: this.$t('error'),
 						desc: this.$t('Fail to register')
 					});
 				}
-			}
-		},
-		async toclearr() {
-			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
-			if (res.data.code === 0) {
-				this.$Notice.success({
-					title: this.$t('success'),
-					desc: this.$t('Start to deregister!')
-				});
+			},
+			async toburn() {
 				this.list.commond = "contract"
-			}else {
-				this.list.commond = "ok"
-				this.$Notice.error({
-					title: this.$t('error'),
-					desc: this.$t('Fail to register!')
-				});
-			}
-		},
-		async toclear() {
-			let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
-			if (res.data.code === 0) {
-				this.$Notice.success({
-					title: this.$t('success'),
-					desc: this.$t('Start to deregister!')
-				});
-				this.list.commond = "contract"
-			}else {
-				let ress=await this.$api.setdevices({id: this.list.id,IMEI: this.list.IMEI,IMSI: this.list.IMSI,isreg: False})
-				if (ress.data.code === 0){
-					this.list.commond = "contract"
+				let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"register"})
+				if (res.data.code === 0) {
+					this.refreshNum = 2
+					this.refresh()
 					this.$Notice.success({
 						title: this.$t('success'),
-						desc: this.$t('Fail to register,but it marked as unregistered')
+						desc: this.$t('Start to register!Show the device later in the Operations Interface')
 					});
 				}else {
+					let ress=await this.$api.setdevices
+					({id: this.list.id,IMEI: this.list.IMEI,isreg: True})
+					if (ress.data.code === 0){
+						this.$Notice.success({
+							title: this.$t('success'),
+							desc: this.$t('Fail to register,but it marked as registered')
+						});
+					}else {
 						this.list.commond = "ok"
 						this.$Notice.error({
 							title: this.$t('error'),
-							desc: this.$t('Fail to register!')
+							desc: this.$t('Fail to register')
+						});
+					}
+				}
+			},
+			async toclearr() {
+				let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
+				if (res.data.code === 0) {
+					this.$Notice.success({
+						title: this.$t('success'),
+						desc: this.$t('Start to deregister!')
 					});
-				}
-			}
-		},
-		async del() {
-			this.$Modal.confirm({
-				title: this.$t('reset information'),
-				content:'',
-				onOk: () => {
-					this.todel()
-				},
-				onCancel: () => {
-				}
-			})	
-		},
-		async todel(){
-			let res =await this.$api.deldevices({id: this.list.id,IMEI: this.list.IMEI})
-			if (res.data.code === 0){
-				this.$Notice.success({
-					title: this.$t('success'),
-					desc: this.$t('Information on this device has been reset')
-				});
-				this.$router.back(-1)
-			}else {
+					this.list.commond = "contract"
+				}else {
+					this.list.commond = "ok"
 					this.$Notice.error({
 						title: this.$t('error'),
-						desc: this.$t('Fail to reset')
+						desc: this.$t('Fail to register!')
 					});
-			}
-		},
-		formatDate(val, format) {
-			return formatDate(val, format)
-		},
-		refresh() {
-			setTimeout(()=>{
-				this.getList()
-				if (this.refreshNum > 0) {
-					this.refresh()
-					this.refreshNum--
 				}
-			}, 5000)
-		},
+			},
+			async toclear() {
+				let res = await this.$api.regdevices({id: this.list.id,IMSI: this.list.device_IMSI, IMEI: this.list.IMEI,op:"unregister"})
+				if (res.data.code === 0) {
+					this.$Notice.success({
+						title: this.$t('success'),
+						desc: this.$t('Start to deregister!')
+					});
+					this.list.commond = "contract"
+				}else {
+					let ress=await this.$api.setdevices({id: this.list.id,IMEI: this.list.IMEI,IMSI: this.list.IMSI,isreg: False})
+					if (ress.data.code === 0){
+						this.list.commond = "contract"
+						this.$Notice.success({
+							title: this.$t('success'),
+							desc: this.$t('Fail to register,but it marked as unregistered')
+						});
+					}else {
+							this.list.commond = "ok"
+							this.$Notice.error({
+								title: this.$t('error'),
+								desc: this.$t('Fail to register!')
+						});
+					}
+				}
+			},
+			async del() {
+				this.$Modal.confirm({
+					title: this.$t('reset information'),
+					content:'',
+					onOk: () => {
+						this.todel()
+					},
+					onCancel: () => {
+					}
+				})	
+			},
+			async todel(){
+				let res =await this.$api.deldevices({id: this.list.id,IMEI: this.list.IMEI})
+				if (res.data.code === 0){
+					this.$Notice.success({
+						title: this.$t('success'),
+						desc: this.$t('Information on this device has been reset')
+					});
+					this.$router.back(-1)
+				}else {
+						this.$Notice.error({
+							title: this.$t('error'),
+							desc: this.$t('Fail to reset')
+						});
+				}
+			},
+			formatDate(val, format) {
+				return formatDate(val, format)
+			},
+			refresh() {
+				setTimeout(()=>{
+					this.getList()
+					if (this.refreshNum > 0) {
+						this.refresh()
+						this.refreshNum--
+					}
+				}, 5000)
+			},
+		}
 	}
-}
 </script>
 
 <style lang="css">
@@ -630,5 +669,21 @@ export default {
 	}
 	.layout-content-main{
 		overflow-y: scroll !important;
+	}
+	.map {
+		height: calc(100vh - 240px);
+	}
+	#map {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		z-index: 5;
+	}
+	.test {
+		position:absolute;
+		z-index: 5;
+	}
+	.v-modal {
+		z-index: auto !important;
 	}
 </style>
