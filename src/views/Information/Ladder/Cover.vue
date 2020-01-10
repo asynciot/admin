@@ -72,35 +72,31 @@
 					{
 						title: this.$t('device name'),
 						key: 'name',
-                        fixed: 'left',
-                        width: 100,
+						fixed: 'left',
+						width: 160,
 					},
 					{
 						title: this.$t('ctrl'),
 						key: 'ctrl',
-                        width: 150,
 					},
 					{
 						title: this.$t('door'),
 						key: 'door1',
-                        width: 150,
 					},
 					{
 						title: this.$t('door'),
 						key: 'door2',
-                        width: 150,
 					},
 					{
 						title: this.$t('install address'),
 						key: 'install_addr',
-                        width: 200,
 					},
 					{
 						title: this.$t('handle'),
 						key: 'companyName',
 						align: 'center',
-                        width: 100,
-                        fixed: 'right',
+						width: 100,
+						fixed: 'right',
 						render: (h, params) => {
 							return h('div', [
 								h('Button', {

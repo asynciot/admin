@@ -31,12 +31,11 @@
 			psMsg: String,
 		},
 		created(){
-			console.log(this.$props.psMsg)
 			this.id = this.$props.psMsg.id1
 			this.getSimpleEvent()
 		},
 		methods:{
-			async Draw(){
+			Draw(){
 				const option= document.getElementById(this.$props.psMsg.id1);
 				const Mychart = this.$echarts.init(option);
 				Mychart.setOption({

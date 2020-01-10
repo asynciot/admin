@@ -44,7 +44,7 @@
 												Button(type="error" @click='remove(3)')|{{$t('delete')}}
 								div.form-group
 									Card
-										Button(@click='NewLadder()' type='success')|{{$t('OK')}}
+										Button(@click='NewLadder()' type='success')|{{$t('Bind')}}
 										Button.ml-5(@click="$router.back(-1)")|{{$t('cancel')}}
 						Col(span="16")
 							Card()
@@ -130,10 +130,16 @@
 						key: 'companyName',
 						align: 'center',
 						render: (h, params) => {
+							var text = this.$t('select')
+							var type = 'success'
+							if(params.row.ladder_id!=null){
+								text = this.$t('Already Bind')
+								type = 'primary'
+							}
 							return h('div', [
 								h('Button', {
 									props: {
-										type: 'success',
+										type: type,
 										size: 'small'
 									},
 									style: {
@@ -141,16 +147,18 @@
 									},
 									on: {
 										click: () => {
-											if(this.query.device_type == "240"){
-												this.ladder.ctrl = params.row.IMEI
-											}else if(this.query.device_type != "240" && this.ladder.door1==null){
-												this.ladder.door1 = params.row.IMEI
-											}else if(this.ladder.door1 != ''){
-												this.ladder.door2 = params.row.IMEI
+											if(text == this.$t('select')){
+												if(this.query.device_type == "240"){
+													this.ladder.ctrl = params.row.IMEI
+												}else if(this.query.device_type != "240" && this.ladder.door1==null){
+													this.ladder.door1 = params.row.IMEI
+												}else if(this.ladder.door1 != ''){
+													this.ladder.door2 = params.row.IMEI
+												}
 											}
 										}
 									}
-								}, this.$t('select')),
+								}, text),
 							]);
 						}
 					}

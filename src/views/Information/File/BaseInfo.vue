@@ -85,7 +85,7 @@ div
 							input(v-model="list.install_addr" style="border: 0" @input="" maxlength='18')
 							span(style="color:gray" class="fa fa-pencil fa-1x")
 						Col(span="12")|{{$t('base station')}}:
-							p(style="margin-left:5px;text-indent: 2em"){{list.cell_address}}
+							p(style="margin-left:5px;text-indent: 2em")|{{list.cell_address}}
 							span(style="color:gray" class="fa fa-pencil fa-1x" v-if="(list.cellular == 1)" @click="maps=true,click()")
 			Col(span="7" )
 				Card()
@@ -139,7 +139,7 @@ div
 			Col.map(span=24)
 				div#map
 				Modal.test(v-model='modal' @on-ok="ok()" @on-cancel="cancel()")
-					p{{text}}
+					p|{{text}}
 </template>
 
 <script>
@@ -258,7 +258,6 @@ div
 		},
 		mounted() {
 			this.initMap()
-			
 		},
 		created(){
 			this.getData()

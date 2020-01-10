@@ -37,13 +37,12 @@ import app_en from './language/en-US.json';
 import global from './global'
 
 Vue.use(VueI18n);
-Vue.prototype.global = global
+Vue.use(VueResource);
+Vue.use(VueCookie);
 Vue.component('icon', Icon);
 Vue.use(ElementUI, { size: 'small' });
-Vue.use(VueResource);
 Vue.http.options.emulateJSON = true;
 Vue.config.productionTip = false;
-Vue.use(VueCookie);
 
 // Vue.use(iView);
 window.$cookie = VueCookie
@@ -52,6 +51,7 @@ window.moment = moment;
 window.base64url = base64url;
 window.format = (val, type) => val ? format(val, type) : null;
 
+Vue.prototype.global = global
 Vue.prototype.$api = api
 Vue.prototype.$format = window.format
 Vue.prototype.$echarts = echarts

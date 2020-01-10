@@ -36,7 +36,6 @@
 								Row.mt-1(:gutter=5 style="text-align:center")
 										Button(@click='updateLadder()' type='success')|{{$t('OK')}}
 										Button.ml-5(@click="$router.back(-1)")|{{$t('cancel')}}
-						
 </template>
 
 <script>
@@ -60,11 +59,6 @@
 					search_info: '',
 					page: 1,
 					num: 10,
-					isreg: "True",
-					state: 'online',
-					device_type:"240",
-					register: "registered",
-					install_addr:'',
 				},
 				options: {
 					name:'',
@@ -75,6 +69,7 @@
 					model:'login',
 					register: "registered",	
 				},
+				
 				ladder:{
 					name:'',
 					install_addr:'',
@@ -84,10 +79,65 @@
 					name:'',
 					install_addr:'',
 				},
+				columns: [
+					{
+						title: this.$t('device name'),
+						key: 'name',
+						fixed: 'left',
+						width: 160,
+					},
+					{
+						title: this.$t('ctrl'),
+						key: 'ctrl',
+					},
+					{
+						title: this.$t('door'),
+						key: 'door1',
+					},
+					{
+						title: this.$t('door'),
+						key: 'door2',
+					},
+					{
+						title: this.$t('install address'),
+						key: 'install_addr',
+					},
+					{
+						title: this.$t('handle'),
+						key: 'companyName',
+						align: 'center',
+						width: 100,
+						fixed: 'right',
+						render: (h, params) => {
+							return h('div', [
+								h('Button', {
+									props: {
+										type: 'success',
+										size: 'small'
+									},
+									style: {
+										marginRight: '5px'
+									},
+									on: {
+										click: () => {
+											this.ladder.id = params.row.id
+											this.ladder.name = params.row.name
+											this.ladder.install_addr = params.row.install_addr
+											this.ladder.ctrl = params.row.ctrl
+											this.ladder.door1 = params.row.door1
+											this.ladder.door2 = params.row.door2
+										}
+									}
+								}, this.$t('select')),
+							]);
+						}
+					}
+				],
 			}
 		},
 		created() {
 			this.getData()
+			//this.getList()
 		},
 		methods: {
 			async getData() {
@@ -95,6 +145,11 @@
 					id:this.$route.params.id
 				});
 				this.ladder=res.data.data.list[0];
+			},
+			async getList() {
+				let res = await this.$api.reLadder(this.query);
+				this.list=res.data.data.list;
+				this.options.total = res.data.data.totalNumber
 			},
 			async updateLadder(){
 				this.save.ladder_id = this.ladder.id

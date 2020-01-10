@@ -25,9 +25,9 @@
 											Select(v-model="doorCode" style="width:200px" disabled)
 												Option(v-for="item in dcode" ,:value="item.value" ,:key="item.value")|{{item.label}}
 										Form-item(:label="$t('fault code')" v-if="(form.type == $t('fault'))&&(list.device_type==240)" prop="ctrl")
-											Input(style="width:50px;" maxlength="2" v-model='ctrlfault')
+											Input(style="width:50px;" maxlength="3" v-model='ctrlfault')
 										Form-item(:label="$t('fault code')" v-if="(form.type != $t('fault'))&&(list.device_type==240)")
-											Input(style="width:50px" maxlength="2" readonly)
+											Input(style="width:50px" maxlength="3" readonly)
 						Col(span=24)
 							Col(span=12 align="center")
 								Button(type="success",icon="plus",@click="sentalert()" v-if="up != true" disabled="false")|{{$t('Create order')}}
@@ -139,7 +139,7 @@
 			async sentalert(){
 				var type=''
 				var device_type=''
-				var fault=parseInt('0x'+this.ctrlfault)
+				var fault=parseInt('0x'+this.ctrlfault.split('E')[1])
 				if (this.list.device_type == '240') {
 					device_type ='ctrl'
 				}

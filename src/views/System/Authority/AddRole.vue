@@ -10,12 +10,12 @@
 							Card
 								div.form-group
 									Card()
-										p(slot="title"){{$t("RoleName")}}
+										p(slot="title")|{{$t("RoleName")}}
 										div.col-sm-8.col-md-6
 											Input(type='text'  v-model="list.name" placeholder='请输入角色名称')
 								div.form-group
 									Card
-										p(slot="title"){{$t("Menu")}}
+										p(slot="title")|{{$t("Menu")}}
 										Tree(ref="tree" ,:data='menus' show-checkbox)
 						Col(span="16")
 							Card()
