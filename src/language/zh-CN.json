@@ -99,6 +99,7 @@
 	"Normally open" : "常开",
 	"Normally closed" : "常闭",
 
+	"address" : "请输入地址",
 	"Notice" : "发送邮件",
 	"Active Devices" : "活跃设备",
 	"Fault Devices" : "故障设备",

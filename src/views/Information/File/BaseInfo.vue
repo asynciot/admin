@@ -135,7 +135,11 @@ div
 				Col(span='18')
 					el-button(type="primary" @click="history = false")|{{$t('OK')}}
 	el-dialog(:title="$t('Map')", :visible.sync="maps" width="80%")
-		Card(style="height:calc(100vh - 200px)")
+		Row(gutter=4)
+			Col(span=8)
+				Input.input(:placeholder="$t('address')")
+			Col(span=8)
+				Button()
 			Col.map(span=24)
 				div#map
 				Modal.test(v-model='modal' @on-ok="ok()" @on-cancel="cancel()")
@@ -205,7 +209,6 @@ div
 						}
 					},
 					],
-
 				history:false,
 				maps:false,
 				sent:false,
@@ -696,5 +699,10 @@ div
 	}
 	.v-modal {
 		z-index: auto !important;
+	}
+	.input{
+		position: relative;
+		margin-top: -20px;
+		margin-bottom: 4px;
 	}
 </style>
