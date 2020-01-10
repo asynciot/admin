@@ -139,7 +139,7 @@ div
 			Col(span=8)
 				Input.input(v-model='address',:placeholder="$t('address')")
 			Col(span=8)
-				Button(@click="geoCode()" style="margin-top: -23px;")|{{$t('search')}}
+				Button(@click="geoCode()" type="info" style="margin-top: -24px;")|{{$t('search')}}
 			Col.map(span=24)
 				div#map
 				Modal.test(v-model='modal' @on-ok="ok()" @on-cancel="cancel()")
@@ -324,11 +324,25 @@ div
                     this.map.setLang("zh_cn");
 				}
                 this.map.on('click', (e)=> {
-					this.modal = true
-					var text = '[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]'+this.$t('As location address')
-					this.lon = e.lnglat.getLng()
-					this.lat = e.lnglat.getLat()
-					this.text = text
+                    //let readdress = null
+                    let geocoder = new AMap.Geocoder({
+                        city: "",
+                    })
+                    geocoder.getAddress(e.lnglat, (status, result) => {
+                        if (status === 'complete'&&result.regeocode) {
+                            let readdress = result.regeocode.formattedAddress;
+                            //console.log(readdress)
+                            this.modal = true
+                            //var text = '[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]'+this.$t('As location address')
+                            var text = '[ '+readdress+' ]'+this.$t('As location address')
+                            this.lon = e.lnglat.getLng()
+                            this.lat = e.lnglat.getLat()
+                            this.text = text
+                        }else{
+                            log.error('根据经纬度查询地址失败')
+                        }
+                    })
+                    //console.log(readdress)
 				})
                 let marker = new AMap.Marker({
                     position: new AMap.LngLat(this.cell_lon, this.cell_lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
