@@ -139,7 +139,7 @@ div
 			Col(span=8)
 				Input.input(v-model='address',:placeholder="$t('address')")
 			Col(span=8)
-				Button(@click="geoCode()" style="margin-top: -20px;")|{{$t('bind to an elevator')}}
+				Button(@click="geoCode()" style="margin-top: -23px;")|{{$t('search')}}
 			Col.map(span=24)
 				div#map
 				Modal.test(v-model='modal' @on-ok="ok()" @on-cancel="cancel()")
@@ -298,10 +298,9 @@ div
                     city: "", //城市设为北京，默认：“全国”
                 });
                 let marker = new AMap.Marker();
-                geocoder.getLocation(address, function(status, result) {
+                geocoder.getLocation(address, (status, result) => {
                     if (status === 'complete'&&result.geocodes.length) {
                         let lnglat = result.geocodes[0].location
-                        //document.getElementById('lnglat').value = lnglat;
                         marker.setPosition(lnglat);
                         this.map.add(marker);
                         this.map.setFitView(marker);
@@ -312,7 +311,7 @@ div
             },
 			async initMap() {
                 await this.getData()
-				 var map = new AMap.Map('map', {
+				 this.map = new AMap.Map('map', {
 					enableMapClick: false,
 					resizeEnable: true,
 					lang:"zh_cn",
@@ -320,11 +319,11 @@ div
 					center:[121.46, 31.23]
 				});
 				if(this.$i18n.locale == 'en-US'){
-                    map.setLang("en");
+                    this.map.setLang("en");
 				}else{
-                    map.setLang("zh_cn");
+                    this.map.setLang("zh_cn");
 				}
-                map.on('click', (e)=> {
+                this.map.on('click', (e)=> {
 					this.modal = true
 					var text = '[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]'+this.$t('As location address')
 					this.lon = e.lnglat.getLng()
@@ -335,8 +334,8 @@ div
                     position: new AMap.LngLat(this.cell_lon, this.cell_lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                     //title: 'dd'
                 })
-                map.add(marker)
-                this.map = map;
+                this.map.add(marker)
+                //this.map = map;
 			},
 			async getList() {
 				this.fault.device_id=this.list.device_id
