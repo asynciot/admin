@@ -125,7 +125,7 @@ div
 						Button(@click="newladder()" type="info" style="margin-top: 20px; width: 92%" v-else)|{{$t('new elevator')}}
 					Col(span=12)
 						Button(@click="adladder()"  style="margin-top: 20px; width: 92%")|{{$t('bind to an elevator')}}
-				
+
 	el-dialog(:title="$t('history fault')", :visible.sync="history" width="50%")
 		Table(:columns="column",:data="data",:stripe="true")
 		span(slot="footer" class="dialog-footer")
@@ -205,7 +205,7 @@ div
 						}
 					},
 					],
-					
+
 				history:false,
 				maps:false,
 				sent:false,
@@ -236,7 +236,7 @@ div
 					rssi: '',
 					moment: '',
 					wavenumber: '',
-					waveid: '',	
+					waveid: '',
 					runcount: '',
 					uptime: '',
 					faultcode: '',
@@ -254,15 +254,16 @@ div
 				addladder:this.global.functions.new_ladder,
 				text:"",
 				modal:false,
+                cell_lat: 0,
+                cell_lon: 0,
 			}
 		},
 		mounted() {
 			this.initMap()
 		},
 		created(){
-			this.getData()
 			if(this.username=="demo"){
-				this.upsuccess = true 
+				this.upsuccess = true
 			}
 		},
 		methods: {
@@ -286,7 +287,8 @@ div
 			cancel () {
 				this.$Message.info(this.$t('cancel'));
 			},
-			initMap() {
+			async initMap() {
+                await this.getData()
 				var map = new AMap.Map('map', {
 					enableMapClick: false,
 					resizeEnable: true,
@@ -306,6 +308,11 @@ div
 					this.lat = e.lnglat.getLat()
 					this.text = text
 				})
+                let marker = new AMap.Marker({
+                    position: new AMap.LngLat(this.cell_lon, this.cell_lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                    //title: 'dd'
+                })
+                map.add(marker)
 			},
 			async getList() {
 				this.fault.device_id=this.list.device_id
@@ -328,7 +335,7 @@ div
 				}
 			},
 			async addCellStation(){
-				
+
 			},
 			async update(){
 				this.sent=true
@@ -338,7 +345,7 @@ div
 					this.list.maintenance_nexttime=null
 				}
 				this.list.maintenance_remind=this.options.maintenance_remind*86400000
-				
+
 				let res =await this.$api.setdevices(this.list)
 				this.sent=false
 				if (res.data.code == 0){
@@ -358,6 +365,11 @@ div
 				var time;
 				let res =await this.$api.devices({IMEI: this.$route.params.IMEI})
 				this.list = res.data.data.list[0]
+                if(this.list.cell_lat != null) {
+                    //console.log(this.list.cell_lat+""+this.list.cell_lon)
+                    this.cell_lat = this.list.cell_lat
+                    this.cell_lon = this.list.cell_lon
+                }
 				setTimeout(()=>{
 					this.showcolor()
 				}, 300)
@@ -386,7 +398,7 @@ div
 								this.parameter.reporttime=''
 							}else {
 								this.parameter.reporttime=this.$format(new Date(time*1000),'YYYY-MM-DD HH:mm:ss')
-								
+
 							}
 							this.parameter.rssi=buffer[4]
 							this.parameter.wavenumber=buffer[14]*256+buffer[15]
@@ -516,7 +528,7 @@ div
 					},
 					onCancel: () => {
 					}
-				})	
+				})
 			},
 			clear() {
 				this.$Modal.confirm({
@@ -527,7 +539,7 @@ div
 					},
 					onCancel: () => {
 					}
-				})	
+				})
 			},
 			async toburnn() {
 				this.list.commond = "contract"
@@ -624,7 +636,7 @@ div
 					},
 					onCancel: () => {
 					}
-				})	
+				})
 			},
 			async todel(){
 				let res =await this.$api.deldevices({id: this.list.id,IMEI: this.list.IMEI})
