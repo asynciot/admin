@@ -137,9 +137,9 @@ div
 	el-dialog(:title="$t('Map')", :visible.sync="maps" width="80%")
 		Row(gutter=4)
 			Col(span=8)
-				Input.input(:placeholder="$t('address')")
+				Input.input(v-model='address',:placeholder="$t('address')")
 			Col(span=8)
-				Button()
+				Button(@click="geoCode()" style="margin-top: -20px;")|{{$t('bind to an elevator')}}
 			Col.map(span=24)
 				div#map
 				Modal.test(v-model='modal' @on-ok="ok()" @on-cancel="cancel()")
@@ -259,6 +259,8 @@ div
 				modal:false,
                 cell_lat: 0,
                 cell_lon: 0,
+                address:'',
+                map: null,
 			}
 		},
 		mounted() {
@@ -290,9 +292,27 @@ div
 			cancel () {
 				this.$Message.info(this.$t('cancel'));
 			},
+            geoCode() {
+                let address  = this.address;
+                let geocoder = new AMap.Geocoder({
+                    city: "", //城市设为北京，默认：“全国”
+                });
+                let marker = new AMap.Marker();
+                geocoder.getLocation(address, function(status, result) {
+                    if (status === 'complete'&&result.geocodes.length) {
+                        let lnglat = result.geocodes[0].location
+                        //document.getElementById('lnglat').value = lnglat;
+                        marker.setPosition(lnglat);
+                        this.map.add(marker);
+                        this.map.setFitView(marker);
+                    }else{
+                        log.error('根据地址查询位置失败');
+                    }
+                });
+            },
 			async initMap() {
                 await this.getData()
-				var map = new AMap.Map('map', {
+				 var map = new AMap.Map('map', {
 					enableMapClick: false,
 					resizeEnable: true,
 					lang:"zh_cn",
@@ -300,11 +320,11 @@ div
 					center:[121.46, 31.23]
 				});
 				if(this.$i18n.locale == 'en-US'){
-					map.setLang("en");
+                    map.setLang("en");
 				}else{
-					map.setLang("zh_cn");
+                    map.setLang("zh_cn");
 				}
-				map.on('click', (e)=> {
+                map.on('click', (e)=> {
 					this.modal = true
 					var text = '[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]'+this.$t('As location address')
 					this.lon = e.lnglat.getLng()
@@ -316,6 +336,7 @@ div
                     //title: 'dd'
                 })
                 map.add(marker)
+                this.map = map;
 			},
 			async getList() {
 				this.fault.device_id=this.list.device_id
